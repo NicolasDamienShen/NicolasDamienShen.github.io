@@ -2571,13 +2571,16 @@ function initCSS3D() {
   cssRenderer.setSize(innerWidth, innerHeight); Object.assign(cssRenderer.domElement.style, { position: 'fixed', inset: '0', zIndex: '4', pointerEvents: 'none' });
   document.body.appendChild(cssRenderer.domElement);
 }
+// a Google Drive video is shown as its poster with a "Watch on Google Drive" button (its embedded player often stalls
+// when the browser blocks Google's cookies); inside the artifact every outside video works this way
+const linkOnly = v => !!extURL(v) && !v.video && (IN_ARTIFACT || (!ytId(v.youtube) && !!driveId(v.drive)));
 function focusBillboard(i) {
   const v = CONTENT.videos[i]; if (!v) return;
   if (cssObj) { cssScene.remove(cssObj); cssObj = null; }
   const id = ytId(v.youtube), d = document.createElement('div');
   const fs = bbSize(v), dw = fs.W > fs.H ? 1280 : 720, dh = Math.round(dw * fs.H / fs.W);
   d.style.cssText = `width:${dw}px;height:${dh}px;` + 'background:#000;pointer-events:auto;border-radius:6px;overflow:hidden';
-  if (IN_ARTIFACT && extURL(v) && !v.video) d.innerHTML = `<a href="${esc(extURL(v))}" target="_blank" rel="noopener" aria-label="${esc(t('watchOn'))} ${esc(extName(v))}" style="display:block;width:100%;height:100%;background:url(${esc(v.poster || '')}) center/cover"></a>`;   // the call to action is the button that flies to the front
+  if (linkOnly(v)) d.innerHTML = `<a href="${esc(extURL(v))}" target="_blank" rel="noopener" aria-label="${esc(t('watchOn'))} ${esc(extName(v))}" style="display:block;width:100%;height:100%;background:url(${esc(v.poster || '')}) center/cover"></a>`;   // the call to action is the button that flies to the front
   else if (id) d.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?autoplay=1&rel=0&modestbranding=1&hl=${LANG}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${esc(L(v.title))}"></iframe>`;
   else if (v.video) d.innerHTML = `<video src="${esc(v.video)}" style="width:100%;height:100%;object-fit:cover" autoplay controls playsinline></video>`;
   else if (driveId(v.drive)) d.innerHTML = `<iframe src="${drivePreview(driveId(v.drive))}" style="width:100%;height:100%;border:0" allow="autoplay; fullscreen" title="${esc(L(v.title))}"></iframe>`;
@@ -2588,7 +2591,8 @@ function focusBillboard(i) {
   focus.i = i; focus.want = 1; document.body.classList.add('focused'); setHover(null);
   const bar = $('#watchbar'); bar.hidden = false; $('#watch-title').textContent = L(v.title);
   $('#watch-more').onclick = () => { unfocus(); openVideo(i); };
-  if (IN_ARTIFACT && extURL(v) && !v.video) requestAnimationFrame(() => launchLink(v));
+  if (linkOnly(v)) requestAnimationFrame(() => launchLink(v));
+  else if (id || v.video) SOUND.setDuck(0);   // a video is playing: the music steps aside
   const yb = $('#watch-yt'); if (yb) { const yid = ytId(v.youtube), did = driveId(v.drive); yb.hidden = !yid && !did; if (yid) { yb.href = `https://www.youtube.com/watch?v=${yid}`; yb.textContent = 'YouTube ↗'; } else if (did) { yb.href = `https://drive.google.com/file/d/${encodeURIComponent(did)}/view`; yb.textContent = 'Google Drive ↗'; } }
 }
 // the video can't play here (embedded players are blocked): its link button lifts out of the bar and glides to the front of the screen
@@ -2596,7 +2600,7 @@ let flyLink = null;
 function launchLink(v) {
   flyLink?.remove(); flyLink = null;
   const url = extURL(v), from = $('#watch-yt'); if (!url || !from) return;
-  const a = document.createElement('a'); a.className = 'flylink' + (ytId(v.youtube) ? '' : ' drive'); a.href = url; a.rel = 'noopener';   // only used inside the artifact: a plain link (no target), the sandbox blocks pop-ups
+  const a = document.createElement('a'); a.className = 'flylink' + (ytId(v.youtube) ? '' : ' drive'); a.href = url; a.rel = 'noopener'; if (!IN_ARTIFACT) a.target = '_blank';   // only used inside the artifact: a plain link (no target), the sandbox blocks pop-ups
   a.innerHTML = `<span class="fl-play">▶</span><span><b>${esc(t('watchOn'))} ${esc(extName(v))}</b><small>${esc(L(v.title))} ↗</small></span>`;
   document.body.appendChild(a); flyLink = a;
   const r0 = from.getBoundingClientRect(), r1 = a.getBoundingClientRect();
@@ -2606,7 +2610,7 @@ function launchLink(v) {
 }
 function unfocus() {
   if (flyLink) { const a = flyLink; flyLink = null; a.animate([{ opacity: 1 }, { opacity: 0, transform: 'translate(-50%, -40%) scale(.9)' }], { duration: 250, fill: 'forwards' }).onfinish = () => a.remove(); }
-  if (focus.want === 0) return; focus.want = 0; $('#watchbar').hidden = true; document.body.classList.remove('focused');
+  if (focus.want === 0) return; focus.want = 0; $('#watchbar').hidden = true; document.body.classList.remove('focused'); if (modal.hidden) SOUND.setDuck(1);
   setTimeout(() => { if (focus.want === 0 && cssObj) { cssScene.remove(cssObj); cssObj = null; focus.i = -1; } }, 700);
 }
 addEventListener('wheel', () => { if (focus.want) unfocus(); }, { passive: true });
@@ -2748,13 +2752,14 @@ function linkify(text, links) { let h = esc(text); for (const [name, url] of Obj
 function openVideo(i) {
   const v = CONTENT.videos[i]; if (!v) return; const id = ytId(v.youtube), n = CONTENT.videos.length;
   let media;
-  if (IN_ARTIFACT && extURL(v) && !v.video) media = `<div class="media"${v.portrait ? ' style="aspect-ratio:9/16;width:min(100%, calc(66vh * 9 / 16));margin:0 auto"' : ''}><img alt="${esc(L(v.title))}" src="${esc(v.poster || '')}"></div><div class="mrow"><a class="btn primary" href="${esc(extURL(v))}" target="_blank" rel="noopener">▶ ${esc(t('watchOn'))} ${esc(extName(v))} ↗</a></div>`;
+  if (linkOnly(v)) media = `<div class="media"${v.portrait ? ' style="aspect-ratio:9/16;width:min(100%, calc(66vh * 9 / 16));margin:0 auto"' : ''}><img alt="${esc(L(v.title))}" src="${esc(v.poster || '')}"></div><div class="mrow"><a class="btn primary" href="${esc(extURL(v))}" target="_blank" rel="noopener">▶ ${esc(t('watchOn'))} ${esc(extName(v))} ↗</a></div>`;
   else if (id) media = `<div class="media"><iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?autoplay=1&rel=0&modestbranding=1&hl=${LANG}" title="${esc(L(v.title))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><div class="mrow"><a href="https://youtu.be/${esc(id)}" target="_blank" rel="noopener" class="counter">${esc(t('ytFallback'))}</a></div>`;
   else if (v.video) media = `<div class="media"><video src="${esc(v.video)}" controls autoplay playsinline ${v.poster ? `poster="${esc(v.poster)}"` : ''}></video></div>`;
   else if (driveId(v.drive)) media = `<div class="media"${v.portrait ? ' style="aspect-ratio:9/16;width:min(100%, calc(66vh * 9 / 16));margin:0 auto"' : ''}><iframe src="${drivePreview(driveId(v.drive))}" title="${esc(L(v.title))}" allow="autoplay; fullscreen"></iframe></div><div class="mrow"><a href="https://drive.google.com/file/d/${encodeURIComponent(driveId(v.drive))}/view" target="_blank" rel="noopener" class="counter">Google Drive ↗</a></div>`;
   else if (v.poster) media = `<div class="media"><img alt="${esc(L(v.title))}" src="${esc(v.poster)}"><span class="soon">${esc(L(v.soon) || t('videoSoon'))}</span></div>`;
   else media = mediaPlaceholder(L(v.title), L(v.subtitle), hueOf(i), L(v.soon) || t('videoSoon'));
   openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), `${media}<p class="mdesc" style="white-space:pre-line">${linkify(L(v.desc), v.links)}</p>${tags(v.tools)}${navRow(i, n)}`, d => openVideo((i + d + n) % n));
+  if ($('.media iframe, .media video', mbox)) SOUND.setDuck(0);   // the video's own sound only
   wireNav();
 }
 function openGames(i) {
