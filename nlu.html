@@ -1,0 +1,4167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cabin Voice · DSL Demo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%2314122a%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Arial%27 font-weight=%27700%27 font-size=%2728%27 text-anchor=%27middle%27 fill=%27%23ffc46e%27%3ENS%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--bg:#07070f;--fg:#e6e9ef;--muted:#8a93a3;--line:#1a1d2e;--cyan:#3fd2ff;--ind:#6f7fe8;--card:rgba(20,23,51,.72)}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;overflow:hidden}
+  .app{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;height:100vh;background:radial-gradient(ellipse at 35% 55%,#121226 0%,#07070f 70%)}
+  .carcell{grid-row:1/3;position:relative;display:flex;align-items:center;justify-content:center;padding:12px 28px 12px 24px}
+  .carcell svg#car{height:96vh;width:auto}
+  .panelcell{position:relative;display:flex;align-items:flex-start;justify-content:center;padding:14px 24px 0}
+  .panelcell svg#panel{width:min(100%,820px);height:auto;max-height:68vh;transition:opacity .35s,transform .35s}
+  body.panelHidden .panelcell{padding:0;height:0;overflow:hidden}
+  body.panelHidden .panelcell svg#panel{opacity:0;transform:translateY(-10px);pointer-events:none}
+  #screen-center{cursor:pointer}
+  #screen-center:hover rect:first-child{stroke:#fff}
+  .panelHint{position:absolute;left:24px;bottom:14px;font-size:11px;color:#5c6577}
+  .cmdcell{display:flex;flex-direction:column;gap:10px;padding:10px 24px 16px;min-height:0}
+  .cmdcell .inrow{flex:none}
+  .cmdcell .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0}
+  .cmdcell .pane{min-height:0;overflow:auto;background:rgba(11,12,22,.7);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+  .menu{position:absolute;right:30px;bottom:120px;z-index:12;display:none;flex-direction:column;gap:8px;padding:12px;border-radius:12px;background:rgba(15,17,32,.96);border:1px solid #1f2447;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+  .menu.show{display:flex}
+  .menu .row{display:flex;gap:6px;align-items:center}
+  .menu label{font-size:11px;color:#8a93a3;width:44px}
+  
+  .top{display:flex;align-items:center;gap:8px}
+  .top .brand{font-weight:600;letter-spacing:.04em;font-size:13px;flex:1}
+  .top .brand small{color:var(--muted);font-weight:400;margin-left:8px;font-size:11px}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;border:1px solid #1f2447;background:#0f1120;font-size:12px;color:#b9c2d0}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:#ff9a7a}
+  .chip.live .dot{background:#3ddc84;box-shadow:0 0 8px #3ddc84}
+  .seg{display:inline-flex;border:1px solid #1f2447;border-radius:99px;overflow:hidden}
+  .seg button{all:unset;cursor:pointer;padding:4px 12px;font-size:12px;color:#8a93a3}
+  .seg button.on{background:#141733;color:var(--cyan)}
+  .lat{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#9ff0ff}
+  .lat span{color:#5c6577}
+  .top .sp{display:none}
+  .top input{background:#0f1120;border:1px solid #1f2447;color:#9ff0ff;border-radius:8px;padding:4px 8px;font:12px ui-monospace,Menlo,monospace;width:150px}
+  .top button.b{all:unset;cursor:pointer;padding:4px 12px;border-radius:8px;border:1px solid #1f2447;font-size:12px;color:#b9c2d0}
+  .top button.b:hover{border-color:var(--cyan);color:var(--cyan)}
+  
+  .msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;min-height:60px}
+  .msg{max-width:92%;padding:8px 12px;border-radius:14px;font-size:12.5px;line-height:1.45}
+  .msg.u{align-self:flex-end;background:#1f2447;color:#e6e9ef;border-bottom-right-radius:4px}
+  .msg.a{align-self:flex-start;background:rgba(63,210,255,.10);color:#9ff0ff;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;white-space:pre-wrap;border-bottom-left-radius:4px}
+  .inrow{display:flex;gap:6px;align-items:center}
+  .inrow input{flex:1;min-width:0;background:#0f1120;border:1px solid #1f2447;border-radius:12px;padding:10px 12px;color:#e6e9ef;font-size:13px}
+  .inrow input:focus{outline:none;border-color:var(--cyan)}
+  .inrow button{all:unset;cursor:pointer;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:600}
+  .inrow .send{background:var(--cyan);color:#07070f}
+  .inrow .clr{border:1px solid #1f2447;color:#8a93a3}
+  h2{font-size:11px;letter-spacing:.1em;color:var(--ind);margin:0 0 4px;text-transform:uppercase}
+  .dline{border:1px solid #1f2447;border-radius:10px;background:#0f1120;padding:9px 11px;transition:border-color .3s,box-shadow .3s,background .3s;cursor:pointer}
+  .dline.exec{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 18px rgba(63,210,255,.25);background:#111a30}
+  .dline .tool{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:#9ff0ff}
+  .dline .tool b{color:#fff;font-weight:600}
+  .dline .tag{float:right;font-size:10px;padding:1px 7px;border-radius:99px;border:1px solid}
+  .tag.jev{color:#9ff0ff;border-color:#3fd2ff55}
+  .tag.llm{color:#ffd3c4;border-color:#ff9a7a66}
+  .dline .probs{display:none;margin-top:8px;border-top:1px solid #1a1d2e;padding-top:6px;font-size:11px}
+  .dline.open .probs{display:block}
+  .probs .p{display:flex;align-items:center;gap:6px;margin:3px 0}
+  .probs .k{width:60px;color:#8a93a3;font-family:ui-monospace,Menlo,monospace}
+  .probs .bar{flex:1;height:5px;background:#1a1d2e;border-radius:3px;overflow:hidden}
+  .probs .bar i{display:block;height:100%;background:var(--cyan)}
+  .probs .bar i.llm{background:#ff9a7a}
+  .probs .v{width:84px;color:#c3cad6;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;text-align:right}
+  .empty{color:#5c6577;font-size:12px;padding:10px;border:1px dashed #1f2447;border-radius:10px}
+  .warn{font-size:11px;color:#ffb59c;border:1px solid #ff9a7a44;border-radius:8px;padding:6px 10px}
+  .tools-top{font-size:11px;color:#8a93a3}
+  .tools-top b{color:#9ff0ff;font-weight:500}
+  
+  .stage{position:relative;display:flex;align-items:center;justify-content:center;gap:40px;background:radial-gradient(ellipse at 50% 55%,#121226 0%,#07070f 70%);overflow:hidden;padding:10px 20px}
+  .cards{position:absolute;left:24px;right:24px;top:10px;height:50%;z-index:5}
+  .side svg#panel{width:100%;height:auto;max-height:56vh}
+  .stage .busy{position:absolute;left:50%;top:14px;transform:translateX(-50%);display:none;align-items:center;gap:8px;padding:6px 14px;border-radius:99px;background:rgba(15,17,32,.85);border:1px solid #1f2447;color:#9ff0ff;font-size:12px}
+  .stage .busy i{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulseDot 1s ease-in-out infinite}
+  @keyframes pulseDot{0%,100%{transform:scale(.6);opacity:.5}50%{transform:scale(1.2);opacity:1}}
+  
+  .card{position:absolute;left:0;right:0;top:8px;border-radius:16px;padding:16px;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(127,233,255,.25);box-shadow:0 18px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transform:translateY(-120%);opacity:0;transition:transform .7s cubic-bezier(.2,.9,.25,1.05),opacity .4s}
+  .card.show{transform:translateY(0);opacity:1}
+  .card .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .card .hd .t{font-size:11px;letter-spacing:.1em;color:#9ff0ff}
+  .card .hd .x{all:unset;cursor:pointer;color:#8a93a3;font-size:14px;padding:0 4px}
+  .card .big{font-size:20px;font-weight:600;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .sub{color:#b9c2d0;font-size:12px}
+  .card .row{display:flex;gap:10px;margin-top:10px}
+  .card .kv{flex:1;background:rgba(7,7,15,.45);border-radius:10px;padding:8px 10px}
+  .card .kv small{display:block;color:#8a93a3;font-size:10px}
+  .card .kv span{font-size:13px;color:#e6e9ef}
+  .card svg.map{width:100%;height:120px;border-radius:10px;background:#0a0b18;margin-top:10px}
+  .card .prog{height:4px;background:#1f2447;border-radius:2px;margin-top:12px;overflow:hidden}
+  .card .prog i{display:block;height:100%;width:30%;background:#ff6a8e;transition:width .5s}
+  .card .cover{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#ff6a8e,#b53aa5);display:flex;align-items:center;justify-content:center;flex:none}
+  .card .cover i{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6)}
+  .card .cover i.spin{animation:spin 3s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .card .avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6ee07a,#2b9a52);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#fff;position:relative;flex:none}
+  .card .avatar:before{content:"";position:absolute;inset:-8px;border-radius:50%;border:1px solid #6ee07a;opacity:.4;animation:ring 2s ease-out infinite}
+  @keyframes ring{0%{transform:scale(.8);opacity:.6}100%{transform:scale(1.5);opacity:0}}
+  .card .hang{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;background:#ff3b6b;display:flex;align-items:center;justify-content:center;margin-left:auto}
+  .card .ep{display:inline-block;padding:2px 8px;border-radius:6px;background:rgba(168,85,247,.25);color:#dcbfff;font-size:11px;margin-left:6px}
+  .card.tour .kv{min-width:0}
+  
+  .chat{grid-column:1/3;border-top:1px solid var(--line);background:#0b0c16;display:flex;align-items:center;gap:12px;padding:0 16px;position:relative}
+  .bubbles{flex:1;display:flex;gap:8px;overflow:hidden;align-items:center;cursor:pointer}
+  .bub{flex:none;max-width:260px;padding:7px 12px;border-radius:14px;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bub.u{background:#1f2447;color:#e6e9ef}
+  .bub.a{background:rgba(63,210,255,.12);color:#9ff0ff;font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+  .chat input{flex:1.4;background:#0f1120;border:1px solid #1f2447;border-radius:12px;padding:10px 14px;color:#e6e9ef;font-size:14px}
+  .chat input:focus{outline:none;border-color:var(--cyan)}
+  .chat button{all:unset;cursor:pointer;padding:9px 16px;border-radius:12px;font-size:13px;font-weight:600}
+  .chat .send{background:var(--cyan);color:#07070f}
+  .chat .clr{border:1px solid #1f2447;color:#8a93a3}
+  .drawer{position:absolute;left:0;right:0;bottom:92px;max-height:46vh;overflow:auto;background:rgba(11,12,22,.96);border-top:1px solid var(--line);padding:14px 20px;display:none;z-index:30}
+  .drawer.show{display:block}
+  .drawer .m{margin:6px 0;display:flex;gap:10px}
+  .drawer .m .who{width:40px;color:#8a93a3;font-size:11px;padding-top:4px}
+  .drawer .m .txt{padding:6px 12px;border-radius:12px;background:#1f2447;max-width:70%}
+  .drawer .m.a .txt{background:rgba(63,210,255,.12);color:#9ff0ff;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre-wrap}
+  
+  #pulseLayer{position:fixed;inset:0;pointer-events:none;z-index:20}
+  #pulseLayer path{fill:none;stroke:var(--cyan);stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 6px #3fd2ff);stroke-dasharray:8 10;animation:dash 1.1s linear infinite;opacity:.95;transition:opacity .5s}
+  @keyframes dash{to{stroke-dashoffset:-36}}
+  
+  .dbg{position:fixed;right:10px;top:10px;width:380px;max-height:70vh;overflow:auto;background:#0b0c16;border:1px solid #1f2447;border-radius:12px;padding:12px;display:none;z-index:40;font-size:11px}
+  .dbg.show{display:block}
+  pre{font-size:11px;color:#9ff0ff;background:#07070f;border-radius:8px;padding:8px;white-space:pre-wrap;word-break:break-all}
+  .tests div{padding:2px 0}.pass{color:#6ee07a}.fail{color:#ff6a8e}
+  #rapps .rapp{cursor:pointer;transition:transform .45s cubic-bezier(.34,1.3,.64,1),opacity .3s;transform-box:fill-box;transform-origin:center}
+  #rapps .rapp:hover{transform:scale(1.08)}
+  #rapps .rapp.on rect{stroke:#fff;stroke-width:1.6;filter:url(#pGlow)}
+  #rapps .rapp.on{transform:scale(1.12)}
+  #panel-apps.hidden #rapps .rapp{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0;pointer-events:none}
+  #panel-models.hidden #panel-model-gear{transform:translate(0,37px) scale(.1);opacity:0;transition-delay:0s}
+  #panel-models.hidden #panel-model-plug{transform:translate(0,58px) scale(.1)!important;opacity:0}
+  #panel-model-gear{transition:transform .45s cubic-bezier(.34,1.3,.64,1),opacity .3s;transform-box:fill-box;transform-origin:center}
+  #panel-screen > g[opacity="0"], #app-ui-phone > g[opacity="0"]{pointer-events:none}   
+  .hl{animation:hl 1.2s ease-out}
+  @keyframes hl{0%{filter:drop-shadow(0 0 0 #3fd2ff)}30%{filter:drop-shadow(0 0 8px #3fd2ff)}100%{filter:drop-shadow(0 0 0 #3fd2ff)}}
+  #zones rect{transition:fill .8s,opacity .8s}
+  #temps{transition:opacity .4s}
+  #fog-front{transition:opacity 2.4s ease-out}
+  #defog-front,#defog-rear{transition:opacity .6s}
+  #mirror-l rect:first-child,#mirror-r rect:first-child{transition:stroke .4s,fill .4s}
+  .hl{animation:hl 1.2s ease-out}
+  @keyframes hl{0%{filter:drop-shadow(0 0 0 #3fd2ff)}30%{filter:drop-shadow(0 0 8px #3fd2ff)}100%{filter:drop-shadow(0 0 0 #3fd2ff)}}
+  .sfx-heat{transition:opacity .6s}
+  #spk-waves circle{transform-box:fill-box;transform-origin:center;animation:spk var(--dur,2s) ease-out infinite}
+  @keyframes spk{0%{transform:scale(.3);opacity:.8}100%{transform:scale(1);opacity:0}}
+  #spk-mute{transition:opacity .3s}
+  #light-dash,#light-door-l,#light-door-r,#light-foot rect,#panel-light,#roof-glass{transition:stroke .7s,fill .7s,opacity .7s,fill-opacity .7s}
+  .sfx-vent line{stroke:#3fd2ff;stroke-width:1.4;stroke-linecap:round;animation:ventUp var(--dur,1.4s) linear infinite}
+  @keyframes ventUp{0%{transform:translateY(14px);opacity:0}25%{opacity:.9}100%{transform:translateY(-22px);opacity:0}}
+  .sfx-massage circle{fill:none;stroke:#c084fc;stroke-width:1.4;animation:ripple var(--dur,1.6s) ease-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes ripple{0%{transform:scale(.15);opacity:.9}100%{transform:scale(1);opacity:0}}
+  #panel-screen.shake{animation:shake .5s ease-in-out}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+  #panel-wave line{transform-box:fill-box;transform-origin:center;animation:wave 1.6s ease-in-out infinite}
+  #panel-wave line:nth-child(1){animation-delay:0s}#panel-wave line:nth-child(2){animation-delay:.15s}#panel-wave line:nth-child(3){animation-delay:.3s}#panel-wave line:nth-child(4){animation-delay:.45s}#panel-wave line:nth-child(5){animation-delay:.3s}#panel-wave line:nth-child(6){animation-delay:.15s}#panel-wave line:nth-child(7){animation-delay:0s}
+  @keyframes wave{0%,100%{transform:scaleY(.55)}50%{transform:scaleY(1)}}
+  #panel-screen.speaking #panel-wave line{animation:speak .38s ease-in-out infinite}
+  @keyframes speak{0%,100%{transform:scaleY(.35)}30%{transform:scaleY(1.25)}60%{transform:scaleY(.7)}}
+  #panel-idle text:last-of-type{animation:blink 2.4s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+  #sunroof-panel{transition:transform .9s cubic-bezier(.4,0,.2,1)}
+  #side-windows rect{transition:y .3s,height .3s}
+  #win-sunroof rect{transition:all .9s cubic-bezier(.4,0,.2,1)}
+  #sunroof-lip{transition:opacity .25s}
+  .knob{cursor:grab}.knob:active{cursor:grabbing}
+  .mbtn{cursor:pointer}.mbtn:hover path,.mbtn:hover circle{filter:url(#pGlow)}
+  #side-windows rect{cursor:ns-resize}
+  #win-sunroof{cursor:pointer}
+  #win-sunroof rect{transition:none}
+  #panel-apps g[id^="panel-app-"]{cursor:pointer;transition:transform .25s cubic-bezier(.4,0,.2,1);transform-box:fill-box;transform-origin:center}
+  #panel-apps g[id^="panel-app-"]:hover{transform:scale(1.08)}
+  #panel-apps g[id^="panel-app-"].on rect{stroke:#fff;stroke-width:1.6;filter:url(#pGlow)}
+  #panel-apps g[id^="panel-app-"].on{transform:scale(1.12)}
+  #panel-apps g[id^="panel-app-"]{transition:transform .45s cubic-bezier(.34,1.3,.64,1),opacity .3s}
+  #panel-apps.hidden #panel-app-nav{transform:translate(0,178px) scale(.1);opacity:0;transition-delay:.12s}
+  #panel-apps.hidden #panel-app-music{transform:translate(0,142px) scale(.1);opacity:0;transition-delay:.06s}
+  #panel-apps.hidden #panel-app-phone{transform:translate(0,106px) scale(.1);opacity:0;transition-delay:0s}
+  #panel-apps:not(.hidden) #panel-app-phone{transition-delay:.12s}
+  #panel-apps:not(.hidden) #panel-app-music{transition-delay:.06s}
+  #panel-apps.hidden text{opacity:0}
+  #panel-apps text{transition:opacity .3s}
+  #panel-idle,#panel-status,#app-ui-nav,#app-ui-music,#app-ui-phone{transition:opacity .35s}
+  #music-ring{transform-box:fill-box;transform-origin:center;transform:scale(.18)}
+  #panel-models g[id^="panel-model-"]{cursor:pointer;transition:transform .45s cubic-bezier(.34,1.3,.64,1),opacity .3s;transform-box:fill-box;transform-origin:center}
+  #panel-models g[id^="panel-model-"]:hover{transform:scale(1.08)}
+  #panel-models g[data-model].on rect{stroke:#fff;stroke-width:1.6;filter:url(#pGlow)}
+  #panel-models g[data-model].on{transform:scale(1.12)}
+  #panel-models.hidden #panel-model-A{transform:translate(0,117px) scale(.1);opacity:0;transition-delay:.12s}
+  #panel-models.hidden #panel-model-B{transform:translate(0,77px) scale(.1);opacity:0;transition-delay:.06s}
+  #panel-models.hidden #panel-model-plug{transform:translate(0,98px) scale(.1);opacity:0;transition-delay:0s}
+  #panel-models:not(.hidden) #panel-model-plug{transition-delay:.12s}
+  #panel-models:not(.hidden) #panel-model-B{transition-delay:.06s}
+  #panel-models.hidden > text{opacity:0}
+  #panel-models > text{transition:opacity .3s}
+  #panel-model-plug{cursor:default}
+  #models-toggle-icon{transition:transform .35s;transform-box:fill-box;transform-origin:center}
+  #models-toggle.open #models-toggle-icon{transform:rotate(45deg)}
+  #apps-toggle-icon{transition:transform .35s;transform-box:fill-box;transform-origin:center}
+  #apps-toggle.open #apps-toggle-icon{transform:rotate(45deg)}
+
+
+  .inrow input:disabled{opacity:.55;cursor:not-allowed}
+  .inrow button:disabled{opacity:.35;cursor:not-allowed}
+  .top button.b#demoBtn{color:#07070f;background:var(--cyan);border-color:var(--cyan);font-weight:600}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="carcell">
+    <div class="panelHint" data-i18n="panelHint">Click the in-car screen: show / hide the enlarged console view</div>
+    
+<svg id="car" viewBox="0 0 400 760" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
+<defs>
+  <linearGradient id="paint" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#101225"/><stop offset=".5" stop-color="#1d2244"/><stop offset="1" stop-color="#101225"/>
+  </linearGradient>
+  <linearGradient id="paintV" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity=".07"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/>
+  </linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7cc9ff" stop-opacity=".22"/><stop offset="1" stop-color="#3a5aa0" stop-opacity=".16"/>
+  </linearGradient>
+  <linearGradient id="roofGlass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#5a8fd0" stop-opacity=".10"/><stop offset="1" stop-color="#2a3d70" stop-opacity=".10"/>
+  </linearGradient>
+  <linearGradient id="screenG" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0e1a3a"/><stop offset="1" stop-color="#132a5a"/>
+  </linearGradient>
+  <filter id="shadow" x="-30%" y="-20%" width="160%" height="140%">
+    <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000" flood-opacity=".75"/>
+  </filter>
+  <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glowSoft" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <pattern id="pleats" width="6" height="6" patternUnits="userSpaceOnUse">
+    <path d="M0 3 H6" stroke="#6f7fe8" stroke-width=".6" opacity=".5"/>
+  </pattern>
+  <clipPath id="clipRoof"><rect x="117" y="259" width="166" height="354" rx="19"/></clipPath>
+  <clipPath id="clipSunroof"><rect x="133" y="383" width="134" height="90" rx="11"/></clipPath>
+  <pattern id="ventLines" width="4" height="4" patternUnits="userSpaceOnUse">
+    <path d="M0 2 H4" stroke="#6f7fe8" stroke-width="1" opacity=".7"/>
+  </pattern>
+</defs>
+
+
+<g id="body">
+  <path id="body-shell" d="M200 22 C 262 22 304 40 318 86 L 330 150 C 334 170 334 190 334 212 L 334 568 C 334 612 324 660 312 690 C 298 724 258 738 200 738 C 142 738 102 724 88 690 C 76 660 66 612 66 568 L 66 212 C 66 190 66 170 70 150 L 82 86 C 96 40 138 22 200 22 Z"
+        fill="url(#paint)" stroke="#6f7fe8" stroke-width="1.4" filter="url(#shadow)"/>
+  <path d="M200 22 C 262 22 304 40 318 86 L 330 150 C 334 170 334 190 334 212 L 334 568 C 334 612 324 660 312 690 C 298 724 258 738 200 738 C 142 738 102 724 88 690 C 76 660 66 612 66 568 L 66 212 C 66 190 66 170 70 150 L 82 86 C 96 40 138 22 200 22 Z" fill="url(#paintV)"/>
+  
+  <g id="wheels" fill="#0b0c16" stroke="#3b4480" stroke-width="1">
+    <rect x="54" y="150" width="26" height="84" rx="9"/><rect x="320" y="150" width="26" height="84" rx="9"/>
+    <rect x="54" y="560" width="26" height="84" rx="9"/><rect x="320" y="560" width="26" height="84" rx="9"/>
+  </g>
+  
+  <g id="body-lines" fill="none" stroke="#6f7fe8" stroke-width="1" opacity=".55">
+    <path d="M150 52 C 166 110 168 150 154 176 M250 52 C 234 110 232 150 246 176"/>
+    <path d="M94 640 C 140 652 260 652 306 640"/>
+    <path d="M70 320 L 66 320 M330 320 L 334 320"/>
+  </g>
+  
+  <g id="lamps">
+    <path id="lamp-fl" d="M98 92 C 118 70 142 60 168 58 L 162 76 C 140 80 120 90 108 108 Z" fill="#bff3ff" filter="url(#glow)"/>
+    <path id="lamp-fr" d="M302 92 C 282 70 258 60 232 58 L 238 76 C 260 80 280 90 292 108 Z" fill="#bff3ff" filter="url(#glow)"/>
+    <path id="lamp-rear" d="M96 688 L 304 688 L 298 702 L 102 702 Z" fill="#ff3b6b" filter="url(#glow)"/>
+  </g>
+  
+  <g id="mirrors">
+    <g id="mirror-l"><rect x="32" y="232" width="34" height="16" rx="7" fill="#1a1d33" stroke="#6f7fe8" stroke-width="1"/><rect x="40" y="236" width="18" height="8" rx="3" fill="#3fd2ff" opacity=".35"/></g>
+    <g id="mirror-r"><rect x="334" y="232" width="34" height="16" rx="7" fill="#1a1d33" stroke="#6f7fe8" stroke-width="1"/><rect x="342" y="236" width="18" height="8" rx="3" fill="#3fd2ff" opacity=".35"/></g>
+  </g>
+</g>
+
+
+<g id="cabin">
+  <rect id="cabin-floor" x="92" y="268" width="216" height="330" rx="18" fill="#0a0b18"/>
+  
+  <g id="zones">
+    <rect id="zone-lf" x="100" y="302" width="92" height="110" rx="12" fill="#6f7fe8" opacity="0"/>
+    <rect id="zone-rf" x="208" y="302" width="92" height="110" rx="12" fill="#6f7fe8" opacity="0"/>
+    <rect id="zone-rear" x="100" y="462" width="200" height="116" rx="12" fill="#6f7fe8" opacity="0"/>
+  </g>
+  
+  <g id="light-foot" opacity=".9">
+    <rect x="104" y="372" width="86" height="3" rx="1.5" fill="#6f7fe8" opacity=".45"/>
+    <rect x="210" y="372" width="86" height="3" rx="1.5" fill="#6f7fe8" opacity=".45"/>
+    <rect x="104" y="478" width="192" height="3" rx="1.5" fill="#6f7fe8" opacity=".45"/>
+  </g>
+  
+  <rect id="light-door-l" x="94" y="280" width="2.5" height="310" rx="1.2" fill="#6f7fe8" opacity=".6" filter="url(#glow)"/>
+  <rect id="light-door-r" x="303.5" y="280" width="2.5" height="310" rx="1.2" fill="#6f7fe8" opacity=".6" filter="url(#glow)"/>
+</g>
+
+
+<g id="dash">
+  <path id="dash-panel" d="M96 262 C 130 236 270 236 304 262 L 304 300 C 270 292 130 292 96 300 Z" fill="#141733" stroke="#4a58b8" stroke-width="1"/>
+  
+  <path id="light-dash" d="M100 298 C 134 290 266 290 300 298" fill="none" stroke="#6f7fe8" stroke-width="2" opacity=".75" filter="url(#glow)"/>
+  
+  <g id="screen-cluster">
+    <rect x="112" y="262" width="56" height="16" rx="4" fill="url(#screenG)" stroke="#3fd2ff" stroke-width=".8"/>
+    <rect x="118" y="268" width="20" height="4" rx="1" fill="#3fd2ff" opacity=".6"/><rect x="142" y="268" width="20" height="4" rx="1" fill="#3fd2ff" opacity=".3"/>
+  </g>
+  
+  <g id="screen-center">
+    <rect x="166" y="256" width="68" height="34" rx="5" fill="url(#screenG)" stroke="#3fd2ff" stroke-width="1" filter="url(#glow)"/>
+    <rect x="172" y="262" width="26" height="4" rx="1" fill="#3fd2ff" opacity=".7"/>
+    <rect x="172" y="270" width="56" height="3" rx="1" fill="#3fd2ff" opacity=".3"/>
+    <rect x="172" y="277" width="40" height="3" rx="1" fill="#3fd2ff" opacity=".3"/>
+  </g>
+  
+  <g id="wheel-steer" fill="none" stroke="#4a58b8" stroke-width="2.4">
+    <circle cx="140" cy="312" r="18"/><path d="M122 312 H158 M140 312 V330"/>
+  </g>
+  
+  <g id="ac-front">
+    <rect id="ac-front-l" x="100" y="266" width="10" height="18" rx="2" fill="url(#ventLines)" stroke="#6f7fe8" stroke-width=".8"/>
+    <rect id="ac-front-c" x="186" y="294" width="28" height="7" rx="2" fill="url(#ventLines)" stroke="#6f7fe8" stroke-width=".8"/>
+    <rect id="ac-front-r" x="290" y="266" width="10" height="18" rx="2" fill="url(#ventLines)" stroke="#6f7fe8" stroke-width=".8"/>
+  </g>
+</g>
+
+
+<g id="seats">
+  <g id="seat-lf"><rect x="112" y="338" width="56" height="60" rx="11" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><rect x="116" y="404" width="48" height="18" rx="7" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><path d="M122 368 H158" stroke="#2a3270" stroke-width="1"/></g>
+  <g id="seat-rf"><rect x="232" y="338" width="56" height="60" rx="11" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><rect x="236" y="404" width="48" height="18" rx="7" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><path d="M242 368 H278" stroke="#2a3270" stroke-width="1"/></g>
+  
+  <g id="seat-lr"><rect x="106" y="494" width="56" height="60" rx="11" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><rect x="110" y="552" width="48" height="18" rx="7" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/></g>
+  <g id="seat-rm"><rect x="172" y="494" width="56" height="60" rx="11" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><rect x="176" y="552" width="48" height="18" rx="7" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/></g>
+  <g id="seat-rr"><rect x="238" y="494" width="56" height="60" rx="11" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/><rect x="242" y="552" width="48" height="18" rx="7" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/></g>
+  
+  <rect id="console" x="178" y="340" width="44" height="120" rx="8" fill="#101228" stroke="#2a3270" stroke-width="1"/>
+  <rect id="ac-rear" x="186" y="448" width="28" height="7" rx="2" fill="url(#ventLines)" stroke="#6f7fe8" stroke-width=".8"/>
+  
+  <g id="speakers" fill="none" stroke="#3fd2ff" stroke-width=".9" opacity=".7">
+    <g id="spk-fl"><circle cx="104" cy="320" r="5"/><circle cx="104" cy="320" r="2"/></g>
+    <g id="spk-fr"><circle cx="296" cy="320" r="5"/><circle cx="296" cy="320" r="2"/></g>
+    <g id="spk-rl"><circle cx="104" cy="580" r="5"/><circle cx="104" cy="580" r="2"/></g>
+    <g id="spk-rr"><circle cx="296" cy="580" r="5"/><circle cx="296" cy="580" r="2"/></g>
+  </g>
+</g>
+
+
+<g id="spk-waves" fill="none" stroke="#3fd2ff" stroke-width="1"></g>
+<g id="spk-mute" opacity="0" stroke="#ff3b6b" stroke-width="1.8" stroke-linecap="round">
+  <path d="M100 316 L108 324 M108 316 L100 324 M292 316 L300 324 M300 316 L292 324 M100 576 L108 584 M108 576 L100 584 M292 576 L300 584 M300 576 L292 584"/>
+</g>
+
+
+<g id="seat-fx"></g>
+
+
+<g id="ac-flows" fill="#3fd2ff"></g>
+<text id="ac-circ" x="200" y="332" text-anchor="middle" fill="#9ff0ff" font-size="8"></text>
+<g id="ac-dir" opacity="0" fill="none" stroke="#9ff0ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <path id="ac-dir-arrow" d="M200 306 V318 M195 313 L200 318 L205 313"/>
+</g>
+
+<g id="shades" clip-path="url(#clipRoof)">
+  
+  <g id="shade-front">
+    <rect x="117" y="259" width="166" height="0" fill="#0b0c1c" opacity=".55"/>
+    <rect x="117" y="259" width="166" height="0" fill="url(#pleats)"/>
+    <line x1="117" y1="259" x2="283" y2="259" stroke="#6f7fe8" stroke-width="1.4" opacity="0"/>
+  </g>
+  
+  <g id="shade-rear">
+    <rect x="117" y="613" width="166" height="0" fill="#0b0c1c" opacity=".55"/>
+    <rect x="117" y="613" width="166" height="0" fill="url(#pleats)"/>
+    <line x1="117" y1="613" x2="283" y2="613" stroke="#6f7fe8" stroke-width="1.4" opacity="0"/>
+  </g>
+</g>
+
+
+<g id="glass">
+  
+  <g id="glass-front">
+    <path d="M104 170 C 140 136 260 136 296 170 L 288 252 C 250 244 150 244 112 252 Z" fill="url(#glass)" stroke="#3fd2ff" stroke-width="1.2"/>
+    <path id="defog-front" d="M118 184 C 150 160 250 160 282 184 L 276 240 C 248 234 152 234 124 240 Z" fill="#3fd2ff" opacity="0"/>
+    <path d="M112 176 C 140 150 200 146 214 148" fill="none" stroke="#fff" stroke-width="1.2" opacity=".25"/>
+    
+    <path id="fog-front" d="M106 172 C 140 140 260 140 294 172 L 287 250 C 250 242 150 242 113 250 Z" fill="#dfe9ff" opacity="0" filter="url(#glowSoft)"/>
+  </g>
+  
+  <g id="roof">
+    <rect id="roof-glass" x="116" y="258" width="168" height="356" rx="20" fill="none" stroke="#3fd2ff" stroke-width="1" opacity=".9"/>
+    <g id="win-sunroof">
+      <g clip-path="url(#clipSunroof)">
+        <g id="sunroof-panel">
+          <rect x="133" y="383" width="134" height="90" fill="#7cc9ff" opacity=".2"/>
+          <line id="sunroof-lip" x1="133" y1="383.8" x2="267" y2="383.8" stroke="#3fd2ff" stroke-width="1.4" opacity="0"/>
+        </g>
+      </g>
+      <rect x="132" y="382" width="136" height="92" rx="12" fill="none" stroke="#3fd2ff" stroke-width="1.6"/>
+    </g>
+  </g>
+  
+  <g id="glass-rear">
+    <path d="M110 622 L 290 622 L 300 672 C 262 686 138 686 100 672 Z" fill="url(#glass)" stroke="#3fd2ff" stroke-width="1.2"/>
+    <path id="defog-rear" d="M122 632 L 278 632 L 286 666 C 254 676 146 676 114 666 Z" fill="#3fd2ff" opacity="0"/>
+  </g>
+  
+  <g id="side-windows">
+    <rect id="win-lf" x="70" y="276" width="22" height="130" rx="7" fill="url(#glass)" stroke="#3fd2ff" stroke-width="1.1"/>
+    <rect id="win-rf" x="308" y="276" width="22" height="130" rx="7" fill="url(#glass)" stroke="#3fd2ff" stroke-width="1.1"/>
+    <rect id="win-lr" x="70" y="430" width="22" height="150" rx="7" fill="url(#glass)" stroke="#3fd2ff" stroke-width="1.1"/>
+    <rect id="win-rr" x="308" y="430" width="22" height="150" rx="7" fill="url(#glass)" stroke="#3fd2ff" stroke-width="1.1"/>
+  </g>
+</g>
+
+
+<g id="temps" font-size="11" font-family="-apple-system,'PingFang SC',sans-serif" font-weight="600" opacity="0">
+  <g id="temp-lf"><rect x="118" y="318" width="34" height="16" rx="8" fill="#0b0c16" stroke="#6f7fe8" stroke-width="1"/><text id="temp-lf-t" x="135" y="330" text-anchor="middle" fill="#ffb59c">24℃</text></g>
+  <g id="temp-rf"><rect x="248" y="318" width="34" height="16" rx="8" fill="#0b0c16" stroke="#6f7fe8" stroke-width="1"/><text id="temp-rf-t" x="265" y="330" text-anchor="middle" fill="#9ff0ff">22℃</text></g>
+  <g id="temp-rear"><rect x="183" y="470" width="34" height="16" rx="8" fill="#0b0c16" stroke="#6f7fe8" stroke-width="1"/><text id="temp-rear-t" x="200" y="482" text-anchor="middle" fill="#ffb59c">26℃</text></g>
+</g>
+
+
+<g id="labels" font-size="8" fill="#3fd2ff" opacity="0" font-family="monospace">
+  <text x="60" y="270">win-lf</text><text x="312" y="270">win-rf</text>
+  <text x="60" y="424">win-lr</text><text x="312" y="424">win-rr</text>
+  <text x="156" y="440" text-anchor="middle">win-sunroof</text>
+  <text x="140" y="420" text-anchor="middle">seat-lf</text><text x="260" y="420" text-anchor="middle">seat-rf</text>
+  <text x="134" y="574" text-anchor="middle">seat-lr</text><text x="200" y="574" text-anchor="middle">seat-rm</text><text x="266" y="574" text-anchor="middle">seat-rr</text>
+  <text x="200" y="134" text-anchor="middle">glass-front / defog-front</text>
+  <text x="200" y="716" text-anchor="middle">glass-rear / defog-rear</text>
+  <text x="200" y="252" text-anchor="middle">screen-center</text>
+  <text x="200" y="466" text-anchor="middle">ac-rear</text>
+  <text x="30" y="226">mirror-l</text><text x="334" y="226">mirror-r</text>
+</g>
+</svg>
+  </div>
+
+  <div class="panelcell">
+<svg id="panel" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
+<defs>
+  <linearGradient id="pScreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1430"/><stop offset="1" stop-color="#122a5c"/></linearGradient>
+  <clipPath id="clipContacts"><rect x="62" y="133" width="236" height="89"/></clipPath>
+  <clipPath id="clipScreen"><rect x="61" y="113" width="238" height="110" rx="9"/></clipPath>
+  <linearGradient id="appTile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6f7fe8"/><stop offset="1" stop-color="#2a2f55"/></linearGradient>
+  <linearGradient id="vidG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#5b21b6"/></linearGradient>
+  <linearGradient id="pic0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8c42"/><stop offset="1" stop-color="#b53aa5"/></linearGradient>
+  <linearGradient id="pic1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3fd2ff"/><stop offset="1" stop-color="#1a6fa8"/></linearGradient>
+  <linearGradient id="pic2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd93d"/><stop offset="1" stop-color="#ff6a8e"/></linearGradient>
+  <linearGradient id="pic3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ddc84"/><stop offset="1" stop-color="#1e8a5c"/></linearGradient>
+  <linearGradient id="srcNetease" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a5f"/><stop offset="1" stop-color="#c20c0c"/></linearGradient>
+  <linearGradient id="srcQQ" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5ee3a0"/><stop offset="1" stop-color="#1a8f55"/></linearGradient>
+  <linearGradient id="pSlot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3fd2ff" stop-opacity="0"/><stop offset=".5" stop-color="#3fd2ff" stop-opacity=".9"/><stop offset="1" stop-color="#3fd2ff" stop-opacity="0"/></linearGradient>
+  <filter id="pGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<text x="240" y="16" text-anchor="middle" fill="#8a93a3" font-size="10" letter-spacing=".12em">CENTER CONSOLE · enlarged view</text>
+
+
+<path id="panel-base" d="M14 40 C 90 14 390 14 466 40 L 466 270 C 390 294 90 294 14 270 Z" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/>
+<path id="panel-light" d="M18 266 C 90 286 390 286 462 266" fill="none" stroke="#6f7fe8" stroke-width="3" opacity=".8" filter="url(#pGlow)"/>
+
+
+<g id="panel-vents" fill="url(#ventLines)" stroke="#6f7fe8" stroke-width="1">
+  <rect id="panel-vent-l" x="34" y="44" width="20" height="46" rx="3"/>
+  <rect id="panel-vent-c" x="194" y="48" width="92" height="12" rx="3"/>
+  <rect id="panel-vent-r" x="426" y="44" width="20" height="46" rx="3"/>
+</g>
+<g id="panel-cluster" transform="translate(16 -8)">
+  <rect x="54" y="52" width="88" height="46" rx="6" fill="url(#pScreen)" stroke="#3fd2ff" stroke-width="1"/>
+  <text x="98" y="72" text-anchor="middle" fill="#3fd2ff" font-size="12" font-weight="600">68 km/h</text>
+  <text id="cluster-sub" x="98" y="88" text-anchor="middle" fill="#6f7fe8" font-size="9">412 km range</text>
+</g>
+<g id="panel-clock" transform="translate(104 -8)"><rect x="252" y="52" width="54" height="46" rx="6" fill="url(#pScreen)" stroke="#3fd2ff" stroke-width="1"/><text x="279" y="76" text-anchor="middle" fill="#dfe9ff" font-size="13" font-weight="300">15:48</text><text x="279" y="90" text-anchor="middle" fill="#6f7fe8" font-size="8">24℃ outside</text></g>
+
+
+<g id="panel-screen" transform="translate(46 -25.2) scale(1.1)">
+  <rect x="60" y="112" width="240" height="112" rx="10" fill="url(#pScreen)" stroke="#3fd2ff" stroke-width="1.2" filter="url(#pGlow)"/>
+  
+  <g id="panel-idle">
+    <g id="panel-wave" stroke="#3fd2ff" stroke-width="3" stroke-linecap="round">
+      <line x1="150" y1="150" x2="150" y2="162" opacity=".35"/><line x1="160" y1="144" x2="160" y2="168" opacity=".55"/>
+      <line x1="170" y1="138" x2="170" y2="174" opacity=".8"/><line x1="180" y1="132" x2="180" y2="180"/>
+      <line x1="190" y1="138" x2="190" y2="174" opacity=".8"/><line x1="200" y1="144" x2="200" y2="168" opacity=".55"/><line x1="210" y1="150" x2="210" y2="162" opacity=".35"/>
+    </g>
+    <text x="180" y="198" text-anchor="middle" fill="#dfe9ff" font-size="12">I'm listening</text>
+    
+  </g>
+  
+  <g id="panel-status" opacity="0">
+    <circle cx="96" cy="160" r="16" fill="none" stroke="#ff9a7a" stroke-width="1.6"/>
+    <text id="panel-status-icon" x="96" y="166" text-anchor="middle" fill="#ff9a7a" font-size="16" font-weight="700">!</text>
+    <text id="panel-status-title" x="124" y="156" fill="#ffd3c4" font-size="13" font-weight="600">Cannot execute</text>
+    <text id="panel-status-sub" x="124" y="174" fill="#8a93a3" font-size="10">reject: action|meaningless</text>
+    <rect x="80" y="200" width="200" height="4" rx="2" fill="#1f2447"/><rect id="panel-status-bar" x="80" y="200" width="130" height="4" rx="2" fill="#ff9a7a"/>
+  </g>
+
+  
+  <g id="app-ui-nav" opacity="0" clip-path="url(#clipScreen)">
+    <g id="nav-map"></g>
+    <rect x="172" y="182" width="120" height="34" rx="6" fill="#07070f" opacity=".75"/>
+    <text id="nav-dest" x="180" y="196" fill="#dfe9ff" font-size="11" font-weight="600">Shenzhen North Station</text>
+    <text id="nav-sub" x="180" y="210" fill="#6f7fe8" font-size="8">ETA 24 min · demo</text>
+  </g>
+
+
+  
+  <g id="app-ui-music" opacity="0">
+    <rect id="music-cover" x="76" y="126" width="84" height="84" rx="8" fill="url(#appMusic)"/>
+    <g fill="none" stroke="#fff" opacity=".18" stroke-width="1"><circle cx="118" cy="168" r="30"/><circle cx="118" cy="168" r="34"/><circle cx="118" cy="168" r="38"/></g><circle cx="118" cy="168" r="26" fill="rgba(0,0,0,.35)"/>
+    <g id="music-disc"><circle id="music-ring" cx="118" cy="168" r="22" fill="none" stroke="#fff" stroke-width="1" opacity=".5"/><circle cx="118" cy="168" r="4" fill="#fff" opacity=".8"/></g>
+    <g id="music-src"><rect x="176" y="122" width="44" height="13" rx="6.5" fill="#e60026"/><text id="music-src-t" x="198" y="131.5" text-anchor="middle" fill="#fff" font-size="7.5" font-weight="600">NetEase</text></g>
+    <text id="music-title" x="176" y="152" fill="#dfe9ff" font-size="14" font-weight="600">Qi Li Xiang</text>
+    <text id="music-artist" x="176" y="166" fill="#8a93a3" font-size="10">Jay Chou</text>
+    <text id="music-sub" x="176" y="179" fill="#6f7fe8" font-size="8">NetEase · in order</text>
+    <text id="music-sub2" x="176" y="190" fill="#6f7fe8" font-size="8"></text>
+    <rect x="176" y="198" width="110" height="3" rx="1.5" fill="#1f2447"/><rect id="music-prog" x="176" y="198" width="0" height="3" rx="1.5" fill="#ff6a8e"/>
+    <circle id="music-knob" cx="176" cy="199.5" r="3.2" fill="#fff" opacity=".9"/>
+    <rect id="music-seek" x="172" y="190" width="118" height="18" fill="transparent" style="cursor:pointer"/>
+    <g id="music-times"><text x="176" y="212" fill="#6f7fe8" font-size="8">0:00</text><text x="286" y="212" text-anchor="end" fill="#6f7fe8" font-size="8">4:59</text></g>
+    <text id="music-lyric" x="176" y="212" fill="#ffd3c4" font-size="8.5" opacity="0">♪ Sparrows outside the window chatter on the power line …</text>
+    <text id="music-next" x="76" y="221" fill="#5c6577" font-size="7"></text>
+    <rect id="music-fav-hit" x="262" y="122" width="26" height="26" rx="6" fill="transparent" style="cursor:pointer"/>
+    <path id="music-fav" style="cursor:pointer;pointer-events:all" d="M276 130 C 273 126 267 128 268 133 C 269 137 276 142 276 142 C 276 142 283 137 284 133 C 285 128 279 126 276 130 Z" fill="none" stroke="#ff6a8e" stroke-width="1.2"/>
+  </g>
+
+
+  
+  <g id="app-ui-travel" opacity="0">
+    <rect x="82" y="134" width="60" height="70" rx="8" fill="url(#pic3)" transform="rotate(-8 112 169)" opacity=".8"/><rect x="82" y="134" width="60" height="70" rx="8" fill="url(#pic0)" transform="rotate(5 112 169)" opacity=".9"/><rect x="82" y="134" width="60" height="70" rx="8" fill="url(#pic2)"/><path d="M84 198 L104.8 165.5 L125.19999999999999 198 Z" fill="rgba(255,255,255,.35)"/><path d="M112.0 198 L128.8 172.5 L140 198 Z" fill="rgba(255,255,255,.25)"/><circle cx="130" cy="146" r="4" fill="rgba(255,255,255,.7)"/>
+    <rect x="98" y="178" width="28" height="20" rx="4" fill="rgba(7,7,15,.55)"/><rect x="104" y="183" width="16" height="11" rx="2" fill="none" stroke="#fff" stroke-width="1.4"/><circle cx="112" cy="188.5" r="3" fill="none" stroke="#fff" stroke-width="1.6"/>
+    <text x="146" y="146" fill="#dfe9ff" font-size="13" font-weight="600">Trip log</text>
+    <text id="travel-state" x="146" y="162" fill="#3ddc84" font-size="9">Not started</text>
+    <text id="travel-sub" x="146" y="177" fill="#8a93a3" font-size="8"></text>
+    <text id="travel-gen" x="146" y="194" fill="#ffd3c4" font-size="8"></text>
+    <text x="146" y="211" fill="#5c6577" font-size="7">start / stop / photo / search / generate</text>
+  </g>
+  
+  <g id="app-ui-paint" opacity="0">
+    <rect x="76" y="126" width="84" height="84" rx="8" fill="#0a0b18" stroke="#3b4480" stroke-width="1"/>
+    <g id="paint-canvas" opacity=".9"><path d="M84 198 C 100 176 120 204 150 170" fill="none" stroke="#ffd93d" stroke-width="3" stroke-linecap="round" opacity=".8"/><circle cx="104" cy="158" r="16" fill="#ff8c42" opacity=".7"/><circle cx="128" cy="176" r="20" fill="#a855f7" opacity=".6"/><circle cx="136" cy="148" r="10" fill="#3fd2ff" opacity=".7"/></g>
+    <text x="172" y="146" fill="#dfe9ff" font-size="13" font-weight="600">AI Paint</text>
+    <text id="paint-state" x="172" y="162" fill="#ff8c42" font-size="9">Standby</text>
+    <text id="paint-sub" x="172" y="177" fill="#8a93a3" font-size="8">Text-to-image</text>
+    <text x="172" y="211" fill="#5c6577" font-size="7">create / start / stop / redraw</text>
+  </g>
+  
+  <g id="app-ui-app" opacity="0">
+    <rect id="app-tile" x="84" y="136" width="56" height="56" rx="16" fill="url(#appTile)"/>
+    <text id="app-tile-t" x="112" y="172" text-anchor="middle" fill="#fff" font-size="24" font-weight="700">A</text>
+    <text id="app-name" x="156" y="158" fill="#dfe9ff" font-size="14" font-weight="600">App</text>
+    <text id="app-sub" x="156" y="176" fill="#8a93a3" font-size="9">Opened · demo</text>
+    <text x="156" y="206" fill="#5c6577" font-size="7">Say “exit” or tap the recent apps icon to close</text>
+  </g>
+  
+  <g id="app-ui-video" opacity="0">
+    <rect x="76" y="140" width="100" height="56" rx="7" fill="url(#vidG)"/><g fill="rgba(255,255,255,.35)"><rect x="82" y="143" width="6" height="4" rx="1"/><rect x="96" y="143" width="6" height="4" rx="1"/><rect x="110" y="143" width="6" height="4" rx="1"/><rect x="124" y="143" width="6" height="4" rx="1"/><rect x="138" y="143" width="6" height="4" rx="1"/><rect x="152" y="143" width="6" height="4" rx="1"/><rect x="166" y="143" width="6" height="4" rx="1"/><rect x="82" y="189" width="6" height="4" rx="1"/><rect x="96" y="189" width="6" height="4" rx="1"/><rect x="110" y="189" width="6" height="4" rx="1"/><rect x="124" y="189" width="6" height="4" rx="1"/><rect x="138" y="189" width="6" height="4" rx="1"/><rect x="152" y="189" width="6" height="4" rx="1"/><rect x="166" y="189" width="6" height="4" rx="1"/></g><circle cx="126" cy="168" r="12" fill="rgba(0,0,0,.35)"/>
+    <path id="video-play" d="M122 161 L133 168 L122 175 Z" fill="#fff" opacity=".95"/>
+    <text id="video-title" x="186" y="146" fill="#dfe9ff" font-size="13" font-weight="600">video</text>
+    <text id="video-ep" x="186" y="162" fill="#dcbfff" font-size="9">Ep. 1</text>
+    <text id="video-sub" x="186" y="177" fill="#8a93a3" font-size="8">series · iQIYI</text>
+    <rect x="186" y="194" width="100" height="3" rx="1.5" fill="#1f2447"/><rect id="video-prog" x="186" y="194" width="0" height="3" rx="1.5" fill="#a855f7"/><circle id="video-knob" cx="186" cy="195.5" r="3.2" fill="#fff" opacity=".9"/><rect id="video-seek" x="182" y="186" width="108" height="18" fill="transparent" style="cursor:pointer"/><rect id="video-hit" x="76" y="140" width="100" height="56" rx="7" fill="transparent" style="cursor:pointer"/>
+    <text id="video-time" x="186" y="211" fill="#6f7fe8" font-size="8">00:00 / 1:30:00</text>
+  </g>
+  
+  <g id="app-ui-list" opacity="0">
+    <text id="list-title" x="70" y="128" fill="#9ff0ff" font-size="10" font-weight="600">List</text>
+    <text id="list-page" x="290" y="128" text-anchor="end" fill="#6f7fe8" font-size="8">1 / 1</text>
+    <g id="list-items"></g>
+    <text x="70" y="221" fill="#5c6577" font-size="6.5">Prev · Next · Page N · Item N · Save · Share</text>
+  </g>
+  
+  <g id="app-ui-tour" opacity="0">
+    <text id="tour-dest" x="70" y="136" fill="#dfe9ff" font-size="14" font-weight="600">Road trip</text>
+    <text id="tour-sub" x="70" y="150" fill="#8a93a3" font-size="9">planning</text>
+    <g font-size="9" fill="#dfe9ff"><rect x="70" y="160" width="68" height="30" rx="6" fill="rgba(7,7,15,.5)"/><text x="76" y="171" fill="#6f7fe8" font-size="7">Days</text><text id="tour-days" x="76" y="184">—</text>
+      <rect x="146" y="160" width="68" height="30" rx="6" fill="rgba(7,7,15,.5)"/><text x="152" y="171" fill="#6f7fe8" font-size="7">Budget</text><text id="tour-budget" x="152" y="184">—</text>
+      <rect x="222" y="160" width="68" height="30" rx="6" fill="rgba(7,7,15,.5)"/><text x="228" y="171" fill="#6f7fe8" font-size="7">People</text><text id="tour-people" x="228" y="184">—</text></g>
+    <text id="tour-day" x="70" y="210" fill="#2fd1a8" font-size="9"></text>
+  </g>
+  
+  <g id="app-ui-phone" opacity="0">
+    <g id="phone-contacts"><text x="70" y="128" fill="#9ff0ff" font-size="10" font-weight="600">Contacts</text><text x="290" y="128" text-anchor="end" fill="#5c6577" font-size="7">scroll to flip · Tap to call</text><g clip-path="url(#clipContacts)"><g id="phone-list"></g></g></g>
+    <g id="phone-call">
+    <circle cx="104" cy="168" r="30" fill="none" stroke="#6ee07a" stroke-width="1" opacity=".25"><animate attributeName="r" values="26;38;26" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".35;0;.35" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="104" cy="168" r="24" fill="url(#appPhone)"/>
+    <text id="phone-initial" x="104" y="175" text-anchor="middle" fill="#fff" font-size="18" font-weight="600">Z</text>
+    <text id="phone-name" x="148" y="156" fill="#dfe9ff" font-size="14" font-weight="600">Zhang</text>
+    <text id="phone-state" x="148" y="172" fill="#6ee07a" font-size="10">Calling…</text>
+    <text id="phone-sub" x="148" y="186" fill="#6f7fe8" font-size="8">bt: action|call target|Zhang</text>
+    <g id="phone-hangup" class="mbtn"><circle cx="270" cy="168" r="16" fill="#ff3b6b"/><path d="M262 171 C 266.5 165.5 273.5 165.5 278 171" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></g>
+    </g>
+  </g>
+</g>
+
+
+
+
+
+
+
+
+<g id="panel-media" transform="translate(64 -28)">
+  <rect x="78" y="258" width="204" height="26" rx="13" fill="#0b0c1c" stroke="#3b4480" stroke-width="1"/>
+  <g id="media-prev" class="mbtn"><rect x="86" y="261" width="30" height="20" rx="10" fill="transparent"/><path d="M107 266 L99 271 L107 276 Z M97 266 V276" fill="#3fd2ff" stroke="#3fd2ff" stroke-width="1.2"/></g>
+  <g id="media-voldn" class="mbtn"><rect x="122" y="261" width="30" height="20" rx="10" fill="transparent"/><path d="M131 271 H143" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"/></g>
+  <g id="media-play" class="mbtn"><circle cx="180" cy="271" r="11" fill="#3fd2ff" opacity=".15"/><circle cx="180" cy="271" r="11" fill="none" stroke="#3fd2ff" stroke-width="1.2"/><path id="media-play-icon" d="M177 266 L185 271 L177 276 Z" fill="#3fd2ff"/></g>
+  <g id="media-volup" class="mbtn"><rect x="208" y="261" width="30" height="20" rx="10" fill="transparent"/><path d="M217 271 H229 M223 265 V277" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"/></g>
+  <g id="media-next" class="mbtn"><rect x="244" y="261" width="30" height="20" rx="10" fill="transparent"/><path d="M253 266 L261 271 L253 276 Z M263 266 V276" fill="#3fd2ff" stroke="#3fd2ff" stroke-width="1.2"/></g>
+  
+  <rect x="86" y="288" width="138" height="8" rx="4" fill="#07070f" stroke="#3b4480" stroke-width="1"/>
+  <rect id="media-volbar" x="90" y="291" width="90" height="2" rx="1" fill="url(#pSlot)" filter="url(#pGlow)"/>
+  <text id="media-voltext" x="270" y="294" text-anchor="end" fill="#6f7fe8" font-size="8">volume 20</text>
+</g>
+
+
+
+
+
+
+
+
+<g id="panel-climate">
+  <g id="clim-l" transform="translate(32 -38)">
+  <g id="panel-temp-l" class="knob" fill="none" stroke="#4a58b8" stroke-width="1.4"><circle cx="80" cy="282" r="21" fill="transparent" stroke="none"/><circle cx="80" cy="282" r="15"/><circle cx="80" cy="282" r="19" stroke="#3fd2ff" opacity=".25" stroke-dasharray="2 4"/><g class="ptr" transform="rotate(0 80 282)"><path d="M80 282 L80 270" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"/></g></g>
+  <g id="ac-sw-l" class="mbtn" style="cursor:pointer"><rect id="ac-sw-l-r" x="92" y="298" width="22" height="11" rx="5.5" fill="#0b0c1c" stroke="#3fd2ff" stroke-width="1" filter="url(#pGlow)"/><text id="ac-sw-l-t" x="103" y="305.6" text-anchor="middle" fill="#3fd2ff" font-size="5.6" font-weight="700" letter-spacing=".04em">OFF</text></g>
+  <text id="temp-l-text" x="69" y="306" text-anchor="middle" fill="#ffb59c" font-size="7.5" font-weight="500">driver 24℃</text>
+  </g>
+  <g id="clim-r" transform="translate(96 -38)">
+  <g id="panel-temp-r" class="knob" fill="none" stroke="#4a58b8" stroke-width="1.4"><circle cx="280" cy="282" r="21" fill="transparent" stroke="none"/><circle cx="280" cy="282" r="15"/><circle cx="280" cy="282" r="19" stroke="#3fd2ff" opacity=".25" stroke-dasharray="2 4"/><g class="ptr" transform="rotate(0 280 282)"><path d="M280 282 L280 270" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"/></g></g>
+  <g id="ac-sw-r" class="mbtn" style="cursor:pointer"><rect id="ac-sw-r-r" x="292" y="298" width="22" height="11" rx="5.5" fill="#0b0c1c" stroke="#3fd2ff" stroke-width="1" filter="url(#pGlow)"/><text id="ac-sw-r-t" x="303" y="305.6" text-anchor="middle" fill="#3fd2ff" font-size="5.6" font-weight="700" letter-spacing=".04em">OFF</text></g>
+  <text id="temp-r-text" x="269" y="306" text-anchor="middle" fill="#9ff0ff" font-size="7.5" font-weight="500">Pass. 24℃</text>
+  </g>
+  <g id="clim-fan" display="none">
+  <text id="fan-text" x="180" y="310" text-anchor="middle" fill="#9ff0ff" font-size="10" font-weight="600" opacity="0">Fan 3</text>
+  <g id="panel-fan" fill="none" stroke="#4a58b8" stroke-width="1.4"><circle cx="180" cy="282" r="15"/><circle cx="180" cy="282" r="3"/><path d="M180 267 C 186 272 186 278 180 279 M195 282 C 190 288 184 288 183 282 M180 297 C 174 292 174 286 180 285 M165 282 C 170 276 176 276 177 282"/></g>
+  </g>
+  <g id="clim-circ" display="none">
+  <text id="panel-circ" x="180" y="330" text-anchor="middle" fill="#9ff0ff" font-size="8"></text>
+  </g>
+</g>
+<g id="apps-wrap">
+<g id="panel-apps" class="hidden">
+  <defs>
+    <linearGradient id="appNav" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2fd1a8"/><stop offset="1" stop-color="#1a7f9e"/></linearGradient>
+    <linearGradient id="appMusic" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6a8e"/><stop offset="1" stop-color="#b53aa5"/></linearGradient>
+    <linearGradient id="appPhone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6ee07a"/><stop offset="1" stop-color="#2b9a52"/></linearGradient>
+  </defs>
+  <text x="53" y="97" text-anchor="middle" fill="#5c6577" font-size="7" letter-spacing=".1em"></text>
+  <g id="rapps"></g>
+
+</g>
+<g id="apps-toggle" class="mbtn">
+  <circle cx="54" cy="244" r="12" fill="#0b0c1c" stroke="#3fd2ff" stroke-width="1.2"/>
+  <g id="apps-toggle-icon" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"><path d="M54 238 V250 M48 244 H60"/></g>
+</g>
+</g>
+<g id="models-wrap" transform="translate(100 -4)">
+<g id="panel-models" class="hidden">
+  <defs>
+    <linearGradient id="modA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a7cff"/><stop offset="1" stop-color="#4a3fb8"/></linearGradient>
+    <linearGradient id="modB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3fd2ff"/><stop offset="1" stop-color="#1a6fa8"/></linearGradient>
+    <linearGradient id="modC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4060"/><stop offset="1" stop-color="#1e2240"/></linearGradient>
+  </defs>
+  <text x="322" y="101" text-anchor="middle" fill="#5c6577" font-size="7" letter-spacing=".1em"></text>
+  <g id="panel-model-A" data-model="A">
+    <rect x="308" y="114" width="28" height="28" rx="8" fill="url(#modA)"/>
+    <text x="322" y="133" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">A</text>
+    <text x="322" y="149" text-anchor="middle" fill="#6f7fe8" font-size="6">Qwen3-4B</text>
+  </g>
+  <g id="panel-model-B" data-model="B" class="on">
+    <rect x="308" y="154" width="28" height="28" rx="8" fill="url(#modB)"/>
+    <text x="322" y="173" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">B</text>
+    <text x="322" y="189" text-anchor="middle" fill="#6f7fe8" font-size="6">Mapika + 1.7B</text>
+  </g>
+  <g id="panel-model-gear" class="mbtn">
+    <rect x="308" y="194" width="28" height="28" rx="8" fill="#141733" stroke="#3b4480" stroke-width="1"/>
+    <g fill="none" stroke="#9ff0ff" stroke-width="1.5" stroke-linecap="round"><circle cx="322" cy="208" r="4"/><path d="M322 199 V201 M322 215 V217 M313 208 H315 M329 208 H331 M315.6 201.6 L317 203 M327 213 L328.4 214.4 M328.4 201.6 L327 203 M317 213 L315.6 214.4"/></g>
+    <text x="322" y="229" text-anchor="middle" fill="#5c6577" font-size="6">settings</text>
+  </g>
+
+</g>
+<g id="models-toggle" class="mbtn">
+  <circle cx="330" cy="248" r="12" fill="#0b0c1c" stroke="#3fd2ff" stroke-width="1.2"/>
+  <g id="models-toggle-icon" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"><path d="M330 242 V254 M324 248 H336"/></g>
+</g>
+</g>
+</svg>
+</div>
+
+  <div class="cmdcell">
+    <div class="top"><div class="brand" data-i18n="brand">Cabin Voice · DSL Demo<small data-i18n="brandSub">Mapika + value-filling LLM</small></div><span class="lat" id="lat">— ms</span><button class="b" id="demoBtn" data-i18n="demo">▶ Play demo</button><button class="b" id="resetBtn" data-i18n="reset">Reset</button></div>
+    <div class="inrow">
+      <input id="chatIn" placeholder="Say something…" data-i18n-ph="chatPh" disabled>
+      <button class="send" id="sendBtn" data-i18n="send" disabled>Send</button>
+      <button class="clr" id="clearBtn" title="Clear">✕</button>
+    </div>
+    <div class="two">
+      <div class="pane"><h2 data-i18n="chatTitle">Conversation</h2><div class="msgs" id="msgs"></div></div>
+      <div class="pane"><h2 data-i18n="dslTitle">DSL commands</h2><div class="tools-top" id="toolsTop"></div><div id="dslList"><div class="empty" data-i18n="dslEmpty">Say something — the model's DSL appears here, one line per car action.</div></div><div id="warnBox"></div></div>
+    </div>
+  </div>
+</div>
+
+<svg id="pulseLayer"></svg>
+
+<script>const $ = id => document.getElementById(id);
+
+function initialState() {
+    return {
+        ac: {
+            zone: {
+                lf: {
+                    on: false,
+                    temp: 24,
+                    fan: 0,
+                    mode: null,
+                    circ: null
+                },
+                rf: {
+                    on: false,
+                    temp: 24,
+                    fan: 0,
+                    mode: null,
+                    circ: null
+                },
+                rear: {
+                    on: false,
+                    temp: 24,
+                    fan: 0,
+                    mode: null,
+                    circ: null
+                }
+            },
+            direction: null,
+            defog: {
+                front: false,
+                rear: false
+            },
+            mirror: false
+        },
+        win: {
+            lf: 0,
+            rf: 0,
+            lr: 0,
+            rr: 0,
+            sunroof: 0
+        },
+        shade: {
+            front: 0,
+            rear: 0
+        },
+        seat: {
+            lf: {
+                heat: 0,
+                vent: 0,
+                massage: 0
+            },
+            rf: {
+                heat: 0,
+                vent: 0,
+                massage: 0
+            },
+            lr: {
+                heat: 0,
+                vent: 0,
+                massage: 0
+            },
+            rm: {
+                heat: 0,
+                vent: 0,
+                massage: 0
+            },
+            rr: {
+                heat: 0,
+                vent: 0,
+                massage: 0
+            }
+        },
+        light: {
+            on: false,
+            color: "#6f7fe8",
+            colorName: "Default",
+            level: 3
+        },
+        vol: {
+            "media": 20,
+            "navigate": 20,
+            "voice": 20,
+            "system": 20,
+            "phone": 20,
+            "radio": 20,
+            "ringtone": 20,
+            "mic": 20,
+            "bluetooth": 20
+        },
+        muted: false,
+        music: {
+            playing: false,
+            track: 1,
+            song: "Qi Li Xiang",
+            singer: "Jay Chou",
+            source: "NetEase",
+            mode: "in order"
+        },
+        nav: {
+            active: false,
+            dest: "",
+            route: ""
+        },
+        tour: null,
+        phone: {
+            active: false,
+            contact: ""
+        },
+        apps: {},
+        screen: "idle",
+        model: "B",
+        scene: {
+            fogFront: false
+        }
+    };
+}
+
+let state = initialState();
+
+const RANGE = {
+    temp: [ 16, 32 ],
+    fan: [ 1, 10 ],
+    win: [ 0, 10 ],
+    shade: [ 0, 10 ],
+    seatLevel: [ 1, 3 ],
+    light: [ 1, 5 ],
+    volume: [ 0, 40 ]
+};
+
+const AC = {
+    action: [ "query", "on", "off", "set", "increase", "decrease" ],
+    zone: [ "front row", "rear row", "whole car", "driver", "passenger", "windshield", "rear glass", "all glass", "rear window", "mirrors" ],
+    direction: [ "up", "mid", "down" ],
+    mode: [ "cool", "heat", "dehumidify", "auto", "fan", "defog", "defrost" ],
+    circ: [ "auto", "recirculate", "fresh air", "dual loop" ],
+    target: [ "temperature", "fan speed" ]
+};
+
+const ZONE_TEMP = {
+    "front row": [ "lf", "rf" ],
+    "rear row": [ "rear" ],
+    "whole car": [ "lf", "rf", "rear" ],
+    "driver": [ "lf" ],
+    "passenger": [ "rf" ]
+};
+
+const WIN_S = {
+    action: [ "on", "off", "set", "increase", "decrease" ],
+    zone: [ "front left", "front right", "rear left", "rear right", "all", "front row", "rear row", "sunroof", "driver", "passenger" ],
+    mode: [ "ventilation", "air" ]
+};
+
+const ZONE_WIN = {
+    "front left": [ "lf" ],
+    "driver": [ "lf" ],
+    "front right": [ "rf" ],
+    "passenger": [ "rf" ],
+    "rear left": [ "lr" ],
+    "rear right": [ "rr" ],
+    "front row": [ "lf", "rf" ],
+    "rear row": [ "lr", "rr" ],
+    "all": [ "lf", "rf", "lr", "rr" ],
+    "sunroof": [ "sunroof" ]
+};
+
+const SHADE_S = {
+    action: [ "on", "off", "set", "increase", "decrease" ],
+    zone: [ "front row", "rear row", "all" ]
+};
+
+const SEAT_S = {
+    action: [ "on", "off", "set", "increase", "decrease" ],
+    zone: [ "front left", "front right", "rear left", "rear right", "all", "front row", "rear row", "driver", "passenger" ],
+    mode: [ "heating", "massage", "ventilation" ]
+};
+
+const ZONE_SEAT = {
+    "front left": [ "lf" ],
+    "driver": [ "lf" ],
+    "front right": [ "rf" ],
+    "passenger": [ "rf" ],
+    "rear left": [ "lr" ],
+    "rear right": [ "rr" ],
+    "front row": [ "lf", "rf" ],
+    "rear row": [ "lr", "rm", "rr" ],
+    "all": [ "lf", "rf", "lr", "rm", "rr" ]
+};
+
+const MODE_KEY = {
+    "heating": "heat",
+    "ventilation": "vent",
+    "massage": "massage"
+};
+
+const VOL_S = {
+    action: [ "set", "increase", "decrease", "mute", "unmute" ],
+    target: [ "media", "navigate", "voice", "system", "phone", "radio", "ringtone", "mic", "bluetooth" ]
+};
+
+const LIGHT_S = {
+    action: [ "on", "off", "set", "increase", "decrease" ],
+    mode: [ "colour", "brightness" ]
+};
+
+const COLORS = {
+    "red": "#ff3b3b",
+    "orange": "#ff8c42",
+    "yellow": "#ffd93d",
+    "green": "#3ddc84",
+    "cyan": "#2fd1d1",
+    "blue": "#3f8cff",
+    "purple": "#a855f7",
+    "pink": "#ff6ab5",
+    "white": "#f2f4ff",
+    "ice blue": "#7fe9ff",
+    "sky blue": "#7cc9ff",
+    "lake blue": "#2bb5d9",
+    "deep blue": "#2b4bd6",
+    "rose gold": "#e8a8a0",
+    "gold": "#f5c542",
+    "amber": "#f0a500",
+    "warm white": "#ffe3b8",
+    "lilac": "#c084fc",
+    "magenta": "#d946ef",
+    "mint": "#5ef0c4",
+    "dark green": "#1e8a5c",
+    "coral": "#ff7f6e",
+    "sakura pink": "#ffb7d5",
+    "tangerine": "#ff8c42",
+    "indigo": "#4b4fd6",
+    "grey": "#9aa3b5",
+    "black": "#2a2f45"
+};
+
+function colorToHex(name) {
+    if (!name) return null;
+    let n = name.replace(/ colou?r$/, "").replace(/^(bright |pale |dark |light |neon )/, m => m);
+    if (COLORS[n]) return COLORS[n];
+    const n2 = n.replace(/^(bright |pale |light |dark |neon )/, "");
+    if (COLORS[n2]) return COLORS[n2];
+    for (const k in COLORS) if (n.endsWith(k)) return COLORS[k];
+    return null;
+}
+
+const ZONE_SHADE = {
+    "front row": [ "front" ],
+    "rear row": [ "rear" ],
+    "all": [ "front", "rear" ]
+};
+
+function parseDSL(text) {
+    return text.split("\n").map(l => l.trim()).filter(Boolean).map(line => {
+        const m = line.match(/^(\w+)\s*:\s*(.*)$/);
+        if (!m) return {
+            tool: null,
+            raw: line,
+            params: {}
+        };
+        const params = {};
+        m[2].split(/\s+/).filter(Boolean).forEach(kv => {
+            const i = kv.indexOf("|");
+            if (i > 0) {
+                const v = kv.slice(i + 1);
+                if (v !== "") params[kv.slice(0, i)] = v.replace(/_/g, " ");
+            } else params[kv] = "";
+        });
+        return {
+            tool: m[1],
+            raw: line,
+            params: params
+        };
+    });
+}
+
+function num(v, [lo, hi], cur) {
+    if (v == null) return null;
+    if (v === "min") return lo;
+    if (v === "max") return hi;
+    if (v === "half") return Math.floor((lo + hi) / 2);
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+}
+
+const clamp = (n, [lo, hi]) => Math.max(lo, Math.min(hi, n));
+
+function applyDSL(prev, text) {
+    const s = JSON.parse(JSON.stringify(prev));
+    const effects = [], warnings = [];
+    for (const call of parseDSL(text)) {
+        if (!call.tool) {
+            warnings.push(`Cannot parse: ${call.raw}`);
+            continue;
+        }
+        const h = HANDLERS[call.tool];
+        if (!h) {
+            warnings.push(`Tool not implemented ${call.tool} (not in this demo)`);
+            continue;
+        }
+        h(s, call.params, effects, warnings, call.raw);
+    }
+    return {
+        state: s,
+        effects: effects,
+        warnings: warnings
+    };
+}
+
+const HANDLERS = {
+    ac(s, p, fx, warn) {
+        const A = s.ac;
+        for (const k of [ "action", "zone", "direction", "mode", "circ", "target" ]) if (p[k] != null && !AC[k].includes(p[k])) {
+            warn.push(`ac.${k} value “${p[k]}” is not in the schema , ignored`);
+            delete p[k];
+        }
+        if (p.degree != null && num(p.degree, [ 0, 99 ]) == null) {
+            warn.push(`ac.degree“${p.degree}” is not a number, ignored`);
+            delete p.degree;
+        }
+        let act = p.action;
+        if (!act) act = p.degree != null ? "set" : "query";
+        const z = p.zone;
+        if (z === "mirrors") {
+            A.mirror = act !== "off";
+            fx.push({
+                kind: "mirror"
+            });
+            return;
+        }
+        if ([ "windshield", "rear glass", "all glass", "rear window" ].includes(z) || [ "defog", "defrost" ].includes(p.mode)) {
+            const fr = [ "windshield", "all glass" ].includes(z) || !z && p.mode, re = [ "rear glass", "all glass", "rear window" ].includes(z), on = act !== "off";
+            if (fr) {
+                A.defog.front = on;
+                if (on) s.scene.fogFront = false;
+                fx.push({
+                    kind: "defog",
+                    side: "front"
+                });
+            }
+            if (re) {
+                A.defog.rear = on;
+                fx.push({
+                    kind: "defog",
+                    side: "rear"
+                });
+            }
+            return;
+        }
+        const zones = ZONE_TEMP[z] || ZONE_TEMP["whole car"];
+        const Z = zones.map(k => A.zone[k]);
+        if (act === "query") {
+            const NAME = {
+                lf: "driver",
+                rf: "passenger",
+                rear: "rear row"
+            };
+            const one = k => {
+                const q = A.zone[k];
+                return q.on ? `${q.temp}℃ fan ${q.fan}${q.mode ? " " + q.mode : ""}` : "Closed";
+            };
+            let what;
+            if (p.circ) what = `Circulation: ${Z[0].circ || "unset"}`; else if (p.target === "fan speed") what = zones.map(k => `${NAME[k]} ${A.zone[k].on ? "Fan " + A.zone[k].fan : "Closed"}`).join(" · "); else if (p.target === "temperature") what = zones.map(k => `${NAME[k]} ${A.zone[k].on ? A.zone[k].temp + "℃" : "Closed"}`).join(" · "); else if (z && zones.length === 1) what = one(zones[0]); else what = zones.map(k => `${NAME[k]} ${one(k)}`).join(" · ");
+            fx.push({
+                kind: "status",
+                title: `A/C${z ? " · " + z : ""}`,
+                sub: what
+            });
+            return;
+        }
+        if (act === "off") {
+            Z.forEach(q => Object.assign(q, {
+                on: false,
+                fan: 0,
+                mode: null
+            }));
+            fx.push({
+                kind: "ac",
+                zones: zones
+            });
+            return;
+        }
+        if (act === "on") {
+            Z.forEach(q => {
+                q.on = true;
+                if (q.fan === 0) q.fan = 3;
+            });
+        }
+        if (p.mode) {
+            Z.forEach(q => {
+                q.mode = p.mode;
+                q.on = true;
+                if (q.fan === 0) q.fan = 3;
+            });
+        }
+        if (p.circ) {
+            Z.forEach(q => {
+                q.circ = p.circ;
+            });
+        }
+        if (p.direction) {
+            A.direction = p.direction;
+        }
+        let target = p.target;
+        if (!target && p.degree != null) target = "temperature";
+        if (target && p.degree == null && (act === "increase" || act === "decrease")) p.degree = "1";
+        const rel = act === "increase" ? 1 : act === "decrease" ? -1 : 0;
+        const apply = (cur, deg, range) => {
+            if (deg === "half" && rel) return clamp(rel > 0 ? cur * 1.5 : cur / 2, range) | 0;
+            const d = num(deg, range);
+            if (d == null) return null;
+            return clamp(rel ? cur + rel * d : d, range);
+        };
+        if (target === "temperature") {
+            Z.forEach(q => {
+                const v = apply(q.temp, p.degree, RANGE.temp);
+                if (v == null) warn.push("ac: no degree, temperature unchanged"); else {
+                    q.temp = v;
+                    q.on = true;
+                    if (q.fan === 0) q.fan = 3;
+                }
+            });
+            fx.push({
+                kind: "temp",
+                zones: zones
+            });
+        } else if (target === "fan speed") {
+            Z.forEach(q => {
+                const v = apply(q.fan, p.degree, RANGE.fan);
+                if (v == null) warn.push("ac: no degree, fan speed unchanged"); else {
+                    q.fan = v;
+                    q.on = v > 0;
+                }
+            });
+        }
+        fx.push({
+            kind: "ac",
+            zones: zones
+        });
+    },
+    win(s, p, fx, warn) {
+        const W = s.win;
+        if (p.action === "query") {
+            const N = {
+                lf: "front left",
+                rf: "front right",
+                lr: "rear left",
+                rr: "rear right",
+                sunroof: "sunroof"
+            };
+            const ks = ZONE_WIN[p.zone] || [ "lf", "rf", "lr", "rr", "sunroof" ];
+            const one = k => W[k] === 0 ? "off" : W[k] >= 10 ? "fully open" : `on ${W[k] * 10}%`;
+            fx.push({
+                kind: "status",
+                title: `Windows${p.zone ? " · " + p.zone : ""}${ks.length === 1 ? ": " + one(ks[0]) : ""}`,
+                sub: ks.length === 1 ? "" : ks.map(k => `${N[k]} ${one(k)}`).join(" · "),
+                icon: "W",
+                color: "#3fd2ff"
+            });
+            return;
+        }
+        for (const k of [ "action", "zone", "mode" ]) if (p[k] != null && !WIN_S[k].includes(p[k])) {
+            warn.push(`win.${k} value “${p[k]}” is not in the schema , ignored`);
+            delete p[k];
+        }
+        if (p.degree != null && num(p.degree, [ 0, 99 ]) == null) {
+            warn.push(`win.degree“${p.degree}” is not a number, ignored`);
+            delete p.degree;
+        }
+        const act = p.action || (p.degree != null ? "set" : "on");
+        const zones = ZONE_WIN[p.zone] || ZONE_WIN["all"];
+        let d = num(p.degree, RANGE.win);
+        zones.forEach(k => {
+            const cur = W[k];
+            if (act === "off") W[k] = 0; else if (act === "on") W[k] = d != null ? d : p.mode ? 1 : 10; else if (act === "set") {
+                if (d == null) {
+                    if (p.mode) W[k] = 1; else {
+                        warn.push("win: set is missing degree");
+                        return;
+                    }
+                } else W[k] = d;
+            } else if (act === "decrease") W[k] = clamp(cur + (d == null ? 1 : d), RANGE.win); else if (act === "increase") W[k] = clamp(cur - (d == null ? 1 : d), RANGE.win);
+            W[k] = clamp(W[k], RANGE.win);
+        });
+        fx.push({
+            kind: "win",
+            zones: zones
+        });
+    },
+    shade(s, p, fx, warn) {
+        const S = s.shade;
+        for (const k of [ "action", "zone" ]) if (p[k] != null && !SHADE_S[k].includes(p[k])) {
+            warn.push(`shade.${k} value “${p[k]}” is not in the schema , ignored`);
+            delete p[k];
+        }
+        if (p.degree != null && num(p.degree, [ 0, 99 ]) == null) {
+            warn.push(`shade.degree“${p.degree}” is not a number, ignored`);
+            delete p.degree;
+        }
+        const act = p.action || (p.degree != null ? "set" : "on");
+        const zones = ZONE_SHADE[p.zone] || ZONE_SHADE["all"];
+        const d = num(p.degree, RANGE.shade);
+        zones.forEach(k => {
+            if (act === "off") S[k] = 0; else if (act === "on") S[k] = d != null ? d : 10; else if (act === "set") {
+                if (d == null) {
+                    warn.push("shade: set is missing degree");
+                    return;
+                }
+                S[k] = d;
+            } else if (act === "increase") S[k] = clamp(S[k] + (d == null ? 1 : d), RANGE.shade); else if (act === "decrease") S[k] = clamp(S[k] - (d == null ? 1 : d), RANGE.shade);
+        });
+        fx.push({
+            kind: "shade",
+            zones: zones
+        });
+    },
+    seat(s, p, fx, warn) {
+        const S = s.seat;
+        if (p.action === "query") {
+            const N = {
+                lf: "driver",
+                rf: "passenger",
+                lr: "rear left",
+                rm: "rear middle",
+                rr: "rear right"
+            };
+            const ks = ZONE_SEAT[p.zone] || [ "lf", "rf", "lr", "rr" ];
+            const one = k => {
+                const q = S[k];
+                const a = [];
+                if (q.heat) a.push("heating " + q.heat);
+                if (q.vent) a.push("ventilation " + q.vent);
+                if (q.massage) a.push("massage " + q.massage);
+                return a.length ? a.join(" ") : "off";
+            };
+            fx.push({
+                kind: "status",
+                title: `Seat${p.zone ? " · " + p.zone : ""}${ks.length === 1 ? ": " + one(ks[0]) : ""}`,
+                sub: ks.length === 1 ? "" : ks.map(k => `${N[k]} ${one(k)}`).join(" · "),
+                icon: "S",
+                color: "#ffb59c"
+            });
+            return;
+        }
+        for (const k of [ "action", "zone", "mode" ]) if (p[k] != null && !SEAT_S[k].includes(p[k])) {
+            warn.push(`seat.${k} value “${p[k]}” is not in the schema , ignored`);
+            delete p[k];
+        }
+        if (p.level != null && num(p.level, [ 0, 99 ]) == null) {
+            warn.push(`seat.level“${p.level}” is not a number, ignored`);
+            delete p.level;
+        }
+        const act = p.action || (p.level != null ? "set" : "on");
+        const zones = ZONE_SEAT[p.zone] || ZONE_SEAT["all"];
+        const d = num(p.level, RANGE.seatLevel);
+        zones.forEach(k => {
+            const q = S[k];
+            let modes = p.mode ? [ MODE_KEY[p.mode] ] : act === "off" ? [ "heat", "vent", "massage" ] : [ "heat", "vent", "massage" ].filter(m => q[m] > 0);
+            if (!modes.length) modes = [ "heat" ];
+            modes.forEach(m => {
+                if (act === "off") q[m] = 0; else if (act === "on") q[m] = d != null ? d : 2; else if (act === "set") {
+                    if (d == null) warn.push("seat: set is missing level"); else q[m] = d;
+                } else if (act === "increase") q[m] = clamp((q[m] || 0) + (d == null ? 1 : d), [ 0, 3 ]); else if (act === "decrease") q[m] = clamp(q[m] - (d == null ? 1 : d), [ 0, 3 ]);
+                q[m] = clamp(q[m], [ 0, 3 ]);
+            });
+        });
+        fx.push({
+            kind: "seat",
+            zones: zones
+        });
+    },
+    light(s, p, fx, warn) {
+        const L = s.light;
+        if (p.action === "query") {
+            fx.push({
+                kind: "status",
+                title: `Ambient light: ${L.on ? "on" : "off"}`,
+                sub: L.on ? `colour ${L.colorName} · brightness ${L.level}` : "",
+                icon: "L",
+                color: L.on ? L.color : "#8a93a3"
+            });
+            return;
+        }
+        for (const k of [ "action", "mode" ]) if (p[k] != null && !LIGHT_S[k].includes(p[k])) {
+            warn.push(`light.${k} value “${p[k]}” is not in the schema , ignored`);
+            delete p[k];
+        }
+        if (p.level != null && num(p.level, [ 0, 99 ]) == null) {
+            warn.push(`light.level“${p.level}” is not a number, ignored`);
+            delete p.level;
+        }
+        const act = p.action || (p.color != null || p.level != null ? "set" : "on");
+        const mode = p.mode || (p.color != null ? "colour" : p.level != null ? "brightness" : act === "increase" || act === "decrease" ? "brightness" : null);
+        if (act === "off") {
+            L.on = false;
+            fx.push({
+                kind: "light"
+            });
+            return;
+        }
+        L.on = true;
+        if (p.color != null) {
+            const hex = colorToHex(p.color);
+            if (hex) {
+                L.color = hex;
+                L.colorName = p.color;
+            } else {
+                L.color = "#6f7fe8";
+                L.colorName = p.color + " (unknown)";
+                warn.push(`light: unknown colour “${p.color}”, using default`);
+            }
+        }
+        if (mode === "brightness" || p.level != null) {
+            const d = num(p.level, RANGE.light);
+            if (act === "set" || act === "on") {
+                if (d != null) L.level = clamp(d, RANGE.light); else if (act === "set" && mode === "brightness") warn.push("light: set brightness missing level");
+            } else if (act === "increase") L.level = clamp(L.level + (d == null ? 1 : d), RANGE.light); else if (act === "decrease") L.level = clamp(L.level - (d == null ? 1 : d), RANGE.light);
+        }
+        fx.push({
+            kind: "light"
+        });
+    },
+    volume(s, p, fx, warn) {
+        for (const k of [ "action", "target" ]) if (p[k] != null && !VOL_S[k].includes(p[k])) {
+            warn.push(`volume.${k} value “${p[k]}” is not in the schema , ignored`);
+            delete p[k];
+        }
+        if (p.degree != null && num(p.degree, [ 0, 99 ]) == null) {
+            warn.push(`volume.degree“${p.degree}” is not a number, ignored`);
+            delete p.degree;
+        }
+        const act = p.action || (p.degree != null ? "set" : null), t = p.target || "media";
+        if (!act) {
+            warn.push("volume: missing action");
+            return;
+        }
+        if (act === "mute") {
+            s.muted = true;
+            fx.push({
+                kind: "volume",
+                target: t
+            });
+            return;
+        }
+        if (act === "unmute") {
+            s.muted = false;
+            fx.push({
+                kind: "volume",
+                target: t
+            });
+            return;
+        }
+        const d = p.degree === "min" ? 1 : num(p.degree, RANGE.volume), cur = s.vol[t];
+        if (act === "set") {
+            if (d == null) {
+                warn.push("volume: set is missing degree");
+                return;
+            }
+            s.vol[t] = clamp(d, RANGE.volume);
+        } else if (act === "increase") s.vol[t] = clamp(cur + (d == null ? 5 : d), RANGE.volume); else if (act === "decrease") s.vol[t] = clamp(cur - (d == null ? 5 : d), RANGE.volume);
+        s.muted = t === "media" && s.vol[t] === 0;
+        fx.push({
+            kind: "volume",
+            target: t
+        });
+    },
+    reject(s, p, fx) {
+        const M = {
+            "blocked": [ "I can't discuss that topic", "!", "#ff6a8e" ],
+            "meaningless": [ "Sorry, could you say that again?", "?", "#ffb59c" ],
+            "unsupported": [ "Not supported yet", "×", "#ffb59c" ]
+        };
+        const [t, i, c] = M[p.action] || [ "Cannot execute", "!", "#ffb59c" ];
+        fx.push({
+            kind: "status",
+            title: t,
+            sub: `reject: action|${p.action || "?"}`,
+            icon: i,
+            color: c,
+            shake: true
+        });
+    },
+    qa(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: p.action === "chit-chat" ? "Chat mode" : "Looking it up for you…",
+            sub: `qa: action|${p.action || "Q&A"}`,
+            icon: "?",
+            color: "#7fe9ff"
+        });
+    },
+    car(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: "Car advisor",
+            sub: "Answering your car questions",
+            icon: "C",
+            color: "#2fd1a8"
+        });
+    },
+    complex(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: "Multi-step task",
+            sub: "Handed to the planner",
+            icon: "⛓",
+            color: "#c084fc"
+        });
+    },
+    expert(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: p.action === "recommend" ? "Industry news picks" : "Summarising podcast…",
+            sub: `expert: action|${p.action || "summary"}`,
+            icon: "P",
+            color: "#f5c542"
+        });
+    },
+    greet(s, p, fx) {
+        if (p.action === "query") {
+            fx.push({
+                kind: "status",
+                title: "Welcome reminder",
+                sub: s.greet ? "Set · " + s.greet : "Not set",
+                icon: "W",
+                color: "#ff6ab5"
+            });
+            return;
+        }
+        s.greet = p.time || p.content || "On";
+        fx.push({
+            kind: "status",
+            title: "Welcome reminder set",
+            sub: "I'll remind you then",
+            icon: "W",
+            color: "#ff6ab5"
+        });
+    },
+    paint(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: `AI Paint · ${p.action || "create"}`,
+            sub: [ p.type, p.scene ].filter(Boolean).join(" · ") || "Text-to-image",
+            icon: "A",
+            color: "#ff8c42"
+        });
+    },
+    travel(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: `Trip log · ${p.action || "start"}`,
+            sub: [ p.location, p.date, p.keyword, p.style ].filter(Boolean).join(" · ") || "Record this trip",
+            icon: "T",
+            color: "#3ddc84"
+        });
+    },
+    switch(s, p, fx, warn) {
+        if (!p.target) {
+            warn.push("switch: missing target");
+            return;
+        }
+        const on = p.action !== "off";
+        s.apps[p.target] = on;
+        fx.push({
+            kind: "status",
+            title: `${on ? "Opened" : "Closed"} ${p.target}`,
+            sub: `switch: action|${on ? "on" : "off"} target|${p.target}`,
+            icon: on ? "⏻" : "○",
+            color: on ? "#3fd2ff" : "#8a93a3"
+        });
+    },
+    general(s, p, fx) {
+        const a = p.action, sc = s.screen;
+        const close = () => {
+            s.screen = "idle";
+            s.nav.active = false;
+            s.phone.active = false;
+            fx.push({
+                kind: "screen"
+            });
+        };
+        if ([ "cancel", "back", "exit", "home" ].includes(a)) {
+            if (sc !== "idle") close(); else fx.push({
+                kind: "status",
+                title: a,
+                sub: "No screen is open",
+                icon: "⟳",
+                color: "#8a93a3"
+            });
+            return;
+        }
+        if (sc === "music") {
+            if (a === "play") {
+                s.music.playing = true;
+                fx.push({
+                    kind: "music"
+                });
+                return;
+            }
+            if (a === "pause" || a === "stop") {
+                s.music.playing = false;
+                fx.push({
+                    kind: "music"
+                });
+                return;
+            }
+        }
+        fx.push({
+            kind: "status",
+            title: `General · ${a}`,
+            sub: sc === "idle" ? "No screen is open" : `Applied to “${sc}” screen${p.index ? " · #" + p.index : ""}`,
+            icon: "⟳",
+            color: "#6f7fe8"
+        });
+    },
+    music(s, p, fx) {
+        const m = s.music, a = p.action || "play";
+        if (p.song) m.song = p.song;
+        if (p.singer) m.singer = p.singer;
+        if (p.source) m.source = p.source;
+        if (p.mode) m.mode = p.mode;
+        if (p.name) m.song = p.name + (p.type ? " · " + p.type : "");
+        if (a === "play") {
+            m.playing = true;
+            if (!p.song && !p.name && p.singer) m.song = "Songs by " + p.singer;
+            s.screen = "music";
+        } else if (a === "pause" || a === "stop") {
+            m.playing = false;
+        } else if (a === "next" || a === "skip") {
+            m.track++;
+            m.playing = true;
+            s.screen = "music";
+            fx.push({
+                kind: "swipe",
+                dir: 1
+            });
+        } else if (a === "previous") {
+            m.track = Math.max(1, m.track - 1);
+            m.playing = true;
+            s.screen = "music";
+            fx.push({
+                kind: "swipe",
+                dir: -1
+            });
+        } else {
+            fx.push({
+                kind: "status",
+                title: `music · ${a}`,
+                sub: [ p.song, p.singer, p.list, p.album ].filter(Boolean).join(" · ") || "",
+                icon: "♪",
+                color: "#ff6a8e"
+            });
+            return;
+        }
+        fx.push({
+            kind: "music"
+        });
+    },
+    nav(s, p, fx) {
+        const a = p.action || (p.end ? "navigate" : "on");
+        if (a === "navigate" || a === "on" || a === "search") {
+            s.nav.active = true;
+            s.nav.dest = p.end || (p.search ? p.search + " nearby" : s.nav.dest || "Destination");
+            s.nav.route = p.route || "";
+            s.screen = "nav";
+            fx.push({
+                kind: "nav"
+            });
+        } else if (a === "off") {
+            s.nav.active = false;
+            if (s.screen === "nav") s.screen = "idle";
+            fx.push({
+                kind: "screen"
+            });
+        } else fx.push({
+            kind: "status",
+            title: `navigate · ${a}`,
+            sub: p.target || "",
+            icon: "➤",
+            color: "#2fd1a8"
+        });
+    },
+    bt(s, p, fx) {
+        const a = p.action || "call";
+        if (a === "call") {
+            s.phone.active = true;
+            s.phone.contact = p.target || "Unknown contact";
+            s.screen = "phone";
+            fx.push({
+                kind: "phone"
+            });
+        } else if (a === "hang up") {
+            s.phone.active = false;
+            if (s.screen === "phone") s.screen = "idle";
+            fx.push({
+                kind: "screen"
+            });
+        } else fx.push({
+            kind: "status",
+            title: `bluetooth ${a === "on" ? "Opened" : "Closed"}`,
+            sub: "",
+            icon: "ᛒ",
+            color: "#3f8cff"
+        });
+    },
+    tour(s, p, fx) {
+        s.tour = {
+            dest: p.dest || "",
+            days: p.days || "",
+            budget: p.budget || "",
+            people: p.people || "",
+            type: p.type || "",
+            group: p.group || "",
+            day: p.day || ""
+        };
+        fx.push({
+            kind: "status",
+            title: `Road trip · ${p.dest || "planning"}`,
+            sub: [ p.days ? p.days + " days" : null, p.budget ? "Budget " + p.budget : null, p.people ? p.people + " ppl" : null, p.type, p.group, p.day ? "Day " + p.day : null ].filter(Boolean).join(" · ") || "",
+            icon: "🧭",
+            color: "#2fd1a8"
+        });
+    },
+    video(s, p, fx) {
+        fx.push({
+            kind: "status",
+            title: `video · ${p.action || "play"}`,
+            sub: [ p.name, p.ep ? "Ep. " + p.ep : null, p.actor, p.type ].filter(Boolean).join(" · ") || "",
+            icon: "▶",
+            color: "#a855f7"
+        });
+    }
+};
+
+const WIN = {
+    lf: [ 276, 130 ],
+    rf: [ 276, 130 ],
+    lr: [ 430, 150 ],
+    rr: [ 430, 150 ]
+};
+
+function tempColor(t) {
+    const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
+    const cold = [ 63, 210, 255 ], mid = [ 111, 127, 232 ], warm = [ 255, 106, 61 ];
+    const c = t <= 24 ? mix(cold, mid, (t - 16) / 8) : mix(mid, warm, (t - 24) / 8);
+    return `rgb(${c.join(",")})`;
+}
+
+const MODE_COLOR = {
+    "cool": "#3fd2ff",
+    "heat": "#ff6a3d",
+    "dehumidify": "#2fd1a8",
+    "auto": "#7fe9ff",
+    "fan": "#dfe9ff",
+    "defog": "#dfe9ff",
+    "defrost": "#bff3ff"
+};
+
+const SH = {
+    f: 0,
+    r: 0,
+    tf: 0,
+    tr: 0,
+    t0: 0,
+    f0: 0,
+    r0: 0,
+    raf: 0
+};
+
+function drawShade(hF, hR) {
+    const f = $("shade-front");
+    f.querySelectorAll("rect").forEach(q => q.setAttribute("height", hF));
+    const fl = f.querySelector("line");
+    fl.setAttribute("y1", 259 + hF);
+    fl.setAttribute("y2", 259 + hF);
+    fl.setAttribute("opacity", hF > .5 ? 1 : 0);
+    const r = $("shade-rear");
+    r.querySelectorAll("rect").forEach(q => {
+        q.setAttribute("y", 613 - hR);
+        q.setAttribute("height", hR);
+    });
+    const rl = r.querySelector("line");
+    rl.setAttribute("y1", 613 - hR);
+    rl.setAttribute("y2", 613 - hR);
+    rl.setAttribute("opacity", hR > .5 ? 1 : 0);
+}
+
+function shadeTo(tf, tr) {
+    if (tf === SH.tf && tr === SH.tr) return;
+    SH.tf = tf;
+    SH.tr = tr;
+    SH.f0 = SH.f;
+    SH.r0 = SH.r;
+    SH.t0 = performance.now();
+    cancelAnimationFrame(SH.raf);
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = now => {
+        const k = Math.min(1, (now - SH.t0) / 900), e = ease(k);
+        SH.f = SH.f0 + (SH.tf - SH.f0) * e;
+        SH.r = SH.r0 + (SH.tr - SH.r0) * e;
+        drawShade(SH.f, SH.r);
+        if (k < 1) SH.raf = requestAnimationFrame(step);
+    };
+    SH.raf = requestAnimationFrame(step);
+}
+
+function render() {
+    const A = state.ac, Zc = A.zone;
+    for (const z of [ "lf", "rf", "rear" ]) {
+        const q = Zc[z], c = tempColor(q.temp);
+        const r = $("zone-" + z);
+        r.setAttribute("fill", q.mode ? MODE_COLOR[q.mode] : c);
+        r.setAttribute("opacity", q.on ? .16 : 0);
+        const t = $("temp-" + z + "-t");
+        t.textContent = q.temp + "℃";
+        t.setAttribute("fill", c);
+        t.parentNode.querySelector("rect").setAttribute("stroke", c);
+        $("temp-" + z).setAttribute("opacity", q.on ? 1 : 0);
+    }
+    $("temps").setAttribute("opacity", 1);
+    const col = q => q.mode ? MODE_COLOR[q.mode] : tempColor(q.temp);
+    const front = Zc.lf.on || Zc.rf.on ? Zc.lf.on ? Zc.lf : Zc.rf : null;
+    VENTS[0].level = Zc.lf.on ? Zc.lf.fan : 0;
+    VENTS[0].color = col(Zc.lf);
+    VENTS[2].level = Zc.rf.on ? Zc.rf.fan : 0;
+    VENTS[2].color = col(Zc.rf);
+    VENTS[1].level = front ? Math.max(Zc.lf.on ? Zc.lf.fan : 0, Zc.rf.on ? Zc.rf.fan : 0) : 0;
+    VENTS[1].color = front ? col(front) : "#9ff0ff";
+    VENTS[3].level = Zc.rear.on ? Zc.rear.fan : 0;
+    VENTS[3].color = col(Zc.rear);
+    const anyOn = Zc.lf.on || Zc.rf.on || Zc.rear.on;
+    $("ac-dir").setAttribute("opacity", anyOn && A.direction ? 1 : 0);
+    $("ac-dir-arrow").setAttribute("d", A.direction === "up" ? "M200 318 V306 M195 311 L200 306 L205 311" : A.direction === "down" ? "M200 306 V318 M195 313 L200 318 L205 313" : "M192 312 H208 M203 307 L208 312 L203 317");
+    $("defog-front").setAttribute("opacity", A.defog.front ? .12 : 0);
+    $("defog-rear").setAttribute("opacity", A.defog.rear ? .12 : 0);
+    $("fog-front").setAttribute("opacity", state.scene.fogFront ? .55 : 0);
+    for (const m of [ "mirror-l", "mirror-r" ]) {
+        const r = $(m).querySelector("rect");
+        r.setAttribute("stroke", A.mirror ? "#ff6a3d" : "#6f7fe8");
+        r.setAttribute("fill", A.mirror ? "#2a1410" : "#1a1d33");
+    }
+    for (const [k, id, label, cx] of [ [ "lf", "l", "Driver", 80 ], [ "rf", "r", "Pass.", 280 ] ]) {
+        const t = Zc[k].temp, ang = (t - 24) / 8 * 135;
+        $("panel-temp-" + id).querySelector(".ptr").setAttribute("transform", `rotate(${ang} ${cx} 282)`);
+        $("temp-" + id + "-text").textContent = `${label} ${t}℃`;
+        {
+            const on = Zc[k].on, R = $("ac-sw-" + id + "-r"), T = $("ac-sw-" + id + "-t");
+            T.textContent = on ? "ON" : "OFF";
+            R.setAttribute("stroke", "#3fd2ff");
+            R.setAttribute("stroke-opacity", on ? 1 : .45);
+            R.setAttribute("fill", on ? "rgba(63,210,255,.22)" : "#0b0c1c");
+            T.setAttribute("fill", on ? "#dffaff" : "#3fd2ff");
+            T.setAttribute("fill-opacity", on ? 1 : .6);
+            T.setAttribute("filter", on ? "url(#pGlow)" : "");
+        }
+        $("temp-" + id + "-text").setAttribute("fill", Zc[k].on ? tempColor(t) : "#5c6577");
+    }
+    const fans = [ "lf", "rf", "rear" ].filter(z => Zc[z].on).map(z => Zc[z].fan);
+    $("fan-text").textContent = fans.length ? `Fan ${[ ...new Set(fans) ].join("/")}` : "A/C off";
+    $("fan-text").setAttribute("opacity", 1);
+    const tags = [ ...new Set([ "lf", "rf", "rear" ].filter(z => Zc[z].on).flatMap(z => [ Zc[z].mode, Zc[z].circ ]).filter(Boolean)) ];
+    {
+        const L = state.light, c = L.on ? L.color : "#6f7fe8", op = L.on ? .3 + L.level * .14 : .18;
+        $("light-dash").setAttribute("stroke", c);
+        $("light-dash").setAttribute("opacity", op);
+        [ "light-door-l", "light-door-r" ].forEach(id => {
+            $(id).setAttribute("fill", c);
+            $(id).setAttribute("opacity", op);
+        });
+        $("light-foot").querySelectorAll("rect").forEach(r => {
+            r.setAttribute("fill", c);
+            r.setAttribute("opacity", L.on ? op * .8 : .3);
+        });
+        $("panel-light").setAttribute("stroke", c);
+        $("panel-light").setAttribute("opacity", L.on ? op : .5);
+        const rg = $("roof-glass");
+        rg.setAttribute("fill", L.on ? c : "none");
+        rg.setAttribute("fill-opacity", L.on ? .03 + L.level * .012 : 0);
+    }
+    {
+        const G = {
+            lf: [ 112, 338, 56 ],
+            rf: [ 232, 338, 56 ],
+            lr: [ 106, 494, 56 ],
+            rm: [ 172, 494, 56 ],
+            rr: [ 238, 494, 56 ]
+        };
+        let html = "";
+        for (const k in G) {
+            const [x, y, w] = G[k], q = state.seat[k], cx = x + w / 2, cy = y + 30;
+            const seat = $("seat-" + k), rects = seat.querySelectorAll("rect");
+            const heat = q.heat, hc = heat ? [ "", "#b84a2a", "#e0552f", "#ff6a3d" ][heat] : null;
+            rects.forEach(r => {
+                r.setAttribute("stroke", hc || (q.vent ? "#3fd2ff" : q.massage ? "#c084fc" : "#4a58b8"));
+                r.setAttribute("fill", heat ? [ "", "#1f1210", "#2a1410", "#3a1810" ][heat] : "#141733");
+            });
+            seat.setAttribute("filter", heat ? "url(#glowSoft)" : "");
+            if (heat) html += `<rect class="sfx-heat" x="${x + 6}" y="${y + 6}" width="${w - 12}" height="48" rx="8" fill="#ff6a3d" opacity="${.12 * heat}" filter="url(#glowSoft)"/>`;
+            if (q.vent) {
+                const dur = 1.8 - q.vent * .35 + "s";
+                html += `<g class="sfx-vent" style="--dur:${dur}">`;
+                for (let i = 0; i < 3 + q.vent; i++) {
+                    const lx = x + 10 + i * ((w - 20) / (2 + q.vent));
+                    html += `<line x1="${lx}" y1="${cy + 10}" x2="${lx}" y2="${cy - 2}" style="animation-delay:${(i * .23).toFixed(2)}s"/>`;
+                }
+                html += "</g>";
+            }
+            if (q.massage) {
+                const dur = 2.2 - q.massage * .4 + "s";
+                html += `<g class="sfx-massage" style="--dur:${dur}"><circle cx="${cx}" cy="${cy}" r="24"/><circle cx="${cx}" cy="${cy}" r="24" style="animation-delay:${(parseFloat(dur) / 2).toFixed(2)}s"/></g>`;
+            }
+        }
+        $("seat-fx").innerHTML = html;
+    }
+    for (const k in WIN) {
+        const [y0, h] = WIN[k], L = state.win[k];
+        const r = $("win-" + k);
+        r.setAttribute("y", y0 + h * L / 10);
+        r.setAttribute("height", h * (1 - L / 10));
+    }
+    $("sunroof-panel").setAttribute("transform", `translate(0 ${92 * state.win.sunroof / 10})`);
+    $("sunroof-lip").setAttribute("opacity", state.win.sunroof > 0 ? 1 : 0);
+    shadeTo(177 * state.shade.front / 10, 177 * state.shade.rear / 10);
+    {
+        const v = state.muted.media ? 0 : state.vol.media, playing = state.music.playing || state.phone.active || !!(state.video && state.video.playing), dur = (2.4 - v / 40 * 1.6).toFixed(2) + "s", R = 6 + v / 40 * 16;
+        let html = "";
+        if (v > 0 && playing) for (const [cx, cy] of [ [ 104, 320 ], [ 296, 320 ], [ 104, 580 ], [ 296, 580 ] ]) for (let i = 0; i < 2; i++) html += `<circle cx="${cx}" cy="${cy}" r="${R}" style="--dur:${dur};animation-delay:${(i * parseFloat(dur) / 2).toFixed(2)}s"/>`;
+        const spkKey = v > 0 && playing ? v : 0;
+        if ($("spk-waves").dataset.k !== String(spkKey)) {
+            $("spk-waves").dataset.k = String(spkKey);
+            $("spk-waves").innerHTML = html;
+        }
+        $("spk-mute").setAttribute("opacity", state.muted.media ? 1 : 0);
+        $("media-volbar").setAttribute("width", Math.max(0, 130 * v / 40));
+        $("media-voltext").textContent = state.muted.media ? "mute" : "volume " + state.vol.media;
+    }
+    $("media-play-icon").setAttribute("d", (state.screen === "video" && state.video ? state.video.playing : state.music.playing) ? "M176 266 H179 V276 H176 Z M181 266 H184 V276 H181 Z" : "M177 266 L185 271 L177 276 Z");
+    {
+        const m = state.music;
+        $("music-title").textContent = m.song;
+        $("music-artist").textContent = m.singer;
+        $("music-sub").textContent = `${m.source} · ${m.mode} · track ${m.track}`;
+        $("nav-dest").textContent = state.nav.dest || "Shenzhen North Station";
+        $("nav-sub").textContent = (state.nav.route ? state.nav.route + " · " : "") + "ETA 24 min · demo";
+        const c = state.phone.contact || "Zhang";
+        $("phone-name").textContent = c;
+        $("phone-initial").textContent = c.slice(0, 1);
+        $("phone-sub").textContent = `bt: action|call target|${c}`;
+        if (state.screen !== "status") {
+            const want = state.screen === "idle" ? "panel-idle" : "app-ui-" + state.screen;
+            if ($(want).getAttribute("opacity") !== "1") showScreen(want);
+        }
+        document.querySelectorAll('#panel-apps g[id^="panel-app-"]').forEach(g => g.classList.toggle("on", g.id === "panel-app-" + state.screen));
+    }
+    if ($("stateView")) $("stateView").textContent = JSON.stringify(state, null, 1).replace(/\n\s*(?=[\d"}\]tfn-])/g, " ");
+}
+
+const VENTS = [ {
+    x: 105,
+    y: 284,
+    dx: .15,
+    len: 90,
+    level: 0,
+    color: "#9ff0ff"
+}, {
+    x: 200,
+    y: 301,
+    dx: 0,
+    len: 110,
+    level: 0,
+    color: "#9ff0ff"
+}, {
+    x: 295,
+    y: 284,
+    dx: -.15,
+    len: 90,
+    level: 0,
+    color: "#9ff0ff"
+}, {
+    x: 200,
+    y: 455,
+    dx: 0,
+    len: 110,
+    level: 0,
+    color: "#9ff0ff"
+} ];
+
+VENTS.forEach(v => v.ps = []);
+
+(function loop() {
+    let html = "";
+    for (const v of VENTS) {
+        const want = v.level * 3, speed = .004 + v.level * .0016;
+        while (v.ps.length < want) v.ps.push({
+            t: Math.random(),
+            x: (Math.random() - .5) * 18
+        });
+        while (v.ps.length > want) v.ps.pop();
+        for (const p of v.ps) {
+            p.t += speed;
+            if (p.t > 1) {
+                p.t = 0;
+                p.x = (Math.random() - .5) * 18;
+            }
+            const y = v.y + v.len * p.t, x = v.x + p.x + v.dx * v.len * p.t;
+            html += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.6 * (1 - p.t * .6)).toFixed(2)}" fill="${v.color}" opacity="${(.9 * (1 - p.t)).toFixed(2)}"/>`;
+        }
+    }
+    $("ac-flows").innerHTML = html;
+    requestAnimationFrame(loop);
+})();
+
+function playEffects(fx) {
+    for (const e of fx) {
+        if (e.kind === "defog") {
+            const id = e.side === "front" ? "glass-front" : "glass-rear";
+            flash(id);
+        }
+        if (e.kind === "temp") {
+            e.zones.forEach(z => flash("temp-" + z));
+        }
+        if (e.kind === "mirror") {
+            flash("mirror-l");
+            flash("mirror-r");
+        }
+        if (e.kind === "win") {
+            e.zones.forEach(z => flash("win-" + z));
+        }
+        if (e.kind === "seat") {
+            e.zones.forEach(z => flash("seat-" + z));
+        }
+        if (e.kind === "volume") {
+            if (e.target !== "media") showStatus(`${e.target}volume`, state.muted.media ? "mute" : `${state.vol[e.target]} / 40`, "#3fd2ff"), 
+            setTimeout(() => showScreen("panel-idle"), 2500);
+        }
+        if (e.kind === "light") {
+            [ "light-dash", "light-door-l", "light-door-r", "light-foot", "panel-light" ].forEach(flash);
+        }
+        if (e.kind === "shade") {
+            e.zones.forEach(z => flash("shade-" + z));
+        }
+        if (e.kind === "ac") {
+            const v = [];
+            if (e.zones.includes("lf")) v.push("ac-front-l", "ac-front-c");
+            if (e.zones.includes("rf")) v.push("ac-front-r", "ac-front-c");
+            if (e.zones.includes("rear")) v.push("ac-rear");
+            [ ...new Set(v) ].forEach(flash);
+        }
+        if (e.kind === "status") {
+            showStatus(e.title, e.sub, e.color || "#3fd2ff", e.icon || "i");
+            if (e.shake) {
+                const sc = $("panel-screen");
+                sc.classList.remove("shake");
+                void sc.getBBox();
+                sc.classList.add("shake");
+            }
+            clearTimeout(statusTimer);
+            statusTimer = setTimeout(() => {
+                if (state.screen === "status") state.screen = prevScreen;
+                render();
+            }, 3e3);
+        }
+        if (e.kind === "swipe") {
+            swipeVol(e.dir);
+        }
+        if (e.kind === "music" || e.kind === "nav" || e.kind === "phone" || e.kind === "screen") {}
+    }
+}
+
+function flash(id) {
+    const el = $(id);
+    if (!el) return;
+    el.classList.remove("hl");
+    void (el.getBBox ? el.getBBox() : el.offsetWidth);
+    el.classList.add("hl");
+    setTimeout(() => el.classList.remove("hl"), 1300);
+}
+
+function svgPt(svg, ev) {
+    const root = svg.ownerSVGElement || svg;
+    const pt = root.createSVGPoint();
+    pt.x = ev.clientX;
+    pt.y = ev.clientY;
+    return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+
+for (const k in WIN) {
+    const r = $("win-" + k), [y0, h] = WIN[k];
+    r.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        const svg = $("car"), p0 = svgPt(svg, e), L0 = state.win[k];
+        const mv = ev => {
+            const p = svgPt(svg, ev);
+            state.win[k] = Math.max(0, Math.min(10, Math.round(L0 + (p.y - p0.y) / h * 10)));
+            render();
+        };
+        const up = () => {
+            window.removeEventListener("pointermove", mv);
+            window.removeEventListener("pointerup", up);
+        };
+        window.addEventListener("pointermove", mv);
+        window.addEventListener("pointerup", up);
+    });
+}
+
+$("win-sunroof").addEventListener("click", () => {
+    state.win.sunroof = state.win.sunroof > 0 ? 0 : 10;
+    render();
+});
+
+for (const [k, id, cx] of [ [ "lf", "l", 80 ], [ "rf", "r", 280 ] ]) {
+    $("panel-temp-" + id).addEventListener("pointerdown", e => {
+        e.preventDefault();
+        const svg = $("panel-temp-" + id);
+        const mv = ev => {
+            const p = svgPt(svg, ev);
+            let a = Math.atan2(p.x - cx, -(p.y - 282)) * 180 / Math.PI;
+            a = Math.max(-135, Math.min(135, a));
+            state.ac.zone[k].temp = Math.round(24 + a / 135 * 8);
+            state.ac.zone[k].on = true;
+            if (!state.ac.zone[k].fan) state.ac.zone[k].fan = 3;
+            render();
+        };
+        const up = () => {
+            window.removeEventListener("pointermove", mv);
+            window.removeEventListener("pointerup", up);
+        };
+        window.addEventListener("pointermove", mv);
+        window.addEventListener("pointerup", up);
+        mv(e);
+    });
+}
+
+const SCREENS = [ "panel-idle", "panel-status", "app-ui-nav", "app-ui-music", "app-ui-phone" ];
+
+function showScreen(id) {
+    SCREENS.forEach(x => $(x).setAttribute("opacity", x === id ? 1 : 0));
+}
+
+let statusTimer = null, prevScreen = "idle";
+
+function showStatus(title, sub, color, icon) {
+    $("panel-status-title").textContent = title;
+    $("panel-status-title").setAttribute("fill", color);
+    $("panel-status-sub").textContent = sub;
+    $("panel-status-bar").setAttribute("fill", color);
+    $("panel-status").querySelector("circle").setAttribute("stroke", color);
+    $("panel-status-icon").textContent = icon || "i";
+    $("panel-status-icon").setAttribute("fill", color);
+    if (state.screen !== "status") prevScreen = state.screen;
+    state.screen = "status";
+    showScreen("panel-status");
+}
+
+$("phone-hangup").onclick = e => {
+    e.stopPropagation();
+    state.phone.active = false;
+    render();
+};
+
+$("apps-toggle").onclick = () => {
+    $("panel-apps").classList.toggle("hidden");
+    $("apps-toggle").classList.toggle("open", !$("panel-apps").classList.contains("hidden"));
+};
+
+if ($("models-toggle")) $("models-toggle").onclick = () => {
+    $("panel-models").classList.toggle("hidden");
+    const open = !$("panel-models").classList.contains("hidden");
+    $("models-toggle").classList.toggle("open", open);
+    if (!open) $("menu").classList.remove("show");
+};
+
+document.querySelectorAll("#panel-models g[data-model]").forEach(g => g.addEventListener("click", () => {
+    document.querySelectorAll("#panel-models g[data-model]").forEach(x => x.classList.remove("on"));
+    g.classList.add("on");
+    state.model = g.dataset.model;
+    render();
+}));
+
+function ringScale() {
+    const m = getComputedStyle($("music-ring")).transform;
+    return m && m !== "none" ? parseFloat(m.slice(7)) : .18;
+}
+
+function setRing(playing) {
+    const ring = $("music-ring"), s0 = ringScale();
+    ring.getAnimations().forEach(a => a.cancel());
+    if (playing) {
+        const a = ring.animate([ {
+            transform: `scale(${s0})`
+        }, {
+            transform: "scale(1)"
+        } ], {
+            duration: 450,
+            easing: "cubic-bezier(.4,0,.2,1)",
+            fill: "forwards"
+        });
+        a.onfinish = () => {
+            a.cancel();
+            ring.animate([ {
+                transform: "scale(1)"
+            }, {
+                transform: "scale(1.18)"
+            }, {
+                transform: "scale(1)"
+            } ], {
+                duration: 1600,
+                iterations: Infinity,
+                easing: "ease-in-out"
+            });
+        };
+    } else ring.animate([ {
+        transform: `scale(${s0})`
+    }, {
+        transform: "scale(.18)"
+    } ], {
+        duration: 450,
+        easing: "cubic-bezier(.4,0,.2,1)",
+        fill: "forwards"
+    });
+}
+
+let volAnim = false;
+
+function swipeVol(dir) {
+    if (volAnim) return;
+    volAnim = true;
+    const bar = $("media-volbar"), W = 130, w0 = W * (state.muted.media ? 0 : state.vol.media) / 40, T1 = 260, T2 = 320, ease = t => 1 - Math.pow(1 - t, 3), t0 = performance.now();
+    const step = now => {
+        const t = now - t0;
+        let w;
+        if (t < T1) w = dir > 0 ? w0 + (W - w0) * ease(t / T1) : w0 * (1 - ease(t / T1)); else if (t < T1 + T2) w = dir > 0 ? w0 * ease((t - T1) / T2) : W - (W - w0) * ease((t - T1) / T2); else {
+            bar.setAttribute("width", w0);
+            volAnim = false;
+            return;
+        }
+        bar.setAttribute("width", Math.max(0, w));
+        requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+}
+
+$("media-voldn").onclick = () => {
+    state.vol.media = Math.max(0, state.vol.media - 2);
+    state.muted.media = state.vol.media <= 1;
+    render();
+};
+
+$("media-volup").onclick = () => {
+    state.vol.media = Math.min(40, state.vol.media + 2);
+    state.muted.media = false;
+    render();
+};
+
+const videoCtx = () => !!state.video && (state.screen === "video" || state.video.playing && !state.music.playing && state.screen !== "music");
+
+$("media-play").onclick = () => {
+    if (videoCtx()) {
+        state.video.playing = !state.video.playing;
+        render();
+        return;
+    }
+    state.music.playing = !state.music.playing;
+    if (state.music.playing && state.screen === "idle") state.screen = "music";
+    render();
+    setRing(state.music.playing);
+};
+
+$("media-prev").onclick = () => {
+    const r = applyDSL(state, videoCtx() ? "video: action|previous_episode" : "music: action|previous");
+    state = r.state;
+    render();
+    playEffects(r.effects);
+    swipeVol(-1);
+};
+
+$("media-next").onclick = () => {
+    const r = applyDSL(state, videoCtx() ? "video: action|next_episode" : "music: action|next");
+    state = r.state;
+    render();
+    playEffects(r.effects);
+    swipeVol(1);
+};
+
+const I18N = {
+    zh: {
+        brand: "Cabin Voice · DSL Demo",
+        brandSub: "Mapika + value-filling LLM",
+        reconnect: "Reconnect",
+        demo: "▶ Play demo",
+        reset: "Reset",
+        dslTitle: "DSL commands",
+        dslEmpty: "Press ▶ Play demo: each spoken sentence is turned into DSL commands, one line per car action, and the cabin reacts.",
+        thinking: "Mapika deciding…",
+        send: "Send",
+        clear: "Clear",
+        chatPh: "Typing is off in this portfolio build. Press ▶ Play demo, or click the car and panel.",
+        chatTitle: "Conversation",
+        mTitle: "settings",
+        mModel: "Model",
+        mLang: "Lang",
+        panelHint: "Click the in-car screen: show / hide the enlarged console view",
+        live: "LIVE",
+        replay: "offline",
+        jev: "Mapika decided directly",
+        llm: "value-filling LLM",
+        noServer: "Something went wrong in the demo: press Reset and try again",
+        total: "total",
+        nav: "navigate",
+        music: "music",
+        video: "video",
+        call: "phone",
+        tour: "Road trip",
+        dest: "Destination",
+        from: "From",
+        route: "Route",
+        eta: "ETA",
+        cur: "Current location",
+        calling: "Calling…",
+        inCall: "In call",
+        ep: "Ep. {n}",
+        days: "Days",
+        budget: "Budget",
+        people: "People",
+        type: "Type",
+        group: "Group"
+    },
+    en: {
+        brand: "Cabin Voice · DSL Demo",
+        brandSub: "Mapika + value-filling LLM",
+        reconnect: "Reconnect",
+        demo: "▶ Play demo",
+        scripted: "scripted replay · offline",
+        reset: "Reset",
+        dslTitle: "DSL commands",
+        dslEmpty: "Press ▶ Play demo: each spoken sentence is turned into DSL commands, one line per car action, and the cabin reacts.",
+        thinking: "Mapika is deciding…",
+        send: "Send",
+        clear: "Clear",
+        chatPh: "Typing is off in this portfolio build. Press ▶ Play demo, or click the car and panel.",
+        chatTitle: "Conversation",
+        mTitle: "Settings",
+        mModel: "Model",
+        mLang: "Lang",
+        panelHint: "Click the in-car screen to show / hide the console view",
+        live: "LIVE",
+        replay: "offline",
+        jev: "decided by Mapika",
+        llm: "value-filling LLM called",
+        noServer: "Something went wrong in the demo: press Reset and try again",
+        total: "total",
+        nav: "NAVIGATION",
+        music: "MUSIC",
+        video: "VIDEO",
+        call: "PHONE",
+        tour: "ROAD TRIP",
+        dest: "Destination",
+        from: "From",
+        route: "Route",
+        eta: "ETA",
+        cur: "Current location",
+        calling: "Calling…",
+        inCall: "In call",
+        ep: "Ep. {n}",
+        days: "Days",
+        budget: "Budget",
+        people: "People",
+        type: "Type",
+        group: "Group"
+    }
+};
+
+let lang = "en";
+
+const T = k => I18N[lang][k] ?? I18N.zh[k] ?? k;
+
+function applyLang() {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const k = el.dataset.i18n;
+        if (el.classList.contains("brand")) el.firstChild.textContent = T(k); else el.textContent = T(k);
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(el => el.placeholder = T(el.dataset.i18nPh));
+    renderDSL(lastResult);
+    renderCards();
+}
+
+if ($("langSeg")) $("langSeg").onclick = e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    lang = b.dataset.l;
+    document.querySelectorAll("#langSeg button").forEach(x => x.classList.toggle("on", x === b));
+    applyLang();
+};
+
+let live = false, pipeline = "B", history = [], lastResult = null, busy = false;
+
+if ($("pipeSeg")) $("pipeSeg").onclick = e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    pipeline = b.dataset.p;
+    state.model = pipeline;
+    document.querySelectorAll("#pipeSeg button").forEach(x => x.classList.toggle("on", x === b));
+    document.querySelectorAll("#panel-models g[data-model]").forEach(x => x.classList.toggle("on", x.dataset.model === pipeline));
+};
+
+document.querySelectorAll("#panel-models g[data-model]").forEach(g => g.addEventListener("click", () => {
+    pipeline = g.dataset.model;
+    document.querySelectorAll("#pipeSeg button").forEach(x => x.classList.toggle("on", x.dataset.p === pipeline));
+}));
+
+const SCRIPT = {
+    "Turn on the driver seat heating": "seat: action|on zone|driver mode|heating",
+    "Open the rear-left window halfway": "win: action|on zone|rear_left degree|half",
+    "Make the ambient light blue": "light: action|set mode|colour color|blue",
+    "Open the sunshade": "shade: action|on zone|all",
+    "Open the sunroof": "win: action|on zone|sunroof",
+    "Turn on the windshield defog": "ac: action|on mode|defog",
+    "打开遮阳帘": "shade: action|on zone|all",
+    "打开天窗": "win: action|on zone|sunroof",
+    "打开除雾": "ac: action|on mode|defog",
+    "Set the temperature to 24 degrees": "ac: action|set target|temperature degree|24",
+    "Two degrees lower": "ac: action|decrease target|temperature degree|2",
+    "Navigate to Shenzhen North Station, avoid highways": "nav: action|navigate end|Shenzhen_North_Station route|avoid_highways",
+    "Show traffic": "nav: action|on target|traffic",
+    "Any gas stations within 3 km?": "nav: action|search search|gas_station distance|3 unit|km",
+    "The third one": "general: action|item_N index|3",
+    "Play Qi Li Xiang by Jay Chou": "music: action|play singer|Jay_Chou song|Qi_Li_Xiang",
+    "Save this song": "music: action|favourite",
+    "Turn on the A/C, then play another Jay Chou song": "ac: action|on\nmusic: action|next singer|Jay_Chou"
+};
+
+async function infer(hist) {
+    const q = turns[turns.length - 1].text;
+    await new Promise(r => setTimeout(r, 450));
+    return {
+        dsl: SCRIPT[q] || "reject: action|unsupported",
+        scripted: true
+    };
+}
+
+async function send(text) {
+    text = (text || "").trim();
+    if (!text || busy) return;
+    busy = true;
+    $("chatIn").value = "";
+    history.push(text);
+    renderChat();
+    let res;
+    try {
+        res = await infer(history);
+    } catch (e) {
+        res = {
+            dsl: "",
+            error: T("noServer") + " (" + String(e.message || e) + ")",
+            timing_ms: {
+                total: 0
+            }
+        };
+        history.pop();
+        turns.pop();
+        renderChat();
+    }
+    lastResult = res;
+    renderDSL(res);
+    if (res.error) addWarn(res.error);
+    if (res.note) addWarn(String(res.note).replace(/ \(.*$/, ""));
+    const lines = (res.dsl || "").split("\n").map(l => l.trim()).filter(Boolean);
+    if (lines.length) chatAssistant(lines.join("\n"));
+    await playLines(lines);
+    busy = false;
+}
+
+function addWarn(t) {
+    const d = document.createElement("div");
+    d.className = "warn";
+    d.textContent = "⚠ " + t;
+    $("warnBox").appendChild(d);
+}
+
+async function playLines(lines) {
+    for (let i = 0; i < lines.length; i++) {
+        const el = document.querySelectorAll("#dslList .dline")[i];
+        document.querySelectorAll("#dslList .dline").forEach(x => x.classList.remove("exec"));
+        if (el) el.classList.add("exec");
+        const r = applyDSL(state, lines[i]);
+        const wasPlaying = state.music.playing;
+        state = r.state;
+        render();
+        playEffects(r.effects);
+        r.warnings.forEach(addWarn);
+        if (state.music.playing !== wasPlaying) setRing(state.music.playing);
+        const sc = $("panel-screen");
+        sc.classList.add("speaking");
+        clearTimeout(sc._t);
+        sc._t = setTimeout(() => sc.classList.remove("speaking"), 1200);
+        renderCards();
+        if (el) pulseTo(el, targetsFor(lines[i]));
+        await new Promise(r => setTimeout(r, lines.length > 1 ? 1600 : 300));
+    }
+    setTimeout(() => document.querySelectorAll("#dslList .dline").forEach(x => x.classList.remove("exec")), 1400);
+}
+
+function targetsFor(line) {
+    const c = parseDSL(line)[0];
+    if (!c || !c.tool) return [];
+    const p = c.params, t = c.tool;
+    if (t === "ac") {
+        const z = p.zone;
+        if (z === "windshield" || z === "all glass") return [ "glass-front" ];
+        if (z === "rear glass" || z === "rear window") return [ "glass-rear" ];
+        if (z === "mirrors") return [ "mirror-l", "mirror-r" ];
+        const zs = ZONE_TEMP[z] || ZONE_TEMP["whole car"];
+        const m = {
+            lf: "ac-front-l",
+            rf: "ac-front-r",
+            rear: "ac-rear"
+        };
+        return zs.map(k => m[k]);
+    }
+    if (t === "win") {
+        const zs = ZONE_WIN[p.zone] || ZONE_WIN["all"];
+        return zs.map(k => k === "sunroof" ? "win-sunroof" : "win-" + k);
+    }
+    if (t === "shade") {
+        return (ZONE_SHADE[p.zone] || ZONE_SHADE["all"]).map(k => "shade-" + k);
+    }
+    if (t === "seat") {
+        return (ZONE_SEAT[p.zone] || ZONE_SEAT["all"]).map(k => "seat-" + k);
+    }
+    if (t === "light") return [ "light-dash" ];
+    if (t === "volume") return [ "spk-fl", "spk-fr" ];
+    return [ "panel-screen" ];
+}
+
+function pulseTo(fromEl, ids) {
+    const layer = $("pulseLayer");
+    layer.innerHTML = "";
+    const a = fromEl.getBoundingClientRect();
+    const x0 = a.right, y0 = a.top + a.height / 2;
+    ids.forEach(id => {
+        const el = $(id);
+        if (!el) return;
+        const b = el.getBoundingClientRect();
+        const x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
+        const dx = Math.max(60, (x1 - x0) * .45);
+        const d = `M${x0} ${y0} C ${x0 + dx} ${y0}, ${x1 - dx} ${y1}, ${x1} ${y1}`;
+        const pth = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pth.setAttribute("d", d);
+        layer.appendChild(pth);
+        flash(id);
+    });
+    clearTimeout(layer._t);
+    layer._t = setTimeout(() => {
+        layer.querySelectorAll("path").forEach(p => p.style.opacity = 0);
+        setTimeout(() => layer.innerHTML = "", 500);
+    }, 1500);
+}
+
+function renderDSL(res) {
+    const box = $("dslList");
+    $("warnBox").innerHTML = "";
+    $("toolsTop").innerHTML = "";
+    if (!res) {
+        box.innerHTML = `<div class="empty">${T("dslEmpty")}</div>`;
+        $("lat").textContent = "— ms";
+        return;
+    }
+    const tm = res.timing_ms || {};
+    $("lat").innerHTML = res.scripted ? T("scripted") : `${Math.round(tm.total || 0)} ms`;
+    if (res.jev && res.jev.tools_top) $("toolsTop").innerHTML = (lang === "zh" ? "routing: " : "routing: ") + res.jev.tools_top.slice(0, 3).map(([t, p]) => `<b>${t}</b> ${(p * 100).toFixed(0)}%`).join(" · ");
+    const lines = (res.dsl || "").split("\n").map(l => l.trim()).filter(Boolean);
+    box.innerHTML = lines.map(line => {
+        const c = parseDSL(line)[0];
+        const jp = res.jev && res.jev.params && res.jev.params[c.tool];
+        const usedLLM = jp ? Object.values(jp).some(v => v.by === "llm") : res.jev ? false : null;
+        const tag = usedLLM == null ? "" : `<span class="tag ${usedLLM ? "llm" : "jev"}">${usedLLM ? T("llm") : T("jev")}</span>`;
+        const probs = jp ? Object.entries(jp).map(([k, v]) => {
+            const [bv, bp] = v.top[0];
+            const rest = v.top.slice(1).map(([a, b]) => `${a} ${(b * 100).toFixed(0)}%`).join(" · ");
+            return `<div class="p"><span class="k">${k}</span><div class="bar"><i class="${v.by === "llm" ? "llm" : ""}" style="width:${(bp * 100).toFixed(0)}%"></i></div><span class="v">${bv} ${(bp * 100).toFixed(0)}%</span></div>${rest ? `<div style="color:#5c6577;font-size:10px;margin:-2px 0 2px 66px">${rest}</div>` : ""}`;
+        }).join("") : "";
+        const params = Object.entries(c.params).map(([k, v]) => `${k}|<b>${v}</b>`).join(" ");
+        return `<div class="dline" onclick="this.classList.toggle('open')">${tag}<div class="tool"><b>${c.tool}</b>: ${params}</div>${probs ? `<div class="probs">${probs}${res.jev && res.jev.llm_raw ? `<div style="color:#ffd3c4;margin-top:4px">LLM → ${res.jev.llm_raw}</div>` : ""}</div>` : ""}</div>`;
+    }).join("") || `<div class="empty">—</div>`;
+}
+
+let cardOpen = {};
+
+function renderCards() {
+    return;
+    const box = $("cards");
+    const want = [];
+    if (state.nav.active) want.push("nav");
+    if (state.screen === "music" || state.music.playing) want.push("music");
+    if (state.phone.active) want.push("bt");
+    if (state.tour) want.push("tour");
+    if (state.video) want.push("video");
+    const top = want[want.length - 1];
+    [ ...box.children ].forEach(c => {
+        if (c.dataset.k !== top && !c.dataset.gone) {
+            c.dataset.gone = "1";
+            c.classList.remove("show");
+            setTimeout(() => c.remove(), 700);
+        }
+    });
+    if (!top) return;
+    let el = [ ...box.children ].find(c => c.dataset.k === top && !c.dataset.gone);
+    if (!el) {
+        el = document.createElement("div");
+        el.className = "card " + top;
+        el.id = "card-" + top;
+        el.dataset.k = top;
+        box.appendChild(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("show")));
+    }
+    el.innerHTML = cardHTML(top);
+    el.querySelector(".x")?.addEventListener("click", () => closeCard(top));
+    el.querySelector(".hang")?.addEventListener("click", () => {
+        state.phone.active = false;
+        state.screen = "idle";
+        render();
+    });
+}
+
+function closeCard(k) {
+    if (k === "nav") state.nav.active = false;
+    if (k === "music") {
+        state.music.playing = false;
+        if (state.screen === "music") state.screen = "idle";
+        setRing(false);
+    }
+    if (k === "bt") {
+        state.phone.active = false;
+    }
+    if (k === "tour") state.tour = null;
+    if (k === "video") state.video = null;
+    if (state.screen === k || state.screen === "phone" && k === "bt") state.screen = "idle";
+    render();
+    renderCards();
+}
+
+function cardHTML(k) {
+    const H = `<div class="hd"><span class="t">${T({
+        nav: "nav",
+        music: "music",
+        bt: "call",
+        video: "video",
+        tour: "tour"
+    }[k])}</span><button class="x">✕</button></div>`;
+    if (k === "nav") {
+        const n = state.nav;
+        return H + `<div class="big">${n.dest || "—"}</div><div class="sub">${T("from")}: ${T("cur")}${n.route ? " · " + n.route : ""}</div>\n    <svg class="map" viewBox="0 0 300 120"><g stroke="#2fd1a8" stroke-width=".6" opacity=".18"><path d="M0 30 H300 M0 60 H300 M0 90 H300 M50 0 V120 M100 0 V120 M150 0 V120 M200 0 V120 M250 0 V120"/></g><path d="M24 96 C 70 92 90 48 130 48 C 170 48 180 24 230 22 L 272 20" fill="none" stroke="#2fd1a8" stroke-width="3" stroke-linecap="round" filter="drop-shadow(0 0 4px #2fd1a8)"/><circle cx="24" cy="96" r="4" fill="#dfe9ff"/><circle r="3.5" fill="#2fd1a8"><animateMotion dur="4s" repeatCount="indefinite" path="M24 96 C 70 92 90 48 130 48 C 170 48 180 24 230 22 L 272 20"/></circle><path d="M272 20 C 268 20 266 17 266 14 C 266 10 272 4 272 4 C 272 4 278 10 278 14 C 278 17 276 20 272 20 Z" fill="#2fd1a8"/></svg>\n    <div class="row"><div class="kv"><small>${T("eta")}</small><span>24 min · 18 km</span></div><div class="kv"><small>${T("route")}</small><span>${n.route || "Recommended route"}</span></div></div>`;
+    }
+    if (k === "music") {
+        const m = state.music;
+        return H + `<div style="display:flex;gap:14px;align-items:center"><div class="cover"><i class="${m.playing ? "spin" : ""}"></i></div><div style="min-width:0"><div class="big" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.song}</div><div class="sub">${m.singer} · ${m.source}</div><div class="sub" style="color:#8a93a3;font-size:11px">${m.mode} · #${m.track} · ${m.playing ? "▶" : "⏸"}</div></div></div><div class="prog"><i style="width:${m.playing ? 42 : 30}%"></i></div>`;
+    }
+    if (k === "bt") {
+        const p = state.phone;
+        return H + `<div style="display:flex;gap:14px;align-items:center"><div class="avatar">${(p.contact || "?").slice(0, 1)}</div><div><div class="big">${p.contact}</div><div class="sub" style="color:#6ee07a">${T("calling")}</div></div><button class="hang"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 11 C 7 5 11 5 15 11" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>`;
+    }
+    if (k === "video") {
+        const v = state.video;
+        return H + `<div class="big">${v.name || "—"}${v.ep ? `<span class="ep">${T("ep").replace("{n}", v.ep)}</span>` : ""}</div><div class="sub">${[ v.type, v.actor, v.source ].filter(Boolean).join(" · ") || "iQIYI"}</div><div class="prog"><i style="width:12%;background:#a855f7"></i></div>`;
+    }
+    if (k === "tour") {
+        const t = state.tour;
+        return H + `<div class="big">${t.dest || "—"}</div><div class="sub">${[ t.type, t.group ].filter(Boolean).join(" · ")}</div><div class="row"><div class="kv"><small>${T("days")}</small><span>${t.days || "—"}</span></div><div class="kv"><small>${T("budget")}</small><span>${t.budget ? "¥" + t.budget : "—"}</span></div><div class="kv"><small>${T("people")}</small><span>${t.people || "—"}</span></div></div>`;
+    }
+    return H;
+}
+
+const APP_NAMES = {
+    nav: "navigate",
+    music: "music",
+    phone: "phone",
+    video: "video",
+    tour: "Road trip",
+    list: "List",
+    travel: "Trip log",
+    paint: "AI Paint"
+};
+
+const _init0 = initialState;
+
+initialState = function() {
+    const s = _init0();
+    s.muted = {
+        "media": false,
+        "navigate": false,
+        "voice": false,
+        "system": false,
+        "phone": false,
+        "radio": false,
+        "ringtone": false,
+        "mic": false,
+        "bluetooth": false
+    };
+    s.nav = {
+        active: false,
+        dest: "",
+        start: "",
+        route: "",
+        search: "",
+        traffic: false,
+        located: false,
+        remaining: "",
+        map: 1
+    };
+    s.video = null;
+    s.music.fav = false;
+    s.music.lyrics = false;
+    s.music.album = "";
+    s.music.list = "";
+    s.music.queue = null;
+    s.music.idx = 0;
+    s.music.pos = 0;
+    s.music.dur = 299;
+    s.list = null;
+    s.tour = null;
+    s.travel = {
+        recording: false,
+        lastSearch: "",
+        lastGen: "",
+        photos: 0
+    };
+    s.paint = {
+        state: "Standby",
+        type: "Text-to-image",
+        scene: ""
+    };
+    s.recentApp = "";
+    s.bt = true;
+    s.recent = [ "nav", "music", "phone", "video", "tour", "travel", "paint" ].map(k => ({
+        id: k,
+        kind: k,
+        name: APP_NAMES[k]
+    }));
+    s.app = null;
+    return s;
+};
+
+state = initialState();
+
+const PAGE = 4;
+
+const CATALOG = {
+    "Jay Chou": [ [ "Qi Li Xiang", "Qi Li Xiang" ], [ "Sunny Day", "Ye Hui Mei" ], [ "Blue and White Porcelain", "On the Run" ], [ "Rice Field", "Capricorn" ], [ "Nocturne", "November's Chopin" ], [ "What About Our Happiness", "Capricorn" ], [ "Quiet", "Fantasy" ], [ "Simple Love", "Fantasy" ], [ "Nunchucks", "Fantasy" ], [ "Can't Say It", "Fantasy" ] ],
+    "JJ Lin": [ [ "Jiangnan", "Second Heaven" ], [ "Cao Cao", "Cao Cao" ], [ "Practising Love", "Because of You" ], [ "Twilight", "Talking to Myself" ], [ "A Thousand Years Later", "Second Heaven" ], [ "Little Dimples", "JJ Lu" ] ],
+    "G.E.M.": [ [ "Light Years Away", "Light Years Away" ], [ "Bubble", "Xposed" ], [ "Bubble", "Xposed" ], [ "Like You", "Xposed" ], [ "Full Stop", "Skyscraper Zoo" ] ],
+    "Jacky Cheung": [ [ "Goodbye Kiss", "Goodbye Kiss" ], [ "A Thousand Sad Reasons", "True Love" ], [ "Blessing", "Blessing" ] ],
+    "Eason Chan": [ [ "Ten Years", "Black White Grey" ], [ "Exaggerated", "U87" ], [ "Under Mount Fuji", "What's Going On" ] ],
+    "Wakin Chau": [ [ "Friends", "Friends" ], [ "Fickle", "Fickle" ] ],
+    "Zhou Shen": [ [ "Big Fish", "Big Fish" ], [ "Light", "Light" ] ],
+    "Faye Wong": [ [ "Red Bean", "Sing and Play" ], [ "Legend", "Legend" ] ],
+    "Bandari": [ [ "Annie's Wonderland", "Wonderland" ], [ "Morning", "Spring Field" ] ],
+    "Beethoven": [ [ "Symphony No. 5", "Complete Symphonies" ], [ "Moonlight Sonata", "Piano Sonatas" ] ],
+    Taylor: [ [ "Love Story", "Fearless" ], [ "Blank Space", "1989" ] ],
+    Jay: [ [ "Qi Li Xiang", "Qi Li Xiang" ], [ "Sunny Day", "Ye Hui Mei" ] ]
+};
+
+const SONG2SINGER = {};
+
+for (const [sg, arr] of Object.entries(CATALOG)) for (const [song] of arr) if (!SONG2SINGER[song]) SONG2SINGER[song] = sg;
+
+const DEFAULT_Q = [ [ "Sunny Day", "Jay Chou", "Ye Hui Mei" ], [ "Jiangnan", "JJ Lin", "Second Heaven" ], [ "Light Years Away", "G.E.M.", "Light Years Away" ], [ "Ten Years", "Eason Chan", "Black White Grey" ], [ "Big Fish", "Zhou Shen", "Big Fish" ], [ "Red Bean", "Faye Wong", "Sing and Play" ], [ "Qi Li Xiang", "Jay Chou", "Qi Li Xiang" ], [ "Goodbye Kiss", "Jacky Cheung", "Goodbye Kiss" ] ];
+
+const dur = s => {
+    let h = 0;
+    for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 997;
+    return 180 + h % 120;
+};
+
+function buildQueue(p) {
+    const mk = (song, singer, album) => ({
+        song: song,
+        singer: singer,
+        album: album || ""
+    });
+    if (p.list) return {
+        title: p.list,
+        items: DEFAULT_Q.map(x => mk(...x))
+    };
+    if (p.album) {
+        const sg = p.singer || Object.keys(CATALOG).find(k => CATALOG[k].some(x => x[1] === p.album));
+        const items = sg ? CATALOG[sg].filter(x => x[1] === p.album).map(x => mk(x[0], sg, x[1])) : [];
+        return {
+            title: `Album · ${p.album}`,
+            items: items.length ? items : [ mk(p.album, sg || "", p.album) ]
+        };
+    }
+    if (p.name) {
+        return {
+            title: p.name,
+            items: [ mk(`${p.name}${p.type ? " " + p.type : ""}`, "Soundtrack", p.name) ]
+        };
+    }
+    if (p.singer) {
+        const arr = CATALOG[p.singer] || [ [ "Songs by " + p.singer, "" ] ];
+        let items = arr.map(x => mk(x[0], p.singer, x[1]));
+        if (p.song) {
+            const i = items.findIndex(x => x.song === p.song);
+            if (i > 0) {
+                const [it] = items.splice(i, 1);
+                items.unshift(it);
+            } else if (i < 0) items.unshift(mk(p.song, p.singer, ""));
+        }
+        return {
+            title: `${p.singer}`,
+            items: items
+        };
+    }
+    if (p.song) {
+        const sg = SONG2SINGER[p.song];
+        const rest = sg ? CATALOG[sg].filter(x => x[0] !== p.song).map(x => mk(x[0], sg, x[1])) : DEFAULT_Q.map(x => mk(...x));
+        return {
+            title: p.song,
+            items: [ mk(p.song, sg || "", sg ? (CATALOG[sg].find(x => x[0] === p.song) || [])[1] : ""), ...rest ]
+        };
+    }
+    return {
+        title: p.mode || "recommend",
+        items: DEFAULT_Q.map(x => mk(...x))
+    };
+}
+
+function setTrack(m, i) {
+    m.pos = 0;
+    const q = m.queue;
+    if (!q || !q.items.length) return;
+    const n = q.items.length;
+    if (m.mode === "shuffle" && i !== m.idx) {
+        i = Math.floor(Math.random() * n);
+    }
+    m.idx = (i % n + n) % n;
+    const t = q.items[m.idx];
+    m.song = t.song;
+    m.singer = t.singer;
+    m.album = t.album;
+    m.track = m.idx + 1;
+    m.dur = dur(t.song + t.singer);
+    m.pos = 0;
+    m.fav = false;
+}
+
+function touch(s, kind, name) {
+    const id = kind === "app" ? "app:" + name : kind;
+    const rest = s.recent.filter(r => r.id !== id);
+    s.recent = [ {
+        id: id,
+        kind: kind,
+        name: name || APP_NAMES[kind] || kind
+    }, ...rest ];
+    while (s.recent.length > 9) {
+        const i = s.recent.map(r => r.kind).lastIndexOf("app");
+        if (i < 0) break;
+        s.recent.splice(i, 1);
+    }
+}
+
+const norm = (p, map) => {
+    if (p.action && map[p.action]) p.action = map[p.action];
+};
+
+function mkList(kind, title, items) {
+    return {
+        kind: kind,
+        title: title,
+        items: items,
+        page: 0,
+        sel: -1
+    };
+}
+
+function gallery(title, n, prefix) {
+    return mkList("images", title, Array.from({
+        length: n
+    }, (_, i) => ({
+        name: `${prefix || "photos"} ${i + 1}`,
+        meta: ""
+    })));
+}
+
+function listFor(s, object) {
+    if (object === "images" || !object && (s.screen === "travel" || s.screen === "paint")) return gallery(s.screen === "paint" ? "album" : s.travel.lastSearch || "photos", 10);
+    if (!object && s.screen === "nav") return mkList("places", "nearby", Array.from({
+        length: 8
+    }, (_, i) => ({
+        name: `places ${i + 1}`,
+        meta: `${(.4 + i * .7).toFixed(1)} km`
+    })));
+    if (!object && s.screen === "video") return mkList("shows", "Trending", Array.from({
+        length: 6
+    }, (_, i) => ({
+        name: `film ${i + 1}`,
+        meta: ""
+    })));
+    return mkList("guide", s.tour && s.tour.dest ? `${s.tour.dest}guide` : "guide", Array.from({
+        length: 8
+    }, (_, i) => ({
+        name: `guide ${i + 1}`,
+        meta: [ "3 days", "5 days", "weekend", "7 days" ][i % 4]
+    })));
+}
+
+const MAPS = [ {
+    route: "M78 206 C 110 200 120 160 150 160 C 185 160 190 142 230 140 L 272 138",
+    pin: [ 272, 138 ],
+    me: [ 78, 206 ],
+    seg: [ "M78 206 C 100 203 110 185 124 172", "M124 172 C 140 160 150 160 170 158", "M170 158 C 185 158 190 142 230 140", "M230 140 L 272 138" ],
+    deco: '<g stroke="#2fd1a8" stroke-width=".6" opacity=".18"><path d="M60 140 H300 M60 168 H300 M60 196 H300 M100 112 V224 M150 112 V224 M200 112 V224 M250 112 V224"/></g><rect x="96" y="118" width="40" height="22" rx="3" fill="#2fd1a8" opacity=".08"/><rect x="236" y="176" width="52" height="36" rx="3" fill="#2fd1a8" opacity=".08"/><text x="104" y="132" fill="#2fd1a8" font-size="6" opacity=".5">Park</text><text x="242" y="188" fill="#2fd1a8" font-size="6" opacity=".5">Mall area</text>'
+}, {
+    route: "M70 150 L 120 150 C 140 150 140 190 160 190 L 210 190 C 230 190 240 170 262 150 L 284 150",
+    pin: [ 284, 150 ],
+    me: [ 70, 150 ],
+    seg: [ "M70 150 L 120 150", "M120 150 C 140 150 140 190 160 190", "M160 190 L 210 190", "M210 190 C 230 190 240 170 262 150 L 284 150" ],
+    deco: '<path d="M60 126 C 120 128 160 118 300 124" fill="none" stroke="#3f8cff" stroke-width="9" opacity=".18"/><text x="150" y="121" fill="#3f8cff" font-size="6" opacity=".6">Shenzhen River</text><g stroke="#2fd1a8" stroke-width=".6" opacity=".16"><path d="M60 170 H300 M60 210 H300 M90 112 V224 M180 112 V224 M240 112 V224"/></g><rect x="96" y="200" width="60" height="18" rx="3" fill="#2fd1a8" opacity=".08"/><text x="104" y="212" fill="#2fd1a8" font-size="6" opacity=".5">School</text><text x="218" y="206" fill="#6f7fe8" font-size="6" opacity=".6">Shennan Blvd</text>'
+}, {
+    route: "M84 130 C 84 170 110 176 140 176 C 170 176 176 150 200 150 C 230 150 240 200 278 200",
+    pin: [ 278, 200 ],
+    me: [ 84, 130 ],
+    seg: [ "M84 130 C 84 170 110 176 140 176", "M140 176 C 170 176 176 150 200 150", "M200 150 C 230 150 240 200 278 200", "M278 200 L 278 200" ],
+    deco: '<g stroke="#2fd1a8" stroke-width=".6" opacity=".16"><path d="M60 130 H300 M60 176 H300 M60 214 H300 M110 112 V224 M170 112 V224 M240 112 V224"/></g><circle cx="150" cy="140" r="11" fill="#2fd1a8" opacity=".08"/><circle cx="150" cy="140" r="11" fill="none" stroke="#2fd1a8" stroke-width=".6" opacity=".3"/><text x="140" y="124" fill="#2fd1a8" font-size="6" opacity=".5">Roundabout</text><rect x="226" y="118" width="60" height="26" rx="3" fill="#ff8c42" opacity=".08"/><text x="236" y="133" fill="#ff8c42" font-size="6" opacity=".55">Airport</text><text x="92" y="206" fill="#6f7fe8" font-size="6" opacity=".6">Binhai Ave</text>'
+} ];
+
+function genMap(seed) {
+    let t = seed >>> 0 || 1;
+    const R = () => {
+        t ^= t << 13;
+        t >>>= 0;
+        t ^= t >> 17;
+        t ^= t << 5;
+        t >>>= 0;
+        return t / 4294967296;
+    };
+    const rnd = (a, b) => a + (b - a) * R();
+    const n = 5, pts = [];
+    for (let i = 0; i < n; i++) {
+        const x = 76 + i * (196 / (n - 1)) + (i > 0 && i < n - 1 ? rnd(-14, 14) : 0);
+        const y = i === n - 1 ? rnd(128, 160) : x > 160 ? rnd(124, 172) : rnd(124, 208);
+        pts.push([ Math.round(x), Math.round(y) ]);
+    }
+    if (R() < .5) pts.reverse().forEach(p => p[0] = 360 - p[0]);
+    pts.forEach(p => {
+        if (p[0] > 160) p[1] = Math.min(p[1], 170);
+    });
+    pts[n - 1][1] = Math.min(pts[n - 1][1], 168);
+    const c = (a, b) => {
+        const dx = (b[0] - a[0]) / 2;
+        return `C ${a[0] + dx} ${a[1]} ${b[0] - dx} ${b[1]} ${b[0]} ${b[1]}`;
+    };
+    const seg = [];
+    for (let i = 0; i < n - 1; i++) seg.push(`M${pts[i][0]} ${pts[i][1]} ${c(pts[i], pts[i + 1])}`);
+    const route = `M${pts[0][0]} ${pts[0][1]} ` + pts.slice(1).map((q, i) => c(pts[i], q)).join(" ");
+    const G = "#2fd1a8";
+    let deco = `<g stroke="${G}" stroke-width=".6" opacity=".16"><path d="`;
+    for (let y = 120 + rnd(0, 20); y < 222; y += rnd(26, 42)) deco += `M60 ${y.toFixed(0)} H300 `;
+    for (let x = 80 + rnd(0, 30); x < 300; x += rnd(40, 64)) deco += `M${x.toFixed(0)} 112 V224 `;
+    deco += '"/></g>';
+    if (R() < .5) {
+        const y0 = rnd(118, 140);
+        deco += `<path d="M60 ${y0.toFixed(0)} C 120 ${(y0 + rnd(-10, 10)).toFixed(0)} 200 ${(y0 + rnd(-12, 12)).toFixed(0)} 300 ${(y0 + rnd(-8, 8)).toFixed(0)}" fill="none" stroke="#3f8cff" stroke-width="${rnd(7, 11).toFixed(0)}" opacity=".18"/><text x="${rnd(90, 220).toFixed(0)}" y="${(y0 + 14).toFixed(0)}" fill="#3f8cff" font-size="6" opacity=".6">${[ "Shenzhen River", "Dong River", "Xili Lake", "Dasha River" ][Math.floor(R() * 4)]}</text>`;
+    }
+    const NAMES = [ "Park", "School", "Hospital", "Mall", "Stadium", "Tech Park", "Metro", "Library" ];
+    for (let k = 0, m = 1 + Math.floor(R() * 3); k < m; k++) {
+        const x = rnd(70, 250), y = rnd(150, 200), w = rnd(30, 56), h = rnd(16, 30);
+        deco += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}" rx="3" fill="${G}" opacity=".08"/><text x="${(x + 5).toFixed(0)}" y="${(y + 11).toFixed(0)}" fill="${G}" font-size="6" opacity=".5">${NAMES.splice(Math.floor(R() * NAMES.length), 1)[0]}</text>`;
+    }
+    return {
+        route: route,
+        seg: seg,
+        me: pts[0],
+        pin: pts[n - 1],
+        deco: deco
+    };
+}
+
+function mapHTML(k, traffic, located) {
+    const M = genMap(k), TC = [ "#3ddc84", "#ff8c42", "#ff3b6b", "#3ddc84" ];
+    return `${M.deco}<path d="${M.route}" fill="none" stroke="#2fd1a8" stroke-width="3" stroke-linecap="round" opacity=".9" filter="url(#pGlow)"/>\n    <g id="nav-traffic" opacity="${traffic ? 1 : 0}" stroke-width="3.5" stroke-linecap="round" fill="none">${M.seg.map((d, i) => `<path d="${d}" stroke="${TC[i]}"/>`).join("")}</g>\n    <g id="nav-me" opacity="${located ? 1 : 0}"><circle cx="${M.me[0]}" cy="${M.me[1]}" r="9" fill="none" stroke="#2fd1a8" stroke-width="1"><animate attributeName="r" values="6;14;6" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="1.8s" repeatCount="indefinite"/></circle></g>\n    <circle cx="${M.me[0]}" cy="${M.me[1]}" r="4" fill="#dfe9ff"/><circle r="3" fill="#2fd1a8" filter="url(#pGlow)"><animateMotion dur="4s" repeatCount="indefinite" path="${M.route}"/></circle>\n    <path d="M${M.pin[0]} ${M.pin[1]} C ${M.pin[0] - 4} ${M.pin[1]} ${M.pin[0] - 6} ${M.pin[1] - 3} ${M.pin[0] - 6} ${M.pin[1] - 6} C ${M.pin[0] - 6} ${M.pin[1] - 10} ${M.pin[0]} ${M.pin[1] - 16} ${M.pin[0]} ${M.pin[1] - 16} C ${M.pin[0]} ${M.pin[1] - 16} ${M.pin[0] + 6} ${M.pin[1] - 10} ${M.pin[0] + 6} ${M.pin[1] - 6} C ${M.pin[0] + 6} ${M.pin[1] - 3} ${M.pin[0] + 4} ${M.pin[1]} ${M.pin[0]} ${M.pin[1]} Z" fill="#2fd1a8"/>`;
+}
+
+HANDLERS.nav = function(s, p, fx, warn) {
+    norm(p, {
+        "open": "on",
+        "close": "off"
+    });
+    const n = s.nav, a = p.action || (p.end ? "navigate" : p.search ? "search" : "locate");
+    const reroll = () => {
+        n.map = 1 + Math.floor(Math.random() * 4294967294);
+    };
+    if (p.target === "traffic" && (a === "on" || a === "off" || a === "traffic")) {
+        n.traffic = a !== "off";
+        n.active = n.active || n.traffic;
+        if (p.end && p.end !== n.dest) {
+            reroll();
+        }
+        if (p.end) n.dest = p.end;
+        s.screen = "nav";
+        fx.push({
+            kind: "nav"
+        });
+        return;
+    }
+    if (a === "traffic") {
+        n.traffic = !n.traffic;
+        n.active = true;
+        if (p.end && p.end !== n.dest) {
+            reroll();
+        }
+        if (p.end) n.dest = p.end;
+        s.screen = "nav";
+        touch(s, "nav");
+        fx.push({
+            kind: "nav"
+        });
+        return;
+    }
+    if (a === "locate") {
+        n.located = true;
+        n.active = true;
+        s.screen = "nav";
+        fx.push({
+            kind: "status",
+            title: "Current location",
+            sub: p.target === "traffic" ? "Traffic nearby: clear · demo" : "Shennan Blvd · demo",
+            icon: "◎",
+            color: "#2fd1a8"
+        });
+        return;
+    }
+    if (a === "time left" || a === "distance left") {
+        if (p.end && p.end !== n.dest) {
+            reroll();
+        }
+        if (p.end) n.dest = p.end;
+        n.active = true;
+        n.remaining = a === "time left" ? "left 24 min" : "left 18 km";
+        s.screen = "nav";
+        fx.push({
+            kind: "status",
+            title: n.remaining,
+            sub: `to ${n.dest || "Destination"}${p.target === "traffic" ? " · road ahead clear" : ""} · demo`,
+            icon: "➤",
+            color: "#2fd1a8"
+        });
+        return;
+    }
+    if (a === "search" && p.end && !p.search) {
+        s.list = mkList("guide", `${p.end} guide`, Array.from({
+            length: 8
+        }, (_, i) => ({
+            name: `${p.end}guide ${i + 1}`,
+            meta: [ "3 days", "5 days", "weekend", "7 days" ][i % 4]
+        })));
+        n.search = p.end;
+        s.screen = "list";
+        touch(s, "nav");
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    if (a === "search" && !p.end) {
+        const dist = p.distance ? `${p.distance} ${p.unit || "km"}` : "nearby";
+        const what = p.search || "places";
+        s.list = mkList("places", `${what} · ${dist}`, Array.from({
+            length: 8
+        }, (_, i) => ({
+            name: `${what} ${i + 1}`,
+            meta: `${(.4 + i * .7).toFixed(1)} km`
+        })));
+        n.search = what;
+        if (p.route) n.route = p.route;
+        s.screen = "list";
+        touch(s, "nav");
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    if (a === "navigate" || a === "on" || a === "search") {
+        const nd = p.end || (p.search ? p.search + " nearby" : n.dest || "Destination");
+        if (nd !== n.dest || !n.active || p.start && p.start !== n.start || p.route && p.route !== n.route) reroll();
+        n.active = true;
+        n.dest = nd;
+        if (p.start) n.start = p.start;
+        if (p.route) n.route = p.route;
+        n.remaining = "";
+        s.screen = "nav";
+        touch(s, "nav");
+        fx.push({
+            kind: "nav"
+        });
+        return;
+    }
+    if (a === "off") {
+        n.active = false;
+        n.traffic = false;
+        if (s.screen === "nav") s.screen = "idle";
+        fx.push({
+            kind: "screen"
+        });
+        return;
+    }
+    warn.push(`nav: unknown action ${a}`);
+};
+
+const toSec = p => (Number(p.hour) || 0) * 3600 + (Number(p.minute) || 0) * 60 + (Number(p.second) || 0);
+
+HANDLERS.video = function(s, p, fx, warn) {
+    const a = p.action || "play";
+    const v = s.video || (s.video = {
+        name: "",
+        ep: "",
+        type: "",
+        actor: "",
+        source: "iQIYI",
+        playing: false,
+        pos: 0,
+        dur: 5400
+    });
+    if (p.name) v.name = p.name;
+    if (p.type) v.type = p.type;
+    if (p.actor) v.actor = p.actor;
+    if (p.source) v.source = p.source;
+    if (a === "query") {
+        const who = p.actor || p.name || "Trending";
+        s.list = mkList("shows", `${who} · ${p.type || "shows"}`, Array.from({
+            length: 6
+        }, (_, i) => ({
+            name: `${who}works ${i + 1}`,
+            meta: p.type || ""
+        })));
+        s.screen = "list";
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    if (a === "play") {
+        if (p.ep) v.ep = p.ep;
+        if (!v.name) v.name = v.actor ? `${v.type || "film"} · ${v.actor}` : v.type || "video";
+        v.playing = true;
+        if (p.ep || p.name) v.pos = 0;
+        {
+            const d = toSec(p);
+            if (d) v.pos = Math.min(v.dur, d);
+        }
+        s.screen = "video";
+        touch(s, "video");
+    } else if (a === "pause") {
+        v.playing = false;
+        s.screen = "video";
+    } else if (a === "next episode" || a === "previous episode") {
+        v.ep = String(Math.max(1, (Number(v.ep) || 1) + (a === "next episode" ? 1 : -1)));
+        v.pos = 0;
+        v.playing = true;
+        s.screen = "video";
+    } else if (a === "fast-forward" || a === "rewind") {
+        let d = toSec(p);
+        if (p.ep && !d) {
+            v.ep = p.ep;
+            v.pos = 0;
+        } else {
+            if (!d) d = 30;
+            v.pos = Math.max(0, Math.min(v.dur, v.pos + (a === "fast-forward" ? d : -d)));
+        }
+        s.screen = "video";
+    } else if (a === "settings") {
+        if (p.ep) v.ep = p.ep;
+        const d = toSec(p);
+        if (d) v.pos = Math.min(v.dur, d);
+        s.screen = "video";
+    } else warn.push(`video: unknown action ${a}`);
+    fx.push({
+        kind: "video"
+    });
+};
+
+HANDLERS.music = function(s, p, fx, warn) {
+    const m = s.music, a = p.action || (p.mode ? "set" : "play");
+    for (const k in p) if (p[k] === "") delete p[k];
+    if (p.source) m.source = p.source;
+    if (p.mode) m.mode = p.mode;
+    if (p.list) m.list = p.list;
+    const wantsNew = p.song || p.singer || p.album || p.list || p.name;
+    if (a === "play") {
+        if (wantsNew || !m.queue) {
+            m.queue = buildQueue(p);
+            setTrack(m, 0);
+        }
+        m.playing = true;
+        s.screen = "music";
+        touch(s, "music");
+    } else if (a === "set") {
+        s.screen = "music";
+    } else if (a === "pause" || a === "stop") {
+        m.playing = false;
+    } else if (a === "next" || a === "skip") {
+        if (!m.queue) {
+            m.queue = buildQueue({});
+        }
+        setTrack(m, m.idx + 1);
+        m.playing = true;
+        s.screen = "music";
+        fx.push({
+            kind: "swipe",
+            dir: 1
+        });
+    } else if (a === "previous") {
+        if (!m.queue) {
+            m.queue = buildQueue({});
+        }
+        setTrack(m, m.idx - 1);
+        m.playing = true;
+        s.screen = "music";
+        fx.push({
+            kind: "swipe",
+            dir: -1
+        });
+    } else if (a === "favourite") {
+        m.fav = true;
+        s.screen = "music";
+    } else if (a === "unfavourite" || a === "unfavourite") {
+        m.fav = false;
+        s.screen = "music";
+    } else if (a === "show lyrics") {
+        m.lyrics = true;
+        s.screen = "music";
+    } else if (a === "hide lyrics") {
+        m.lyrics = false;
+        s.screen = "music";
+    } else if (a === "query") {
+        fx.push({
+            kind: "status",
+            title: "Now playing",
+            sub: `${m.song} · ${m.singer}${p.name ? " · " + p.name : ""}`,
+            icon: "♪",
+            color: "#ff6a8e"
+        });
+        return;
+    } else warn.push(`music: unknown action ${a}`);
+    fx.push({
+        kind: "music"
+    });
+};
+
+HANDLERS.tour = function(s, p, fx) {
+    const PLAN = [ "dest", "days", "budget", "people", "type", "group" ];
+    const isNew = p.dest && s.tour && p.dest !== s.tour.dest;
+    const onlyDay = Object.keys(p).every(k => k === "day");
+    if (!s.tour || isNew || !onlyDay && !s.tour.dest && p.dest) s.tour = {
+        dest: "",
+        days: "",
+        budget: "",
+        people: "",
+        type: "",
+        group: "",
+        day: ""
+    };
+    const t = s.tour;
+    if (!onlyDay) t.day = "";
+    for (const k of [ "dest", "days", "budget", "people", "type", "group", "day" ]) if (p[k] != null) t[k] = p[k];
+    const n = Math.max(1, parseInt(t.days) || 3);
+    s.list = mkList("guide", `${t.dest || "Road trip"}guide`, Array.from({
+        length: n
+    }, (_, i) => ({
+        name: `Day ${i + 1}`,
+        meta: [ "Departure · stops on the way", "Sightseeing", "Free time", "Return" ][i % 4]
+    })));
+    s.screen = "tour";
+    touch(s, "tour");
+    fx.push({
+        kind: "tour"
+    });
+};
+
+HANDLERS.travel = function(s, p, fx) {
+    const a = p.action || "search";
+    touch(s, "travel");
+    if (a === "search") {
+        const parts = [ p.keyword, p.location, p.date ].filter(Boolean);
+        s.travel.lastSearch = parts.join(" · ") || "Trip photos";
+        s.list = mkList("images", s.travel.lastSearch, Array.from({
+            length: 10
+        }, (_, i) => ({
+            name: `${p.keyword || "photos"} ${i + 1}`,
+            meta: p.location || ""
+        })));
+        s.screen = "list";
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    if (a === "start") {
+        s.travel.recording = true;
+    }
+    if (a === "stop") {
+        s.travel.recording = false;
+    }
+    if (a === "photo") {
+        s.travel.photos++;
+    }
+    if (a === "generate") {
+        s.travel.lastGen = [ p.style, p.date, p.location, p.keyword ].filter(Boolean).join(" · ") || "Trip memories video";
+    }
+    s.screen = "travel";
+    fx.push({
+        kind: "travel",
+        action: a
+    });
+};
+
+HANDLERS.paint = function(s, p, fx) {
+    touch(s, "paint");
+    const a = p.action || "create";
+    if (p.type) s.paint.type = p.type;
+    if (p.scene) s.paint.scene = p.scene;
+    s.paint.state = {
+        "create": "Canvas created",
+        "start": "Drawing……",
+        "stop": "Stopped",
+        "redraw": "Redrawing……",
+        "album": "album"
+    }[a] || a;
+    if (a === "album") {
+        s.list = gallery("album", 8, "Artwork");
+        s.screen = "list";
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    s.screen = "paint";
+    fx.push({
+        kind: "paint"
+    });
+};
+
+const BUILTIN = {
+    "music": "music",
+    "NetEase Music": "music",
+    "QQ Music": "music",
+    "Kugou Music": "music",
+    "Music player": "music",
+    "navigate": "nav",
+    "Amap": "nav",
+    "Baidu Maps": "nav",
+    "maps": "nav",
+    "video": "video",
+    "iQIYI": "video",
+    "Tencent Video": "video",
+    "phone": "phone",
+    "Bluetooth phone": "phone",
+    "Road-trip assistant": "tour",
+    "Trip log": "travel",
+    "AI Paint": "paint",
+    "AI Inspire Paint": "paint",
+    "AI Art Studio": "paint"
+};
+
+function closeKind(s, k) {
+    if (k === "music") s.music.playing = false;
+    if (k === "video" && s.video) s.video.playing = false;
+    if (k === "nav") {
+        s.nav.active = false;
+        s.nav.traffic = false;
+    }
+    if (k === "phone") s.phone.active = false;
+    if (s.screen === "status" || s.screen === k || k === "tour" && s.screen === "list" || s.screen === "list" && s.list && (k === "nav" && s.list.kind === "places" || k === "video" && s.list.kind === "shows" || k === "travel" && s.list.kind === "images")) s.screen = "idle";
+}
+
+HANDLERS.switch = function(s, p, fx, warn) {
+    if (!p.target && p.action && ![ "on", "off" ].includes(p.action)) {
+        p.target = p.action;
+        p.action = "on";
+    }
+    if (!p.target) {
+        warn.push("switch: missing target");
+        return;
+    }
+    const on = p.action !== "off";
+    s.apps[p.target] = on;
+    if (p.target === "photos" || p.target === "gallery" || p.target === "photos") {
+        if (on) {
+            s.list = gallery("photos", 10);
+            s.screen = "list";
+            touch(s, "travel");
+        } else if (s.screen === "list" && s.list && s.list.kind === "images") s.screen = "idle";
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    const k = BUILTIN[p.target];
+    if (k) {
+        if (on) {
+            touch(s, k);
+            s.screen = k;
+        } else closeKind(s, k);
+        fx.push({
+            kind: "screen"
+        });
+        return;
+    }
+    if (on) {
+        touch(s, "app", p.target);
+        s.app = p.target;
+        s.screen = "app";
+    } else {
+        s.recent = s.recent.filter(r => r.id !== "app:" + p.target);
+        if (s.app === p.target) {
+            s.app = null;
+            if (s.screen === "app" || s.screen === "status") s.screen = "idle";
+        }
+    }
+    fx.push({
+        kind: "screen"
+    });
+};
+
+HANDLERS.bt = function(s, p, fx) {
+    const a = p.action || "call";
+    if (a === "call") {
+        s.bt = true;
+        s.phone.active = true;
+        s.phone.contact = p.target || "Unknown contact";
+        s.screen = "phone";
+        touch(s, "phone");
+        fx.push({
+            kind: "phone"
+        });
+    } else if (a === "hang up") {
+        s.phone.active = false;
+        if (s.screen === "phone") s.screen = "idle";
+        fx.push({
+            kind: "screen"
+        });
+    } else {
+        s.bt = a === "on";
+        if (!s.bt && s.phone.active) {
+            s.phone.active = false;
+            if (s.screen === "phone") s.screen = "idle";
+        }
+        fx.push({
+            kind: "status",
+            title: `bluetooth ${s.bt ? "Opened" : "Closed"}`,
+            sub: "",
+            icon: "ᛒ",
+            color: s.bt ? "#3f8cff" : "#8a93a3"
+        });
+    }
+};
+
+HANDLERS.volume = function(s, p, fx, warn) {
+    if (p.action === "query") {
+        const t = p.target || "media";
+        const v = k => s.muted[k] ? "mute" : s.vol[k];
+        fx.push({
+            kind: "status",
+            title: `${t} volume: ${v(t)}`,
+            sub: p.target ? `media ${v("media")} · navigate ${v("navigate")} · voice ${v("voice")} · system ${v("system")}` : `navigate ${v("navigate")} · voice ${v("voice")} · system ${v("system")} · phone ${v("phone")}`,
+            icon: "♪",
+            color: "#3fd2ff"
+        });
+        return;
+    }
+    for (const k of [ "action", "target" ]) if (p[k] != null && !VOL_S[k].includes(p[k])) {
+        warn.push(`volume.${k} value “${p[k]}” is not in the schema , ignored`);
+        delete p[k];
+    }
+    if (p.degree != null && num(p.degree, [ 0, 99 ]) == null) {
+        warn.push(`volume.degree“${p.degree}” is not a number, ignored`);
+        delete p.degree;
+    }
+    const act = p.action || (p.degree != null ? "set" : null), t = p.target || "media";
+    if (!act) {
+        warn.push("volume: missing action");
+        return;
+    }
+    if (act === "mute") {
+        s.muted[t] = true;
+        fx.push({
+            kind: "volume",
+            target: t
+        });
+        return;
+    }
+    if (act === "unmute") {
+        s.muted[t] = false;
+        fx.push({
+            kind: "volume",
+            target: t
+        });
+        return;
+    }
+    const d = p.degree === "min" ? 1 : num(p.degree, RANGE.volume), cur = s.vol[t];
+    if (act === "set") {
+        if (d == null) {
+            warn.push("volume: set is missing degree");
+            return;
+        }
+        s.vol[t] = clamp(d, RANGE.volume);
+    } else if (act === "increase") s.vol[t] = clamp(cur + (d == null ? 5 : d), RANGE.volume); else if (act === "decrease") s.vol[t] = clamp(cur - (d == null ? 5 : d), RANGE.volume);
+    s.muted[t] = s.vol[t] <= 1;
+    fx.push({
+        kind: "volume",
+        target: t
+    });
+};
+
+HANDLERS.general = function(s, p, fx, warn) {
+    let a = p.action, idx = parseInt(p.index) || 0;
+    const sc = s.screen;
+    if (a === "close" || a === "off") a = "exit";
+    if (a === "open" || a === "on" || a === "view") {
+        s.list = listFor(s, p.object);
+        s.screen = "list";
+        fx.push({
+            kind: "list"
+        });
+        return;
+    }
+    const close = () => {
+        if (sc === "app") s.app = null;
+        if (sc === "nav") s.nav.active = false;
+        if (sc === "phone") s.phone.active = false;
+        if (sc === "video" && s.video) s.video.playing = false;
+        s.screen = "idle";
+        fx.push({
+            kind: "screen"
+        });
+    };
+    if ([ "cancel", "back", "exit", "home" ].includes(a)) {
+        if (sc !== "idle") {
+            if (a === "exit" || a === "home") {
+                s.list = null;
+            }
+            close();
+        } else fx.push({
+            kind: "status",
+            title: a,
+            sub: "No screen is open",
+            icon: "⟳",
+            color: "#8a93a3"
+        });
+        return;
+    }
+    if (a === "retry") {
+        if (s.lastCmd && HANDLERS[s.lastCmd.tool]) {
+            const c = parseDSL(s.lastCmd.line)[0];
+            HANDLERS[c.tool](s, c.params, fx, warn);
+            return;
+        }
+        if (s.list) {
+            s.list.page = 0;
+            s.list.sel = -1;
+            s.screen = "list";
+            fx.push({
+                kind: "list"
+            });
+            return;
+        }
+        fx.push({
+            kind: "status",
+            title: "retry",
+            sub: "Nothing to retry",
+            icon: "⟳",
+            color: "#8a93a3"
+        });
+        return;
+    }
+    if (a === "stop") {
+        const L = s.last;
+        if (L && L.tool === "general") {
+            fx.push({
+                kind: "status",
+                title: "Stopped",
+                sub: s.list ? s.list.title : "",
+                icon: "■",
+                color: "#8a93a3"
+            });
+            return;
+        }
+        if (L && [ "ac", "seat", "light", "win", "shade" ].includes(L.tool)) {
+            const c = parseDSL(L.line)[0];
+            const q = {
+                action: "off"
+            };
+            for (const k of [ "zone", "mode", "target" ]) if (c.params[k]) q[k] = c.params[k];
+            if (L.tool === "win" || L.tool === "shade" || L.tool === "light") delete q.target;
+            if (L.tool === "light") delete q.mode;
+            HANDLERS[L.tool](s, q, fx, warn);
+            return;
+        }
+        if (s.video && s.video.playing && (sc === "video" || !s.music.playing)) {
+            s.video.playing = false;
+            s.screen = "video";
+            fx.push({
+                kind: "video"
+            });
+            return;
+        }
+        if (s.music.playing) {
+            s.music.playing = false;
+            if (sc === "idle") s.screen = "music";
+            fx.push({
+                kind: "music"
+            });
+            return;
+        }
+        fx.push({
+            kind: "status",
+            title: "Stopped",
+            sub: "",
+            icon: "■",
+            color: "#8a93a3"
+        });
+        return;
+    }
+    if (a === "play" || a === "pause") {
+        if (a === "play" && idx && s.list) {
+            s.list.sel = idx - 1;
+            const it = s.list.items[idx - 1];
+            if (it) {
+                if (s.list.kind === "shows") {
+                    s.video = {
+                        name: it.name,
+                        ep: "1",
+                        type: it.meta,
+                        actor: "",
+                        source: "iQIYI",
+                        playing: true,
+                        pos: 0,
+                        dur: 5400
+                    };
+                    s.screen = "video";
+                } else {
+                    s.music.song = it.name;
+                    s.music.playing = true;
+                    s.screen = "music";
+                }
+                fx.push({
+                    kind: "list"
+                });
+                return;
+            }
+        }
+        if (s.video && (sc === "video" || !s.music.playing)) {
+            s.video.playing = a === "play";
+            s.screen = "video";
+            fx.push({
+                kind: "video"
+            });
+            return;
+        }
+        s.music.playing = a === "play";
+        if (s.screen === "idle") s.screen = "music";
+        fx.push({
+            kind: "music"
+        });
+        return;
+    }
+    if (!s.list && (a === "save" || a === "share") && !p.object) {
+        fx.push({
+            kind: "status",
+            title: a === "save" ? "Current settings saved" : "Shared",
+            sub: s.last ? s.last.line : "",
+            icon: a === "save" ? "✓" : "↗",
+            color: "#3fd2ff"
+        });
+        return;
+    }
+    if (!s.list) s.list = listFor(s, p.object);
+    const L = s.list, pages = Math.max(1, Math.ceil(L.items.length / PAGE));
+    if (a === "next page" || a === "swipe down") L.page = Math.min(pages - 1, L.page + 1); else if (a === "previous page" || a === "swipe up") L.page = Math.max(0, L.page - 1); else if (a === "page N") L.page = Math.max(0, Math.min(pages - 1, (idx || 1) - 1)); else if (a === "last page") L.page = pages - 1; else if (a === "item N") {
+        L.sel = Math.max(0, Math.min(L.items.length - 1, (idx || 1) - 1));
+        L.page = Math.floor(L.sel / PAGE);
+    } else if (a === "last item") {
+        L.sel = L.items.length - 1;
+        L.page = pages - 1;
+    } else if (a === "save" || a === "share") {
+        if (idx) {
+            L.sel = Math.max(0, Math.min(L.items.length - 1, idx - 1));
+            L.page = Math.floor(L.sel / PAGE);
+        }
+        const it = L.items[L.sel] || L.items[L.page * PAGE];
+        fx.push({
+            kind: "status",
+            title: `${a === "save" ? "Saved" : "Shared"}${p.object ? " " + p.object : ""}`,
+            sub: it ? it.name : L.title,
+            icon: a === "save" ? "✓" : "↗",
+            color: "#3fd2ff"
+        });
+        return;
+    } else if (a === "refresh") {
+        L.page = 0;
+        L.sel = -1;
+    } else {
+        fx.push({
+            kind: "status",
+            title: `General · ${a}`,
+            sub: L.title,
+            icon: "⟳",
+            color: "#6f7fe8"
+        });
+        return;
+    }
+    s.screen = "list";
+    fx.push({
+        kind: "list"
+    });
+};
+
+for (const t of Object.keys(HANDLERS)) {
+    const h = HANDLERS[t];
+    HANDLERS[t] = function(s, p, fx, warn) {
+        const line = t + ": " + Object.entries(p).map(([k, v]) => `${k}|${String(v).replace(/ /g, "_")}`).join(" ");
+        const r = h(s, p, fx, warn);
+        s.last = {
+            tool: t,
+            line: line
+        };
+        if (t !== "general") s.lastCmd = s.last;
+        return r;
+    };
+}
+
+const _shade = HANDLERS.shade, _ac = HANDLERS.ac, _win = HANDLERS.win, _seat = HANDLERS.seat;
+
+HANDLERS.shade = (s, p, fx, w) => {
+    norm(p, {
+        "settings": "set",
+        "tune": "set",
+        "open": "on",
+        "close": "off"
+    });
+    if (p.zone === "whole car") p.zone = "all";
+    return _shade(s, p, fx, w);
+};
+
+HANDLERS.ac = (s, p, fx, w) => {
+    norm(p, {
+        "open": "on",
+        "close": "off"
+    });
+    return _ac(s, p, fx, w);
+};
+
+HANDLERS.win = (s, p, fx, w) => {
+    norm(p, {
+        "open": "on",
+        "close": "off"
+    });
+    return _win(s, p, fx, w);
+};
+
+HANDLERS.seat = (s, p, fx, w) => {
+    norm(p, {
+        "open": "on",
+        "close": "off"
+    });
+    if (p.zone === "whole car") p.zone = "all";
+    return _seat(s, p, fx, w);
+};
+
+const SCREEN_IDS = {
+    idle: "panel-idle",
+    status: "panel-status",
+    music: "app-ui-music",
+    nav: "app-ui-nav",
+    phone: "app-ui-phone",
+    video: "app-ui-video",
+    list: "app-ui-list",
+    tour: "app-ui-tour",
+    app: "app-ui-app",
+    travel: "app-ui-travel",
+    paint: "app-ui-paint"
+};
+
+SCREENS.length = 0;
+
+Object.values(SCREEN_IDS).forEach(x => SCREENS.push(x));
+
+const fmt = sec => {
+    sec = Math.max(0, Math.round(sec));
+    const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    return (h ? h + ":" : "") + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+};
+
+function scenePic(x, y, w, h) {
+    return `<path d="M${x + 2} ${y + h - 6} L${x + w * .38} ${y + h * .45} L${x + w * .72} ${y + h - 6} Z" fill="rgba(255,255,255,.35)"/><path d="M${x + w * .5} ${y + h - 6} L${x + w * .78} ${y + h * .55} L${x + w - 2} ${y + h - 6} Z" fill="rgba(255,255,255,.25)"/><circle cx="${x + w - 12}" cy="${y + 12}" r="4" fill="rgba(255,255,255,.7)"/>`;
+}
+
+function renderExt() {
+    if (state.screen !== "status") {
+        const want = SCREEN_IDS[state.screen] || "panel-idle";
+        if ($(want).getAttribute("opacity") !== "1") showScreen(want);
+    }
+    {
+        const key = `${state.nav.map}|${state.nav.traffic ? 1 : 0}|${state.nav.located ? 1 : 0}`;
+        if ($("nav-map").dataset.k !== key) {
+            $("nav-map").dataset.k = key;
+            $("nav-map").innerHTML = mapHTML(state.nav.map, state.nav.traffic, state.nav.located);
+        }
+    }
+    {
+        const parts = [ state.nav.start ? "from " + state.nav.start : null, state.nav.route, state.nav.remaining || "ETA 24 min" ].filter(Boolean);
+        let t = parts.join(" · ") + " · demo";
+        if (t.length > 20) t = parts.join(" · ");
+        if (t.length > 20) t = t.slice(0, 19) + "…";
+        $("nav-sub").textContent = t;
+    }
+    const m = state.music;
+    $("music-fav").setAttribute("fill", m.fav ? "#ff6a8e" : "none");
+    $("music-lyric").setAttribute("opacity", m.lyrics ? 1 : 0);
+    $("music-times").setAttribute("opacity", m.lyrics ? 0 : 1);
+    {
+        const q = m.queue, n = q ? q.items.length : 0, cut = (t, k) => t.length > k ? t.slice(0, k - 1) + "…" : t;
+        $("music-sub").textContent = [ m.source, m.mode ].filter(Boolean).join(" · ");
+        $("music-sub2").textContent = cut([ m.album ? "Album " + m.album : null, q ? `${q.title} · ${m.idx + 1}/${n}` : null ].filter(Boolean).join(" · "), 24);
+        $("music-title").textContent = cut(m.song, 9);
+        $("music-artist").textContent = cut(m.singer, 14);
+        const isQQ = /QQ/i.test(m.source || ""), col = isQQ ? "#31c27c" : "#ff4d4f";
+        $("music-src-t").textContent = isQQ ? "QQ Music" : "NetEase";
+        $("music-src").querySelector("rect").setAttribute("fill", isQQ ? "#1a8f55" : "#e60026");
+        $("music-cover").setAttribute("fill", isQQ ? "url(#srcQQ)" : "url(#srcNetease)");
+        $("music-prog").setAttribute("fill", col);
+        $("music-fav").setAttribute("stroke", col);
+        if (m.fav) $("music-fav").setAttribute("fill", col);
+        const dd = m.dur || 299, pos = Math.min(dd, m.pos || 0), fr = pos / dd;
+        $("music-prog").setAttribute("width", 110 * fr);
+        $("music-knob").setAttribute("cx", 176 + 110 * fr);
+        $("music-times").children[0].textContent = `${Math.floor(pos / 60)}:${String(pos % 60).padStart(2, "0")}`;
+        $("music-times").children[1].textContent = `${Math.floor(dd / 60)}:${String(dd % 60).padStart(2, "0")}`;
+        const up = q ? q.items.slice(m.idx + 1, m.idx + 3) : [];
+        $("music-next").textContent = up.length ? "Up next: " + up.map(x => x.song + (x.singer ? " · " + x.singer : "")).join("  |  ") : "";
+    }
+    if (state.video) {
+        const v = state.video;
+        $("video-title").textContent = v.name || "video";
+        $("video-ep").textContent = v.ep ? `Ep. ${v.ep}` : "";
+        $("video-ep").setAttribute("opacity", v.ep ? 1 : 0);
+        $("video-sub").textContent = [ v.type, v.actor, v.source ].filter(Boolean).join(" · ");
+        {
+            const fr = Math.max(0, Math.min(1, v.pos / (v.dur || 5400)));
+            $("video-prog").setAttribute("width", 100 * fr);
+            $("video-knob").setAttribute("cx", 186 + 100 * fr);
+        }
+        $("video-time").textContent = `${fmt(v.pos)} / ${fmt(v.dur)}  ${v.playing ? "▶" : "⏸"}`;
+        $("video-play").setAttribute("d", v.playing ? "M121 162 H124.5 V174 H121 Z M127.5 162 H131 V174 H127.5 Z" : "M122 161 L133 168 L122 175 Z");
+    }
+    if (state.list) {
+        const L = state.list, pages = Math.max(1, Math.ceil(L.items.length / PAGE)), start = L.page * PAGE;
+        $("list-title").textContent = L.title;
+        $("list-page").textContent = `${L.page + 1} / ${pages}`;
+        let html = "";
+        L.items.slice(start, start + PAGE).forEach((it, i) => {
+            const n = start + i, sel = n === L.sel;
+            if (L.kind === "images") {
+                const x = 70 + i * 57;
+                html += `<rect x="${x}" y="138" width="50" height="60" rx="8" fill="url(#pic${n % 4})" stroke="${sel ? "#3fd2ff" : "none"}" stroke-width="1.6"/><g clip-path="inset(0 round 8px)">${scenePic(x, 138, 50, 60)}</g><text x="${x + 25}" y="210" text-anchor="middle" fill="${sel ? "#9ff0ff" : "#8a93a3"}" font-size="7">${n + 1} · ${it.name}</text>`;
+            } else {
+                const y = 136 + i * 20;
+                html += `<rect x="68" y="${y}" width="224" height="17" rx="4" fill="${sel ? "rgba(63,210,255,.18)" : "rgba(255,255,255,.04)"}" stroke="${sel ? "#3fd2ff" : "none"}" stroke-width="1"/><text x="76" y="${y + 12}" fill="#dfe9ff" font-size="9">${n + 1}. ${it.name}</text><text x="286" y="${y + 12}" text-anchor="end" fill="#6f7fe8" font-size="8">${it.meta || ""}</text>`;
+            }
+        });
+        $("list-items").innerHTML = html;
+    }
+    if (state.tour) {
+        const t = state.tour;
+        $("tour-dest").textContent = t.dest || "Road trip";
+        $("tour-sub").textContent = [ t.type, t.group, t.people ? t.people + " ppl" : null ].filter(Boolean).join(" · ") || "planning";
+        $("tour-days").textContent = t.days ? t.days + " days" : "—";
+        $("tour-budget").textContent = t.budget ? (/^\d/.test(t.budget) ? "¥" : "") + t.budget : "—";
+        $("tour-people").textContent = t.people ? t.people + " ppl" : "—";
+        $("tour-day").textContent = t.day ? `Day ${t.day}: ${(state.list && state.list.items[t.day - 1] || {}).meta || "Trip"}` : "";
+    }
+    {
+        const GRAD = {
+            home: "#1c2044",
+            nav: "url(#appNav)",
+            music: "url(#appMusic)",
+            phone: "url(#appPhone)",
+            video: "url(#vidG)",
+            tour: "url(#pic3)",
+            travel: "url(#pic2)",
+            paint: "url(#pic0)",
+            list: "url(#pic1)",
+            app: "#2a2f55"
+        };
+        const GLYPH = {
+            home: '<path d="M31 129 L38 122.5 L45 129 V136 H40.5 V131 H35.5 V136 H31 Z" fill="none" stroke="#9ff0ff" stroke-width="1.4" stroke-linejoin="round"/>',
+            nav: '<path d="M38 121 C 34.7 121 32.5 123.3 32.5 126.2 C 32.5 130 38 135.5 38 135.5 C 38 135.5 43.5 130 43.5 126.2 C 43.5 123.3 41.3 121 38 121 Z" fill="none" stroke="#fff" stroke-width="1.4"/><circle cx="38" cy="126.2" r="1.8" fill="#fff"/>',
+            music: '<path d="M35 135 V124 L44 122 V133" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><circle cx="33" cy="135" r="2.4" fill="#fff"/><circle cx="42" cy="133" r="2.4" fill="#fff"/>',
+            phone: '<path d="M32.5 122.5 C 33.5 121.5 35 121.5 35.6 122.6 L 37 125 C 37.4 125.8 37.1 126.6 36.4 127.2 L 35.4 128 C 36.3 130.2 37.8 131.7 40 132.6 L 40.8 131.6 C 41.4 130.9 42.2 130.6 43 131 L 45.4 132.4 C 46.5 133 46.5 134.5 45.5 135.5 L 44.6 136.4 C 43.4 137.6 41.6 137.8 40.1 137.1 C 35.6 135 32.9 132.4 30.9 127.9 C 30.2 126.4 30.4 124.6 31.6 123.4 Z" fill="#fff"/>',
+            video: '<path d="M34 122 L44 128 L34 134 Z" fill="#fff"/>',
+            tour: '<path d="M38 120 L41 126 L38 138 L35 126 Z" fill="#fff"/>',
+            travel: '<rect x="31" y="124" width="14" height="10" rx="2" fill="none" stroke="#fff" stroke-width="1.4"/><circle cx="38" cy="129" r="2.6" fill="none" stroke="#fff" stroke-width="1.4"/>',
+            paint: '<path d="M31 137 C 33 128 43 118 45 121 C 47 124 36 134 31 137 Z" fill="#fff"/>',
+            list: '<path d="M32 123 H44 M32 128 H44 M32 133 H44" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>'
+        };
+        const cur = state.screen;
+        let html = "";
+        [ {
+            id: "home",
+            kind: "home",
+            name: "Home"
+        } ].concat(state.recent).forEach((r, i) => {
+            const col = i % 2, row = (i - col) / 2, x = 36 + col * 30, y = 100 + row * 30, on = r.kind === "home" ? cur === "idle" || cur === "status" : r.kind === "app" ? cur === "app" && state.app === r.name : cur === r.kind;
+            const inner = r.kind === "app" ? `<text x="${x + 12}" y="${y + 17}" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">${r.name.slice(0, 1)}</text>` : `<g transform="translate(${x + 12} ${y + 12}) scale(.86) translate(-38 -128)">${GLYPH[r.kind]}</g>`;
+            html += `<g class="rapp${on ? " on" : ""}" data-id="${r.id}" style="--dx:${54 - (x + 12)}px;--dy:${244 - (y + 12)}px"><title>${r.name}</title><rect x="${x}" y="${y}" width="24" height="24" rx="7" fill="${GRAD[r.kind]}"${r.kind === "app" || r.kind === "home" ? ' stroke="#6f7fe8" stroke-width="1"' : ""}/>${inner}</g>`;
+        });
+        const box = $("rapps");
+        if (box.innerHTML !== html) box.innerHTML = html;
+        $("panel-apps").querySelector("text").setAttribute("opacity", state.recent.length ? 1 : .4);
+    }
+    {
+        const t = state.travel;
+        $("travel-state").textContent = t.recording ? "● Recording…" : "Not recording";
+        $("travel-state").setAttribute("fill", t.recording ? "#3ddc84" : "#8a93a3");
+        $("travel-sub").textContent = [ t.photos ? `${t.photos} photos taken` : null, t.lastSearch ? "Search: " + t.lastSearch : null ].filter(Boolean).join(" · ");
+        $("travel-gen").textContent = t.lastGen ? "Generated: " + t.lastGen : "";
+        const pn = state.paint;
+        $("paint-state").textContent = pn.state;
+        $("paint-sub").textContent = [ pn.type, pn.scene ].filter(Boolean).join(" · ");
+        $("paint-canvas").setAttribute("opacity", pn.state === "Stopped" ? .35 : .9);
+    }
+    if (state.app) {
+        $("app-name").textContent = state.app;
+        $("app-tile-t").textContent = state.app.slice(0, 1);
+        $("app-sub").textContent = (state.apps[state.app] ? "Opened" : "Closed") + " · demo";
+    }
+    const circ = [ "lf", "rf", "rear" ].map(z => state.ac.zone[z]).find(q => q.on && q.circ);
+    const circ_ = circ ? circ.circ : null;
+    const CIRC = {
+        "recirculate": "⟲ recirculate",
+        "fresh air": "⇄ fresh air",
+        "dual loop": "⇆ dual loop",
+        "auto": "A auto"
+    };
+    $("ac-circ").textContent = circ_ ? CIRC[circ_] : "";
+    $("panel-circ").textContent = circ_ ? CIRC[circ_] : "";
+}
+
+const _renderCore = render;
+
+render = function() {
+    _renderCore();
+    renderExt();
+};
+
+$("screen-center").addEventListener("click", () => {
+    document.body.classList.toggle("panelHidden");
+    setTimeout(() => $("pulseLayer").innerHTML = "", 0);
+});
+
+$("rapps").addEventListener("click", e => {
+    const g = e.target.closest(".rapp");
+    if (!g) return;
+    if (g.dataset.id === "home") {
+        state.screen = "idle";
+        render();
+        return;
+    }
+    const r = state.recent.find(x => x.id === g.dataset.id);
+    if (!r) return;
+    const open = r.kind === "app" ? state.screen === "app" && state.app === r.name : state.screen === r.kind;
+    if (open) {
+        state.screen = "idle";
+        if (r.kind === "app") state.app = null;
+    } else {
+        state.screen = r.kind;
+        if (r.kind === "app") state.app = r.name;
+    }
+    render();
+});
+
+[ "music-fav", "music-fav-hit" ].forEach(id => $(id).addEventListener("click", e => {
+    e.stopPropagation();
+    state.music.fav = !state.music.fav;
+    render();
+}));
+
+setInterval(() => {
+    const m = state.music;
+    if (!m.playing) return;
+    m.pos = (m.pos || 0) + 1;
+    if (m.pos >= (m.dur || 299)) {
+        if (m.mode === "repeat") {
+            m.pos = 0;
+        } else {
+            if (!m.queue) m.queue = buildQueue({});
+            setTrack(m, m.idx + 1);
+            swipeVol(1);
+        }
+    }
+    render();
+}, 1e3);
+
+{
+    let seeking = false;
+    const seekTo = ev => {
+        const p = svgPt($("music-seek"), ev);
+        const fr = Math.max(0, Math.min(1, (p.x - 176) / 110));
+        state.music.pos = Math.round(fr * (state.music.dur || 299));
+        render();
+    };
+    $("music-seek").addEventListener("pointerdown", e => {
+        e.preventDefault();
+        seeking = true;
+        seekTo(e);
+        const mv = ev => {
+            if (seeking) seekTo(ev);
+        }, up = () => {
+            seeking = false;
+            window.removeEventListener("pointermove", mv);
+            window.removeEventListener("pointerup", up);
+        };
+        window.addEventListener("pointermove", mv);
+        window.addEventListener("pointerup", up);
+    });
+}
+
+setInterval(() => {
+    const v = state.video;
+    if (!v || !v.playing) return;
+    v.pos = (v.pos || 0) + 1;
+    if (v.pos >= (v.dur || 5400)) {
+        v.pos = 0;
+        if (v.ep) v.ep = String((Number(v.ep) || 1) + 1); else v.playing = false;
+    }
+    render();
+}, 1e3);
+
+{
+    let seeking = false;
+    const seekTo = ev => {
+        const v = state.video;
+        if (!v) return;
+        const p = svgPt($("video-seek"), ev);
+        const fr = Math.max(0, Math.min(1, (p.x - 186) / 100));
+        v.pos = Math.round(fr * (v.dur || 5400));
+        render();
+    };
+    $("video-seek").addEventListener("pointerdown", e => {
+        e.preventDefault();
+        seeking = true;
+        seekTo(e);
+        const mv = ev => {
+            if (seeking) seekTo(ev);
+        }, up = () => {
+            seeking = false;
+            window.removeEventListener("pointermove", mv);
+            window.removeEventListener("pointerup", up);
+        };
+        window.addEventListener("pointermove", mv);
+        window.addEventListener("pointerup", up);
+    });
+    $("video-hit").addEventListener("click", () => {
+        const v = state.video;
+        if (!v) return;
+        v.playing = !v.playing;
+        render();
+    });
+}
+
+const CONTACTS = [ [ "Family", [ "Mom", "Dad", "object", "Sister" ] ], [ "Friends", [ "Zhang", "Li Si", "Wang Fang", "Li", "Zhao", "Old Wang" ] ], [ "Work", [ "Wang", "Boss Wang", "Boss Li", "Chen", "Reception", "Support 10086" ] ] ];
+
+const CONTACT_ROWS = [];
+
+CONTACTS.forEach(([g, names]) => {
+    CONTACT_ROWS.push({
+        h: g
+    });
+    names.forEach(n => CONTACT_ROWS.push({
+        n: n,
+        g: g
+    }));
+});
+
+let phoneOff = 0;
+
+const PH_ROW = 18, PH_VIS = 89, PH_MAX = Math.max(0, CONTACT_ROWS.length * PH_ROW - PH_VIS);
+
+const GC = {
+    "Family": "#ff6a8e",
+    "Friends": "#6ee07a",
+    "Work": "#3fd2ff"
+};
+
+function renderPhone() {
+    const act = !!state.phone.active;
+    $("phone-call").setAttribute("opacity", act ? 1 : 0);
+    $("phone-contacts").setAttribute("opacity", act ? 0 : 1);
+    phoneOff = Math.max(0, Math.min(PH_MAX, phoneOff));
+    let html = "";
+    CONTACT_ROWS.forEach((r, i) => {
+        const y = 136 + i * PH_ROW - phoneOff;
+        if (y < 133 - PH_ROW || y > 222) return;
+        if (r.h) {
+            html += `<text x="70" y="${y + 12}" fill="${GC[r.h]}" font-size="7.5" font-weight="600" letter-spacing=".1em">${r.h}</text>`;
+            return;
+        }
+        html += `<g class="contact mbtn" data-n="${r.n}"><rect x="66" y="${y}" width="226" height="17" rx="4" fill="rgba(255,255,255,.04)"/><circle cx="78" cy="${y + 8.5}" r="6" fill="${GC[r.g]}" opacity=".85"/><text x="78" y="${y + 11.5}" text-anchor="middle" fill="#fff" font-size="7" font-weight="600">${r.n.slice(0, 1)}</text><text x="90" y="${y + 12}" fill="#dfe9ff" font-size="9">${r.n}</text><g transform="translate(276 ${y + 3.5})" fill="#6ee07a"><path d="M2.5 1.5 C 3.3 .8 4.3 .8 4.8 1.6 L 5.8 3.3 C 6.1 3.9 5.9 4.5 5.4 4.9 L 4.7 5.5 C 5.3 7 6.4 8.1 8 8.7 L 8.6 8 C 9 7.5 9.6 7.3 10.2 7.6 L 11.9 8.6 C 12.7 9 12.7 10.1 12 10.8 L 11.4 11.4 C 10.5 12.3 9.2 12.4 8.1 11.9 C 4.9 10.4 3 8.5 1.6 5.3 C 1.1 4.2 1.2 2.9 2.1 2 Z"/></g></g>`;
+    });
+    $("phone-list").innerHTML = html;
+}
+
+$("phone-list").addEventListener("click", e => {
+    const g = e.target.closest(".contact");
+    if (!g) return;
+    const r = applyDSL(state, "bt: action|call target|" + g.dataset.n.replace(/ /g, "_"));
+    state = r.state;
+    render();
+    playEffects(r.effects);
+});
+
+$("app-ui-phone").addEventListener("wheel", e => {
+    if (state.screen !== "phone" || state.phone.active) return;
+    e.preventDefault();
+    phoneOff += Math.sign(e.deltaY) * Math.max(1, Math.round(Math.abs(e.deltaY) / 60)) * PH_ROW;
+    renderPhone();
+}, {
+    passive: false
+});
+
+{
+    const _rp = render;
+    render = function() {
+        _rp.apply(this, arguments);
+        renderPhone();
+    };
+}
+
+{
+    let wasM = false, wasV = false;
+    const _rx = render;
+    render = function() {
+        const m = !!state.music.playing, v = !!(state.video && state.video.playing);
+        if (m && v) {
+            if (!wasM) state.video.playing = false; else state.music.playing = false;
+        }
+        wasM = !!state.music.playing;
+        wasV = !!(state.video && state.video.playing);
+        _rx.apply(this, arguments);
+    };
+}
+
+for (const [id, k] of [ [ "l", "lf" ], [ "r", "rf" ] ]) $("ac-sw-" + id).addEventListener("click", e => {
+    e.stopPropagation();
+    const q = state.ac.zone[k];
+    if (q.on) {
+        q.on = false;
+        q.fan = 0;
+        q.mode = null;
+    } else {
+        q.on = true;
+        if (!q.fan) q.fan = 3;
+    }
+    render();
+});
+
+let turns = [];
+
+function renderChat() {
+    const b = $("msgs");
+    b.innerHTML = turns.map(t => `<div class="msg ${t.who}">${t.text}</div>`).join("");
+    b.scrollTop = b.scrollHeight;
+}
+
+function chatAssistant(text) {
+    turns.push({
+        who: "a",
+        text: text
+    });
+    renderChat();
+}
+
+const _push = history.push.bind(history);
+
+history.push = t => {
+    turns.push({
+        who: "u",
+        text: t
+    });
+    return _push(t);
+};
+
+$("clearBtn").onclick = () => {
+    history.length = 0;
+    turns = [];
+    renderChat();
+    lastResult = null;
+    renderDSL(null);
+};
+
+$("resetBtn").onclick = () => {
+    state = initialState();
+    state.model = pipeline;
+    render();
+    setRing(false);
+    renderCards();
+};
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {}
+});
+
+const DEMO = [ "Turn on the driver seat heating", "Open the rear-left window halfway", "Make the ambient light blue", "Open the sunshade", "Open the sunroof", "Turn on the windshield defog", "Set the temperature to 24 degrees", "Two degrees lower", "Navigate to Shenzhen North Station, avoid highways", "Show traffic", "Any gas stations within 3 km?", "The third one", "Play Qi Li Xiang by Jay Chou", "Save this song", "Turn on the A/C, then play another Jay Chou song" ];
+
+let demoRun = 0;
+
+$("demoBtn").onclick = async () => {
+    if (busy) return;
+    const id = ++demoRun;
+    $("clearBtn").click();
+    for (const t of DEMO) {
+        if (id !== demoRun) return;
+        await send(t);
+        await new Promise(r => setTimeout(r, 2600));
+    }
+};
+
+$("resetBtn").addEventListener("click", () => {
+    demoRun++;
+    $("clearBtn").click();
+});
+
+const FIT = { "nav-dest": 112, "nav-sub": 112, "tour-dest": 190, "panel-status-title": 150, "panel-status-sub": 150 };
+function fitTexts() {
+    for (const [id, w] of Object.entries(FIT)) {
+        const el = document.getElementById(id); if (!el || !el.textContent) continue;
+        let full = el.textContent; if (full.endsWith("…") && el.dataset.full && el.dataset.full.startsWith(full.slice(0, -1))) full = el.dataset.full;
+        el.dataset.full = full; el.textContent = full;
+        const base = +(el.dataset.fs || (el.dataset.fs = el.getAttribute("font-size")));
+        let fs = base; el.setAttribute("font-size", fs);
+        let n = 0; while (el.getComputedTextLength() > w && fs > base * .6 && n++ < 30) { fs -= .25; el.setAttribute("font-size", fs); }
+        if (el.getComputedTextLength() > w) { let t = full; while (t.length > 3 && el.getComputedTextLength() > w) { t = t.slice(0, -1); el.textContent = t.trimEnd() + "…"; } }
+    }
+    document.querySelectorAll(".card .big, .card .sub").forEach(e => { e.style.fontSize = ""; let fs = parseFloat(getComputedStyle(e).fontSize), n = 0; while (e.scrollWidth > e.clientWidth + 1 && fs > 9 && n++ < 30) { fs -= 1; e.style.fontSize = fs + "px"; } });
+}
+const _renderFit = render; render = function () { const r = _renderFit.apply(this, arguments); try { fitTexts(); } catch (e) { } return r; };
+render();
+
+renderChat();
+
+applyLang();</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Forever Charmed · fan-made</title>
+<meta name="theme-color" content="#163023">
+<meta name="format-detection" content="telephone=no">
+<!-- Portfolio build: no web-app manifest / service worker (it is embedded in an iframe of the portfolio site), fonts are self-hosted. -->
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/im-fell-english-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="ui/base.css">
+</head>
+<body>
+<canvas id="game" tabindex="0" aria-label="Forever Charmed game view"></canvas>
+<div id="ui"></div>
+<script type="module" src="engine/game.js"></script>
+<script>/* embedded in the portfolio: Esc that the game itself didn't use closes the game window.
+   The title screen (.ttl) is itself a role=dialog but does not use Esc (except to close its boss picker, which calls preventDefault),
+   so it does not count; defaultPrevented is read after the game's own handlers have run. */ addEventListener('keydown', e => { if (e.key === 'Escape' && parent !== window) setTimeout(() => { if (!e.defaultPrevented && !document.querySelector('.modal.open, .overlay.open, [role=dialog]:not([hidden]):not(.ttl)')) parent.postMessage({ ns: 'close-game' }, '*'); }, 0); });</script>
+<a id="ns-back" href="../../index.html" style="position:fixed;left:12px;top:12px;z-index:99999;display:none;padding:.45em .9em;border-radius:999px;background:rgba(10,8,20,.72);border:1px solid rgba(255,255,255,.25);color:#fff;font:600 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">← Back to the portfolio</a>
+<script>/* own tab: the back link sits over the in-game HUD's top-left counters, so it is shown only while the title screen is up
+   (the in-game menu's main-menu option brings the title screen back) */
+if (parent === window) { const b = document.getElementById('ns-back'), ui = document.getElementById('ui');
+  const sync = () => { b.style.display = (ui.querySelector(':scope > .ttl') || !ui.childElementCount) ? 'block' : 'none'; };
+  new MutationObserver(sync).observe(ui, { childList: true }); sync(); }</script>
+</body>
+</html>

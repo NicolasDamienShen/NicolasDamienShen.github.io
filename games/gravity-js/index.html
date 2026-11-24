@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gravity Boy &amp; Magic Gal</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; background: #07060d; overflow: hidden; overscroll-behavior: none; }
+  body { -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+  #stage { position: absolute; }
+  canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
+  .pill { position: absolute; left: 50%; transform: translateX(-50%); max-width: 92%; box-sizing: border-box; text-align: center;
+          color: rgba(255,255,255,.88); background: rgba(10,8,20,.62); border-radius: 999px; padding: .35em 1em; pointer-events: none;
+          font: 500 clamp(9px, 1.25vw, 13px)/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; transition: opacity .8s; }
+  #hint { top: 50%; transform: translate(-50%, -50%); border-radius: 14px; padding: .6em 1.2em; white-space: nowrap; }
+  #hint b { color: #7fe3ff; font-weight: 600; } #hint i { color: #d6a8ff; font-weight: 600; font-style: normal; }
+  #focus { top: 20%; opacity: 0; font-size: clamp(10px, 1.6vw, 15px); }
+  #touch { position: fixed; bottom: max(10px, env(safe-area-inset-bottom)); display: none; font-size: 12px; z-index: 2; }
+  #load { position: fixed; inset: 0; display: grid; place-items: start center; padding-top: 8vh; box-sizing: border-box; color: #c9b8ff; font: 13px ui-monospace, Menlo, monospace; letter-spacing: .2em; }
+  .gone { opacity: 0 !important; }
+  /* title card: the first thing you see, then it melts into the level */
+  #title { position: absolute; inset: 0; display: grid; place-content: start center; padding-top: 5vmin; box-sizing: border-box; gap: 2vmin; text-align: center; cursor: pointer;
+           background: radial-gradient(120% 90% at 50% 40%, rgba(16,12,40,.72), rgba(6,5,14,.92)); color: #fff;
+           font: 500 clamp(10px, 1.5vw, 16px)/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+           transition: opacity .7s ease, transform .9s cubic-bezier(.2,.7,.2,1), filter .7s ease; }
+  #title.out { opacity: 0; transform: scale(1.06); filter: blur(6px); pointer-events: none; }
+  #title h1 { margin: 0; padding: .06em .1em .14em; font: 800 clamp(22px, 5.2vw, 60px)/1.15 system-ui, -apple-system, "Segoe UI", sans-serif; letter-spacing: -.01em;
+              background: linear-gradient(90deg, #7fe3ff, #fff 50%, #d6a8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #title .sub { color: rgba(255,255,255,.6); font-size: .9em; }
+  #title .pads { display: flex; gap: 4vmin; justify-content: center; margin-top: 1vmin; }
+  .pad { border-radius: 14px; padding: 1.6vmin 2.4vmin; background: rgba(255,255,255,.05); border: 1.5px solid var(--c); min-width: 11em; }
+  .pad b { display: block; color: var(--c); font-size: 1.05em; margin-bottom: 1vmin; }
+  .keys { display: grid; grid-template-columns: repeat(3, 2.3em); grid-template-rows: 2.3em 2.3em; gap: .3em; justify-content: center; }
+  .keys span, .act span { display: grid; place-items: center; border-radius: .45em; border: 1.5px solid var(--c); color: #fff; font-weight: 700; background: rgba(0,0,0,.35); box-shadow: 0 .18em 0 color-mix(in srgb, var(--c) 55%, #000); }
+  .keys .u { grid-column: 2; } .keys .l { grid-column: 1; grid-row: 2; } .keys .d { grid-column: 2; grid-row: 2; } .keys .r { grid-column: 3; grid-row: 2; }
+  .act { margin-top: .7em; display: flex; gap: .5em; align-items: center; justify-content: center; color: rgba(255,255,255,.75); font-size: .85em; }
+  .act span { padding: .35em .7em; }
+  .flip { margin-top: .6em; padding: .45em .6em; border-radius: .6em; background: rgba(86,200,255,.14); border: 1px dashed rgba(86,200,255,.6); color: #dff4ff; font-size: .8em; line-height: 1.7; text-align: left; }
+  .liq { display: flex; gap: 1.2em; justify-content: center; flex-wrap: wrap; margin-top: 1.4vmin; font-size: .82em; color: rgba(255,255,255,.85); }
+  .liq span { display: inline-flex; align-items: center; gap: .45em; padding: .3em .7em; border-radius: 99px; background: rgba(0,0,0,.35); border: 1px solid var(--c); }
+  .liq i { width: .85em; height: .85em; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--c); box-shadow: 0 0 8px var(--c); }
+  .flip.portal { background: rgba(196,139,255,.15); border-color: rgba(196,139,255,.65); color: #f1e6ff; }
+  .flip.portal span { border-color: #c48bff; }
+  .flip span { display: inline-grid; place-items: center; min-width: 1.6em; padding: 0 .3em; margin-right: .35em; border-radius: .35em; border: 1.5px solid #56c8ff; font-weight: 700; color: #fff; background: rgba(0,0,0,.35); }
+  .pad small { display: block; margin-top: .6em; color: rgba(255,255,255,.6); font-size: .78em; }
+  #title .go { margin-top: 1.4vmin; font-weight: 700; color: #ffe2a8; animation: go 1.6s ease-in-out infinite; }
+  @keyframes go { 50% { opacity: .45; } }
+  @media (prefers-reduced-motion: reduce) { #title .go { animation: none; } #title { transition: opacity .3s; } }
+  /* tall / portrait screens: the 2:1 stage is a thin strip, so the title card covers the whole window instead of overflowing the strip */
+  @media (max-aspect-ratio: 3/2) { #title { position: fixed; place-content: center; padding-top: 0; } }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" tabindex="0" aria-label="Gravity Boy and Magic Gal, two-player keyboard game"></canvas>
+  <div id="hint" class="pill"><b>Gravity Boy</b> A D move · W jump · S flip gravity · E lever<br><i>Magic Gal</i> ← → move · ↑ jump · ↓ portal · Enter lever<br>Your own colour of water is safe · green lava kills anyone<br>Win together: both in your own door at the top · R restart</div>
+  <div id="focus" class="pill">Click to play</div>
+  <div id="title" role="button" aria-label="Start the game">
+    <h1>Gravity Boy &amp; Magic Gal</h1>
+    <div class="sub">2021 · a two-player co-op game · you only win together</div>
+    <div class="pads">
+      <div class="pad" style="--c:#56c8ff"><b>Gravity Boy</b>
+        <div class="keys"><span class="u">W</span><span class="l">A</span><span class="d">S</span><span class="r">D</span></div>
+        <div class="act"><span>E</span> lever</div><small>A D move · W jump</small><div class="flip"><span>S</span> flip gravity ↑ walk on the ceiling<br><span>W</span> flip back ↓ to the floor</div></div>
+      <div class="pad" style="--c:#c48bff"><b>Magic Gal</b>
+        <div class="keys"><span class="u">↑</span><span class="l">←</span><span class="d">↓</span><span class="r">→</span></div>
+        <div class="act"><span>Enter</span> lever</div><small>← → move · ↑ jump</small><div class="flip portal"><span>↓</span> on a portal: whoosh, off to another portal…<br>which one? Who knows where you’ll end up 🌀</div></div>
+    </div>
+    <div class="liq"><span style="--c:#56c8ff"><i></i>blue water: only Gravity Boy can cross it</span><span style="--c:#c48bff"><i></i>purple water: only Magic Gal can cross it</span><span style="--c:#4dff7a"><i></i>green lava: kills anyone</span></div>
+    <div class="sub">Both reach your own door at the top · R restart</div>
+    <div class="go">Click or press any key to start</div>
+  </div>
+</div>
+<div id="touch" class="pill">This one needs a keyboard (two players share it), so try it on a computer.</div>
+<div id="load">LOADING…</div>
+<a id="back" href="../../index.html" style="position:fixed;left:12px;top:12px;z-index:5;display:none;padding:.45em .9em;border-radius:999px;background:rgba(10,8,20,.72);border:1px solid rgba(255,255,255,.25);color:#fff;font:600 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">← Back to the portfolio</a>
+<script>
+/* Gravity Boy & Magic Gal: written in Python/pygame in 2021 with my brother.
+   A faithful JavaScript port of Main_ver0.5.py (same map, physics, integer rects, frame timings).
+   Intended changes: you win only when BOTH players stand inside their own finish door at the same time,
+   R restarts, the result is shown as an overlay, and the game freezes once it is won or lost. */
+(() => {
+const SW = 1500, SH = 750, FPS = 60, GRAVITY = 0.75;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d'), stage = document.getElementById('stage');
+const IMG = {}, names = ['bg.jpg', 'dia_b.png', 'dia_p.png', 'door_blue.png', 'door_purple.png'];
+['red','orange','green','blue','violet','gray'].forEach(c => names.push(`lever_${c}.png`, `plat_${c}.png`));
+for (let i = 0; i < 4; i++) names.push(`portal${i}.png`, `wind${i}.png`, `liq_blue${i}.png`, `liq_green${i}.png`, `liq_purple${i}.png`);
+['blue','purple'].forEach(w => { for (let i = 0; i < 5; i++) names.push(`${w}stay${i}.png`); for (let i = 0; i < 4; i++) names.push(`${w}walk${i}.png`); names.push(`${w}jump0.png`); });
+const load = n => new Promise(r => { const im = new Image(); im.onload = () => { IMG[n.replace(/\.(png|jpg)$/, '')] = im; r(); }; im.onerror = r; im.src = 'a/' + n; });
+
+// ---- pygame.Rect: integer fields, float arguments truncated like pygame does ----
+const T = Math.trunc;
+class Rect {
+  constructor(x, y, w, h) { this.x = T(x); this.y = T(y); this.w = T(w); this.h = T(h); }
+  get top() { return this.y; } get bottom() { return this.y + this.h; }
+  setCenter(cx, cy) { this.x = cx - T(this.w / 2); this.y = cy - T(this.h / 2); return this; }
+  collide(x, y, w, h) { x = T(x); y = T(y); w = T(w); h = T(h);
+    return this.x < x + w && x < this.x + this.w && this.y < y + h && y < this.y + this.h; }
+  collideRect(r) { return this.collide(r.x, r.y, r.w, r.h); }
+}
+const R = (x, y, w, h) => new Rect(x, y, w, h);
+
+// pygame.time.get_ticks(), driven by the fixed 60 fps step (one frame = 1000/60 ms)
+let frame = 0; const ticks = () => T(frame * 1000 / 60);
+
+// ---- world (sizes = int(image size × scale), as in the original) ----
+const obstacles = [
+  R(0,715,1500,40), R(1425,645,60,20), R(155,595,750,20), R(1010,595,150,20), R(1290,595,50,20), R(1150,520,60,20),
+  R(0,475,600,20), R(750,475,400,20), R(110,380,620,20), R(870,380,700,20), R(1070,285,50,20), R(1215,285,50,20),
+  R(1360,285,50,20), R(0,260,620,20), R(870,260,110,15), R(110,140,1400,20), R(0,0,1500,40),
+  R(0,0,30,750), R(1475,0,30,750), R(730,140,40,450), R(870,260,15,130), R(1115,475,40,140), R(1137,550,20,180)];
+const rect19 = obstacles[19];
+// door/blue.png is 508×1024; pygame takes the UNSCALED rect, centres it, then blits the 50×102 scaled image at its top-left
+const doorAt = (cx, cy) => [cx - 254, cy - 512];
+const DOORS = { blueStart: doorAt(295, 1120), purpleStart: doorAt(350, 1120), blueEnd: doorAt(1490, 540), purpleEnd: doorAt(1270, 540) };
+
+class Anim { constructor(keys, cd) { this.keys = keys; this.cd = cd; this.i = 0; this.t = ticks(); }
+  step() { if (ticks() - this.t > this.cd) { this.t = ticks(); this.i++; } if (this.i >= this.keys.length) this.i = 0; }
+  get img() { return IMG[this.keys[this.i]]; } }
+class Portal extends Anim { constructor(x, y) { super([0,1,2,3].map(i => `portal${i}`), 70); this.rect = R(0, 0, 100, 100).setCenter(x, y); }
+  draw() { const r = this.rect; ctx.drawImage(this.img, r.x, r.y, r.w, r.h); } }
+class Wave extends Anim { constructor(color, scale, x, y) { super([0,1,2,3].map(i => `liq_${color}${i}`), 100); this.rect = R(0, 0, T(714 * scale), T(27 * 0.5)).setCenter(x, y); }
+  draw(flipV) { const r = this.rect; ctx.save(); if (flipV) { ctx.translate(0, r.y * 2 + r.h); ctx.scale(1, -1); } ctx.drawImage(this.img, r.x, r.y, r.w, r.h); ctx.restore(); } }
+class Wind extends Anim { constructor(x, y) { super([0,1,2,3].map(i => `wind${i}`), 70); this.rect = R(0, 0, T(200 * 0.33), T(800 * 0.33)).setCenter(x, y); }
+  draw() { const r = this.rect; ctx.drawImage(this.img, r.x, r.y, r.w, r.h); } }
+class Lever { constructor(color, x, y) { this.k = `lever_${color}`; this.rect = R(0, 0, T(512 * 0.11), T(512 * 0.11)).setCenter(x, y); }
+  draw(on) { const r = this.rect; ctx.save(); if (on) { ctx.translate(r.x * 2 + r.w, 0); ctx.scale(-1, 1); } ctx.drawImage(IMG[this.k], r.x, r.y, r.w, r.h); ctx.restore(); } }
+class Platform { // 'h' images are 421×127 (×0.2), 'v' images 127×421 (×0.25); rect2 = rotate(img, 90) rect centred at (x-30, y+35)
+  constructor(color, x, y, dir, scale) { this.k = `plat_${color}`; const s = dir === 'h' ? [421, 127] : [127, 421];
+    this.rect = R(0, 0, T(s[0] * scale), T(s[1] * scale)).setCenter(x, y); this.rect2 = R(0, 0, this.rect.h, this.rect.w).setCenter(x - 30, y + 35); }
+  draw(on) { const a = this.rect;
+    if (!on) { ctx.drawImage(IMG[this.k], a.x, a.y, a.w, a.h); return; }
+    const b = this.rect2; ctx.save(); ctx.translate(b.x + b.w / 2, b.y + b.h / 2); ctx.rotate(-Math.PI / 2); // 90° counter-clockwise, like pygame
+    ctx.drawImage(IMG[this.k], -a.w / 2, -a.h / 2, a.w, a.h); ctx.restore(); } }
+
+let portals, waves, wind, levers, plats, diamonds, p1, p2, state, startT;
+const COLORS = ['r','o','g','b','v','gray'];
+const PW = T(876 * 0.06), PH = T(980 * 0.06); // 52×58
+
+class Player {
+  constructor(x, y, who) {
+    this.who = who; this.alive = true; this.speed = 5; this.velY = 0; this.jump = false; this.inAir = true;
+    this.flipH = false; this.flipV = false; this.action = 0; this.frame = 0; this.t = ticks(); this.score = 0; this.tactical = 0;
+    this.act = {}; this.actPos = {}; COLORS.forEach(c => { this.act[c] = false; this.actPos[c] = false; });
+    this.anims = [[0,1,2,3,4].map(i => `${who}stay${i}`), [0,1,2,3].map(i => `${who}walk${i}`), [`${who}jump0`]];
+    this.w = PW; this.h = PH; this.rect = R(0, 0, PW, PH).setCenter(x, y);
+  }
+  move(left, right) {
+    let dx = 0, dy = 0; const r = this.rect, hits = o => o.collide(r.x + dx, r.y, this.w, this.h);
+    if (left) { dx = -this.speed; this.flipH = true; }
+    if (right) { dx = this.speed; this.flipH = false; }
+    // jump
+    if (this.jump && !this.inAir) { this.velY = -12; this.jump = false; this.inAir = true; }
+    // tactical: 2 = reversed gravity (Gravity Boy), 1 = use a portal (Magic Gal)
+    if (!this.jump) {
+      if (this.tactical === 2) this.flipV = true;
+      else if (this.tactical === 1) {
+        const P = portals, pairs = [[P.p1b, P.p1], [P.p2b, P.p2], [P.p3b, P.p3], [P.p4b, P.p4], [P.p1, P.p1b], [P.p2, P.p2b], [P.p3, P.p3b], [P.p4, P.p4b]];
+        for (const [from, to] of pairs) if (this.tactical === 1 && hits(from.rect)) { r.x = to.rect.x; r.y = to.rect.y; this.tactical = 0; }
+      } else this.flipV = false;
+    }
+    // standing next to a lever (first match wins; flags only clear when touching none)
+    const hit = COLORS.find(c => hits(levers[c].rect));
+    if (hit) this.actPos[hit] = true; else COLORS.forEach(c => this.actPos[c] = false);
+    // gravity
+    if (this.tactical === 2) this.velY -= GRAVITY; else this.velY += GRAVITY;
+    dy += this.velY;
+    // wind: the original tests its 4 (identical) frame rects, so the lift is applied 4 times; it keys off Magic Gal's x
+    for (let i = 0; i < 4; i++) if (hits(wind.rect) && p1.rect.x > rect19.x + rect19.w) this.velY -= GRAVITY / 3;
+    // collisions
+    const solid = o => {
+      if (hits(o)) dx = 0;
+      if (o.collide(r.x, r.y + dy, this.w, this.h)) {
+        if (this.velY < 0) { this.velY = 0; dy = o.bottom - r.top; }
+        else { this.velY = 0; this.inAir = false; dy = o.top - r.bottom; }
+      }
+    };
+    obstacles.forEach(solid);
+    COLORS.forEach(c => solid(p1.act[c] || p2.act[c] ? plats[c].rect2 : plats[c].rect));
+    // green liquid kills both
+    if (waves.green.some(w => hits(w.rect))) this.alive = false;
+    r.x = T(r.x + dx); r.y = T(r.y + dy);
+  }
+  animate() { if (ticks() - this.t > 100) { this.t = ticks(); this.frame++; } if (this.frame >= this.anims[this.action].length) this.frame = 0; }
+  setAction(a) { if (a !== this.action) { this.action = a; this.frame = 0; this.t = ticks(); } }
+  draw() { if (!this.alive) return; const r = this.rect, im = IMG[this.anims[this.action][this.frame]];
+    ctx.save(); ctx.translate(r.x + r.w / 2, r.y + r.h / 2); ctx.scale(this.flipH ? -1 : 1, this.flipV ? -1 : 1); ctx.drawImage(im, -r.w / 2, -r.h / 2, r.w, r.h); ctx.restore(); }
+}
+
+const KEYS = { left1: false, right1: false, left2: false, right2: false };
+function reset() {
+  frame = 0;
+  portals = { p1: new Portal(500,670), p1b: new Portal(1070,670), p2: new Portal(1070,550), p2b: new Portal(1210,670), p3: new Portal(935,335), p3b: new Portal(180,90), p4: new Portal(900,90), p4b: new Portal(1430,90) };
+  waves = { purple: [new Wave('purple',.4,320,702), new Wave('purple',.8,535,125)], blue: [new Wave('blue',.4,320,622), new Wave('blue',.15,86,248), new Wave('blue',.8,535,45)],
+    green: [[.28,640,702],[.15,550,469],[.15,370,404],[.15,190,469],[.15,190,284],[.15,370,372],[.15,550,284],[.55,1258,365]].map(([s,x,y]) => new Wave('green',s,x,y)) };
+  wind = new Wind(810, 340);
+  levers = { r: new Lever('red',660,565), o: new Lever('orange',1350,680), g: new Lever('green',1385,250), b: new Lever('blue',1100,250), v: new Lever('violet',1245,250), gray: new Lever('gray',1345,100) };
+  plats = { r: new Platform('red',955,633,'h',.2), o: new Platform('orange',70,390,'h',.2), g: new Platform('green',160,210,'v',.25), b: new Platform('blue',280,210,'v',.25), v: new Platform('violet',400,210,'v',.25), gray: new Platform('gray',1200,85,'v',.25) };
+  const D = T(512 * 0.07); // 35
+  diamonds = [[400,670],[800,670],[300,550],[670,440],[270,440],[70,340],[470,340],[670,210],[65,140],[1100,90]].map(([x,y]) => ({ t: 'b', rect: R(0,0,D,D).setCenter(x,y) }))
+    .concat([[250,670],[1000,670],[820,550],[1420,450],[810,200],[1170,200],[1320,200],[730,90],[90,90],[1150,90]].map(([x,y]) => ({ t: 'p', rect: R(0,0,D,D).setCenter(x,y) })));
+  p2 = new Player(DOORS.blueStart[0] + 25, DOORS.blueStart[1], 'blue');       // Gravity Boy (WASD)
+  p1 = new Player(DOORS.purpleStart[0] + 25, DOORS.purpleStart[1], 'purple'); // Magic Gal (arrows)
+  Object.keys(KEYS).forEach(k => KEYS[k] = false);
+  state = 'play';
+}
+
+// WIN (intended change): each player's centre must be inside the drawn 50×102 image of their own finish door
+// (vertical range extended down to the floor the door stands on, so upside-down Gravity Boy counts too)
+const inDoor = (p, [x, y]) => { const r = p.rect, cx = r.x + r.w / 2, cy = r.y + r.h / 2; return p.alive && cx >= x + 4 && cx <= x + 46 && cy >= y && cy <= y + 112; };
+
+function update() {
+  if (state !== 'play') return;
+  frame++;
+  [...Object.values(portals), ...waves.purple, ...waves.blue, ...waves.green, wind].forEach(a => a.step());
+  p1.animate(); p2.animate();
+  // pick up diamonds (pygame: `if collide(p1): … elif collide(p2): …`)
+  diamonds = diamonds.filter(d => {
+    if (d.rect.collideRect(p1.rect)) { if (d.t === 'p') { p1.score++; return false; } }
+    else if (d.rect.collideRect(p2.rect)) { if (d.t === 'b') { p2.score++; return false; } }
+    return true; });
+  for (const [p, L, Rt] of [[p1, KEYS.left1, KEYS.right1], [p2, KEYS.left2, KEYS.right2]]) {
+    if (!p.alive) continue;
+    p.setAction(p.inAir ? 2 : (L || Rt) ? 1 : 0); p.move(L, Rt);
+  }
+  // blue liquid kills Magic Gal, purple liquid kills Gravity Boy
+  if (waves.blue.some(w => w.rect.collideRect(p1.rect))) p1.alive = false;
+  else if (waves.purple.some(w => w.rect.collideRect(p2.rect))) p2.alive = false;
+  if (!p1.alive || !p2.alive) state = 'lose';
+  else if (inDoor(p2, DOORS.blueEnd) && inDoor(p1, DOORS.purpleEnd)) state = 'win';
+  if (state !== 'play') hint.classList.add('gone'); // keep the result overlay clean
+}
+
+// HUD font: the original asks for Futura 30 and falls back to pygame's FreeSansBold (glyph box 20 px high, ascent 16)
+const FAMILY = '"Helvetica Neue", Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif';
+let hudPx = 20, bigPx = 70;
+function calibrate() { ctx.save(); ctx.font = `bold 100px ${FAMILY}`;
+  hudPx = 100 * 172 / ctx.measureText('Blue diamonds: 0').width; bigPx = 100 * 350 / ctx.measureText('YOU LOSE').width; ctx.restore(); }
+function text(s, x, y, px, col, align = 'left') { ctx.font = `bold ${px.toFixed(2)}px ${FAMILY}`; ctx.fillStyle = col; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.fillText(s, x, y + px * 0.8); }
+
+function draw() {
+  ctx.drawImage(IMG.bg, -215, -190, 1920, 1080); // background ×1.2, centre (745, 350)
+  ctx.drawImage(IMG.door_blue, ...DOORS.blueStart, 50, 102); ctx.drawImage(IMG.door_purple, ...DOORS.purpleStart, 50, 102);
+  ctx.drawImage(IMG.door_blue, ...DOORS.blueEnd, 50, 102); ctx.drawImage(IMG.door_purple, ...DOORS.purpleEnd, 50, 102);
+  text(`Blue diamonds: ${p2.score}`, 10, 720, hudPx, '#fff'); for (let i = 0; i < p2.score; i++) ctx.drawImage(IMG.dia_b, 200 + i * 40, 710, 35, 35);
+  text(`Purple diamonds: ${p1.score}`, 1300, 720, hudPx, '#fff'); for (let i = 0; i < p1.score; i++) ctx.drawImage(IMG.dia_p, 1250 - i * 40, 710, 35, 35);
+  text(`Time : ${Math.max(0, 100 - T(ticks() / 1000))}`, 700, 720, hudPx, '#fff');
+  Object.values(portals).forEach(p => p.draw());
+  waves.purple[0].draw(false); waves.purple[1].draw(false); waves.blue[0].draw(true); waves.blue[1].draw(false); waves.blue[2].draw(true);
+  waves.green.forEach((w, i) => w.draw(i === 2 || i === 4 || i === 6));
+  wind.draw();
+  levers.r.draw(p2.act.r); ['o','g','b','v','gray'].forEach(c => levers[c].draw(p1.act[c]));
+  plats.r.draw(p2.act.r); ['o','g','b','v','gray'].forEach(c => plats[c].draw(p1.act[c]));
+  p1.draw(); p2.draw();
+  diamonds.forEach(d => ctx.drawImage(IMG[d.t === 'b' ? 'dia_b' : 'dia_p'], d.rect.x, d.rect.y, d.rect.w, d.rect.h));
+  if (state !== 'play') {
+    const win = state === 'win';
+    ctx.fillStyle = 'rgba(7,6,13,.55)'; ctx.fillRect(0, 0, SW, SH);
+    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 18;
+    text(win ? 'YOU WIN' : 'YOU LOSE', SW / 2, 290, bigPx, win ? '#00ff00' : '#ff0000', 'center'); ctx.restore();
+    if (win) text(`Diamonds: blue ${p2.score}/10 · purple ${p1.score}/10 · ${T(ticks() / 1000)} s`, SW / 2, 395, hudPx, '#fff', 'center');
+    text('Press R to play again', SW / 2, win ? 440 : 400, hudPx * 1.1, 'rgba(255,255,255,.85)', 'center');
+  }
+}
+
+// Esc hands control back to the portfolio around this frame (closes the game window)
+const ownTab = parent === window; if (ownTab) document.getElementById('back').style.display = 'block';
+addEventListener('keydown', e => { if (e.key === 'Escape') { if (ownTab) { location.href = document.getElementById('back').href; return; } try { parent.postMessage({ ns: 'close-game' }, '*'); } catch (err) { } } });
+// ---- input: same keys and KEYDOWN/KEYUP semantics as the original (no auto-repeat) ----
+const GAME_KEYS = new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Enter','NumpadEnter','KeyA','KeyD','KeyW','KeyS','KeyE','KeyR','Space']);
+const held = new Set();
+function keyDown(code) {
+  if (code === 'NumpadEnter') code = 'Enter';
+  if (held.has(code)) return; held.add(code);
+  if (code === 'KeyR') { reset(); return; }
+  if (state !== 'play') return;
+  switch (code) {
+    case 'KeyA': KEYS.left2 = true; break;
+    case 'KeyD': KEYS.right2 = true; break;
+    case 'KeyW': if (p2.alive) { p2.jump = true; p2.tactical = 0; } break;
+    case 'KeyS': p2.tactical = 2; break;
+    case 'KeyE': { const c = COLORS.find(c => p2.actPos[c]); if (c) p2.act[c] = true; break; }
+    case 'ArrowLeft': KEYS.left1 = true; break;
+    case 'ArrowRight': KEYS.right1 = true; break;
+    case 'ArrowUp': if (p1.alive) p1.jump = true; break;
+    case 'ArrowDown': p1.tactical = 1; break;
+    case 'Enter': { const c = COLORS.find(c => p1.actPos[c]); if (c) p1.act[c] = true; break; }
+  }
+}
+function keyUp(code) {
+  if (code === 'NumpadEnter') code = 'Enter';
+  if (!held.delete(code) || !p1) return;
+  switch (code) {
+    case 'KeyA': KEYS.left2 = false; break;
+    case 'KeyD': KEYS.right2 = false; break;
+    case 'KeyE': COLORS.forEach(c => p2.act[c] = false); break;
+    case 'ArrowLeft': KEYS.left1 = false; break;
+    case 'ArrowRight': KEYS.right1 = false; break;
+    case 'ArrowDown': p1.tactical = 0; break;
+    case 'Enter': COLORS.forEach(c => p1.act[c] = false); break;
+  }
+}
+const titleEl = document.getElementById('title'); let titleUp = true;
+function startGame() { if (!titleUp) return; titleUp = false; titleEl.classList.add('out'); hint.classList.add('gone'); reset(); grabFocus(); setTimeout(() => titleEl.remove(), 1000); }
+titleEl.addEventListener('pointerdown', e => { e.preventDefault(); startGame(); });
+addEventListener('keydown', e => { if (!titleUp || e.key === 'Escape' || e.ctrlKey || e.metaKey || e.altKey) return; e.preventDefault(); e.stopImmediatePropagation(); startGame(); }, true);
+const releaseAll = () => [...held].forEach(keyUp);
+addEventListener('keydown', e => {
+  if (!GAME_KEYS.has(e.code) || e.ctrlKey || e.metaKey || e.altKey) return;
+  e.preventDefault(); // no page/parent scrolling with arrows or space
+  if (!e.repeat) { keyDown(e.code); dismissHint(); }
+}, { passive: false });
+addEventListener('keyup', e => { if (GAME_KEYS.has(e.code)) { e.preventDefault(); keyUp(e.code); } });
+addEventListener('blur', releaseAll);
+document.addEventListener('visibilitychange', () => { if (document.hidden) releaseAll(); });
+
+// ---- focus, hints, touch note ----
+const hint = document.getElementById('hint'), focusPill = document.getElementById('focus');
+hint.classList.add('gone'); let hintTimer = 0, dismissed = false;
+function dismissHint() { if (dismissed) return; dismissed = true; clearTimeout(hintTimer); hintTimer = setTimeout(() => hint.classList.add('gone'), 4000); }
+const grabFocus = () => { try { cv.focus({ preventScroll: true }); } catch (_) { cv.focus(); } };
+addEventListener('pointerdown', grabFocus);
+const showFocus = () => { focusPill.style.opacity = (document.hasFocus() || touchOnly) ? 0 : 1; };
+addEventListener('focus', showFocus); addEventListener('blur', showFocus); cv.addEventListener('focus', showFocus);
+const touchOnly = matchMedia('(pointer: coarse)').matches && !matchMedia('(any-pointer: fine)').matches;
+if (touchOnly) { document.getElementById('touch').style.display = 'block'; hint.style.display = 'none'; }
+
+// ---- fit any frame size, sharp on HiDPI (backing store = css size × devicePixelRatio) ----
+function fit() {
+  const s = Math.min(innerWidth / SW, innerHeight / SH), w = Math.floor(SW * s), h = Math.floor(SH * s), dpr = window.devicePixelRatio || 1;
+  stage.style.width = w + 'px'; stage.style.height = h + 'px'; stage.style.left = Math.floor((innerWidth - w) / 2) + 'px'; stage.style.top = Math.floor((innerHeight - h) / 2) + 'px';
+  const bw = Math.max(1, Math.round(w * dpr)), bh = Math.max(1, Math.round(h * dpr));
+  if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+  ctx.setTransform(bw / SW, 0, 0, bh / SH, 0, 0); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  if (p1) draw();
+}
+addEventListener('resize', fit);
+fit();
+
+Promise.all(names.map(load)).then(() => {
+  document.getElementById('load').remove(); calibrate(); reset(); fit(); grabFocus(); showFocus();
+  let acc = 0, last = performance.now();
+  const loop = now => { acc += Math.min(250, now - last); last = now; let n = 0; while (acc >= 1000 / FPS) { if (!titleUp) update(); acc -= 1000 / FPS; n++; } if (n) draw(); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+});
+})();
+</script>
+</body>
+</html>
