@@ -109,7 +109,7 @@ const T = {
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
     gamesKicker: 'Games', gamesTitle: 'The desk', gamesText: 'The monitor runs my game — click the screen to play.', playBrowser: 'Plays in the browser', newTab: 'Opens in a new tab', holoHint: 'The little robot on the desk is friendly — click it',
     nowKicker: 'Work in progress', nowTitle: 'Now building', galleryKicker: 'Photos · GIFs · 3D', galleryTitle: 'The photo wall', galleryText: 'Photos, GIFs and renders — keep scrolling, the camera walks you along the wall.', openGallery: 'Open gallery ⤢',
-    contact: 'Contact', backStart: '↑ Back to the start', addLink: 'soon', emailPh: 'Email — coming soon', cv: 'CV (PDF)',
+    contact: 'Contact', backStart: '↑ Back to the start', addLink: 'soon', emailPh: 'Email — coming soon',
     chStart: 'Start', chHello: 'Hello', chVr: 'XR / VR', chPapers: 'Slides & papers', chGames: 'Games', chNow: 'Now building', chGallery: 'Photo wall', chOutro: 'Last words', chContact: 'Contact', goTo: 'Go to',
     tipWatch: '▶ Watch — ', tipOpen: '✦ Open — ', tipPlay: '▶ Play — ', tipView: '⤢ View — ', tipInside: '↓ Keep scrolling to step inside', tipTerm: '⌁ Now building — terminal', tipAbout: '◎ About me', tipVR: '⟲ Back to my XR / VR projects', tipBot: '♥ Say hi to my desk buddy',
     videoSoon: 'VIDEO COMING SOON', watchOn: 'Watch on', ytFallback: 'Video not loading? Open on YouTube ↗', fullscreen: '⛶ Fullscreen', newTabBtn: 'Open in new tab ↗', clickFirst: 'Click the game to use the keyboard · Esc to leave',
@@ -128,7 +128,7 @@ const T = {
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
     gamesKicker: 'Jeux', gamesTitle: 'Le bureau', gamesText: "L'écran fait tourner mon jeu — cliquez dessus pour jouer.", playBrowser: 'Se joue dans le navigateur', newTab: "S'ouvre dans un nouvel onglet", holoHint: 'Le petit robot sur le bureau est sympa — cliquez dessus',
     nowKicker: 'En cours', nowTitle: 'En construction', galleryKicker: 'Photos · GIF · 3D', galleryTitle: 'Le mur de photos', galleryText: 'Photos, GIF et rendus 3D — continuez à défiler, la caméra longe le mur.', openGallery: 'Ouvrir la galerie ⤢',
-    contact: 'Contact', backStart: '↑ Retour au début', addLink: 'bientôt', emailPh: 'E-mail — bientôt disponible', cv: 'CV (PDF)',
+    contact: 'Contact', backStart: '↑ Retour au début', addLink: 'bientôt', emailPh: 'E-mail — bientôt disponible',
     chStart: 'Début', chHello: 'Bonjour', chVr: 'XR / VR', chPapers: 'Présentations', chGames: 'Jeux', chNow: 'En cours', chGallery: 'Mur de photos', chOutro: 'Derniers mots', chContact: 'Contact', goTo: 'Aller à',
     tipWatch: '▶ Regarder — ', tipOpen: '✦ Ouvrir — ', tipPlay: '▶ Jouer — ', tipView: '⤢ Voir — ', tipInside: '↓ Continuez à défiler pour entrer', tipTerm: '⌁ En cours — terminal', tipAbout: '◎ À propos', tipVR: '⟲ Retour à mes projets XR / VR', tipBot: '♥ Dites bonjour à mon petit robot',
     videoSoon: 'VIDÉO À VENIR', watchOn: 'Regarder sur', ytFallback: 'La vidéo ne charge pas ? Ouvrir sur YouTube ↗', fullscreen: '⛶ Plein écran', newTabBtn: 'Ouvrir dans un nouvel onglet ↗', clickFirst: "Cliquez sur le jeu pour utiliser le clavier · Échap pour quitter",
@@ -147,7 +147,7 @@ const T = {
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
     gamesKicker: '游戏', gamesTitle: '书桌', gamesText: '显示器上运行着我的游戏 —— 点击屏幕即可游玩。', playBrowser: '浏览器内直接玩', newTab: '在新标签页打开', holoHint: '桌上的小机器人很友好 —— 点点它',
     nowKicker: '进行中', nowTitle: '正在做', galleryKicker: '照片 · GIF · 3D', galleryTitle: '照片墙', galleryText: '照片、GIF 与渲染图 —— 继续往下滑，镜头会带你看完整面墙。', openGallery: '打开图库 ⤢',
-    contact: '联系', backStart: '↑ 回到开头', addLink: '即将上线', emailPh: '邮箱 —— 即将公布', cv: '简历（PDF）',
+    contact: '联系', backStart: '↑ 回到开头', addLink: '即将上线', emailPh: '邮箱 —— 即将公布',
     chStart: '开始', chHello: '你好', chVr: 'XR / VR', chPapers: '演示与论文', chGames: '游戏', chNow: '正在做', chGallery: '照片墙', chOutro: '最后的话', chContact: '联系', goTo: '前往',
     tipWatch: '▶ 观看 —— ', tipOpen: '✦ 打开 —— ', tipPlay: '▶ 游玩 —— ', tipView: '⤢ 查看 —— ', tipInside: '↓ 继续滚动，走进房间', tipTerm: '⌁ 正在做 —— 终端', tipAbout: '◎ 关于我', tipVR: '⟲ 回到我的 XR / VR 项目', tipBot: '♥ 跟我的桌面小机器人打个招呼',
     videoSoon: '视频即将上线', watchOn: '在此观看：', ytFallback: '视频无法加载？在 YouTube 打开 ↗', fullscreen: '⛶ 全屏', newTabBtn: '在新标签页打开 ↗', clickFirst: '点击游戏画面即可用键盘操作 · 按 Esc 退出',
@@ -2727,7 +2727,7 @@ function setSlidePanel(i) {
 function contactLinks() {
   const c = CONTENT.contact, out = [];
   out.push(c.email ? `<a class="btn primary" href="mailto:${esc(c.email)}">✉ ${esc(c.email)}</a>` : `<span class="btn primary" aria-disabled="true">✉ ${esc(t('emailPh'))}</span>`);
-  for (const [k, lab] of [['github', 'GitHub'], ['linkedin', 'LinkedIn'], ['cv', t('cv')]]) out.push(c[k] ? `<a class="btn ghost" href="${esc(c[k])}" target="_blank" rel="noopener">${esc(lab)} ↗</a>` : `<span class="btn ghost" style="opacity:.5">${esc(lab)} · ${esc(t('addLink'))}</span>`);
+  for (const [k, lab] of [['github', 'GitHub'], ['linkedin', 'LinkedIn']]) out.push(c[k] ? `<a class="btn ghost" href="${esc(c[k])}" target="_blank" rel="noopener">${esc(lab)} ↗</a>` : `<span class="btn ghost" style="opacity:.5">${esc(lab)} · ${esc(t('addLink'))}</span>`);
   return out.join('');
 }
 

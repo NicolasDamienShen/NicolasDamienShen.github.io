@@ -30,7 +30,7 @@ All text and media live in `content.js`; any text can be a plain string or `{ en
 - `papers`: slide decks and reports (`pages` images, `pdf`, `portrait: true` for a tall document)
 - `games`: `url` of each game's `index.html` and its `poster`
 - `wall`: the 18 photo-wall frames (`src` image or muted `.mp4` loop, `title`, `desc`)
-- `gallery`: the six framed renders; `contact`: `email`, `github`, `linkedin`, `cv`
+- `gallery`: the six framed renders; `contact`: `email`, `github`, `linkedin`
 
 Pushing to `main` redeploys the site within a minute or two.
 

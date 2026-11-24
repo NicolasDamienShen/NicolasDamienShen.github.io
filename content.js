@@ -202,5 +202,5 @@ export const CONTENT = {
     },
   },
 
-  contact: { email: "nicolas.shen04@gmail.com", github: "https://github.com/NicolasDamienShen", linkedin: "https://www.linkedin.com/in/nicolas-damien-shen/", cv: "" },
+  contact: { email: "nicolas.shen04@gmail.com", github: "https://github.com/NicolasDamienShen", linkedin: "https://www.linkedin.com/in/nicolas-damien-shen/" },
 };
