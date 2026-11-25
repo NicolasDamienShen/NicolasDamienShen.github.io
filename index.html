@@ -176,10 +176,6 @@ body.focused #tip{display:none}
 /* modal */
 .nluwrap{position:relative;width:100%;height:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#07070f}
 .nluwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}   /* nlu.html is responsive: it gets its real size */
-#cockHint{all:unset;position:fixed;left:50%;bottom:8vh;z-index:25;transform:translate(-50%,12px);opacity:0;pointer-events:none;transition:opacity .45s,transform .45s;cursor:pointer;
-  padding:12px 20px;border-radius:999px;font-size:14px;letter-spacing:.02em;color:#e9fbff;background:rgba(8,14,32,.78);border:1px solid rgba(127,233,255,.55);box-shadow:0 0 28px rgba(63,210,255,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);max-width:86vw;text-align:center}
-#cockHint.show{opacity:1;transform:translate(-50%,0);pointer-events:auto;animation:hintPulse 2.4s ease-in-out infinite}
-@keyframes hintPulse{0%,100%{box-shadow:0 0 18px rgba(63,210,255,.18)}50%{box-shadow:0 0 34px rgba(63,210,255,.42)}}
 #sound[aria-pressed="true"]{border-color:var(--amb);color:var(--amb)}
 #quality{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:14px;background-image:none;color:var(--txt,#e9e4ff);font:inherit;font-size:12px}
 #quality option{background:#120e22;color:#e9e4ff}
@@ -197,15 +193,31 @@ body.focused #tip{display:none}
 @keyframes introIn{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){#intro .mouse i{animation:none}}
 #p-hero .scrollcue{display:none}
-#guide{position:fixed;left:28px;bottom:26px;z-index:21;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:rgba(233,228,255,.7);
-  opacity:0;transform:translateY(8px);transition:opacity .6s ease,transform .6s ease,color 1.2s ease;pointer-events:none;transform-origin:left bottom}
-#guide.show{opacity:1;transform:translateY(0)}
+#guide{position:fixed;left:28px;bottom:26px;z-index:21;display:flex;flex-direction:column;align-items:flex-start;gap:12px;pointer-events:none;font-family:var(--mono);color:rgba(233,228,255,.7)}
+#guide .gs{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:11px;letter-spacing:.3em;
+  opacity:0;transform:translateY(8px);transition:opacity .6s ease,transform .6s ease,color 1.2s ease;transform-origin:left bottom}
+#guide.show .gs{opacity:1;transform:translateY(0)}
 #guide i{display:block;width:1px;height:40px;background:linear-gradient(var(--cyan),transparent);animation:drop 1.8s infinite}
 #guide.show span{animation:guideBob 2.4s ease-in-out infinite}
-#guide small{font-size:9px;letter-spacing:.14em;opacity:.7;white-space:nowrap;margin-top:-3px}
-#guide.nudge{color:#ff7a7a;transform:scale(1.6)}
+#guide.nudge .gs{color:#ff7a7a;transform:scale(1.6)}
 #guide.nudge span{animation:nudge2 2.6s ease-in-out infinite}
 #guide.nudge i{background:linear-gradient(#ff7a7a,transparent);height:48px}
+/* the keyboard works too: two small keycaps, desktop only; they leave once the keys have been used or the chat is over */
+#guide .keys{display:flex;align-items:center;gap:5px;opacity:0;transform:translateY(6px);transition:opacity .9s ease,transform .9s ease}
+#guide.keys-on .keys{opacity:1;transform:translateY(0)}
+#guide kbd{display:inline-grid;place-items:center;min-width:22px;height:22px;box-sizing:border-box;padding:0 5px;border-radius:6px;font:600 12px/1 var(--mono);color:#efeaff;
+  background:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.03));border:1px solid rgba(233,228,255,.32);box-shadow:inset 0 -2px 0 rgba(233,228,255,.14),0 2px 8px rgba(0,0,0,.35)}
+#guide.keys-on kbd:last-of-type{animation:keyTap 2.8s ease-in-out infinite}
+#guide .keys small{margin-left:6px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.75;white-space:nowrap}
+:lang(zh-CN) #guide .keys small{letter-spacing:.08em}
+@keyframes keyTap{0%,62%,100%{transform:translateY(0);box-shadow:inset 0 -2px 0 rgba(233,228,255,.14),0 2px 8px rgba(0,0,0,.35)}70%,86%{transform:translateY(1.5px);box-shadow:inset 0 -1px 0 rgba(233,228,255,.14),0 0 12px rgba(127,233,255,.35);border-color:rgba(127,233,255,.6)}}
+@media (hover:none),(pointer:coarse){#guide .keys{display:none}}
+@media (prefers-reduced-motion:reduce){#guide.keys-on kbd:last-of-type{animation:none}}
+/* the console stop: the story waits until the demo has been opened once; a quiet line under the screen, only after a try to scroll on */
+#cockTip{position:fixed;left:0;top:0;z-index:22;pointer-events:none;transform:translate(-50%,6px);opacity:0;transition:opacity .5s ease,transform .5s ease;
+  font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:rgba(233,240,255,.86);text-shadow:0 1px 10px rgba(0,0,0,.85);white-space:nowrap}
+#cockTip::before{content:"";display:inline-block;width:6px;height:6px;margin:0 9px 1px 0;border-radius:50%;background:#9ff0ff;box-shadow:0 0 8px rgba(127,233,255,.8);vertical-align:middle}
+#cockTip.show{opacity:1;transform:translate(-50%,0)}
 @keyframes guideBob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 @keyframes nudge2{0%,100%{transform:translateY(0);text-shadow:0 0 0 rgba(255,122,122,0)}50%{transform:translateY(4px);text-shadow:0 0 14px rgba(255,122,122,.45)}}
 #modal{--mpad:20px;position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:var(--mpad);overflow:hidden;background:rgba(3,2,10,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -447,7 +459,7 @@ body.focused #tip{display:none}
 <div id="intro" aria-hidden="true"></div>
 <div id="guide" aria-hidden="true"></div>
 <nav id="chapters" aria-label="Chapters"></nav>
-<button id="cockHint" type="button"></button>
+<div id="cockTip" role="status" aria-live="polite"></div>
 <div id="panels"></div>
 <div id="track" aria-hidden="true"></div>
 <div id="tip" role="tooltip"></div>

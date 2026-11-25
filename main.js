@@ -103,8 +103,8 @@ let LANG = (() => { try { const s = localStorage.getItem('ns-lang'); if (s && /^
 const L = v => v == null ? '' : (typeof v === 'object' && !Array.isArray(v)) ? (v[LANG] ?? v.en ?? '') : v;
 const T = {
   en: {
-    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: "✦ Try my voice demo: click the screen · or keep scrolling", tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
-    scroll: 'SCROLL', keysHint: 'or hold →', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
+    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
+    scroll: 'SCROLL', keysHint: 'hold to move', cockLock: 'Click the screen to continue', cockLockT: 'Tap the screen to continue', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
     vrKicker: 'XR / VR & demos', vrTitle: 'Screens in the city', vrText: "Each screen is a project. Click one, or pick from the list.",
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
     gamesKicker: 'Games', gamesTitle: 'The desk', gamesText: "Two games on the monitor. Click the screen to choose.", playBrowser: 'Plays in the browser', newTab: 'Opens in a new tab', holoHint: "Click the little robot on the desk",
@@ -123,8 +123,8 @@ const T = {
     botSay: "Hi! I'm a future project of Nicolas. See you soon ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
   },
   fr: {
-    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Essayez ma démo vocale\u00a0: cliquez sur l'écran · ou continuez à défiler", tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
-    scroll: 'DÉFILEZ', keysHint: 'ou maintenez →', skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
+    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
+    scroll: 'DÉFILEZ', keysHint: 'maintenez pour avancer', cockLock: "Cliquez sur l'écran pour continuer", cockLockT: "Touchez l'écran pour continuer", skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
     vrKicker: 'XR / VR & démos', vrTitle: 'Écrans dans la ville', vrText: "Chaque écran est un projet. Cliquez-en un, ou choisissez dans la liste.",
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
     gamesKicker: 'Jeux', gamesTitle: 'Le bureau', gamesText: "Deux jeux sur l'écran. Cliquez dessus pour choisir.", playBrowser: 'Se joue dans le navigateur', newTab: "S'ouvre dans un nouvel onglet", holoHint: "Cliquez sur le petit robot du bureau",
@@ -143,8 +143,8 @@ const T = {
     botSay: "Salut\u00a0! Je suis un futur projet de Nicolas. À bientôt ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
   },
   zh: {
-    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: "✦ 点击屏幕，试试我的语音演示 · 或继续往下滑", tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
-    scroll: '向下滚动', keysHint: '或长按 →', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
+    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
+    scroll: '向下滚动', keysHint: '长按方向键前进', cockLock: '点击屏幕继续', cockLockT: '点击屏幕继续', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
     vrKicker: 'XR / VR 与演示', vrTitle: '城市里的屏幕', vrText: '每块屏幕都是一个项目。点击屏幕，或从列表中选择。',
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
     gamesKicker: '游戏', gamesTitle: '书桌', gamesText: "显示器上有两款游戏。点击屏幕来选。", playBrowser: '浏览器内直接玩', newTab: '在新标签页打开', holoHint: "点一下桌上的小机器人",
@@ -174,7 +174,7 @@ function setLang(l) {
   const fontsReady = document.fonts?.load ? Promise.all([document.fonts.load(`600 40px "Noto Sans SC"`, '欢迎作品集'), document.fonts.load(`700 40px "Long Cang"`, '谢谢你')]).catch(() => { }) : Promise.resolve();
   buildPanels(); if (!idx.hidden || idx.innerHTML) { idx.innerHTML = ''; if (!idx.hidden) { buildIndex(); } }
   curSlide = -1; lastCh = ''; setSlidePanel(0);
-  SOUND.refresh(); $('#cockHint').textContent = t('cockpitHint');
+  SOUND.refresh();
   for (const f of retext) f();
   fontsReady.then(() => { for (const f of retext) f(); });
 }
@@ -957,16 +957,20 @@ function drawPhone(p, tm) {
 }
 // car motion: drives itself down the avenue
 // the car drives on its own (time only; your scrolling doesn't change its speed). While you are inside it, it keeps driving: full speed for ~60 m,
-// then slower traffic, and only a very long read brings it to a stop (~165 m on), so the rise out of the roof stays near the same stretch of street
-const DRIVE = { d: 0, v: 5, t: 0 };
+// then slower traffic, and only a very long read brings it to a stop (247 m on, before the papers); the rise out of the roof eases its anchor back (zMin)
+const DRIVE = { d: 0, v: 5, t: 0 }, DRIVE_STOP = 247;   // car z −177 at the stop: bonnet at −179.5, ~4.5 m short of the papers
 const carPos = p => {
   if (time !== DRIVE.t) {
     const dt = clamp(time - DRIVE.t, 0, .1); DRIVE.t = time;
-    // autopilot: cruises at 18 km/h, never under 15 km/h; only a long read (~1 min) brings it to the red light at the end of the avenue
-    const want = p < .14 ? (DRIVE.d < 220 ? 5 : DRIVE.d < 268 ? 4.2 : 4.2 * smooth(clamp((300 - DRIVE.d) / 32, 0, 1))) : 5;
-    DRIVE.v += (want - DRIVE.v) * (1 - Math.exp(-dt * 1.5)); DRIVE.d += Math.max(0, DRIVE.v) * dt;
+    // autopilot: cruises at 18 km/h, never under 15 km/h until it brakes; only a long read (~1 min) brings it to a stop, a few metres before
+    // the pile of papers lying on the avenue (its nearest sheet ≈ z −184; the bonnet is 2.5 m ahead of the car's centre).
+    // The brake is a cap on speed set by the distance left (v = 4.2·√sin(π/2 · s/34)): it eases in, can never overshoot, and ends at exactly 0
+    const want = p < .14 && DRIVE.d > 180 ? 4.2 : 5;
+    DRIVE.v += (want - DRIVE.v) * (1 - Math.exp(-dt * 1.5));
+    const s = DRIVE_STOP - DRIVE.d, cap = s < .04 ? 0 : 4.2 * Math.sqrt(Math.sin(Math.PI / 2 * clamp(s / 34, 0, 1))) + (s > 34 ? 9 : 0);   // braking eases in from 0 to ~0.4 m/s²: stops for good ~10 s after it begins
+    DRIVE.v = Math.min(DRIVE.v, cap); DRIVE.d = Math.min(DRIVE_STOP, DRIVE.d + Math.max(0, DRIVE.v) * dt);
   }
-  const z = 70 - Math.min(DRIVE.d, 300); return new THREE.Vector3(CAR_X, 0, z);   // speed comes from time only: scrolling never pushes the car
+  const z = 70 - Math.min(DRIVE.d, DRIVE_STOP); return new THREE.Vector3(CAR_X, 0, z);   // speed comes from time only: scrolling never pushes the car
 };
 const walkerPos = carPos;
 let carSpeed = 0, lastCarZ = 70;
@@ -1114,9 +1118,11 @@ function drawCockpit(tm) {
   const speaking = f < .32;
   for (let i = 0; i < 34; i++) { const a = speaking ? .35 + .65 * Math.abs(Math.sin(tm * 9 + i * .7) * Math.sin(tm * 3.1 + i * .23)) : .12 + .05 * Math.sin(tm * 2 + i); const h = 8 + 54 * a; x.fillStyle = `rgba(127,233,255,${.35 + .5 * a})`; rr2(x, ux + i * (uw / 34), 372 - h / 2, uw / 34 - 6, h, 3); x.fill(); }
   // big "tap to try"
-  const pulse = .5 + .5 * Math.sin(tm * 3.2);
-  x.fillStyle = `rgba(63,210,255,${.16 + .12 * pulse})`; rr2(x, ux, 452, uw, 98, 49); x.fill();
-  x.strokeStyle = `rgba(159,240,255,${.55 + .45 * pulse})`; x.lineWidth = 3; x.stroke();
+  // (a try to scroll on while the stop waits for the demo → the button calls a little louder for a few seconds: brighter, with a ring going out)
+  const nb = clamp(1 - (tm - (rig.cockNudgeT ?? -9)) / 3, 0, 1), pulse = .5 + .5 * Math.sin(tm * (3.2 + 2.4 * nb));
+  if (nb > 0) { const r = (tm * 1.1) % 1; x.strokeStyle = `rgba(159,240,255,${(1 - r) * .7 * nb})`; x.lineWidth = 3; rr2(x, ux - 14 * r, 452 - 14 * r, uw + 28 * r, 98 + 28 * r, 49 + 14 * r); x.stroke(); }
+  x.fillStyle = `rgba(63,210,255,${.16 + .12 * pulse + .14 * nb})`; rr2(x, ux, 452, uw, 98, 49); x.fill();
+  x.strokeStyle = `rgba(159,240,255,${.55 + .45 * pulse})`; x.lineWidth = 3 + 2 * nb; x.stroke();
   x.fillStyle = '#e9fbff'; x.font = F(700, 34, '"Space Grotesk"'); x.textAlign = 'center'; x.fillText('▶  ' + t('tapToTry'), ux + uw / 2, 513); x.textAlign = 'left';
   if (wk < 1) {   // start-up: backlight comes up, the name and a loading line show, then the interface fades in over them
     const lit = smooth(clamp(wk / .28, 0, 1)), ui = smooth(clamp((wk - .5) / .5, 0, 1)), logo = lit * (1 - smooth(clamp((wk - .5) / .3, 0, 1)));
@@ -1133,6 +1139,7 @@ function drawCockpit(tm) {
   R.t.needsUpdate = true;
 }
 function openCockpit() {   // nlu.html is responsive: the iframe simply fills the room the pop-up has left
+  cockUnlock();   // the console stop lets you on once the demo has been opened
   openModal(esc(t('cockpitKicker')), t('cockpitTitle'), { stage: `<div class="nluwrap"><iframe src="nlu.html" title="Cabin Voice demo"></iframe></div>`, info: `<div class="mdesc">${richDesc(t('cockpitDesc'))}</div><button class="more" hidden></button>` }, null, { cls: 'cock nosplit' });
 }
 
@@ -2696,17 +2703,23 @@ const CH = [
   { id: 'contact', k: 'chContact', r: [0.968, 1.01], at: 1 },
 ];
 const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - innerHeight);
-const INTRO_P = .16, INTRO_SCREENS = 10;
+// the intro (p 0 → INTRO_P) is measured in screens of scrolling, at two rates: the phone chat is light (IN_A screens per unit of p, ~3.4 screens
+// for the whole chat), the car part after it keeps its old pace (IN_B); between the two (the pause after the chat, p .09 → .106) the rate ramps
+// linearly, so the scroll speed of the story never kinks. inU: p → screens, inP: its exact inverse
+const INTRO_P = .16, IN_A = 30, IN_B = 62.5, IN_P1 = .09, IN_P2 = .106, IN_C = (IN_B - IN_A) / (IN_P2 - IN_P1), IN_U1 = IN_A * IN_P1, IN_U2 = IN_U1 + IN_A * (IN_P2 - IN_P1) + IN_C * (IN_P2 - IN_P1) ** 2 / 2;
+const inU = p => p <= IN_P1 ? IN_A * p : p <= IN_P2 ? IN_U1 + IN_A * (p - IN_P1) + IN_C * (p - IN_P1) ** 2 / 2 : IN_U2 + IN_B * (p - IN_P2);
+const inP = u => u <= IN_U1 ? u / IN_A : u <= IN_U2 ? IN_P1 + (Math.sqrt(IN_A * IN_A + 2 * IN_C * (u - IN_U1)) - IN_A) / IN_C : IN_P2 + (u - IN_U2) / IN_B;
+const INTRO_SCREENS = inU(INTRO_P);   // ≈ 6.8 (was 10: the chat took 6.6 screens, now 3.4)
 const introPx = () => Math.min(INTRO_SCREENS * innerHeight, maxScroll() * .5);
 // the slide decks get extra scroll so each page keeps the same scroll distance as with the original 2 decks (19 pages over .095), however many decks there are
 const SLIDE_PAGES = CONTENT.papers.reduce((a, d) => a + Math.max(1, d.pages?.length || 1), 0), SLIDE_K = Math.max(1, (.095 / 19) * SLIDE_PAGES / (SLIDES[1] - SLIDES[0] - SLIDE_TRANS * Math.max(0, CONTENT.papers.length - 1)));
 const SLIDE_W = (SLIDE_K - 1) * (SLIDES[1] - SLIDES[0]), STORY_T = 1 - INTRO_P + SLIDE_W;
-{ const tr = document.getElementById('track'); if (tr) tr.style.height = `${Math.round(2280 + SLIDE_W / (1 - INTRO_P) * 1180)}vh`; }
+{ const tr = document.getElementById('track'); if (tr) tr.style.height = `${Math.round(2280 - (10 - INTRO_SCREENS) * 100 + SLIDE_W / (1 - INTRO_P) * 1180)}vh`; }   // the shorter intro comes off the track: every later chapter keeps its scroll length
 const p2w = p => (p - INTRO_P) + (SLIDE_K - 1) * clamp(p - SLIDES[0], 0, SLIDES[1] - SLIDES[0]);
 const w2p = w => { const a = SLIDES[0] - INTRO_P, b = a + SLIDE_K * (SLIDES[1] - SLIDES[0]); return w <= a ? INTRO_P + w : w <= b ? SLIDES[0] + (w - a) / SLIDE_K : INTRO_P + w - SLIDE_W; };
-const s2p = y => { const M = maxScroll(), I = introPx(); return y <= I ? (y / I) * INTRO_P : w2p((y - I) / Math.max(1, M - I) * STORY_T); };
-const p2s = p => { const M = maxScroll(), I = introPx(); return p <= INTRO_P ? p / INTRO_P * I : I + p2w(p) / STORY_T * (M - I); };
-function scrollToP(p) { closeIndex(); window.scrollTo({ top: p2s(p), behavior: REDUCED ? 'auto' : 'smooth' }); }
+const s2p = y => { const M = maxScroll(), I = introPx(); return y <= I ? inP(y / I * INTRO_SCREENS) : w2p((y - I) / Math.max(1, M - I) * STORY_T); };
+const p2s = p => { const M = maxScroll(), I = introPx(); return p <= INTRO_P ? inU(Math.max(0, p)) / INTRO_SCREENS * I : I + p2w(p) / STORY_T * (M - I); };
+function scrollToP(p) { closeIndex(); if (p > COCK_LOCK_P) cockUnlock(); window.scrollTo({ top: p2s(p), behavior: REDUCED ? 'auto' : 'smooth' }); }
 function goTo(id) { const c = CH.find(c => c.id === id); if (c) scrollToP(c.at); }
 function itemList(arr, fn, sub) {
   return `<ul class="list">${arr.map((it, i) => `<li><button class="item" data-act="${fn}" data-i="${i}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="t">${esc(L(it.title))}<span class="s">${esc(sub(it))}</span></span><span class="go">${t('open')}</span></button></li>`).join('')}</ul>`;
@@ -2777,12 +2790,12 @@ function buildUI() {
   });
   { const qs = $('#quality'); const fill = () => { qs.innerHTML = ['auto', 'high', 'mid', 'low'].map(m => `<option value="${m}">${esc(t('quality'))}${LANG === 'zh' ? '：' : ': '}${esc(t({ auto: 'qAuto', high: 'qHigh', mid: 'qMid', low: 'qLow' }[m]))}</option>`).join(''); qs.value = QUAL.mode; }; fill(); retext.push(fill); qs.onchange = () => setQualityMode(qs.value); }
   $('#sound').onclick = () => SOUND.toggle();
-  { const gd = $('#guide'); const gf = () => { gd.innerHTML = `<span>${esc(t('scroll'))}</span>${MOBILE ? '' : `<small>${esc(t('keysHint'))}</small>`}<i></i>`; }; gf(); retext.push(gf); }
+  { const gd = $('#guide'); const gf = () => { gd.innerHTML = `<div class="gs"><span>${esc(t('scroll'))}</span><i></i></div>${MOBILE ? '' : `<div class="keys"><kbd>←</kbd><kbd>→</kbd><small>${esc(t('keysHint'))}</small></div>`}`; }; gf(); retext.push(gf); }
   { const io = $('#intro');
     io.addEventListener('click', () => { dismissIntro(); if (scrollY < p2s(.009)) scrollTo({ top: p2s(.0095), behavior: 'smooth' }); });
     const kick = e => { if (e.type !== 'keydown' || [' ', 'ArrowDown', 'ArrowRight', 'PageDown', 'Enter'].includes(e.key)) dismissIntro(); };
     addEventListener('wheel', e => { if (e.deltaY > 0) kick(e); }, { passive: true }); addEventListener('touchmove', kick, { passive: true }); addEventListener('keydown', kick); }
-  const introFill = () => { const io = $('#intro'); if (io) io.innerHTML = `<div class="ik">${esc(t('introKick'))}</div><div class="it">${esc(t('introTitle'))}</div><div class="mouse" aria-hidden="true"><i></i></div><div class="is">♪ ${esc(t('introSound'))}</div>`; }; introFill(); retext.push(introFill); SOUND.refresh(); $('#cockHint').textContent = t('cockpitHint');
+  const introFill = () => { const io = $('#intro'); if (io) io.innerHTML = `<div class="ik">${esc(t('introKick'))}</div><div class="it">${esc(t('introTitle'))}</div><div class="mouse" aria-hidden="true"><i></i></div><div class="is">♪ ${esc(t('introSound'))}</div>`; }; introFill(); retext.push(introFill); SOUND.refresh();
   $('#openIndex').onclick = openIndex; $('#watch-close').onclick = unfocus;
   $('#logo').onclick = e => { e.preventDefault(); goTo('hero'); };
 }
@@ -3066,7 +3079,7 @@ addEventListener('keydown', e => {
 /* ── no mouse, no wheel: hold → (or ↓) to travel forward, ← (or ↑) to go back. It drives the real scroll position frame by
    frame (so everything that follows the scroll keeps working), eases in on press and out on release; a tap is one small glide.
    Idle while a window, the index, a text field, a video or a game has the keys. ── */
-const KEYNAV = { dir: 0, v: 0, y: 0, raf: 0, last: 0, key: '', off: 0, t0: 0 };
+const KEYNAV = { dir: 0, v: 0, y: 0, raf: 0, last: 0, key: '', off: 0, t0: 0, used: 0, hintGone: false };
 const keyNavBlocked = e => !modal.hidden || !idx.hidden || paused
   || !!(e && (e.altKey || e.ctrlKey || e.metaKey || e.target.closest?.('input,textarea,select,video,audio,iframe,[contenteditable]')))
   || /^(IFRAME|INPUT|TEXTAREA|SELECT|VIDEO|AUDIO)$/.test(document.activeElement?.tagName || '');
@@ -3074,10 +3087,11 @@ function keyNavTick(now) {
   const K = KEYNAV, dt = clamp((now - K.last) / 1000, 0, .1); K.last = now;   // (a slow device still travels at about the same speed)
   if (K.dir && K.off && now >= K.off) K.dir = 0;                  // released (a tap still lasts a moment: a small glide, not a jerk)
   if (keyNavBlocked()) { K.dir = 0; K.v = 0; }
-  const vmax = clamp(innerHeight * .9, 420, 1000);                // px/s: about a steady wheel
+  const vmax = clamp(innerHeight * .45, 210, 500);                // px/s: an unhurried glide (half a steady wheel)
   K.v += (K.dir * vmax - K.v) * (1 - Math.exp(-dt * (K.dir ? 4.5 : 5.5)));
   if (Math.abs(scrollY - K.y) > 2) K.y = scrollY;                 // something else moved the page (wheel, touch, a chapter button): follow it
   K.y = clamp(K.y + K.v * dt, 0, maxScroll());
+  { const ly = cockLockY(); if (ly !== null && K.y > ly && scrollY <= ly + 1) { K.y = ly; K.v = Math.min(K.v, 0); if (K.dir > 0) cockNudge(); } }   // the console stop holds until the demo has been opened
   if (Math.abs(K.y - scrollY) >= .5) scrollTo(0, K.y);
   if (!K.dir && Math.abs(K.v) < 6) { K.v = 0; K.raf = 0; return; }
   K.raf = requestAnimationFrame(keyNavTick);
@@ -3088,11 +3102,72 @@ addEventListener('keydown', e => {
   e.preventDefault();                                             // not the browser's own 40 px hops
   const K = KEYNAV; if (e.repeat && K.key === e.key && K.dir === d) return;
   if (focus.want) unfocus();
-  K.dir = d; K.key = e.key; K.off = 0; K.t0 = performance.now();
+  K.dir = d; K.key = e.key; K.off = 0; K.t0 = performance.now(); K.used = K.t0;
   if (!K.raf) { K.y = scrollY; K.last = K.t0; K.raf = requestAnimationFrame(keyNavTick); }
 });
 const keyNavRelease = e => { const K = KEYNAV; if (e && e.key !== K.key) return; if (K.dir && !K.off) K.off = Math.max(performance.now(), K.t0 + 170); };
 addEventListener('keyup', keyNavRelease); addEventListener('blur', () => keyNavRelease());
+// Space (and Shift+Space) does not page through the story: far too fast. Text fields, games (iframes), a focused button or link,
+// the index view and the pop-ups keep their own Space
+addEventListener('keydown', e => {
+  if (e.key !== ' ' && e.key !== 'Spacebar') return;
+  if (!modal.hidden || !idx.hidden || e.defaultPrevented || e.target.closest?.('input,textarea,select,button,a,summary,[contenteditable],iframe,video,audio')) return;
+  if (/^(IFRAME|INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '')) return;
+  e.preventDefault();
+});
+
+/* ── the console stop: the story waits there until the visitor has opened the voice demo once (click / tap the console screen).
+   Scrolling back stays free; wheel, touch, keys and the scrollbar all stop at the stop (the real window scroll is held, so the page and
+   the story never disagree). Chapter buttons, the index and skip links are explicit: they pass, and jumping past counts as done.
+   Never a trap: no lock without a console that can be clicked (no WebGL, reduced motion, model missing, or too small on screen).
+   Done once → done for the session (a reload doesn't lock again). ── */
+const COCK_LOCK_P = .125;
+let cockDone = (() => { try { return sessionStorage.getItem('ns-cock-done') === '1'; } catch (e) { return false; } })();
+let cockLastY = 0, cockTipT = -9, cockTooSmall = false;
+function cockUnlock() { if (cockDone) return; cockDone = true; try { sessionStorage.setItem('ns-cock-done', '1'); } catch (e) { } cockTipT = -9; }
+const cockLockOn = () => !cockDone && WEBGL && !REDUCED && !!rig.cockMesh && !cockTooSmall && innerWidth >= 280 && innerHeight >= 260;
+const cockLockY = () => cockLockOn() ? Math.floor(p2s(COCK_LOCK_P)) : null;
+function cockNudge() { cockTipT = time; rig.cockNudgeT = time; }
+addEventListener('keydown', e => {   // keyboard only: Enter at the console stop opens the demo (no mouse needed to get past it)
+  if (e.key !== 'Enter' || !modal.hidden || !idx.hidden || e.target.closest?.('button,a,input,textarea,select,iframe,[contenteditable]')) return;
+  if (active === 'city' && cur > .118 && cur < .13 && rig.cockAwake) { e.preventDefault(); openCockpit(); }
+});
+const cockWheel = e => {
+  const ly = cockLockY(); if (ly === null || e.deltaY <= 0 || e.ctrlKey || !modal.hidden || !idx.hidden || scrollY < ly - 1) return;
+  e.preventDefault(); cockNudge();
+};
+let cockTouchY = null;
+addEventListener('touchstart', e => { cockTouchY = e.touches[0]?.clientY ?? null; }, { passive: true });
+const cockTouch = e => {
+  const ly = cockLockY(), y = e.touches[0]?.clientY; if (ly === null || cockTouchY === null || y === undefined || !modal.hidden || !idx.hidden) return;
+  if (y < cockTouchY - 2 && scrollY >= ly - 1 && e.cancelable) { e.preventDefault(); cockNudge(); }   // finger going up = forward
+};
+// these two can cancel a scroll, so they are only attached around the stop while it is locked: everywhere else the wheel and the finger
+// stay on the browser's fast (passive) scrolling path
+let cockGuards = false;
+function setCockGuards(on) {
+  if (on === cockGuards) return; cockGuards = on;
+  const f = on ? addEventListener : removeEventListener;
+  f('wheel', cockWheel, { passive: false }); f('touchmove', cockTouch, { passive: false });
+}
+// screen-space spot under the console (for the quiet line) + whether the console is big enough on screen to be clicked
+const _ck = new THREE.Vector3(), _ck2 = new THREE.Vector3();
+function updateCockTip(p) {
+  setCockGuards(p > .1 && p < .14 && cockLockOn());
+  const el = document.getElementById('cockTip'); if (!el) return;
+  const m = rig.cockMesh, atStop = m && p > .118 && p < .13 && active === 'city';
+  if (atStop) {
+    m.updateMatrixWorld(); camera.updateMatrixWorld();
+    _ck.set(-.178, -.104, 0); m.localToWorld(_ck).project(camera); _ck2.set(.178, -.104, 0); m.localToWorld(_ck2).project(camera);
+    const w = Math.abs(_ck2.x - _ck.x) / 2 * innerWidth;
+    if (p > .122 && w < 110 && !cockTooSmall) cockTooSmall = true;   // can't reasonably be tapped: no lock (and not again this visit)
+    const x = (_ck.x + _ck2.x) / 4 + .5, y = .5 - Math.min(_ck.y, _ck2.y) / 2;   // under the lower corner of the (tilted) screen
+    el.style.left = clamp(x * innerWidth, 120, innerWidth - 120).toFixed(1) + 'px'; el.style.top = clamp(y * innerHeight + 18, 70, innerHeight - 44).toFixed(1) + 'px';
+  }
+  const show = atStop && !cockDone && modal.hidden && time - cockTipT < 3.2;
+  if (show && el.dataset.l !== LANG) { el.dataset.l = LANG; el.textContent = t(MOBILE ? 'cockLockT' : 'cockLock'); }
+  if (el.classList.contains('show') !== show) el.classList.toggle('show', show);
+}
 
 /* ════════════════════════ picking (hover + click on 3D objects) ════════════════════════ */
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(-9, -9), parallax = new THREE.Vector2();
@@ -3124,9 +3199,15 @@ function setHover(o) {
 let curPR = 0, target = 0, cur = 0, prevP = 0, last = performance.now(), time = 0, vel = 0, prevYaw = 0, rollDyn = 0, wasRoom = false, cine;
 const _fw = new THREE.Vector3(), prevCam = new THREE.Vector3();
 const camPos = new THREE.Vector3(), camLook = new THREE.Vector3(), guardOff = new THREE.Vector3(), _gw = new THREE.Vector3();
-const cockHint = $('#cockHint'); cockHint.onclick = () => openCockpit();
 const fadeEl = $('#fade'), progEl = $('#progress i');
-function onScroll() { target = clamp(s2p(scrollY), 0, 1); }
+function onScroll() {
+  const ly = cockLockY();
+  if (ly !== null && scrollY > ly + 1) {
+    if (cockLastY <= ly + 1) { scrollTo(0, ly); cockNudge(); target = clamp(s2p(ly), 0, 1); cockLastY = ly; return; }   // a forward scroll onto the locked stop: held there
+    cockUnlock();   // already beyond it (got there some other way): nothing to hold
+  }
+  cockLastY = scrollY; target = clamp(s2p(scrollY), 0, 1);
+}
 addEventListener('scroll', onScroll, { passive: true });
 addEventListener('pointermove', e => parallax.set(e.clientX / innerWidth - .5, e.clientY / innerHeight - .5));
 
@@ -3138,13 +3219,15 @@ function updateNudge(p) {
   const until = PHN.open[1] + .006, show = p < until, red = show && now - nudgeT0 > 4000;   // guide until the message is open in front of you
   if (g.classList.contains('show') !== show) g.classList.toggle('show', show);
   if (g.classList.contains('nudge') !== red) g.classList.toggle('nudge', red);
+  // the keycaps: from the start, until the arrow keys have been used (a moment after) or the chat is over; once gone, gone
+  if (!KEYNAV.hintGone && (p > CHAT.rest || (KEYNAV.used && now - KEYNAV.used > 1800))) KEYNAV.hintGone = true;
+  const keys = !KEYNAV.hintGone && !MOBILE; if (g.classList.contains('keys-on') !== keys) g.classList.toggle('keys-on', keys);
 }
 function updateUI(p) {
-  updateNudge(p);
+  updateNudge(p); updateCockTip(p);
   if (p > .0015) dismissIntro();
   { const sb = $('#sound'); if (sb) sb.classList.toggle('pending', introGone && !SOUND.on && SOUND.wanted); }
   { const fo = p > .136 && p < .168, el = document.getElementById('p-about'); if (el && el.classList.contains('force-open') !== fo) el.classList.toggle('force-open', fo); }
-  { const on = p > .114 && p < .132 && modal.hidden && !!rig.cockAwake; if (cockHint.classList.contains('show') !== on) cockHint.classList.toggle('show', on); }
   progEl.style.width = (p * 100).toFixed(2) + '%';
   let on = null;
   for (const c of CH) { const show = p >= c.r[0] && p <= c.r[1], e = $('#p-' + c.id); if (e.classList.contains('show') !== show) { e.classList.toggle('show', show); e.inert = !show; } if (show) on = c.id; }
@@ -3159,7 +3242,7 @@ function frame(now) {
   const dt = clamp((now - last) / 1000, 0, .05); last = now;
   if (paused || document.hidden) return;
   time += dt;
-  cur = REDUCED ? target : cur + (target - cur) * (1 - Math.exp(-dt * 4.2));
+  cur = REDUCED ? target : cur + (target - cur) * (1 - Math.exp(-dt * (4.2 + 2.6 * (1 - smooth(clamp((cur - .09) / .02, 0, 1))))));   // the phone chat follows the wheel more closely (light, immediate); the car and the city keep their softer glide
   if (Math.abs(target - cur) < 1e-5) cur = target;
   const p = cur; vel = vel + ((p - prevP) / Math.max(dt, 1e-3) - vel) * .3; prevP = p;
   updateUI(p);
@@ -3299,7 +3382,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 scrollTo(0, 0); addEventListener('pageshow', () => { scrollTo(0, 0); target = cur = 0; });
 setTimeout(() => { for (const d of CONTENT.papers) for (const src of d.pages || []) { const im = new Image(); im.decoding = 'async'; im.src = src; } }, 9000);
 addEventListener('message', e => { if (e.origin === location.origin && e.data?.ns === 'close-game' && !modal.hidden) closeModal(); });
-window.__setLang = setLang; window.__portfolio = { drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { target = cur = prevP = p; scrollTo(0, p2s(p)); }, state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
+window.__setLang = setLang; window.__portfolio = { drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
 
 // QA test hook (read-only): the pure camera path of the city part, without time effects (car parked at its 60 m stop)
 window.__portfolio.hot = (k, re) => { const h = hotspots[k].find(m => re.test(String(typeof m.userData.hot.label === 'function' ? m.userData.hot.label() : m.userData.hot.label))); h?.userData.hot.action(); return !!h; };
