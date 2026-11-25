@@ -159,7 +159,10 @@ class Player {
       if (this.tactical === 2) this.flipV = true;
       else if (this.tactical === 1) {
         const P = portals, pairs = [[P.p1b, P.p1], [P.p2b, P.p2], [P.p3b, P.p3], [P.p4b, P.p4], [P.p1, P.p1b], [P.p2, P.p2b], [P.p3, P.p3b], [P.p4, P.p4b]];
-        for (const [from, to] of pairs) if (this.tactical === 1 && hits(from.rect)) { r.x = to.rect.x; r.y = to.rect.y; this.tactical = 0; }
+        for (const [from, to] of pairs) if (this.tactical === 1 && hits(from.rect)) {
+          // arrive standing in the middle of the exit portal (the old code used its top-left corner, which dropped Magic Gal into the blue water next to portal 1)
+          r.x = T(to.rect.x + to.rect.w / 2 - this.w / 2); r.y = T(to.rect.y + to.rect.h / 2 - this.h / 2); this.velY = 0; this.tactical = 0; dx = 0;
+        }
       } else this.flipV = false;
     }
     // standing next to a lever (first match wins; flags only clear when touching none)
@@ -273,7 +276,8 @@ addEventListener('keydown', e => { if (e.key === 'Escape') { if (ownTab) { locat
 const GAME_KEYS = new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Enter','NumpadEnter','KeyA','KeyD','KeyW','KeyS','KeyE','KeyR','Space']);
 const held = new Set(); let ready = false;
 addEventListener('blur', () => held.clear());
-window.__g = () => ({ titleUp, ready, p1: p1 && p1.rect ? [p1.rect.x, p1.rect.y] : null, p2: p2 && p2.rect ? [p2.rect.x, p2.rect.y] : null });   // read-only test hook
+window.__tp = name => { const P = portals[name]; p1.rect.x = T(P.rect.x + P.rect.w / 2 - p1.w / 2); p1.rect.y = T(P.rect.y + P.rect.h / 2 - p1.h / 2); p1.velY = 0; p1.tactical = 1; };   // test hook: put Magic Gal on a portal and press ↓
+window.__g = () => ({ titleUp, ready, p1: p1 && p1.rect ? [p1.rect.x, p1.rect.y, p1.alive] : null, p2: p2 && p2.rect ? [p2.rect.x, p2.rect.y] : null });   // read-only test hook
 function keyDown(code) {
   if (code === 'NumpadEnter') code = 'Enter';
   if (held.has(code)) return; held.add(code);
