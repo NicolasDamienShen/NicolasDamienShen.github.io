@@ -275,6 +275,11 @@ body.focused #tip{display:none}
 .counter{font-family:var(--mono);font-size:12.5px;color:var(--dim)}
 .navrow .counter{flex:1;text-align:center}
 /* games: choose one of two, then play in the same window */
+.gwrap{position:relative;display:flex;min-width:0}.gwrap>.gcard{flex:1}
+.gwrap .ginfo{position:absolute;top:10px;right:10px;z-index:2;padding:5px 11px;font-size:12px;background:rgba(10,8,24,.55)}
+.gabout{display:flex;gap:26px;align-items:center;min-height:0}.gabout .glogo{width:clamp(90px,20vh,170px);aspect-ratio:1;flex:none;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
+.gabout .gatxt{min-width:0;flex:1}.gabout .mdesc{font-size:15px;line-height:1.55;margin:0 0 14px}
+@media (max-width:560px){.gabout{flex-direction:column;gap:12px;text-align:center}.gabout .glogo{width:clamp(70px,16vh,110px)}.gabout .mrow{justify-content:center}.gwrap .ginfo{top:auto;bottom:10px}}
 .gpick{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-height:0}
 .gcard{all:unset;box-sizing:border-box;cursor:pointer;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 22px 22px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.035);transition:border-color .2s,transform .2s,box-shadow .2s,background .2s}
 .gcard.g-gravity{--gc:#6fb8ff;background:linear-gradient(160deg,rgba(63,140,255,.13),rgba(160,90,255,.1))}
