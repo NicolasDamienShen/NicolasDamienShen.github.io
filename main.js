@@ -103,7 +103,7 @@ let LANG = (() => { try { const s = localStorage.getItem('ns-lang'); if (s && /^
 const L = v => v == null ? '' : (typeof v === 'object' && !Array.isArray(v)) ? (v[LANG] ?? v.en ?? '') : v;
 const T = {
   en: {
-    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: "✦ Try my voice demo: click the screen · or keep scrolling", tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• One command or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
+    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: "✦ Try my voice demo: click the screen · or keep scrolling", tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
     scroll: 'SCROLL', keysHint: 'or hold →', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
     vrKicker: 'XR / VR & demos', vrTitle: 'Screens in the city', vrText: "Each screen is a project. Click one, or pick from the list.",
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
@@ -123,7 +123,7 @@ const T = {
     botSay: "Hi! I'm a future project of Nicolas. See you soon ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
   },
   fr: {
-    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Essayez ma démo vocale\u00a0: cliquez sur l'écran · ou continuez à défiler", tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Une commande ou plusieurs\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
+    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Essayez ma démo vocale\u00a0: cliquez sur l'écran · ou continuez à défiler", tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
     scroll: 'DÉFILEZ', keysHint: 'ou maintenez →', skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
     vrKicker: 'XR / VR & démos', vrTitle: 'Écrans dans la ville', vrText: "Chaque écran est un projet. Cliquez-en un, ou choisissez dans la liste.",
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
@@ -143,7 +143,7 @@ const T = {
     botSay: "Salut\u00a0! Je suis un futur projet de Nicolas. À bientôt ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
   },
   zh: {
-    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: "✦ 点击屏幕，试试我的语音演示 · 或继续往下滑", tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 一条或多条指令都能处理\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
+    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: "✦ 点击屏幕，试试我的语音演示 · 或继续往下滑", tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
     scroll: '向下滚动', keysHint: '或长按 →', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
     vrKicker: 'XR / VR 与演示', vrTitle: '城市里的屏幕', vrText: '每块屏幕都是一个项目。点击屏幕，或从列表中选择。',
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
@@ -1855,13 +1855,14 @@ const wallPics = [];
 const wallMedia = [];
 const wallDeco = [];   // lanterns + string lights: hidden on portrait screens at the photo stops (the taller view would show them)
 const WALL_GROUPS = [-2.95, -1.85, -.75, .35, 1.45, 2.55].map((z, i) => ({ z, y: i % 2 ? 1.4 : 2.2, top: i % 2 === 0 }));   // left → right, top · bottom · top …
+const WS = 1.25;   // size of the big prints (1 = the first .38 m ones): their layout, the camera stops and the narrow-screen fit all follow it
 function buildPhotoWall(std) {
   const A = makeCanvas(2048, 2048), ax = A.getContext('2d');
   for (let k = 0; k < 64; k++) memoryPhoto(ax, (k % 8) * 256, Math.floor(k / 8) * 256, 256, k);
   const atlas = tex(A);
   const frames = [], pics = [], WX = 4.975;
-  // the 12 big slots: 4 per group, 2×2, slightly scattered
-  const slots = []; WALL_GROUPS.forEach(G => (G.top ? [[-.225, .17], [.225, .17], [0, -.17]] : [[0, .17], [-.225, -.17], [.225, -.17]]).forEach(([dz, dy]) => slots.push({ z: G.z + dz + rr(-.015, .015), y: G.y + dy + rr(-.012, .012), rot: rr(-.045, .045), w: .38, h: .29 })));
+  // the 18 big slots: 3 per group, slightly scattered
+  const slots = []; WALL_GROUPS.forEach(G => (G.top ? [[-.225, .18], [.225, .18], [0, -.18]] : [[0, .18], [-.225, -.18], [.225, -.18]]).forEach(([dz, dy]) => slots.push({ z: G.z + dz * WS + rr(-.015, .015), y: G.y + dy * WS + rr(-.012, .012), rot: rr(-.045, .045), w: .38 * WS, h: .26 * WS, side: Math.sign(dz) })));   // h: squarer shots stop at 1.46:1, so the two rows never touch
   const rows = 6, cols = 24, z0 = -3.55, z1 = 3.05, y0 = .98, y1 = 2.62;
   let k = 0;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
@@ -1881,11 +1882,13 @@ function buildPhotoWall(std) {
   slots.forEach((sl, i) => {
     const it = items[i] || {}, src = it.src || '';
     const g = new THREE.Group(); g.position.set(WX - .008, sl.y, sl.z); g.rotation.set(0, -Math.PI / 2, sl.rot); room.add(g);
-    const back = new THREE.Mesh(new THREE.PlaneGeometry(sl.w + .05, sl.h + .1), std({ color: 0xfbf7ef, roughness: .85 })); g.add(back);
+    // print border: thin on the sides and top, a deeper strip at the bottom (room for a marker note)
+    const PS = .028, PT = .028, PB = .085, PY = (PB - PT) / 2;
+    const back = new THREE.Mesh(new THREE.PlaneGeometry(sl.w + 2 * PS, sl.h + PT + PB), std({ color: 0xfbf7ef, roughness: .85 })); g.add(back);
     const pw = sl.w, ph = sl.h, cw = 512, ch = Math.round(512 * ph / pw);
-    let map, cv = null, img = null, pic = null, tape = null;
+    let map, cv = null, img = null, pic = null, tape = null, note = null;
     // each photo keeps its own shape: it fits inside the slot and the paper border follows it
-    const fit = a => { if (!(a > 0) || !pic) return; const w = a > pw / ph ? pw : ph * a, h = a > pw / ph ? pw / a : ph; pic.scale.set(w / pw, h / ph, 1); back.scale.set((w + .05) / (pw + .05), (h + .1) / (ph + .1), 1); tape.position.y = h / 2 + .045; };
+    const fit = a => { if (!(a > 0) || !pic) return; const w = a > pw / ph ? pw : ph * a, h = a > pw / ph ? pw / a : ph; pic.scale.set(w / pw, h / ph, 1); back.scale.set((w + 2 * PS) / (pw + 2 * PS), (h + PT + PB) / (ph + PT + PB), 1); tape.position.y = PY + h / 2 + .024; if (note) note.position.y = PY - h / 2 - PB / 2; };
     const drawPh = () => { const x = cv.getContext('2d'); if (img) x.drawImage(img, 0, 0, cw, ch); else { drawArt(x, cw, ch, '', '', hueOf(i + 2), ''); x.fillStyle = 'rgba(255,255,255,.75)'; x.font = F(600, 30, '"JetBrains Mono"'); x.textAlign = 'center'; x.fillText(it.label || (i % 3 === 1 ? 'GIF' : 'PHOTO'), cw / 2, ch / 2 + 10); x.textAlign = 'left'; } map.needsUpdate = true; };
     if (/\.(mp4|webm|mov)$/i.test(src)) {
       const v = document.createElement('video'); Object.assign(v, { src, muted: true, loop: true, playsInline: true, crossOrigin: 'anonymous' }); v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
@@ -1907,8 +1910,23 @@ function buildPhotoWall(std) {
         im.src = src;
       }
     }
-    pic = new THREE.Mesh(new THREE.PlaneGeometry(pw, ph), new THREE.MeshBasicMaterial({ map, color: new THREE.Color(.92, .92, .92) })); pic.position.set(0, .025, .002); g.add(pic);
-    tape = new THREE.Mesh(new THREE.PlaneGeometry(.13, .036), new THREE.MeshBasicMaterial({ color: 0xf6e7b8, transparent: true, opacity: .82 })); tape.position.set(rr(-.08, .08), sl.h / 2 + .045, .004); tape.rotation.z = rr(-.25, .25); g.add(tape);
+    pic = new THREE.Mesh(new THREE.PlaneGeometry(pw, ph), new THREE.MeshBasicMaterial({ map, color: new THREE.Color(.92, .92, .92) })); pic.position.set(0, PY, .002); g.add(pic);
+    tape = new THREE.Mesh(new THREE.PlaneGeometry(.13 * WS, .036 * WS), new THREE.MeshBasicMaterial({ color: 0xf6e7b8, transparent: true, opacity: .82 })); tape.position.set(rr(-.08, .08) * WS, PY + sl.h / 2 + .024, .004); tape.rotation.z = rr(-.25, .25); g.add(tape);
+    // a few words in felt-tip marker on the bottom strip (content.js `note`), in the site language
+    if (it.note) {
+      const nc = makeCanvas(640, 128), nt = tex(nc), hz = (i * 7 % 5 - 2) / 2, hr = (i * 3 % 7 - 3) / 3;   // fixed per print (no rnd(): the rest of the room keeps its layout)
+      note = new THREE.Mesh(new THREE.PlaneGeometry(.36, .072), new THREE.MeshBasicMaterial({ map: nt, transparent: true, depthWrite: false }));
+      note.position.set(-sl.side * .055 + hz * .02, PY - ph / 2 - PB / 2, .003); note.rotation.z = -.02 + hr * .035; g.add(note);   // written a little toward the trio's centre: clear of the screen edges and the section card
+      const asked = new Set();
+      const drawNote = () => {
+        const x = nc.getContext('2d'), s = L(it.note), fam = handFont(); let px = 92;
+        for (; px > 44; px -= 4) { x.font = `700 ${px}px ${fam}`; if (x.measureText(s).width < 600) break; }
+        x.clearRect(0, 0, 640, 128); x.fillStyle = x.strokeStyle = '#1d2140'; x.lineWidth = 2.5; x.lineJoin = 'round'; x.textAlign = 'center'; x.textBaseline = 'middle';
+        x.strokeText(s, 320, 64); x.fillText(s, 320, 64); nt.needsUpdate = true;
+        const f = `700 ${px}px ${fam}`; if (document.fonts?.check && !asked.has(f + s) && !document.fonts.check(f, s)) { asked.add(f + s); document.fonts.load(f, s).then(drawNote, () => { }); }   // redraw once the hand font is in
+      };
+      drawNote(); retext.push(drawNote);
+    }
     wallPics.push(g);
     if (src) hot('room', pic, () => t('tipView') + L(it.title), () => openWall(src));
   });
@@ -2529,7 +2547,7 @@ const K_ROOM = [
   { p: 0.6675, pos: V(3.25, 2.2, -2.45), look: V(3.25, 2.28, -4) },              // now building: title first…
   ...[0.688, 0.692, 0.716, 0.720].map(p => ({ p, hold: 1, pos: V(3.25, 1.76, -2.06), look: V(3.25, 1.74, -4) })),   // …then the whole board, sign included, centred
   // photo wall: 6 groups, each a still hold
-  ...WALL_GROUPS.flatMap((G, i) => [0, .003, .0085, .0115].map(d => ({ p: .7345 + i * .0175 + d, hold: 1, pos: V(4.16, G.y + .01, G.z), look: V(5, G.y, G.z) }))),   // close: the trio fills the view
+  ...WALL_GROUPS.flatMap((G, i) => { const cy = G.y + (G.top ? .033 : -.019); return [0, .003, .0085, .0115].map(d => ({ p: .7345 + i * .0175 + d, hold: 1, pos: V(4.12, cy + .01, G.z), look: V(5, cy, G.z) })); }),   // close: the trio fills the view; on landscape screens the room camera steps back just enough to clear the top bar and the section card (see fitD)
   { p: 0.849, pos: V(0, 1.6, 2.4), look: V(0, 1.0, 3.6) },                     // turn right → the window
   ...[0.864, 0.868, 0.896, 0.900].map(p => ({ p, hold: 1, pos: V(0, 1.38, 2.64), look: V(0, 1.36, 3.35) })),   // read the letter (still)
   { p: 0.920, pos: V(.22, 1.62, 2.42), look: V(0, 1.33, 3.38) },                 // rise a little: watch it fold from above
@@ -3159,12 +3177,21 @@ function frame(now) {
     roll = sample(K_ROOM, p, camPos, camLook);
     // portrait / narrow screens: step back along the view line so each stop still fits, but stay inside the room
     // (the width that must fit at each stop: desk · board · one photo group · the letter · the plane)
-    const RW = [[.565, 3.2], [.65, 3.2], [.672, 2.6], [.722, 2.6], [.7345, .95], [.8335, .95], [.85, .5], [.93, .5], [.945, 1.2], [1, 1.2]];
+    const RW = [[.565, 3.2], [.65, 3.2], [.672, 2.6], [.722, 2.6], [.7345, .95 * WS], [.8335, .95 * WS], [.85, .5], [.93, .5], [.945, 1.2], [1, 1.2]];
     let wi = 1; while (wi < RW.length - 1 && p > RW[wi][0]) wi++;
     const sw = RW[wi - 1][1] + (RW[wi][1] - RW[wi - 1][1]) * smooth(clamp((p - RW[wi - 1][0]) / (RW[wi][0] - RW[wi - 1][0]), 0, 1));   // eased: no speed kink where a ramp ends
     // soft (C1) min / max / clamp: the pull-back and the room bounds blend in, so the camera speed never kinks when they engage
     const sMin = (a, b, k) => { const e = a - b; return e <= -k ? a : e >= k ? b : a - (e + k) * (e + k) / (4 * k); }, sMax = (a, b, k) => -sMin(-a, -b, k), sCl = (v, lo, hi) => sMax(sMin(v, hi, .15), lo, .15);
-    const d = camPos.distanceTo(camLook), need = sMax(d, sMin(d + 2.6, sw / 2 / (Math.tan(THREE.MathUtils.degToRad(29)) * camera.aspect) * 1.06, 2), .15);   // wide blend on the 2.6 m cap: no lurch on phones as the room entrance hands over
+    let need = camPos.distanceTo(camLook); const d = need; need = sMax(d, sMin(d + 2.6, sw / 2 / (Math.tan(THREE.MathUtils.degToRad(29)) * camera.aspect) * 1.06, 2), .15);   // wide blend on the 2.6 m cap: no lurch on phones as the room entrance hands over
+    // photo wall: also step back until the trio's height fits between the top bar (~58 px) and the section card (~104 px, it only
+    // meets the trios with two prints at the bottom): both are sized in px, so short windows step back a little further.
+    // Blended from stop to stop and faded in / out around the wall: no jumps
+    if (p > .724 && p < .847) {
+      const fitD = G => (G.top ? .885 : .905) * WS / 1.25 / Math.max(.5, 1 - (58 + (G.top ? 34 : 104)) / innerHeight) / 2 / Math.tan(THREE.MathUtils.degToRad(29)) + .033;
+      const u = clamp((p - .7345) / .0175, 0, 5), gi = Math.min(4, Math.floor(u)), f = smooth(clamp((u - gi - .0115 / .0175) / (1 - .0115 / .0175), 0, 1));
+      const wn = (fitD(WALL_GROUPS[gi]) + (fitD(WALL_GROUPS[gi + 1]) - fitD(WALL_GROUPS[gi])) * f) * smooth(clamp((p - .724) / .0105, 0, 1)) * (1 - smooth(clamp((p - .8355) / .0115, 0, 1)));
+      need += sMax(0, wn - need, .02);
+    }
     if (need > d + 1e-6) { camPos.sub(camLook).multiplyScalar(need / Math.max(d, 1e-3)).add(camLook); camPos.set(sCl(camPos.x, -4.75, 4.75), sCl(camPos.y, .4, 3.05), sCl(camPos.z, -3.75, 3.85)); }
   }
   if (!inRoom && camera.aspect < 1.3) {

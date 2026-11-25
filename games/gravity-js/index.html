@@ -18,6 +18,7 @@
   #hint b { color: #7fe3ff; font-weight: 600; } #hint i { color: #d6a8ff; font-weight: 600; font-style: normal; }
   #focus { top: 20%; opacity: 0; font-size: clamp(10px, 1.6vw, 15px); }
   #touch { position: fixed; bottom: max(10px, env(safe-area-inset-bottom)); display: none; font-size: 12px; z-index: 2; }
+  .go.wait { opacity: .6; animation: none !important; }
   #load { position: fixed; inset: 0; display: grid; place-items: start center; padding-top: 8vh; box-sizing: border-box; color: #c9b8ff; font: 13px ui-monospace, Menlo, monospace; letter-spacing: .2em; }
   .gone { opacity: 0 !important; }
   /* title card: the first thing you see, then it melts into the level */
@@ -270,11 +271,13 @@ const ownTab = parent === window; if (ownTab) document.getElementById('back').st
 addEventListener('keydown', e => { if (e.key === 'Escape') { if (ownTab) { location.href = document.getElementById('back').href; return; } try { parent.postMessage({ ns: 'close-game' }, '*'); } catch (err) { } } });
 // ---- input: same keys and KEYDOWN/KEYUP semantics as the original (no auto-repeat) ----
 const GAME_KEYS = new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Enter','NumpadEnter','KeyA','KeyD','KeyW','KeyS','KeyE','KeyR','Space']);
-const held = new Set();
+const held = new Set(); let ready = false;
+addEventListener('blur', () => held.clear());
+window.__g = () => ({ titleUp, ready, p1: p1 && p1.rect ? [p1.rect.x, p1.rect.y] : null, p2: p2 && p2.rect ? [p2.rect.x, p2.rect.y] : null });   // read-only test hook
 function keyDown(code) {
   if (code === 'NumpadEnter') code = 'Enter';
   if (held.has(code)) return; held.add(code);
-  if (code === 'KeyR') { reset(); return; }
+  if (code === 'KeyR') { if (ready) reset(); return; }
   if (state !== 'play') return;
   switch (code) {
     case 'KeyA': KEYS.left2 = true; break;
@@ -303,7 +306,9 @@ function keyUp(code) {
   }
 }
 const titleEl = document.getElementById('title'); let titleUp = true;
-function startGame() { if (!titleUp) return; titleUp = false; titleEl.classList.add('out'); hint.classList.add('gone'); reset(); grabFocus(); setTimeout(() => titleEl.remove(), 1000); }
+// nothing starts before the sprites are loaded: the title card waits, and says so
+const goEl = titleEl.querySelector('.go'), goText = goEl ? goEl.textContent : ''; if (goEl) { goEl.textContent = 'Loading…'; goEl.classList.add('wait'); } titleEl.style.cursor = 'progress';
+function startGame() { if (!titleUp || !ready) return; titleUp = false; titleEl.classList.add('out'); hint.classList.add('gone'); reset(); grabFocus(); setTimeout(() => titleEl.remove(), 1000); }
 titleEl.addEventListener('pointerdown', e => { e.preventDefault(); startGame(); });
 addEventListener('keydown', e => { if (!titleUp || e.key === 'Escape' || e.ctrlKey || e.metaKey || e.altKey) return; e.preventDefault(); e.stopImmediatePropagation(); startGame(); }, true);
 const releaseAll = () => [...held].forEach(keyUp);
@@ -340,6 +345,7 @@ addEventListener('resize', fit);
 fit();
 
 Promise.all(names.map(load)).then(() => {
+  ready = true; if (goEl) { goEl.textContent = goText; goEl.classList.remove('wait'); } titleEl.style.cursor = '';
   document.getElementById('load').remove(); calibrate(); reset(); fit(); grabFocus(); showFocus();
   let acc = 0, last = performance.now();
   const loop = now => { acc += Math.min(250, now - last); last = now; let n = 0; while (acc >= 1000 / FPS) { if (!titleUp) update(); acc -= 1000 / FPS; n++; } if (n) draw(); requestAnimationFrame(loop); };

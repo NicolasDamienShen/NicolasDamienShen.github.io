@@ -124,7 +124,7 @@ export const CONTENT = {
   // 04 · Corkboard — current work (GIF / MP4 loops)
   now: [
     { title: { en: "In-cabin voice agent", fr: "Agent vocal embarqué", zh: "车载语音助手" }, status: { en: "In progress", fr: "En cours", zh: "进行中" }, media: "",
-      desc: { en: "Spoken requests become DSL commands for the cabin.\n• Compared: LLMs, a diffusion LM, a JEV-inspired architecture (Sept 2026)\n• Final system: Mapika-2B decides, Qwen3-1.7B fills in the values\n• One or many intents\n• Try it: the offline, text-only demo on the car's centre screen", fr: "Les demandes orales deviennent des commandes DSL pour l'habitacle.\n• Comparé : des LLM, un modèle de diffusion, une architecture inspirée de JEV (sept. 2026)\n• Au final : Mapika-2B décide, Qwen3-1.7B complète les valeurs\n• Une ou plusieurs intentions\n• À essayer : la démo hors ligne, texte seul, sur l'écran central de la voiture", zh: "把口头请求变成控制座舱的 DSL 指令。\n• 对比：大语言模型、扩散语言模型、受 JEV 启发的架构（2026 年 9 月）\n• 最终方案：Mapika-2B 做决策，Qwen3-1.7B 补全参数\n• 单意图、多意图都行\n• 试一试：车内中控屏上的离线纯文本演示" } },
+      desc: { en: "Spoken requests become DSL commands for the cabin.\n• Compared: LLMs, a diffusion LM, a JEV-inspired architecture (Sept 2026)\n• Final system: Mapika-2B decides, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several (e.g. “seat heating on and open the window”)\n• Try it: the offline, text-only demo on the car's centre screen", fr: "Les demandes orales deviennent des commandes DSL pour l'habitacle.\n• Comparé : des LLM, un modèle de diffusion, une architecture inspirée de JEV (sept. 2026)\n• Au final : Mapika-2B décide, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase peut contenir une demande ou plusieurs (ex. « chauffe mon siège et ouvre la fenêtre »)\n• À essayer : la démo hors ligne, texte seul, sur l'écran central de la voiture", zh: "把口头请求变成控制座舱的 DSL 指令。\n• 对比：大语言模型、扩散语言模型、受 JEV 启发的架构（2026 年 9 月）\n• 最终方案：Mapika-2B 做决策，Qwen3-1.7B 补全参数\n• 单意图、多意图都能理解：一句话里可以有一个或多个请求（如“打开座椅加热并打开车窗”）\n• 试一试：车内中控屏上的离线纯文本演示" } },
     { title: { en: "Research paper", fr: "Article de recherche", zh: "研究论文" }, status: { en: "Draft", fr: "Brouillon", zh: "草稿" }, media: "", desc: ph },
     { title: { en: "This portfolio", fr: "Ce portfolio", zh: "这个作品集" }, status: { en: "You're inside it", fr: "Vous êtes dedans", zh: "你正身处其中" }, media: "",
       desc: { en: "Designed as an HMI piece in itself.\n• A scroll-driven 3D site\n• Built with Three.js", fr: "Pensé comme un projet d'IHM à part entière.\n• Un site 3D piloté par le défilement\n• Construit avec Three.js", zh: "它本身就是一件人机交互作品。\n• 由滚动驱动的 3D 网站\n• 用 Three.js 打造" } },
@@ -142,49 +142,50 @@ export const CONTENT = {
 
   // The photo wall in the room: real photos, GIFs or short MP4/WebM loops (muted).
   // 18 slots = 6 trios along the wall (top, bottom, top, bottom…), the camera visits each trio in turn.
+  // note: a few handwritten words in marker on the print's bottom border (optional, 1–3 words)
   // e.g. { src: "media/wall/cave.jpg" }, { src: "media/wall/demo.gif" }, { src: "media/wall/loop.mp4" }
   wall: [
     // 1 · Artistic pillars: the three stages
-    { src: "media/wall/1-pillars-a.jpg", title: { en: "Artistic pillars · first pass", fr: "Piliers artistiques · première passe", zh: "艺术立柱 · 初稿" },
+    { src: "media/wall/1-pillars-a.jpg", note: { en: "first pass", fr: "première passe", zh: "初稿" }, title: { en: "Artistic pillars · first pass", fr: "Piliers artistiques · première passe", zh: "艺术立柱 · 初稿" },
       desc: { en: "Blender, first pass: three pillars and their chains, in plain grey.", fr: "Blender, première passe : trois piliers et leurs chaînes, en gris neutre.", zh: "Blender 初稿：三根立柱和缠绕的锁链，纯灰色。" } },
     { src: "media/wall/1-pillars-b.jpg", title: { en: "Artistic pillars · chains", fr: "Piliers artistiques · les chaînes", zh: "艺术立柱 · 锁链" },
       desc: { en: "More chains, hanging across the whole frame.", fr: "Davantage de chaînes, suspendues à travers tout le cadre.", zh: "加入更多锁链，横贯整个画面。" } },
-    { src: "media/wall/1-pillars-final.jpg", title: { en: "Artistic pillars · final", fr: "Piliers artistiques · version finale", zh: "艺术立柱 · 最终版" },
+    { src: "media/wall/1-pillars-final.jpg", note: { en: "final!", fr: "final !", zh: "完成！" }, title: { en: "Artistic pillars · final", fr: "Piliers artistiques · version finale", zh: "艺术立柱 · 最终版" },
       desc: { en: "The final render, with colour and light.", fr: "Le rendu final, avec la couleur et la lumière.", zh: "最终渲染，加入色彩与光影。" } },
     // 2 · The wolf spaceship: back, top, and the modular interior pieces
     { src: "media/wall/2-wolf-back.jpg", title: { en: "Wolf spaceship · back view", fr: "Vaisseau loup · vue arrière", zh: "狼形飞船 · 后视图" },
       desc: { en: "A spaceship shaped like a wolf, modelled in Blender: the view from behind.", fr: "Un vaisseau en forme de loup, modélisé dans Blender : vue de l'arrière.", zh: "在 Blender 中建模的狼形飞船：后视图。" } },
-    { src: "media/wall/2-wolf-top.jpg", title: { en: "Wolf spaceship · top view", fr: "Vaisseau loup · vue du dessus", zh: "狼形飞船 · 俯视图" },
+    { src: "media/wall/2-wolf-top.jpg", note: { en: "see the wolf?", fr: "tu vois le loup ?", zh: "看出狼脸了吗？" }, title: { en: "Wolf spaceship · top view", fr: "Vaisseau loup · vue du dessus", zh: "狼形飞船 · 俯视图" },
       desc: { en: "Seen from above, the wolf's face appears.", fr: "Vu du dessus, la tête du loup apparaît.", zh: "从上方看，狼的脸就出现了。" } },
-    { src: "media/wall/2-spaceship-interior.mp4", poster: "media/wall/2-spaceship-interior.jpg", title: { en: "Wolf spaceship · interior", fr: "Vaisseau loup · intérieur", zh: "狼形飞船 · 内部" },
+    { src: "media/wall/2-spaceship-interior.mp4", note: { en: "modular kit", fr: "kit modulaire", zh: "模块化拼装" }, poster: "media/wall/2-spaceship-interior.jpg", title: { en: "Wolf spaceship · interior", fr: "Vaisseau loup · intérieur", zh: "狼形飞船 · 内部" },
       desc: { en: "Inside the ship: a corridor assembled from modular pieces.", fr: "À l'intérieur : un couloir assemblé à partir de pièces modulaires.", zh: "飞船内部：由模块化组件拼成的走廊。" } },
     // 3 · Tiny room, and Tigrou
-    { src: "media/wall/3-tinyroom-a.jpg", title: { en: "Tiny room · blockout", fr: "Petite chambre · maquette", zh: "小房间 · 白模" },
+    { src: "media/wall/3-tinyroom-a.jpg", note: { en: "blockout", fr: "maquette", zh: "白模" }, title: { en: "Tiny room · blockout", fr: "Petite chambre · maquette", zh: "小房间 · 白模" },
       desc: { en: "A small bedroom in Blender, every part in a flat colour before texturing.", fr: "Une petite chambre dans Blender, chaque élément en couleur unie avant les textures.", zh: "Blender 中的小卧室，贴图前每个部件都是纯色。" } },
     { src: "media/wall/3-tinyroom-final.jpg", title: { en: "Tiny room · final", fr: "Petite chambre · version finale", zh: "小房间 · 最终版" },
       desc: { en: "The same room, textured and lit.", fr: "La même chambre, texturée et éclairée.", zh: "同一个房间，加上贴图和灯光。" } },
-    { src: "media/wall/3-tigrou.jpg", title: { en: "Tigrou", fr: "Tigrou", zh: "Tigrou" },
+    { src: "media/wall/3-tigrou.jpg", note: { en: "childhood ♥", fr: "mon enfance ♥", zh: "童年 ♥" }, title: { en: "Tigrou", fr: "Tigrou", zh: "Tigrou" },
       desc: { en: "Tigrou, my childhood plush tiger, modelled in Blender.", fr: "Tigrou, la peluche tigre de mon enfance, modélisée dans Blender.", zh: "Tigrou，我童年的老虎毛绒玩具，在 Blender 中建模。" } },
     // 4 · Robotic spider, VR church, the drone city in progress
     { src: "media/wall/4-spider.jpg", title: { en: "Robotic spider", fr: "Araignée robotique", zh: "机械蜘蛛" },
       desc: { en: "A robotic spider, textured with glow in Blender, and fully animated.", fr: "Une araignée robotique texturée avec des parties lumineuses dans Blender, et entièrement animée.", zh: "在 Blender 中完成发光贴图的机械蜘蛛，并且做了完整的动画。" } },
-    { src: "media/wall/4-church.jpg", title: { en: "VR church", fr: "Église pour la RV", zh: "VR 教堂" },
+    { src: "media/wall/4-church.jpg", note: { en: "built for VR", fr: "pour la RV", zh: "为 VR 而建" }, title: { en: "VR church", fr: "Église pour la RV", zh: "VR 教堂" },
       desc: { en: "A church environment built in Blender for VR.", fr: "Un environnement d'église construit dans Blender pour la RV.", zh: "为 VR 在 Blender 中搭建的教堂场景。" } },
-    { src: "media/wall/4-dronecity.jpg", title: { en: "Drones in the City Animation · in progress", fr: "Drones in the City Animation · en cours", zh: "Drones in the City Animation（城市无人机动画） · 制作中" },
+    { src: "media/wall/4-dronecity.jpg", note: { en: "in progress…", fr: "en cours…", zh: "制作中…" }, title: { en: "Drones in the City Animation · in progress", fr: "Drones in the City Animation · en cours", zh: "Drones in the City Animation（城市无人机动画） · 制作中" },
       desc: { en: "Drones in the City Animation (2022) before materials: colour-coded towers on a circular base.", fr: "Drones in the City Animation (2022) avant les matériaux : des tours colorées par groupe sur une base circulaire.", zh: "Drones in the City Animation（2022）加材质前：按颜色区分的高塔立在圆形底座上。" } },
     // 5 · Gravity Boy & Magic Gal: the hand-drawn draft, the final game, and the domino heart
-    { src: "media/wall/5-gravity-draft.jpg", game: 0, title: { en: "Gravity Boy & Magic Gal · first sketch", fr: "Gravity Boy & Magic Gal · premier croquis", zh: "Gravity Boy & Magic Gal · 手绘草图" },
+    { src: "media/wall/5-gravity-draft.jpg", note: { en: "hand-drawn", fr: "dessiné à la main", zh: "手绘" }, game: 0, title: { en: "Gravity Boy & Magic Gal · first sketch", fr: "Gravity Boy & Magic Gal · premier croquis", zh: "Gravity Boy & Magic Gal · 手绘草图" },
       desc: { en: "The level, drawn by hand on squared paper before any code.\n• Go play it again with a friend!\n• I know, the lava is a bit touchy… next fix, I promise.", fr: "Le niveau, dessiné à la main sur papier quadrillé avant la moindre ligne de code.\n• Allez y rejouer avec un ami !\n• Je sais, la lave est un peu susceptible… prochain correctif, promis.", zh: "写代码之前，在方格纸上手绘的关卡。\n• 叫上朋友再玩一局吧！\n• 我知道，熔岩有点太敏感了……下次一定修，我保证。" } },
-    { src: "media/wall/5-gravity-final.jpg", title: { en: "Gravity Boy & Magic Gal · final game", fr: "Gravity Boy & Magic Gal · jeu final", zh: "Gravity Boy & Magic Gal · 最终版" },
+    { src: "media/wall/5-gravity-final.jpg", note: { en: "now in pygame!", fr: "puis en pygame !", zh: "再用 pygame 实现！" }, title: { en: "Gravity Boy & Magic Gal · final game", fr: "Gravity Boy & Magic Gal · jeu final", zh: "Gravity Boy & Magic Gal · 最终版" },
       desc: { en: "The finished game, written in Python with pygame.", fr: "Le jeu terminé, écrit en Python avec pygame.", zh: "完成的游戏，用 Python 和 pygame 编写。" } },
     { src: "media/wall/5-heart.mp4", poster: "media/wall/5-heart.jpg", title: { en: "Domino heart", fr: "Cœur de dominos", zh: "多米诺爱心" },
       desc: { en: "A heart of dominoes falling one after another: a Blender physics animation.", fr: "Un cœur de dominos qui tombent les uns après les autres : une animation physique dans Blender.", zh: "多米诺骨牌依次倒下组成一颗心：Blender 物理动画。" } },
     // 6 · Concours général (Sorbonne), UTCrew at the 2024 diploma ceremony, and the UTC logo animation
-    { src: "media/wall/6-concours.jpg", title: { en: "Concours général · Sorbonne", fr: "Concours général · Sorbonne", zh: "法国全国中学优等生会考 · 索邦" },
+    { src: "media/wall/6-concours.jpg", note: { en: "Sorbonne 2023", fr: "Sorbonne 2023", zh: "索邦 2023" }, title: { en: "Concours général · Sorbonne", fr: "Concours général · Sorbonne", zh: "法国全国中学优等生会考 · 索邦" },
       desc: { en: "Prize ceremony at the Sorbonne.\n• Concours général: Chinese composition and translation\n• 2023 (ALCG)", fr: "Remise des prix à la Sorbonne.\n• Concours général : composition et version chinoises\n• 2023 (ALCG)", zh: "在索邦大学的颁奖典礼。\n• 法国全国中学优等生会考（Concours général）：中文写作与翻译\n• 2023 年（ALCG）" } },
-    { src: "media/wall/6-utcrew-2024.jpg", title: { en: "UTCrew · diploma ceremony 2024", fr: "UTCrew · remise des diplômes 2024", zh: "UTCrew · 2024 毕业典礼" },
+    { src: "media/wall/6-utcrew-2024.jpg", note: { en: "on stage!", fr: "sur scène !", zh: "上台啦！" }, title: { en: "UTCrew · diploma ceremony 2024", fr: "UTCrew · remise des diplômes 2024", zh: "UTCrew · 2024 毕业典礼" },
       desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024.\n• 2025: the crew's secretary for six months\n• Responsibility, communication, money\n• And the stage is always fun and thrilling!\n• Photo: Eva Guignabodet", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024.\n• 2025 : secrétaire de l'association pendant six mois\n• Responsabilité, communication, gestion de l'argent\n• Et la scène, c'est toujours aussi amusant et grisant !\n• Photo : Eva Guignabodet", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。\n• 2025 年：当了六个月的社团秘书\n• 责任、沟通、管钱\n• 站上舞台永远好玩又刺激！\n• 摄影：Eva Guignabodet" } },
-    { src: "media/wall/6-utc-logo.mp4", poster: "media/wall/6-utc-logo.jpg", title: { en: "UTC logo · integration 2023", fr: "Logo de l'UTC · intégration 2023", zh: "UTC 校徽 · 2023 迎新" },
+    { src: "media/wall/6-utc-logo.mp4", note: { en: "U with eyes :)", fr: "un U avec des yeux :)", zh: "U 长了眼睛 :)" }, poster: "media/wall/6-utc-logo.jpg", title: { en: "UTC logo · integration 2023", fr: "Logo de l'UTC · intégration 2023", zh: "UTC 校徽 · 2023 迎新" },
       desc: { en: "September 2023: a UTC integration week \"homework\".\n• The school logo, animated in Blender\n• In its base colours, silver and gold\n• The U got eyes, like a smile :)\n• Welcoming us to five years of new ideas and new encounters",
               fr: "Septembre 2023 : un « devoir » de la semaine d'intégration de l'UTC.\n• Le logo de l'école, animé dans Blender\n• Dans ses couleurs de base, l'argent et l'or\n• Le U a reçu des yeux, comme un sourire :)\n• Pour nous accueillir : cinq ans de nouvelles idées et de nouvelles rencontres",
               zh: "2023 年 9 月，UTC 迎新周的一份“作业”。\n• 用 Blender 做的校徽动画\n• 校徽的基础色：银与金\n• U 上加了一双眼睛，像一个笑脸 :)\n• 欢迎我们开启五年的新知识与新相遇" } },

@@ -618,9 +618,9 @@
   
   <g id="app-ui-nav" opacity="0" clip-path="url(#clipScreen)">
     <g id="nav-map"></g>
-    <rect x="172" y="182" width="120" height="34" rx="6" fill="#07070f" opacity=".75"/>
-    <text id="nav-dest" x="180" y="196" fill="#dfe9ff" font-size="11" font-weight="600">Shenzhen North Station</text>
-    <text id="nav-sub" x="180" y="210" fill="#6f7fe8" font-size="8">ETA 24 min · demo</text>
+    <rect x="82" y="176" width="216" height="40" rx="7" fill="#07070f" opacity=".8"/>
+    <text id="nav-dest" x="91" y="193" fill="#dfe9ff" font-size="12" font-weight="600">Shenzhen North Station</text>
+    <text id="nav-sub" x="91" y="208" fill="#8f9cff" font-size="9">ETA 24 min · demo</text>
   </g>
 
 
@@ -3263,20 +3263,20 @@ function listFor(s, object) {
 }
 
 const MAPS = [ {
-    route: "M78 206 C 110 200 120 160 150 160 C 185 160 190 142 230 140 L 272 138",
+    route: "M78 166 C 110 164 120 152 150 152 C 185 152 190 142 230 140 L 272 138",
     pin: [ 272, 138 ],
-    me: [ 78, 206 ],
+    me: [ 78, 166 ],
     seg: [ "M78 206 C 100 203 110 185 124 172", "M124 172 C 140 160 150 160 170 158", "M170 158 C 185 158 190 142 230 140", "M230 140 L 272 138" ],
     deco: '<g stroke="#2fd1a8" stroke-width=".6" opacity=".18"><path d="M60 140 H300 M60 168 H300 M60 196 H300 M100 112 V224 M150 112 V224 M200 112 V224 M250 112 V224"/></g><rect x="96" y="118" width="40" height="22" rx="3" fill="#2fd1a8" opacity=".08"/><rect x="236" y="176" width="52" height="36" rx="3" fill="#2fd1a8" opacity=".08"/><text x="104" y="132" fill="#2fd1a8" font-size="6" opacity=".5">Park</text><text x="242" y="188" fill="#2fd1a8" font-size="6" opacity=".5">Mall area</text>'
 }, {
-    route: "M70 150 L 120 150 C 140 150 140 190 160 190 L 210 190 C 230 190 240 170 262 150 L 284 150",
+    route: "M70 140 L 120 140 C 140 140 140 168 160 168 L 210 168 C 230 168 240 160 262 150 L 284 150",
     pin: [ 284, 150 ],
-    me: [ 70, 150 ],
+    me: [ 70, 140 ],
     seg: [ "M70 150 L 120 150", "M120 150 C 140 150 140 190 160 190", "M160 190 L 210 190", "M210 190 C 230 190 240 170 262 150 L 284 150" ],
     deco: '<path d="M60 126 C 120 128 160 118 300 124" fill="none" stroke="#3f8cff" stroke-width="9" opacity=".18"/><text x="150" y="121" fill="#3f8cff" font-size="6" opacity=".6">Shenzhen River</text><g stroke="#2fd1a8" stroke-width=".6" opacity=".16"><path d="M60 170 H300 M60 210 H300 M90 112 V224 M180 112 V224 M240 112 V224"/></g><rect x="96" y="200" width="60" height="18" rx="3" fill="#2fd1a8" opacity=".08"/><text x="104" y="212" fill="#2fd1a8" font-size="6" opacity=".5">School</text><text x="218" y="206" fill="#6f7fe8" font-size="6" opacity=".6">Shennan Blvd</text>'
 }, {
-    route: "M84 130 C 84 170 110 176 140 176 C 170 176 176 150 200 150 C 230 150 240 200 278 200",
-    pin: [ 278, 200 ],
+    route: "M84 130 C 84 160 110 166 140 166 C 170 166 176 150 200 150 C 230 150 240 165 278 165",
+    pin: [ 278, 165 ],
     me: [ 84, 130 ],
     seg: [ "M84 130 C 84 170 110 176 140 176", "M140 176 C 170 176 176 150 200 150", "M200 150 C 230 150 240 200 278 200", "M278 200 L 278 200" ],
     deco: '<g stroke="#2fd1a8" stroke-width=".6" opacity=".16"><path d="M60 130 H300 M60 176 H300 M60 214 H300 M110 112 V224 M170 112 V224 M240 112 V224"/></g><circle cx="150" cy="140" r="11" fill="#2fd1a8" opacity=".08"/><circle cx="150" cy="140" r="11" fill="none" stroke="#2fd1a8" stroke-width=".6" opacity=".3"/><text x="140" y="124" fill="#2fd1a8" font-size="6" opacity=".5">Roundabout</text><rect x="226" y="118" width="60" height="26" rx="3" fill="#ff8c42" opacity=".08"/><text x="236" y="133" fill="#ff8c42" font-size="6" opacity=".55">Airport</text><text x="92" y="206" fill="#6f7fe8" font-size="6" opacity=".6">Binhai Ave</text>'
@@ -3296,7 +3296,7 @@ function genMap(seed) {
     const n = 5, pts = [];
     for (let i = 0; i < n; i++) {
         const x = 76 + i * (196 / (n - 1)) + (i > 0 && i < n - 1 ? rnd(-14, 14) : 0);
-        const y = i === n - 1 ? rnd(128, 160) : x > 160 ? rnd(124, 172) : rnd(124, 208);
+        const y = i === n - 1 ? rnd(128, 160) : rnd(124, 168);   /* the label band (y 176+) stays clear */
         pts.push([ Math.round(x), Math.round(y) ]);
     }
     if (R() < .5) pts.reverse().forEach(p => p[0] = 360 - p[0]);
@@ -3336,7 +3336,7 @@ function genMap(seed) {
 
 function mapHTML(k, traffic, located) {
     const M = genMap(k), TC = [ "#3ddc84", "#ff8c42", "#ff3b6b", "#3ddc84" ];
-    return `${M.deco}<path d="${M.route}" fill="none" stroke="#2fd1a8" stroke-width="3" stroke-linecap="round" opacity=".9" filter="url(#pGlow)"/>\n    <g id="nav-traffic" opacity="${traffic ? 1 : 0}" stroke-width="3.5" stroke-linecap="round" fill="none">${M.seg.map((d, i) => `<path d="${d}" stroke="${TC[i]}"/>`).join("")}</g>\n    <g id="nav-me" opacity="${located ? 1 : 0}"><circle cx="${M.me[0]}" cy="${M.me[1]}" r="9" fill="none" stroke="#2fd1a8" stroke-width="1"><animate attributeName="r" values="6;14;6" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="1.8s" repeatCount="indefinite"/></circle></g>\n    <circle cx="${M.me[0]}" cy="${M.me[1]}" r="4" fill="#dfe9ff"/><circle r="3" fill="#2fd1a8" filter="url(#pGlow)"><animateMotion dur="4s" repeatCount="indefinite" path="${M.route}"/></circle>\n    <path d="M${M.pin[0]} ${M.pin[1]} C ${M.pin[0] - 4} ${M.pin[1]} ${M.pin[0] - 6} ${M.pin[1] - 3} ${M.pin[0] - 6} ${M.pin[1] - 6} C ${M.pin[0] - 6} ${M.pin[1] - 10} ${M.pin[0]} ${M.pin[1] - 16} ${M.pin[0]} ${M.pin[1] - 16} C ${M.pin[0]} ${M.pin[1] - 16} ${M.pin[0] + 6} ${M.pin[1] - 10} ${M.pin[0] + 6} ${M.pin[1] - 6} C ${M.pin[0] + 6} ${M.pin[1] - 3} ${M.pin[0] + 4} ${M.pin[1]} ${M.pin[0]} ${M.pin[1]} Z" fill="#2fd1a8"/>`;
+    return `${M.deco}<path d="${M.route}" fill="none" stroke="#2fd1a8" stroke-width="3" stroke-linecap="round" opacity=".9" filter="url(#pGlow)"/>\n    <g id="nav-traffic" opacity="${traffic ? 1 : 0}" stroke-width="3.5" stroke-linecap="round" fill="none">${M.seg.map((d, i) => `<path d="${d}" stroke="${TC[i]}"/>`).join("")}</g>\n    <g id="nav-me" opacity="${located ? 1 : 0}"><circle cx="${M.me[0]}" cy="${M.me[1]}" r="9" fill="none" stroke="#2fd1a8" stroke-width="1"><animate attributeName="r" values="6;14;6" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="1.8s" repeatCount="indefinite"/></circle></g>\n    <circle cx="${M.me[0]}" cy="${M.me[1]}" r="4" fill="#dfe9ff"/><circle r="3" fill="#2fd1a8" filter="url(#pGlow)"><animateMotion dur="4s" repeatCount="indefinite" path="${M.route}"/></circle>\n    <g filter="url(#pGlow)"><path d="M${M.pin[0]} ${M.pin[1]} C ${M.pin[0] - 2.5} ${M.pin[1] - 5} ${M.pin[0] - 7.5} ${M.pin[1] - 7.5} ${M.pin[0] - 7.5} ${M.pin[1] - 12.5} A 7.5 7.5 0 1 1 ${M.pin[0] + 7.5} ${M.pin[1] - 12.5} C ${M.pin[0] + 7.5} ${M.pin[1] - 7.5} ${M.pin[0] + 2.5} ${M.pin[1] - 5} ${M.pin[0]} ${M.pin[1]} Z" fill="#ff3b4e" stroke="#ffd6db" stroke-width=".6"/><circle cx="${M.pin[0]}" cy="${M.pin[1] - 12.5}" r="3" fill="#fff"/></g>`;
 }
 
 HANDLERS.nav = function(s, p, fx, warn) {
@@ -4168,8 +4168,8 @@ function renderExt() {
     {
         const parts = [ state.nav.start ? "from " + state.nav.start : null, state.nav.route, state.nav.remaining || "ETA 24 min" ].filter(Boolean);
         let t = parts.join(" · ") + " · demo";
-        if (t.length > 20) t = parts.join(" · ");
-        if (t.length > 20) t = t.slice(0, 19) + "…";
+        if (t.length > 36) t = parts.join(" · ");
+        if (t.length > 36) t = t.slice(0, 35) + "…";
         $("nav-sub").textContent = t;
     }
     const m = state.music;
@@ -4180,8 +4180,8 @@ function renderExt() {
         const q = m.queue, n = q ? q.items.length : 0, cut = (t, k) => t.length > k ? t.slice(0, k - 1) + "…" : t;
         $("music-sub").textContent = [ m.source, m.mode ].filter(Boolean).join(" · ");
         $("music-sub2").textContent = cut([ m.album ? "Album " + m.album : null, q ? `${q.title} · ${m.idx + 1}/${n}` : null ].filter(Boolean).join(" · "), 24);
-        $("music-title").textContent = cut(m.song, 9);
-        $("music-artist").textContent = cut(m.singer, 14);
+        $("music-title").textContent = cut(m.song, 14);
+        $("music-artist").textContent = cut(m.singer, 18);
         const isQQ = /QQ/i.test(m.source || ""), col = isQQ ? "#31c27c" : "#ff4d4f";
         $("music-src-t").textContent = isQQ ? "QQ Music" : "NetEase";
         $("music-src").querySelector("rect").setAttribute("fill", isQQ ? "#1a8f55" : "#e60026");
@@ -4694,7 +4694,7 @@ const fitConsole = () => $("panel").setAttribute("viewBox", mqSmall.matches ? "7
 mqSmall.addEventListener("change", fitConsole);
 
 fitConsole();
-const FIT = { "nav-dest": 112, "nav-sub": 112, "tour-dest": 190, "panel-status-title": 150, "panel-status-sub": 150 };
+const FIT = { "nav-dest": 198, "nav-sub": 198, "tour-dest": 190, "panel-status-title": 150, "panel-status-sub": 150 };
 function fitTexts() {
     for (const [id, w] of Object.entries(FIT)) {
         const el = document.getElementById(id); if (!el || !el.textContent) continue;
