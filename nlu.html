@@ -7,134 +7,223 @@
 <title>Cabin Voice · DSL Demo</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%2314122a%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Arial%27 font-weight=%27700%27 font-size=%2728%27 text-anchor=%27middle%27 fill=%27%23ffc46e%27%3ENS%3C/text%3E%3C/svg%3E">
 <style>
-  :root{--bg:#07070f;--fg:#e6e9ef;--muted:#8a93a3;--line:#1a1d2e;--cyan:#3fd2ff;--ind:#6f7fe8;--card:rgba(20,23,51,.72)}
+  :root{--bg:#06061a;--ink:#ece9f6;--dim:#9a95b8;--gold:#ffc46e;--lilac:#c9b8ff;--vio:#8f7dff;--line:rgba(185,179,220,.16);--card:rgba(22,19,48,.62);--cyan:#3fd2ff;--ind:#6f7fe8;--muted:#8a93a3;
+    --sans:"Space Grotesk",system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"PingFang SC","Microsoft YaHei",monospace;
+    --hh:3.2rem;--bh:4.5rem;--gap:.9rem;--pad:.65rem;
+    --carh:calc(100vh - var(--hh) - var(--bh) - var(--pad)*2)}
+  @supports (height:100dvh){:root{--carh:calc(100dvh - var(--hh) - var(--bh) - var(--pad)*2)}}
   *{box-sizing:border-box}
+  html{font-size:clamp(12px,calc(7.4px + .6vw),17px)}
   html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;overflow:hidden}
-  .app{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;height:100vh;background:radial-gradient(ellipse at 35% 55%,#121226 0%,#07070f 70%)}
-  .carcell{grid-row:1/3;position:relative;display:flex;align-items:center;justify-content:center;padding:12px 28px 12px 24px}
-  .carcell svg#car{height:96vh;width:auto}
-  .panelcell{position:relative;display:flex;align-items:flex-start;justify-content:center;padding:14px 24px 0}
-  .panelcell svg#panel{width:min(100%,820px);height:auto;max-height:68vh;transition:opacity .35s,transform .35s}
-  body.panelHidden .panelcell{padding:0;height:0;overflow:hidden}
-  body.panelHidden .panelcell svg#panel{opacity:0;transform:translateY(-10px);pointer-events:none}
-  #screen-center{cursor:pointer}
-  #screen-center:hover rect:first-child{stroke:#fff}
-  .panelHint{position:absolute;left:24px;bottom:14px;font-size:11px;color:#5c6577}
-  .cmdcell{display:flex;flex-direction:column;gap:10px;padding:10px 24px 16px;min-height:0}
-  .cmdcell .inrow{flex:none}
-  .cmdcell .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0}
-  .cmdcell .pane{min-height:0;overflow:auto;background:rgba(11,12,22,.7);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-  .menu{position:absolute;right:30px;bottom:120px;z-index:12;display:none;flex-direction:column;gap:8px;padding:12px;border-radius:12px;background:rgba(15,17,32,.96);border:1px solid #1f2447;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-  .menu.show{display:flex}
-  .menu .row{display:flex;gap:6px;align-items:center}
-  .menu label{font-size:11px;color:#8a93a3;width:44px}
-  
-  .top{display:flex;align-items:center;gap:8px}
-  .top .brand{font-weight:600;letter-spacing:.04em;font-size:13px;flex:1}
-  .top .brand small{color:var(--muted);font-weight:400;margin-left:8px;font-size:11px}
-  .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;border:1px solid #1f2447;background:#0f1120;font-size:12px;color:#b9c2d0}
-  .chip .dot{width:7px;height:7px;border-radius:50%;background:#ff9a7a}
-  .chip.live .dot{background:#3ddc84;box-shadow:0 0 8px #3ddc84}
-  .seg{display:inline-flex;border:1px solid #1f2447;border-radius:99px;overflow:hidden}
-  .seg button{all:unset;cursor:pointer;padding:4px 12px;font-size:12px;color:#8a93a3}
-  .seg button.on{background:#141733;color:var(--cyan)}
-  .lat{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#9ff0ff}
-  .lat span{color:#5c6577}
-  .top .sp{display:none}
-  .top input{background:#0f1120;border:1px solid #1f2447;color:#9ff0ff;border-radius:8px;padding:4px 8px;font:12px ui-monospace,Menlo,monospace;width:150px}
-  .top button.b{all:unset;cursor:pointer;padding:4px 12px;border-radius:8px;border:1px solid #1f2447;font-size:12px;color:#b9c2d0}
-  .top button.b:hover{border-color:var(--cyan);color:var(--cyan)}
-  
-  .msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;min-height:60px}
-  .msg{max-width:92%;padding:8px 12px;border-radius:14px;font-size:12.5px;line-height:1.45}
-  .msg.u{align-self:flex-end;background:#1f2447;color:#e6e9ef;border-bottom-right-radius:4px}
-  .msg.a{align-self:flex-start;background:rgba(63,210,255,.10);color:#9ff0ff;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;white-space:pre-wrap;border-bottom-left-radius:4px}
-  .inrow{display:flex;gap:6px;align-items:center}
-  .inrow input{flex:1;min-width:0;background:#0f1120;border:1px solid #1f2447;border-radius:12px;padding:10px 12px;color:#e6e9ef;font-size:13px}
-  .inrow input:focus{outline:none;border-color:var(--cyan)}
-  .inrow button{all:unset;cursor:pointer;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:600}
-  .inrow .send{background:var(--cyan);color:#07070f}
-  .inrow .clr{border:1px solid #1f2447;color:#8a93a3}
-  h2{font-size:11px;letter-spacing:.1em;color:var(--ind);margin:0 0 4px;text-transform:uppercase}
-  .dline{border:1px solid #1f2447;border-radius:10px;background:#0f1120;padding:9px 11px;transition:border-color .3s,box-shadow .3s,background .3s;cursor:pointer}
-  .dline.exec{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan),0 0 18px rgba(63,210,255,.25);background:#111a30}
-  .dline .tool{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:#9ff0ff}
-  .dline .tool b{color:#fff;font-weight:600}
-  .dline .tag{float:right;font-size:10px;padding:1px 7px;border-radius:99px;border:1px solid}
-  .tag.jev{color:#9ff0ff;border-color:#3fd2ff55}
-  .tag.llm{color:#ffd3c4;border-color:#ff9a7a66}
-  .dline .probs{display:none;margin-top:8px;border-top:1px solid #1a1d2e;padding-top:6px;font-size:11px}
-  .dline.open .probs{display:block}
-  .probs .p{display:flex;align-items:center;gap:6px;margin:3px 0}
-  .probs .k{width:60px;color:#8a93a3;font-family:ui-monospace,Menlo,monospace}
-  .probs .bar{flex:1;height:5px;background:#1a1d2e;border-radius:3px;overflow:hidden}
-  .probs .bar i{display:block;height:100%;background:var(--cyan)}
-  .probs .bar i.llm{background:#ff9a7a}
-  .probs .v{width:84px;color:#c3cad6;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;text-align:right}
-  .empty{color:#5c6577;font-size:12px;padding:10px;border:1px dashed #1f2447;border-radius:10px}
-  .warn{font-size:11px;color:#ffb59c;border:1px solid #ff9a7a44;border-radius:8px;padding:6px 10px}
-  .tools-top{font-size:11px;color:#8a93a3}
-  .tools-top b{color:#9ff0ff;font-weight:500}
-  
-  .stage{position:relative;display:flex;align-items:center;justify-content:center;gap:40px;background:radial-gradient(ellipse at 50% 55%,#121226 0%,#07070f 70%);overflow:hidden;padding:10px 20px}
-  .cards{position:absolute;left:24px;right:24px;top:10px;height:50%;z-index:5}
-  .side svg#panel{width:100%;height:auto;max-height:56vh}
-  .stage .busy{position:absolute;left:50%;top:14px;transform:translateX(-50%);display:none;align-items:center;gap:8px;padding:6px 14px;border-radius:99px;background:rgba(15,17,32,.85);border:1px solid #1f2447;color:#9ff0ff;font-size:12px}
-  .stage .busy i{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulseDot 1s ease-in-out infinite}
-  @keyframes pulseDot{0%,100%{transform:scale(.6);opacity:.5}50%{transform:scale(1.2);opacity:1}}
-  
-  .card{position:absolute;left:0;right:0;top:8px;border-radius:16px;padding:16px;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(127,233,255,.25);box-shadow:0 18px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transform:translateY(-120%);opacity:0;transition:transform .7s cubic-bezier(.2,.9,.25,1.05),opacity .4s}
-  .card.show{transform:translateY(0);opacity:1}
-  .card .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .card .hd .t{font-size:11px;letter-spacing:.1em;color:#9ff0ff}
-  .card .hd .x{all:unset;cursor:pointer;color:#8a93a3;font-size:14px;padding:0 4px}
-  .card .big{font-size:20px;font-weight:600;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .card .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .card .sub{color:#b9c2d0;font-size:12px}
-  .card .row{display:flex;gap:10px;margin-top:10px}
-  .card .kv{flex:1;background:rgba(7,7,15,.45);border-radius:10px;padding:8px 10px}
-  .card .kv small{display:block;color:#8a93a3;font-size:10px}
-  .card .kv span{font-size:13px;color:#e6e9ef}
-  .card svg.map{width:100%;height:120px;border-radius:10px;background:#0a0b18;margin-top:10px}
-  .card .prog{height:4px;background:#1f2447;border-radius:2px;margin-top:12px;overflow:hidden}
-  .card .prog i{display:block;height:100%;width:30%;background:#ff6a8e;transition:width .5s}
-  .card .cover{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#ff6a8e,#b53aa5);display:flex;align-items:center;justify-content:center;flex:none}
-  .card .cover i{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6)}
-  .card .cover i.spin{animation:spin 3s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .card .avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6ee07a,#2b9a52);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#fff;position:relative;flex:none}
-  .card .avatar:before{content:"";position:absolute;inset:-8px;border-radius:50%;border:1px solid #6ee07a;opacity:.4;animation:ring 2s ease-out infinite}
-  @keyframes ring{0%{transform:scale(.8);opacity:.6}100%{transform:scale(1.5);opacity:0}}
-  .card .hang{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;background:#ff3b6b;display:flex;align-items:center;justify-content:center;margin-left:auto}
-  .card .ep{display:inline-block;padding:2px 8px;border-radius:6px;background:rgba(168,85,247,.25);color:#dcbfff;font-size:11px;margin-left:6px}
-  .card.tour .kv{min-width:0}
-  
-  .chat{grid-column:1/3;border-top:1px solid var(--line);background:#0b0c16;display:flex;align-items:center;gap:12px;padding:0 16px;position:relative}
-  .bubbles{flex:1;display:flex;gap:8px;overflow:hidden;align-items:center;cursor:pointer}
-  .bub{flex:none;max-width:260px;padding:7px 12px;border-radius:14px;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .bub.u{background:#1f2447;color:#e6e9ef}
-  .bub.a{background:rgba(63,210,255,.12);color:#9ff0ff;font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
-  .chat input{flex:1.4;background:#0f1120;border:1px solid #1f2447;border-radius:12px;padding:10px 14px;color:#e6e9ef;font-size:14px}
-  .chat input:focus{outline:none;border-color:var(--cyan)}
-  .chat button{all:unset;cursor:pointer;padding:9px 16px;border-radius:12px;font-size:13px;font-weight:600}
-  .chat .send{background:var(--cyan);color:#07070f}
-  .chat .clr{border:1px solid #1f2447;color:#8a93a3}
-  .drawer{position:absolute;left:0;right:0;bottom:92px;max-height:46vh;overflow:auto;background:rgba(11,12,22,.96);border-top:1px solid var(--line);padding:14px 20px;display:none;z-index:30}
-  .drawer.show{display:block}
-  .drawer .m{margin:6px 0;display:flex;gap:10px}
-  .drawer .m .who{width:40px;color:#8a93a3;font-size:11px;padding-top:4px}
-  .drawer .m .txt{padding:6px 12px;border-radius:12px;background:#1f2447;max-width:70%}
-  .drawer .m.a .txt{background:rgba(63,210,255,.12);color:#9ff0ff;font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre-wrap}
-  
-  #pulseLayer{position:fixed;inset:0;pointer-events:none;z-index:20}
-  #pulseLayer path{fill:none;stroke:var(--cyan);stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 6px #3fd2ff);stroke-dasharray:8 10;animation:dash 1.1s linear infinite;opacity:.95;transition:opacity .5s}
-  @keyframes dash{to{stroke-dashoffset:-36}}
-  
-  .dbg{position:fixed;right:10px;top:10px;width:380px;max-height:70vh;overflow:auto;background:#0b0c16;border:1px solid #1f2447;border-radius:12px;padding:12px;display:none;z-index:40;font-size:11px}
-  .dbg.show{display:block}
-  pre{font-size:11px;color:#9ff0ff;background:#07070f;border-radius:8px;padding:8px;white-space:pre-wrap;word-break:break-all}
-  .tests div{padding:2px 0}.pass{color:#6ee07a}.fail{color:#ff6a8e}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.35 var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
+  button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* layout: header / three columns (steps, car, console) / control bar. Nothing scrolls. */
+  .app{position:relative;height:100vh;height:100dvh;overflow:hidden;display:grid;column-gap:var(--gap);padding:0 var(--gap);
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1.12fr);grid-template-rows:var(--hh) minmax(0,1fr) var(--bh);
+    grid-template-areas:"hd hd hd" "steps car side" "bar bar bar";
+    background:radial-gradient(120% 90% at 62% 40%,#1b1640 0%,#0d0b26 46%,#06061a 100%)}
+
+  .hd{grid-area:hd;display:flex;align-items:center;gap:.8rem;min-width:0}
+  .hd h1{margin:0;font:700 1.12rem/1 var(--sans);letter-spacing:.01em;white-space:nowrap}
+  .hd .sub{color:var(--dim);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .hd .sp{flex:1}
+  .tagm{font:500 .68rem/1 var(--mono);color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:.38rem .65rem;white-space:nowrap}
+  .tagm b{color:var(--lilac);font-weight:600}
+  .ghost{height:2rem;padding:0 .8rem;border-radius:99px;border:1px solid var(--line);color:var(--dim);font:500 .8rem/1 var(--sans);white-space:nowrap;display:inline-flex;align-items:center;gap:.4rem;transition:color .2s,border-color .2s,background .2s}
+  .ghost:hover,.ghost.on{color:var(--ink);border-color:rgba(201,184,255,.5);background:rgba(201,184,255,.08)}
+  .ghost .n{font:600 .68rem/1 var(--mono);color:var(--lilac)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;flex:none}
+  .seg button{height:2rem;padding:0 .75rem;font:600 .78rem/1 var(--sans);color:var(--dim);transition:color .2s,background .2s}
+  .seg button.on{background:rgba(255,196,110,.16);color:var(--gold)}
+
+  /* the three steps */
+  .steps{grid-area:steps;display:flex;flex-direction:column;justify-content:center;gap:.6rem;min-height:0;padding-block:var(--pad)}
+  .step{position:relative;border:1px solid var(--line);border-radius:.95rem;background:var(--card);padding:.7rem .9rem .8rem;min-height:0;transition:border-color .35s,box-shadow .35s,background .35s}
+  .step + .step::before{content:"";position:absolute;left:1.55rem;top:-.62rem;width:1px;height:.6rem;background:rgba(201,184,255,.35)}
+  .lab{display:flex;flex-wrap:wrap;row-gap:.3rem;align-items:center;gap:.5rem;margin-bottom:.5rem;font:600 .68rem/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--dim);transition:color .3s}
+  .lab i{font-style:normal;flex:none;width:1.4rem;height:1.4rem;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(185,179,220,.3);font-size:.72rem;letter-spacing:0;transition:background .3s,color .3s,border-color .3s}
+  .lab .by{margin-left:auto;font:500 .64rem/1 var(--mono);letter-spacing:.02em;text-transform:none;color:var(--dim);white-space:nowrap}
+  .lab .by b{color:var(--lilac);font-weight:600}
+  .lab .cnt{font:600 .64rem/1 var(--mono);letter-spacing:.04em;color:var(--gold);border:1px solid rgba(255,196,110,.4);border-radius:99px;padding:.18rem .4rem}
+  .step.was .lab i{border-color:var(--lilac);color:var(--lilac)}
+  .step.on{border-color:rgba(255,196,110,.6);background:rgba(34,27,62,.74);box-shadow:0 0 0 1px rgba(255,196,110,.16),0 .5rem 2rem rgba(255,196,110,.08)}
+  .step.on .lab{color:var(--gold)}
+  .step.on .lab i{background:var(--gold);border-color:var(--gold);color:#1b1230}
+  .ph{color:rgba(154,149,184,.75);font-size:.95rem}
+  .said{font:500 1.32rem/1.25 var(--sans);letter-spacing:-.005em;overflow-wrap:anywhere;min-height:2.5em;display:flex;align-items:center}
+  #result{min-height:3rem;display:flex;align-items:center}
+  .said.in{animation:rise .4s cubic-bezier(.2,.8,.2,1) both}
+  .said q{quotes:"“" "”"}
+  .said q::before,.said q::after{color:var(--gold)}
+  :lang(zh-CN) .said q{quotes:"「" "」"}
+  .chips{display:flex;flex-wrap:wrap;gap:.38rem;min-height:4.1rem;align-items:center;align-content:center}
+  .chip{display:inline-flex;align-items:baseline;gap:.42rem;padding:.32rem .62rem;border-radius:.62rem;background:rgba(201,184,255,.09);border:1px solid rgba(201,184,255,.24);font:500 .95rem/1.15 var(--sans);animation:rise .38s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*80ms)}
+  .chip em{font:600 .6rem/1 var(--mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--lilac)}
+  .chip.dev{background:rgba(255,196,110,.13);border-color:rgba(255,196,110,.45)}
+  .chip.dev em{color:var(--gold)}
+  .raw{margin-top:.5rem;font:400 .72rem/1.4 var(--mono);color:rgba(154,149,184,.9);overflow-wrap:anywhere;min-height:1em}
+  .raw span{font-weight:600;font-size:.6rem;letter-spacing:.1em;color:rgba(154,149,184,.7);margin-right:.5rem}
+  .think{display:inline-flex;align-items:center;gap:.55rem;color:var(--lilac);font-size:.95rem}
+  .think u{display:inline-flex;gap:.25rem;text-decoration:none}
+  .think u s{width:.42rem;height:.42rem;border-radius:50%;background:var(--lilac);animation:dot 1s ease-in-out infinite}
+  .think u s:nth-child(2){animation-delay:.15s}.think u s:nth-child(3){animation-delay:.3s}
+  .res{display:flex;align-items:center;gap:.6rem;font:600 1.2rem/1.25 var(--sans);animation:rise .4s cubic-bezier(.2,.8,.2,1) both}
+  .res .ok{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--gold);color:#1b1230;display:grid;place-items:center}
+  .res .ok svg{width:.85rem;height:.85rem}
+  .res.no .ok{background:#ff9a7a}
+  @keyframes rise{from{opacity:0;transform:translateY(.4rem)}to{opacity:1;transform:none}}
+  @keyframes dot{0%,100%{transform:scale(.6);opacity:.4}50%{transform:scale(1.15);opacity:1}}
+
+  /* the cabin: car + centre console */
+  .carcell{grid-area:car;align-self:center;position:relative;height:var(--carh);width:calc(var(--carh)*348/740);max-width:30vw}
+  .carcell svg#car{display:block;width:100%;height:100%;overflow:visible}
+  .side{grid-area:side;display:flex;flex-direction:column;justify-content:center;gap:.6rem;min-height:0;min-width:0;padding-block:var(--pad)}
+  .panelcell{flex:none;width:100%;aspect-ratio:480/296;max-height:64%;min-height:0}
+  .panelcell svg#panel{display:block;width:100%;height:100%}
+  .ring{fill:rgba(255,196,110,.07);stroke:#ffc46e;stroke-width:2px;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 5px rgba(255,196,110,.95));pointer-events:none;animation:fring 1s ease-out 2 both,fstay .6s 2s ease-out forwards}
+  @keyframes fring{0%{opacity:0;stroke-width:7px}35%{opacity:1}100%{opacity:1;stroke-width:2px}}
+  @keyframes fstay{to{opacity:.75;fill:rgba(255,196,110,0)}}
+  #pulseLayer{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+  #pulseLayer path{fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,196,110,.9));stroke-dasharray:6 9;animation:dash .9s linear infinite;opacity:.9;transition:opacity .45s}
+  @keyframes dash{to{stroke-dashoffset:-30}}
+
+  /* history: inline under the console when there is room, a pop-over otherwise */
+  .log{display:none;flex-direction:column;min-height:0}
+  .log h2{margin:0 0 .45rem;font:600 .66rem/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
+  .loglist{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:.3rem;scrollbar-width:thin;scrollbar-color:rgba(201,184,255,.3) transparent}
+  .le{display:grid;grid-template-columns:1.4rem minmax(0,1fr);column-gap:.4rem;padding:.3rem .1rem;border-top:1px solid rgba(185,179,220,.1);font-size:.85rem}
+  .le:first-child{border-top:0}
+  .le i{font:600 .68rem/1.6 var(--mono);font-style:normal;color:var(--lilac)}
+  .le code{grid-column:2;font:400 .7rem/1.4 var(--mono);color:var(--dim);overflow-wrap:anywhere}
+  .pop{position:absolute;z-index:40;display:none;flex-direction:column;background:rgba(14,12,34,.97);border:1px solid rgba(201,184,255,.32);border-radius:1rem;box-shadow:0 1.2rem 3rem rgba(0,0,0,.6);padding:.75rem;min-height:0}
+  .pop.show{display:flex}
+  .log.show{display:flex;position:absolute;z-index:40;right:var(--gap);top:calc(var(--hh) - .2rem);width:min(24rem,calc(100% - var(--gap)*2));max-height:calc(100% - var(--hh) - var(--bh) - .4rem);background:rgba(14,12,34,.97);border:1px solid rgba(201,184,255,.32);border-radius:1rem;box-shadow:0 1.2rem 3rem rgba(0,0,0,.6);padding:.75rem}
+  @media (min-width:841px) and (min-height:521px){
+    .log,.log.show{display:flex;position:static;flex:1;width:auto;max-height:none;background:rgba(14,12,34,.4);border:1px solid var(--line);border-radius:.95rem;box-shadow:none;padding:.65rem .8rem}
+    #logBtn{display:none}
+  }
+
+  /* control bar: Play demo is the one loud thing on the page */
+  .bar{grid-area:bar;position:relative;display:flex;align-items:center;gap:.7rem;margin-inline:calc(var(--gap)*-1);padding:0 var(--gap);border-top:1px solid var(--line);background:rgba(8,7,24,.72)}
+  .primary{position:relative;flex:none;height:2.95rem;min-width:11.2rem;padding:0 1.5rem 0 1.25rem;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+    background:linear-gradient(180deg,#ffd896 0%,#ffc46e 55%,#f3ab4b 100%);color:#1b1230;font:700 1.08rem/1 var(--sans);letter-spacing:.005em;
+    box-shadow:0 .35rem 1.4rem rgba(255,196,110,.38),inset 0 1px 0 rgba(255,255,255,.55);transition:transform .15s,box-shadow .2s,filter .2s}
+  .primary:hover{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 .5rem 1.8rem rgba(255,196,110,.5),inset 0 1px 0 rgba(255,255,255,.55)}
+  .primary:active{transform:translateY(1px)}
+  .primary svg{width:1.05rem;height:1.05rem;flex:none}
+  .app[data-demo="idle"] .primary::after{content:"";position:absolute;inset:-1px;border-radius:99px;border:2px solid var(--gold);animation:halo 1.8s ease-out infinite;pointer-events:none}
+  @keyframes haloS{0%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(1.05,1.28)}}
+  @keyframes halo{0%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(1.16,1.5)}}
+  .app[data-demo="playing"] .primary{background:rgba(255,196,110,.14);color:var(--gold);box-shadow:inset 0 0 0 1.5px var(--gold),0 0 1.4rem rgba(255,196,110,.18)}
+  .secondary{flex:none;height:2.95rem;padding:0 1.15rem;border-radius:99px;display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid rgba(201,184,255,.55);background:rgba(201,184,255,.09);color:var(--lilac);font:600 1rem/1 var(--sans);transition:background .2s,border-color .2s,color .2s,transform .15s}
+  .secondary:hover{background:rgba(201,184,255,.2);border-color:var(--lilac);color:#fff}
+  .secondary:active{transform:translateY(1px)}
+  .secondary svg{width:1rem;height:1rem;flex:none;transition:transform .5s}
+  .secondary.spin svg{transform:rotate(-360deg)}
+  .prog{flex:1;min-width:0;display:flex;align-items:center;gap:.7rem}
+  #progTxt{font:600 .9rem/1 var(--mono);white-space:nowrap;color:var(--ink);min-width:3.9rem}
+  #progTxt small{font:500 .7rem/1 var(--sans);color:var(--dim);margin-left:.5rem;letter-spacing:.02em}
+  .track{flex:1;display:flex;gap:3px;max-width:24rem;min-width:0}
+  .track i{flex:1;height:.34rem;border-radius:9px;background:rgba(185,179,220,.16);transition:background .3s,box-shadow .3s}
+  .track i.d{background:rgba(201,184,255,.75)}
+  .track i.c{background:var(--gold);box-shadow:0 0 .5rem rgba(255,196,110,.8)}
+  #tryBtn{height:2.4rem;padding:0 1rem;font-size:.88rem}
+  #tryBtn svg{width:1rem;height:1rem;flex:none}
+  #tryPop{right:var(--gap);bottom:calc(var(--bh) + .4rem);width:min(25rem,calc(100% - var(--gap)*2));max-height:calc(100% - var(--bh) - var(--hh))}
+  .tryrow{display:flex;gap:.4rem;margin-bottom:.5rem;flex:none}
+  .tryrow input{flex:1;min-width:0;height:2.3rem;border-radius:.7rem;border:1px solid rgba(201,184,255,.3);background:rgba(6,6,26,.8);color:var(--ink);padding:0 .75rem;font:400 16px/1 var(--sans)}
+  .tryrow input::placeholder{color:rgba(154,149,184,.7)}
+  .tryrow input:focus{outline:none;border-color:var(--gold)}
+  .tryrow button{height:2.3rem;padding:0 .9rem;border-radius:.7rem;background:var(--gold);color:#1b1230;font:700 .85rem/1 var(--sans)}
+  .trylist{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:.15rem;scrollbar-width:thin;scrollbar-color:rgba(201,184,255,.3) transparent}
+  .trylist button{text-align:left;padding:.42rem .6rem;border-radius:.55rem;font-size:.9rem;color:var(--ink);transition:background .15s}
+  .trylist button:hover{background:rgba(255,196,110,.14);color:var(--gold)}
+  .trylist .none{color:var(--dim);font-size:.85rem;padding:.4rem .6rem}
+
+  /* narrow window: steps over console on the left, the car on the right */
+  @media (max-width:840px) and (min-height:431px){
+    :root{--hh:2.9rem;--bh:4.1rem;--gap:.7rem;--pad:.5rem}
+    .app{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:var(--hh) minmax(0,1.32fr) minmax(0,1fr) var(--bh);grid-template-areas:"hd hd" "steps car" "side car" "bar bar"}
+    .steps{justify-content:center;gap:.4rem;padding-block:var(--pad) .4rem;overflow:hidden}
+    .step{padding:.5rem .7rem .55rem}
+    .step + .step::before{top:-.42rem;height:.4rem}
+    .lab{margin-bottom:.35rem}
+    .said{font-size:1.15rem;min-height:1.3em}
+    .res{font-size:1.08rem}
+    #result{min-height:1.6rem}
+    .chips{min-height:3.7rem}
+    .raw{margin-top:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .side{padding-block:0 var(--pad)}
+    .panelcell{flex:1;aspect-ratio:auto;max-height:none}
+    .hd .sub{display:none}
+    .carcell{max-width:34vw}
+  }
+  /* phone: car beside the steps, console underneath */
+  @media (max-width:520px){
+    html{font-size:12px}
+    :root{--hh:2.7rem;--bh:3.9rem;--gap:.55rem;--pad:.4rem;--ch:min(55vw,31vh);--carh:calc(100vh - var(--hh) - var(--bh) - var(--ch) - var(--pad)*2)}
+    @supports (height:100dvh){:root{--ch:min(55vw,31dvh);--carh:calc(100dvh - var(--hh) - var(--bh) - var(--ch) - var(--pad)*2)}}
+    .app{grid-template-columns:auto minmax(0,1fr);grid-template-rows:var(--hh) minmax(0,1fr) var(--ch) var(--bh);grid-template-areas:"hd hd" "car steps" "side side" "bar bar";column-gap:.5rem}
+    .carcell{max-width:40vw}
+    .steps{justify-content:center;gap:.4rem;padding-block:var(--pad);overflow:hidden}
+    .step{padding:.45rem .55rem .5rem;border-radius:.8rem}
+    .lab{margin-bottom:.3rem;font-size:.62rem;letter-spacing:.08em;gap:.35rem}
+    .lab i{width:1.2rem;height:1.2rem;font-size:.66rem}
+    .lab .by{font-size:.58rem}
+    .said{font-size:1.08rem;line-height:1.2;min-height:2.4em}
+    #result{min-height:2.4rem}
+    .res{font-size:1rem;gap:.4rem;line-height:1.2}
+    .res .ok{width:1.25rem;height:1.25rem}
+    .ph{font-size:.88rem}
+    .chips{gap:.25rem;min-height:3.2rem}
+    .chip{padding:.22rem .42rem;font-size:.86rem;gap:.3rem;border-radius:.5rem}
+    .chip em{font-size:.54rem;letter-spacing:.06em}
+    .raw{margin-top:.3rem;font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .side{padding-block:0 var(--pad)}
+    .panelcell{flex:1;aspect-ratio:auto;max-height:none}
+    .hd{gap:.4rem}
+    .hd h1{font-size:1.02rem}
+    .hd .sub,.tagm{display:none}
+    .ghost{padding:0 .6rem}
+    .bar{gap:.45rem}
+    .primary{min-width:0;flex:1;height:2.8rem;padding:0 .8rem;font-size:1.05rem}
+    .secondary{height:2.8rem;padding:0 .8rem}
+    .prog{flex:none;gap:0}
+    #progTxt{min-width:0;font-size:.85rem}
+    #progTxt small{display:none}
+    .track{position:absolute;left:0;right:0;top:-2px;max-width:none;gap:2px}
+    .track i{height:3px;border-radius:0}
+    #tryBtn{width:2.8rem;height:2.8rem;padding:0;justify-content:center}
+    #tryBtn span{display:none}
+    .app[data-demo="idle"] .primary::after{animation-name:haloS}
+  }
+  /* very short and wide (phone on its side): keep three columns, tighten */
+  @media (max-height:430px){
+    :root{--hh:2.5rem;--bh:3.5rem;--pad:.35rem}
+    .steps{gap:.35rem}
+    .step{padding:.4rem .65rem .45rem}
+    .lab{margin-bottom:.25rem}
+    .said{font-size:1.05rem;min-height:1.3em}.res{font-size:1rem}#result{min-height:1.5rem}.chips{min-height:1.8rem}
+    .raw{margin-top:.25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .primary,.secondary{height:2.5rem}
+    .hd .sub{display:none}
+    .panelcell{max-height:100%}
+  }
+  /* very small phones: drop the raw line (the chips already say it) and tighten the sentence */
+  @media (max-width:520px) and (max-height:520px){
+    .raw{display:none}
+    .said{font-size:.98rem;min-height:2.3em}
+    .chips{min-height:2.6rem}
+  }
+  /* small layouts: the console is cropped to its screen and controls (see fitConsole) and drawn as a card of exactly that shape */
+  @media (max-width:840px),(max-height:430px){
+    .panelcell{flex:1;min-height:0;aspect-ratio:auto;max-height:none;container-type:size;display:grid;place-items:center}
+    .panelcell svg#panel{width:min(100cqw,100cqh*336/186);height:min(100cqh,100cqw*186/336);border-radius:.9rem;border:1px solid rgba(111,127,232,.45);background:#141733;box-shadow:0 .6rem 1.6rem rgba(0,0,0,.35)}
+  }
+  @media (prefers-reduced-motion:reduce){.app[data-demo="idle"] .primary::after{animation:none;opacity:0}.chip,.res,.said.in{animation:none}}
   #rapps .rapp{cursor:pointer;transition:transform .45s cubic-bezier(.34,1.3,.64,1),opacity .3s;transform-box:fill-box;transform-origin:center}
   #rapps .rapp:hover{transform:scale(1.08)}
   #rapps .rapp.on rect{stroke:#fff;stroke-width:1.6;filter:url(#pGlow)}
@@ -145,14 +234,14 @@
   #panel-model-gear{transition:transform .45s cubic-bezier(.34,1.3,.64,1),opacity .3s;transform-box:fill-box;transform-origin:center}
   #panel-screen > g[opacity="0"], #app-ui-phone > g[opacity="0"]{pointer-events:none}   
   .hl{animation:hl 1.2s ease-out}
-  @keyframes hl{0%{filter:drop-shadow(0 0 0 #3fd2ff)}30%{filter:drop-shadow(0 0 8px #3fd2ff)}100%{filter:drop-shadow(0 0 0 #3fd2ff)}}
+  @keyframes hl{0%{filter:drop-shadow(0 0 0 #ffc46e)}30%{filter:drop-shadow(0 0 9px #ffc46e)}100%{filter:drop-shadow(0 0 0 #ffc46e)}}
   #zones rect{transition:fill .8s,opacity .8s}
   #temps{transition:opacity .4s}
   #fog-front{transition:opacity 2.4s ease-out}
   #defog-front,#defog-rear{transition:opacity .6s}
   #mirror-l rect:first-child,#mirror-r rect:first-child{transition:stroke .4s,fill .4s}
   .hl{animation:hl 1.2s ease-out}
-  @keyframes hl{0%{filter:drop-shadow(0 0 0 #3fd2ff)}30%{filter:drop-shadow(0 0 8px #3fd2ff)}100%{filter:drop-shadow(0 0 0 #3fd2ff)}}
+  @keyframes hl{0%{filter:drop-shadow(0 0 0 #ffc46e)}30%{filter:drop-shadow(0 0 9px #ffc46e)}100%{filter:drop-shadow(0 0 0 #ffc46e)}}
   .sfx-heat{transition:opacity .6s}
   #spk-waves circle{transform-box:fill-box;transform-origin:center;animation:spk var(--dur,2s) ease-out infinite}
   @keyframes spk{0%{transform:scale(.3);opacity:.8}100%{transform:scale(1);opacity:0}}
@@ -210,20 +299,38 @@
   #models-toggle.open #models-toggle-icon{transform:rotate(45deg)}
   #apps-toggle-icon{transition:transform .35s;transform-box:fill-box;transform-origin:center}
   #apps-toggle.open #apps-toggle-icon{transform:rotate(45deg)}
-
-
-  .inrow input:disabled{opacity:.55;cursor:not-allowed}
-  .inrow button:disabled{opacity:.35;cursor:not-allowed}
-  .top button.b#demoBtn{color:#07070f;background:var(--cyan);border-color:var(--cyan);font-weight:600}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="app" data-demo="idle" data-phase="idle">
+
+  <header class="hd">
+    <h1 data-i18n="title">In-cabin voice agent</h1>
+    <span class="sub" data-i18n="sub">Say it. The car does it.</span>
+    <span class="sp"></span>
+    <span class="tagm" id="tagm"><b>Mapika-2B</b> + Qwen3-1.7B · <span data-i18n="offline">offline replay</span></span>
+    <button class="ghost" id="logBtn" aria-expanded="false"><span data-i18n="log">History</span><span class="n" id="logN">0</span></button>
+    <div class="seg" id="langSeg" role="group" aria-label="Language"><button data-l="en" class="on">EN</button><button data-l="zh">中文</button></div>
+  </header>
+
+  <section class="steps" aria-live="polite">
+    <div class="step" id="st1">
+      <div class="lab"><i>1</i><span data-i18n="s1">You say</span></div>
+      <div class="said" id="said"></div>
+    </div>
+    <div class="step" id="st2">
+      <div class="lab"><i>2</i><span data-i18n="s2">Understood</span><span class="cnt" id="cnt" hidden></span><span class="by" id="by"></span></div>
+      <div class="chips" id="chips"></div>
+      <div class="raw" id="raw"></div>
+    </div>
+    <div class="step" id="st3">
+      <div class="lab"><i>3</i><span data-i18n="s3">Cabin does</span></div>
+      <div id="result"></div>
+    </div>
+  </section>
 
   <div class="carcell">
-    <div class="panelHint" data-i18n="panelHint">Click the in-car screen: show / hide the enlarged console view</div>
-    
-<svg id="car" viewBox="0 0 400 760" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
+<svg id="car" viewBox="26 10 348 740" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
 <defs>
   <linearGradient id="paint" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#101225"/><stop offset=".5" stop-color="#1d2244"/><stop offset="1" stop-color="#101225"/>
@@ -445,11 +552,13 @@
   <text x="200" y="466" text-anchor="middle">ac-rear</text>
   <text x="30" y="226">mirror-l</text><text x="334" y="226">mirror-r</text>
 </g>
+<g id="rings-car"></g>
 </svg>
   </div>
 
+  <section class="side">
   <div class="panelcell">
-<svg id="panel" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
+<svg id="panel" viewBox="0 4 480 296" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,'PingFang SC',sans-serif">
 <defs>
   <linearGradient id="pScreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1430"/><stop offset="1" stop-color="#122a5c"/></linearGradient>
   <clipPath id="clipContacts"><rect x="62" y="133" width="236" height="89"/></clipPath>
@@ -465,7 +574,7 @@
   <linearGradient id="pSlot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3fd2ff" stop-opacity="0"/><stop offset=".5" stop-color="#3fd2ff" stop-opacity=".9"/><stop offset="1" stop-color="#3fd2ff" stop-opacity="0"/></linearGradient>
   <filter id="pGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<text x="240" y="16" text-anchor="middle" fill="#8a93a3" font-size="10" letter-spacing=".12em">CENTER CONSOLE · enlarged view</text>
+<text x="240" y="16" text-anchor="middle" fill="#8a93a3" font-size="10" letter-spacing=".12em" data-i18n="console">CENTER CONSOLE</text>
 
 
 <path id="panel-base" d="M14 40 C 90 14 390 14 466 40 L 466 270 C 390 294 90 294 14 270 Z" fill="#141733" stroke="#4a58b8" stroke-width="1.2"/>
@@ -494,7 +603,7 @@
       <line x1="170" y1="138" x2="170" y2="174" opacity=".8"/><line x1="180" y1="132" x2="180" y2="180"/>
       <line x1="190" y1="138" x2="190" y2="174" opacity=".8"/><line x1="200" y1="144" x2="200" y2="168" opacity=".55"/><line x1="210" y1="150" x2="210" y2="162" opacity=".35"/>
     </g>
-    <text x="180" y="198" text-anchor="middle" fill="#dfe9ff" font-size="12">I'm listening</text>
+    <text x="180" y="198" text-anchor="middle" fill="#dfe9ff" font-size="12" data-i18n="listening">I'm listening</text>
     
   </g>
   
@@ -696,25 +805,29 @@
   <g id="models-toggle-icon" stroke="#3fd2ff" stroke-width="2" stroke-linecap="round"><path d="M330 242 V254 M324 248 H336"/></g>
 </g>
 </g>
+<g id="rings-panel"></g>
 </svg>
-</div>
+  </div>
+  <div class="log" id="log">
+    <h2 data-i18n="log">History</h2>
+    <div class="loglist" id="logList"></div>
+  </div>
+  </section>
 
-  <div class="cmdcell">
-    <div class="top"><div class="brand" data-i18n="brand">Cabin Voice · DSL Demo<small data-i18n="brandSub">Mapika + value-filling LLM</small></div><span class="lat" id="lat">— ms</span><button class="b" id="demoBtn" data-i18n="demo">▶ Play demo</button><button class="b" id="resetBtn" data-i18n="reset">Reset</button></div>
-    <div class="inrow">
-      <input id="chatIn" placeholder="Say something…" data-i18n-ph="chatPh" disabled>
-      <button class="send" id="sendBtn" data-i18n="send" disabled>Send</button>
-      <button class="clr" id="clearBtn" title="Clear">✕</button>
-    </div>
-    <div class="two">
-      <div class="pane"><h2 data-i18n="chatTitle">Conversation</h2><div class="msgs" id="msgs"></div></div>
-      <div class="pane"><h2 data-i18n="dslTitle">DSL commands</h2><div class="tools-top" id="toolsTop"></div><div id="dslList"><div class="empty" data-i18n="dslEmpty">Say something — the model's DSL appears here, one line per car action.</div></div><div id="warnBox"></div></div>
-    </div>
+  <footer class="bar">
+    <button class="primary" id="demoBtn"></button>
+    <button class="secondary" id="resetBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v5h5"/></svg><span data-i18n="reset">Reset</span></button>
+    <div class="prog"><span id="progTxt"></span><div class="track" id="track"></div></div>
+    <button class="ghost" id="tryBtn" aria-expanded="false" data-i18n-title="try"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10h.01M10 10h.01M13.5 10h.01M17 10h.01M7.5 14h9"/></svg><span data-i18n="try">Try a command</span></button>
+  </footer>
+
+  <div class="pop" id="tryPop">
+    <div class="tryrow"><input id="chatIn" autocomplete="off" spellcheck="false" data-i18n-ph="chatPh" placeholder="Type or pick a command"><button id="sendBtn" data-i18n="send">Send</button></div>
+    <div class="trylist" id="tryList"></div>
   </div>
 </div>
 
-<svg id="pulseLayer"></svg>
-
+<svg id="pulseLayer" aria-hidden="true"></svg>
 <script>const $ = id => document.getElementById(id);
 
 function initialState() {
@@ -1684,6 +1797,8 @@ const SH = {
 };
 
 function drawShade(hF, hR) {
+    hF = Math.max(0, hF);
+    hR = Math.max(0, hR);
     const f = $("shade-front");
     f.querySelectorAll("rect").forEach(q => q.setAttribute("height", hF));
     const fl = f.querySelector("line");
@@ -2083,7 +2198,7 @@ if ($("models-toggle")) $("models-toggle").onclick = () => {
     $("panel-models").classList.toggle("hidden");
     const open = !$("panel-models").classList.contains("hidden");
     $("models-toggle").classList.toggle("open", open);
-    if (!open) $("menu").classList.remove("show");
+    if (!open && $("menu")) $("menu").classList.remove("show");
 };
 
 document.querySelectorAll("#panel-models g[data-model]").forEach(g => g.addEventListener("click", () => {
@@ -2286,28 +2401,111 @@ const I18N = {
     }
 };
 
-let lang = "en";
+let lang = (() => {
+    try {
+        const q = new URLSearchParams(location.search).get("lang");
+        if (q) return /^zh/i.test(q) ? "zh" : "en";
+    } catch (e) {}
+    try {
+        const s = localStorage.getItem("ns-lang");
+        if (s) return s === "zh" ? "zh" : "en";
+    } catch (e) {}
+    return /^zh/i.test(navigator.language || "") ? "zh" : "en";
+})();
 
-const T = k => I18N[lang][k] ?? I18N.zh[k] ?? k;
+Object.assign(I18N.en, {
+    title: "In-cabin voice agent",
+    sub: "Say it. The car does it.",
+    offline: "offline replay",
+    s1: "You say",
+    s2: "Understood",
+    s3: "Cabin does",
+    ph1: "Press ▶ Play demo",
+    ph2: "Device · action · value",
+    ph3: "The cabin reacts here",
+    wait: "…",
+    thinking: "Mapika-2B is deciding",
+    demo: "Play demo",
+    pause: "Pause",
+    resume: "Resume",
+    replay: "Replay",
+    reset: "Reset",
+    stPlaying: "playing",
+    stPaused: "paused",
+    stDone: "done",
+    try: "Try a command",
+    chatPh: "Type or pick a command",
+    send: "Send",
+    log: "History",
+    logEmpty: "No commands yet.",
+    noMatch: "Not in this offline demo. Pick one below.",
+    fills: "fills values",
+    console: "CENTER CONSOLE",
+    listening: "I'm listening"
+});
+
+Object.assign(I18N.zh, {
+    title: "座舱语音助手",
+    sub: "说一句，车就照做。",
+    offline: "离线回放",
+    s1: "你说",
+    s2: "系统理解",
+    s3: "座舱执行",
+    ph1: "点击 ▶ 播放演示",
+    ph2: "设备 · 动作 · 数值",
+    ph3: "座舱在这里响应",
+    wait: "…",
+    thinking: "Mapika-2B 判断中",
+    demo: "播放演示",
+    pause: "暂停",
+    resume: "继续",
+    replay: "重播",
+    reset: "重置",
+    stPlaying: "播放中",
+    stPaused: "已暂停",
+    stDone: "完成",
+    try: "试一句",
+    chatPh: "输入或选择一句话",
+    send: "发送",
+    log: "记录",
+    logEmpty: "还没有指令。",
+    noMatch: "离线演示里没有这句，请从下面选。",
+    fills: "补全数值",
+    console: "中控屏",
+    listening: "我在听"
+});
+
+const T = k => I18N[lang][k] ?? I18N.en[k] ?? k;
 
 function applyLang() {
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-        const k = el.dataset.i18n;
-        if (el.classList.contains("brand")) el.firstChild.textContent = T(k); else el.textContent = T(k);
-    });
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = T(el.dataset.i18n));
     document.querySelectorAll("[data-i18n-ph]").forEach(el => el.placeholder = T(el.dataset.i18nPh));
-    renderDSL(lastResult);
-    renderCards();
+    document.querySelectorAll("[data-i18n-title]").forEach(el => el.title = T(el.dataset.i18nTitle));
+    document.querySelectorAll("#langSeg button").forEach(x => x.classList.toggle("on", x.dataset.l === lang));
+    paintAll();
 }
 
-if ($("langSeg")) $("langSeg").onclick = e => {
-    const b = e.target.closest("button");
-    if (!b) return;
-    lang = b.dataset.l;
-    document.querySelectorAll("#langSeg button").forEach(x => x.classList.toggle("on", x === b));
+function setLang(l) {
+    l = l === "zh" ? "zh" : "en";
+    if (l === lang) return;
+    lang = l;
     applyLang();
+}
+
+$("langSeg").onclick = e => {
+    const b = e.target.closest("button");
+    if (b) setLang(b.dataset.l);
 };
 
+/* follow the portfolio's language when it changes (same-origin storage event, or a message from the parent) */
+window.addEventListener("storage", e => {
+    if (e.key === "ns-lang" && e.newValue) setLang(e.newValue === "zh" ? "zh" : "en");
+});
+
+window.addEventListener("message", e => {
+    if (e.origin === location.origin && e.data && e.data.ns === "lang" && e.data.lang) setLang(e.data.lang === "zh" ? "zh" : "en");
+});
 let live = false, pipeline = "B", history = [], lastResult = null, busy = false;
 
 if ($("pipeSeg")) $("pipeSeg").onclick = e => {
@@ -2324,32 +2522,99 @@ document.querySelectorAll("#panel-models g[data-model]").forEach(g => g.addEvent
     document.querySelectorAll("#pipeSeg button").forEach(x => x.classList.toggle("on", x.dataset.p === pipeline));
 }));
 
-const SCRIPT = {
-    "Turn on the driver seat heating": "seat: action|on zone|driver mode|heating",
-    "Open the rear-left window halfway": "win: action|on zone|rear_left degree|half",
-    "Make the ambient light blue": "light: action|set mode|colour color|blue",
-    "Open the sunshade": "shade: action|on zone|all",
-    "Open the sunroof": "win: action|on zone|sunroof",
-    "Turn on the windshield defog": "ac: action|on mode|defog",
-    "打开遮阳帘": "shade: action|on zone|all",
-    "打开天窗": "win: action|on zone|sunroof",
-    "打开除雾": "ac: action|on mode|defog",
-    "Set the temperature to 24 degrees": "ac: action|set target|temperature degree|24",
-    "Two degrees lower": "ac: action|decrease target|temperature degree|2",
-    "Navigate to Shenzhen North Station, avoid highways": "nav: action|navigate end|Shenzhen_North_Station route|avoid_highways",
-    "Show traffic": "nav: action|on target|traffic",
-    "Any gas stations within 3 km?": "nav: action|search search|gas_station distance|3 unit|km",
-    "The third one": "general: action|item_N index|3",
-    "Play Qi Li Xiang by Jay Chou": "music: action|play singer|Jay_Chou song|Qi_Li_Xiang",
-    "Save this song": "music: action|favourite",
-    "Turn on the A/C, then play another Jay Chou song": "ac: action|on\nmusic: action|next singer|Jay_Chou"
+/* The scripted sentences, in demo order: English and Chinese say the same thing and give the same commands. */
+const DEMO_EN = [ "Turn on the driver seat heating", "Open the rear-left window halfway", "Make the ambient light blue", "Open the sunshade", "Open the sunroof", "Turn on the windshield defog", "Set the temperature to 24 degrees", "Two degrees lower", "Navigate to Shenzhen North Station, avoid highways", "Show traffic", "Any gas stations within 3 km?", "The third one", "Play Qi Li Xiang by Jay Chou", "Save this song", "Turn on the A/C, then play another Jay Chou song" ];
+
+const DEMO_ZH = [ "打开主驾座椅加热", "左后车窗开一半", "氛围灯调成蓝色", "打开遮阳帘", "打开天窗", "打开除雾", "温度调到24度", "再低两度", "导航去深圳北站，不走高速", "显示路况", "三公里内有加油站吗？", "第三个", "播放周杰伦的七里香", "收藏这首歌", "打开空调，再放一首周杰伦的歌" ];
+
+const DEMO_DSL = [
+    "seat: action|on zone|driver mode|heating",
+    "win: action|on zone|rear_left degree|half",
+    "light: action|set mode|colour color|blue",
+    "shade: action|on zone|rear_row",            /* rear sunshade only: the front one stays closed */
+    "win: action|on zone|sunroof",
+    "ac: action|on mode|defog",
+    "ac: action|set target|temperature degree|24",
+    "ac: action|decrease target|temperature degree|2",
+    "nav: action|navigate end|Shenzhen_North_Station route|avoid_highways",
+    "nav: action|on target|traffic",
+    "nav: action|search search|gas_station distance|3 unit|km",
+    "general: action|item_N index|3",
+    "music: action|play singer|Jay_Chou song|Qi_Li_Xiang",
+    "music: action|favourite",
+    "ac: action|on\nmusic: action|next singer|Jay_Chou"
+];
+
+const SCRIPT = {};
+
+DEMO_EN.forEach((s, i) => SCRIPT[s] = DEMO_DSL[i]);
+
+DEMO_ZH.forEach((s, i) => SCRIPT[s] = DEMO_DSL[i]);
+
+const DEMO_N = DEMO_EN.length;
+
+const demoList = () => lang === "zh" ? DEMO_ZH : DEMO_EN;
+
+const sentIdx = t => {
+    const i = DEMO_EN.indexOf(t);
+    return i >= 0 ? i : DEMO_ZH.indexOf(t);
 };
 
-async function infer(hist) {
-    const q = turns[turns.length - 1].text;
-    await new Promise(r => setTimeout(r, 450));
+/* a scripted sentence is shown in the current language; anything typed is shown as typed */
+const inLang = t => {
+    const i = sentIdx(t);
+    return i < 0 ? t : demoList()[i];
+};
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+let gen = 0;       /* bumped by Reset: a sentence still in flight stops touching the cabin */
+let cur = null;    /* the sentence on screen: { text, lines, li, phase, res } */
+let logItems = [];
+
+/* typed text: exact scripted sentence, or the closest one if it is close enough */
+const normS = s => String(s).toLowerCase().replace(/[\s.,!?;:'"’“”，。！？、；：-]+/g, " ").trim();
+
+const STOPW = new Set([ "the", "a", "an", "to", "please", "my", "of", "me" ]);
+
+const dice = (a, b) => {
+    const A = new Set(a), B = new Set(b);
+    if (!A.size || !B.size) return 0;
+    let n = 0;
+    A.forEach(x => B.has(x) && n++);
+    return 2 * n / (A.size + B.size);
+};
+
+const grams = s => {
+    const t = s.replace(/ /g, ""), o = [];
+    for (let i = 0; i < t.length - 1; i++) o.push(t.slice(i, i + 2));
+    return o.length ? o : [ t ];
+};
+
+function matchScript(q) {
+    if (SCRIPT[q]) return q;
+    const n = normS(q);
+    if (!n) return null;
+    const cjk = /[一-鿿]/;
+    let best = null, bs = 0;
+    for (const k of Object.keys(SCRIPT)) {
+        const m = normS(k);
+        if (m === n) return k;
+        if (cjk.test(k) !== cjk.test(n)) continue;
+        const wn = n.split(" ").filter(w => !STOPW.has(w)), wm = m.split(" ").filter(w => !STOPW.has(w));
+        const sc = cjk.test(k) ? dice(grams(n), grams(m)) : Math.max(dice(wn, wm), dice(grams(wn.join("")), grams(wm.join(""))));
+        if (sc > bs) bs = sc, best = k;
+    }
+    return bs >= .72 ? best : null;
+}
+
+async function infer(text) {
+    await sleep(520);
+    const key = matchScript(text);
     return {
-        dsl: SCRIPT[q] || "reject: action|unsupported",
+        dsl: key ? SCRIPT[key] : "reject: action|unsupported",
+        key: key,
         scripted: true
     };
 }
@@ -2358,64 +2623,56 @@ async function send(text) {
     text = (text || "").trim();
     if (!text || busy) return;
     busy = true;
-    $("chatIn").value = "";
-    history.push(text);
-    renderChat();
+    const g = gen, dead = () => g !== gen;
+    cur = { text: text, lines: [], li: 0, phase: "said", res: [], fresh: true };
+    clearRings();
+    paintSteps();
+    cur.fresh = false;
+    await sleep(650);
+    if (dead()) return;
+    cur.phase = "think";
+    paintSteps();
     let res;
     try {
-        res = await infer(history);
+        res = await infer(text);
     } catch (e) {
-        res = {
-            dsl: "",
-            error: T("noServer") + " (" + String(e.message || e) + ")",
-            timing_ms: {
-                total: 0
-            }
-        };
-        history.pop();
-        turns.pop();
-        renderChat();
+        res = { dsl: "reject: action|unsupported", scripted: true };
     }
+    if (dead()) return;
     lastResult = res;
-    renderDSL(res);
-    if (res.error) addWarn(res.error);
-    if (res.note) addWarn(String(res.note).replace(/ \(.*$/, ""));
     const lines = (res.dsl || "").split("\n").map(l => l.trim()).filter(Boolean);
-    if (lines.length) chatAssistant(lines.join("\n"));
-    await playLines(lines);
-    busy = false;
-}
-
-function addWarn(t) {
-    const d = document.createElement("div");
-    d.className = "warn";
-    d.textContent = "⚠ " + t;
-    $("warnBox").appendChild(d);
-}
-
-async function playLines(lines) {
+    cur.lines = lines;
     for (let i = 0; i < lines.length; i++) {
-        const el = document.querySelectorAll("#dslList .dline")[i];
-        document.querySelectorAll("#dslList .dline").forEach(x => x.classList.remove("exec"));
-        if (el) el.classList.add("exec");
+        cur.li = i;
+        cur.phase = "understood";
+        paintSteps();
+        await sleep(800);
+        if (dead()) return;
         const r = applyDSL(state, lines[i]);
         const wasPlaying = state.music.playing;
         state = r.state;
         render();
         playEffects(r.effects);
-        r.warnings.forEach(addWarn);
+        r.warnings.forEach(w => console.warn("[cabin]", w));
         if (state.music.playing !== wasPlaying) setRing(state.music.playing);
         const sc = $("panel-screen");
         sc.classList.add("speaking");
         clearTimeout(sc._t);
         sc._t = setTimeout(() => sc.classList.remove("speaking"), 1200);
         renderCards();
-        if (el) pulseTo(el, targetsFor(lines[i]));
-        await new Promise(r => setTimeout(r, lines.length > 1 ? 1600 : 300));
+        cur.res[i] = { temp: state.ac.zone.lf.temp };
+        cur.phase = "done";
+        paintSteps();
+        focusOn(targetsFor(lines[i]));
+        if (i < lines.length - 1) {
+            await sleep(2e3);
+            if (dead()) return;
+        }
     }
-    setTimeout(() => document.querySelectorAll("#dslList .dline").forEach(x => x.classList.remove("exec")), 1400);
+    logItems.push({ text: text, lines: lines });
+    paintLog();
+    busy = false;
 }
-
 function targetsFor(line) {
     const c = parseDSL(line)[0];
     if (!c || !c.tool) return [];
@@ -2448,58 +2705,244 @@ function targetsFor(line) {
     return [ "panel-screen" ];
 }
 
-function pulseTo(fromEl, ids) {
+/* ── step 3 on the drawing: a gold frame around what changed, and a short trace from the result to it ── */
+const SVGNS = "http://www.w3.org/2000/svg";
+
+const BOX = {
+    "shade-front": [ 117, 259, 166, 177 ],
+    "shade-rear": [ 117, 436, 166, 177 ],
+    "win-sunroof": [ 132, 382, 136, 92 ],
+    "win-lf": [ 70, 276, 22, 130 ],
+    "win-rf": [ 308, 276, 22, 130 ],
+    "win-lr": [ 70, 430, 22, 150 ],
+    "win-rr": [ 308, 430, 22, 150 ],
+    "light-dash": [ 92, 268, 216, 330 ],
+    "ac-front-l": [ 100, 302, 92, 110 ],
+    "ac-front-r": [ 208, 302, 92, 110 ],
+    "ac-rear": [ 100, 462, 200, 116 ],
+    "panel-screen": [ 112, 98, 264, 123.2 ]
+};
+
+function clearRings() {
+    $("rings-car").innerHTML = "";
+    $("rings-panel").innerHTML = "";
+    $("pulseLayer").innerHTML = "";
+}
+
+function focusOn(ids) {
+    clearRings();
+    const made = [];
+    [ ...new Set(ids) ].forEach(id => {
+        const el = $(id);
+        let b = BOX[id];
+        if (!b && el && el.getBBox) {
+            const q = el.getBBox();
+            b = [ q.x, q.y, q.width, q.height ];
+        }
+        if (!b) return;
+        const pad = id === "panel-screen" ? 0 : 4;
+        const r = document.createElementNS(SVGNS, "rect");
+        r.setAttribute("class", "ring");
+        r.setAttribute("x", b[0] - pad);
+        r.setAttribute("y", b[1] - pad);
+        r.setAttribute("width", b[2] + pad * 2);
+        r.setAttribute("height", b[3] + pad * 2);
+        r.setAttribute("rx", id === "panel-screen" ? 11 : 9);
+        $(id === "panel-screen" ? "rings-panel" : "rings-car").appendChild(r);
+        made.push(r);
+        if (id !== "panel-screen" && id !== "light-dash") flash(id);
+    });
+    pulseTo($("st3"), made);
+}
+
+function pulseTo(fromEl, els) {
     const layer = $("pulseLayer");
     layer.innerHTML = "";
+    if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
     const a = fromEl.getBoundingClientRect();
-    const x0 = a.right, y0 = a.top + a.height / 2;
-    ids.forEach(id => {
-        const el = $(id);
-        if (!el) return;
+    els.forEach(el => {
         const b = el.getBoundingClientRect();
         const x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
-        const dx = Math.max(60, (x1 - x0) * .45);
-        const d = `M${x0} ${y0} C ${x0 + dx} ${y0}, ${x1 - dx} ${y1}, ${x1} ${y1}`;
-        const pth = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        pth.setAttribute("d", d);
-        layer.appendChild(pth);
-        flash(id);
+        const p = document.createElementNS(SVGNS, "path");
+        if (b.top >= a.bottom - 2 && x1 > a.left && x1 < a.right) {
+            /* target right under the result card: drop straight down from it */
+            const x0 = Math.min(Math.max(x1, a.left + 24), a.right - 24), y0 = a.bottom, dy = Math.max(20, (y1 - y0) * .5);
+            p.setAttribute("d", `M${x0} ${y0} C ${x0} ${y0 + dy}, ${x1} ${y1 - dy}, ${x1} ${y1}`);
+        } else {
+            const right = x1 > a.left + a.width / 2;
+            const x0 = right ? a.right : a.left, y0 = a.top + a.height / 2;
+            const dx = Math.max(30, Math.abs(x1 - x0) * .45) * (right ? 1 : -1);
+            p.setAttribute("d", `M${x0} ${y0} C ${x0 + dx} ${y0}, ${x1 - dx} ${y1}, ${x1} ${y1}`);
+        }
+        layer.appendChild(p);
     });
     clearTimeout(layer._t);
     layer._t = setTimeout(() => {
         layer.querySelectorAll("path").forEach(p => p.style.opacity = 0);
-        setTimeout(() => layer.innerHTML = "", 500);
-    }, 1500);
+        setTimeout(() => layer.innerHTML = "", 450);
+    }, 1100);
 }
 
-function renderDSL(res) {
-    const box = $("dslList");
-    $("warnBox").innerHTML = "";
-    $("toolsTop").innerHTML = "";
-    if (!res) {
-        box.innerHTML = `<div class="empty">${T("dslEmpty")}</div>`;
-        $("lat").textContent = "— ms";
-        return;
+/* ── step 2 in plain words: every part of the command becomes a small labelled chip ── */
+const L2 = (en, zh) => lang === "zh" ? zh : en;
+
+const TOOL = {
+    seat: [ "Seat", "座椅" ], win: [ "Window", "车窗" ], shade: [ "Sunshade", "遮阳帘" ], light: [ "Ambient light", "氛围灯" ],
+    ac: [ "A/C", "空调" ], nav: [ "Navigation", "导航" ], music: [ "Music", "音乐" ], general: [ "Screen", "屏幕" ],
+    volume: [ "Volume", "音量" ], bt: [ "Phone", "电话" ], video: [ "Video", "视频" ], reject: [ "None", "无" ]
+};
+
+const KEYL = {
+    action: [ "Action", "动作" ], zone: [ "Zone", "区域" ], mode: [ "Mode", "模式" ], degree: [ "Value", "数值" ], color: [ "Colour", "颜色" ],
+    target: [ "Target", "对象" ], end: [ "To", "目的地" ], route: [ "Route", "路线" ], search: [ "Search", "搜索" ], distance: [ "Within", "范围" ],
+    index: [ "Item", "序号" ], singer: [ "Artist", "歌手" ], song: [ "Song", "歌曲" ]
+};
+
+/* value → [English, Chinese]; anything missing is shown as the model wrote it */
+const VALL = {
+    "on": [ "turn on", "开启" ], "off": [ "turn off", "关闭" ], "set": [ "set", "设为" ], "increase": [ "raise", "调高" ], "decrease": [ "lower", "调低" ],
+    "navigate": [ "navigate", "导航" ], "search": [ "search", "搜索" ], "play": [ "play", "播放" ], "favourite": [ "save", "收藏" ], "next": [ "next", "下一首" ],
+    "item N": [ "pick", "选择" ], "unsupported": [ "unsupported", "不支持" ],
+    "driver": [ "driver", "主驾" ], "passenger": [ "passenger", "副驾" ], "front left": [ "front left", "左前" ], "front right": [ "front right", "右前" ],
+    "rear left": [ "rear left", "左后" ], "rear right": [ "rear right", "右后" ], "front row": [ "front", "前排" ], "rear row": [ "rear", "后排" ],
+    "all": [ "all", "全部" ], "whole car": [ "whole car", "全车" ], "sunroof": [ "sunroof", "天窗" ], "windshield": [ "windshield", "前挡" ],
+    "heating": [ "heating", "加热" ], "massage": [ "massage", "按摩" ], "ventilation": [ "ventilation", "通风" ], "colour": [ "colour", "颜色" ],
+    "brightness": [ "brightness", "亮度" ], "defog": [ "defog", "除雾" ], "temperature": [ "temperature", "温度" ], "fan speed": [ "fan speed", "风量" ],
+    "half": [ "half", "一半" ], "traffic": [ "traffic", "路况" ], "avoid highways": [ "avoid highways", "不走高速" ], "gas station": [ "gas station", "加油站" ],
+    "km": [ "km", "公里" ], "blue": [ "blue", "蓝色" ], "red": [ "red", "红色" ], "green": [ "green", "绿色" ], "white": [ "white", "白色" ], "purple": [ "purple", "紫色" ],
+    "Jay Chou": [ "Jay Chou", "周杰伦" ], "Qi Li Xiang": [ "Qi Li Xiang", "七里香" ], "Shenzhen North Station": [ "Shenzhen North Station", "深圳北站" ]
+};
+
+const vv = v => VALL[v] ? L2(VALL[v][0], VALL[v][1]) : v;
+
+function chipsFor(line) {
+    const c = parseDSL(line)[0];
+    if (!c || !c.tool) return [];
+    if (c.tool === "reject") return [ [ "dev", L2("Intent", "意图"), L2("not supported", "不支持") ] ];
+    const p = c.params, opens = c.tool === "win" || c.tool === "shade";
+    const out = [ [ "dev", L2("Device", "设备"), TOOL[c.tool] ? L2(TOOL[c.tool][0], TOOL[c.tool][1]) : c.tool ] ];
+    for (const [k, v] of Object.entries(p)) {
+        if (k === "unit" || c.tool === "reject") continue;
+        let val = vv(v);
+        if (k === "action" && opens && (v === "on" || v === "off")) val = v === "on" ? L2("open", "打开") : L2("close", "关闭");
+        if (k === "distance") val = v + " " + vv(p.unit || "km");
+        if (k === "degree" && p.target === "temperature") val = v + " °C";
+        out.push([ "", KEYL[k] ? L2(KEYL[k][0], KEYL[k][1]) : k, val ]);
     }
-    const tm = res.timing_ms || {};
-    $("lat").innerHTML = res.scripted ? T("scripted") : `${Math.round(tm.total || 0)} ms`;
-    if (res.jev && res.jev.tools_top) $("toolsTop").innerHTML = (lang === "zh" ? "routing: " : "routing: ") + res.jev.tools_top.slice(0, 3).map(([t, p]) => `<b>${t}</b> ${(p * 100).toFixed(0)}%`).join(" · ");
-    const lines = (res.dsl || "").split("\n").map(l => l.trim()).filter(Boolean);
-    box.innerHTML = lines.map(line => {
-        const c = parseDSL(line)[0];
-        const jp = res.jev && res.jev.params && res.jev.params[c.tool];
-        const usedLLM = jp ? Object.values(jp).some(v => v.by === "llm") : res.jev ? false : null;
-        const tag = usedLLM == null ? "" : `<span class="tag ${usedLLM ? "llm" : "jev"}">${usedLLM ? T("llm") : T("jev")}</span>`;
-        const probs = jp ? Object.entries(jp).map(([k, v]) => {
-            const [bv, bp] = v.top[0];
-            const rest = v.top.slice(1).map(([a, b]) => `${a} ${(b * 100).toFixed(0)}%`).join(" · ");
-            return `<div class="p"><span class="k">${k}</span><div class="bar"><i class="${v.by === "llm" ? "llm" : ""}" style="width:${(bp * 100).toFixed(0)}%"></i></div><span class="v">${bv} ${(bp * 100).toFixed(0)}%</span></div>${rest ? `<div style="color:#5c6577;font-size:10px;margin:-2px 0 2px 66px">${rest}</div>` : ""}`;
-        }).join("") : "";
-        const params = Object.entries(c.params).map(([k, v]) => `${k}|<b>${v}</b>`).join(" ");
-        return `<div class="dline" onclick="this.classList.toggle('open')">${tag}<div class="tool"><b>${c.tool}</b>: ${params}</div>${probs ? `<div class="probs">${probs}${res.jev && res.jev.llm_raw ? `<div style="color:#ffd3c4;margin-top:4px">LLM → ${res.jev.llm_raw}</div>` : ""}</div>` : ""}</div>`;
-    }).join("") || `<div class="empty">—</div>`;
+    return out;
 }
 
+/* free-text values (a place, a song) are the ones the small LLM fills in */
+const needsLLM = line => {
+    const c = parseDSL(line)[0];
+    return !!c && [ "end", "from", "song", "singer", "search", "name", "album" ].some(k => c.params[k] != null);
+};
+
+/* ── step 3 in plain words ── */
+function describe(line, snap) {
+    const c = parseDSL(line)[0] || { params: {} }, p = c.params, t = c.tool, zh = lang === "zh", a = p.action, on = a !== "off";
+    const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+    const zEn = z => cap(vv(z).replace(/ (left|right)$/, "-$1"));
+    const temp = snap && snap.temp != null ? snap.temp : p.degree;
+    if (t === "seat") {
+        const z = p.zone || "all", m = p.mode || "heating";
+        return zh ? `${vv(z)}座椅${vv(m)}已${on ? "开启" : "关闭"}` : `${zEn(z)} seat ${m} ${on ? "on" : "off"}`;
+    }
+    if (t === "win") {
+        const z = p.zone || "all";
+        if (z === "sunroof") return zh ? `天窗已${on ? "打开" : "关闭"}` : `Sunroof ${on ? "opened" : "closed"}`;
+        const name = zh ? (z === "all" ? "所有" : vv(z)) + "车窗" : z === "all" ? "All windows" : `${zEn(z)} window`;
+        if (p.degree === "half") return zh ? `${name}已开一半` : `${name} half open`;
+        return zh ? `${name}已${on ? "打开" : "关闭"}` : `${name} ${on ? "opened" : "closed"}`;
+    }
+    if (t === "shade") {
+        const z = p.zone || "all";
+        const name = zh ? (z === "all" ? "" : vv(z)) + "遮阳帘" : z === "all" ? "Sunshades" : `${zEn(z)} sunshade`;
+        return zh ? `${name}已${on ? "打开" : "关闭"}` : `${name} ${on ? "opened" : "closed"}`;
+    }
+    if (t === "light") {
+        if (p.color) return zh ? `氛围灯已变为${vv(p.color)}` : `Ambient light is now ${p.color}`;
+        return zh ? `氛围灯已${on ? "开启" : "关闭"}` : `Ambient light ${on ? "on" : "off"}`;
+    }
+    if (t === "ac") {
+        if (p.mode === "defog" || p.mode === "defrost") return zh ? `前挡除雾已${on ? "开启" : "关闭"}` : `Windshield defog ${on ? "on" : "off"}`;
+        if (p.target === "temperature") {
+            if (a === "decrease") return zh ? `温度已降到 ${temp} ℃` : `Temperature down to ${temp} °C`;
+            if (a === "increase") return zh ? `温度已升到 ${temp} ℃` : `Temperature up to ${temp} °C`;
+            return zh ? `温度已调到 ${temp} ℃` : `Temperature set to ${temp} °C`;
+        }
+        return zh ? `空调已${on ? "开启" : "关闭"}` : `A/C ${on ? "on" : "off"}`;
+    }
+    if (t === "nav") {
+        if (p.end) return zh ? `正在导航去${vv(p.end)}` : `Navigating to ${p.end}`;
+        if (p.target === "traffic") return zh ? "地图已显示路况" : "Traffic shown on the map";
+        if (p.search) return zh ? `已列出附近的${vv(p.search)}` : `Nearby ${p.search}s listed`;
+        return zh ? "导航已更新" : "Navigation updated";
+    }
+    if (t === "general") {
+        if (p.index) return zh ? `已选择第 ${p.index} 个` : `Item ${p.index} selected`;
+        return zh ? "已完成" : "Done";
+    }
+    if (t === "music") {
+        if (a === "play") return zh ? `正在播放《${vv(p.song || p.singer || "")}》` : `Now playing ${p.song || p.singer || "music"}`;
+        if (a === "favourite") return zh ? "已收藏这首歌" : "Song saved to favourites";
+        if (a === "next") return zh ? `已切到下一首${p.singer ? vv(p.singer) + "的歌" : ""}` : `Next ${p.singer ? p.singer + " " : ""}song playing`;
+        return zh ? "音乐已更新" : "Music updated";
+    }
+    if (t === "reject") return zh ? "离线演示里没有这句" : "Not in this offline demo";
+    return zh ? "已完成" : "Done";
+}
+
+const ICON = {
+    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="4" width="5" height="16" rx="1.4"/><rect x="14" y="4" width="5" height="16" rx="1.4"/></svg>',
+    replay: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg>',
+    ok: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    no: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>'
+};
+
+function paintSteps() {
+    const ph = cur ? cur.phase : "idle";
+    $("app").dataset.phase = ph;
+    const cls = (id, on, was) => {
+        $(id).classList.toggle("on", on);
+        $(id).classList.toggle("was", was);
+    };
+    cls("st1", ph === "said", ph === "think" || ph === "understood" || ph === "done");
+    cls("st2", ph === "think" || ph === "understood", ph === "done");
+    cls("st3", ph === "done", false);
+    const said = $("said");
+    said.innerHTML = cur ? `<q>${esc(inLang(cur.text))}</q>` : `<span class="ph">${esc(T("ph1"))}</span>`;
+    said.classList.toggle("in", !!(cur && cur.fresh));
+    const line = cur && cur.lines[cur.li];
+    const shown = !!line && (ph === "understood" || ph === "done");
+    const chips = $("chips"), key = shown ? lang + "|" + line + "|" + cur.li + "|" + cur.text : ph === "think" ? "think" + lang : "ph" + lang + ph;
+    if (chips.dataset.k !== key) {
+        chips.dataset.k = key;
+        chips.innerHTML = shown ? chipsFor(line).map(([c, k, v], i) => `<span class="chip ${c}" style="--i:${i}"><em>${esc(k)}</em>${esc(v)}</span>`).join("") : ph === "think" ? `<span class="think"><u><s></s><s></s><s></s></u>${esc(T("thinking"))}</span>` : `<span class="ph">${esc(ph === "idle" ? T("ph2") : T("wait"))}</span>`;
+    }
+    $("raw").innerHTML = shown ? `<span>DSL</span>${esc(line)}` : "";
+    $("raw").title = shown ? line : "";
+    const n = cur ? cur.lines.length : 0;
+    $("cnt").hidden = !(shown && n > 1);
+    $("cnt").textContent = n > 1 ? `${cur.li + 1}/${n}` : "";
+    $("by").innerHTML = shown && cur.lines[0].indexOf("reject") !== 0 ? `<b>Mapika-2B</b>${needsLLM(line) ? " + Qwen3-1.7B" : ""}` : "";
+    $("by").title = shown && needsLLM(line) ? "Qwen3-1.7B " + T("fills") : "";
+    const res = $("result"), done = ph === "done" && !!line;
+    const rkey = done ? lang + "|" + line + "|" + cur.li + "|" + cur.text : "ph" + lang + ph;
+    if (res.dataset.k !== rkey) {
+        res.dataset.k = rkey;
+        const bad = done && line.indexOf("reject") === 0;
+        res.innerHTML = done ? `<div class="res${bad ? " no" : ""}"><span class="ok">${bad ? ICON.no : ICON.ok}</span><span>${esc(describe(line, cur.res[cur.li]))}</span></div>` : `<span class="ph">${esc(ph === "idle" ? T("ph3") : T("wait"))}</span>`;
+    }
+}
+
+function paintLog() {
+    $("logN").textContent = logItems.length;
+    const b = $("logList");
+    b.innerHTML = logItems.length ? logItems.map((it, i) => `<div class="le"><i>${i + 1}</i><span>${esc(inLang(it.text))}</span>${it.lines.map(l => `<code>${esc(l)}</code>`).join("")}</div>`).join("") : `<span class="ph">${esc(T("logEmpty"))}</span>`;
+    b.scrollTop = b.scrollHeight;
+}
 let cardOpen = {};
 
 function renderCards() {
@@ -3868,10 +4311,6 @@ render = function() {
     renderExt();
 };
 
-$("screen-center").addEventListener("click", () => {
-    document.body.classList.toggle("panelHidden");
-    setTimeout(() => $("pulseLayer").innerHTML = "", 0);
-});
 
 $("rapps").addEventListener("click", e => {
     const g = e.target.closest(".rapp");
@@ -4079,72 +4518,182 @@ for (const [id, k] of [ [ "l", "lf" ], [ "r", "rf" ] ]) $("ac-sw-" + id).addEven
     render();
 });
 
-let turns = [];
+/* ── Play demo / Pause / Resume / Replay, and Reset ── */
+const demo = { state: "idle", i: 0, shown: 0, token: 0 };
 
-function renderChat() {
-    const b = $("msgs");
-    b.innerHTML = turns.map(t => `<div class="msg ${t.who}">${t.text}</div>`).join("");
-    b.scrollTop = b.scrollHeight;
+function paintBar() {
+    const s = demo.state;
+    $("app").dataset.demo = s;
+    const [ ic, k ] = s === "playing" ? [ "pause", "pause" ] : s === "paused" ? [ "play", "resume" ] : s === "done" ? [ "replay", "replay" ] : [ "play", "demo" ];
+    $("demoBtn").innerHTML = ICON[ic] + `<span>${esc(T(k))}</span>`;
+    $("demoBtn").setAttribute("aria-label", T(k));
+    const st = s === "playing" ? T("stPlaying") : s === "paused" ? T("stPaused") : s === "done" ? T("stDone") : "";
+    $("progTxt").innerHTML = `${demo.shown} / ${DEMO_N}` + (st ? `<small>${esc(st)}</small>` : "");
+    let h = "";
+    for (let i = 0; i < DEMO_N; i++) h += `<i class="${i < demo.shown - 1 || s === "done" && i < demo.shown ? "d" : i === demo.shown - 1 ? "c" : ""}"></i>`;
+    $("track").innerHTML = h;
 }
 
-function chatAssistant(text) {
-    turns.push({
-        who: "a",
-        text: text
-    });
-    renderChat();
+function paintTry() {
+    const q = normS($("chatIn").value), all = demoList();
+    const hit = all.filter(s => !q || normS(s).includes(q));
+    $("tryList").innerHTML = (hit.length ? "" : `<div class="none">${esc(T("noMatch"))}</div>`) + (hit.length ? hit : all).map(s => `<button type="button">${esc(s)}</button>`).join("");
 }
 
-const _push = history.push.bind(history);
+function paintAll() {
+    paintSteps();
+    paintBar();
+    paintLog();
+    paintTry();
+}
 
-history.push = t => {
-    turns.push({
-        who: "u",
-        text: t
-    });
-    return _push(t);
-};
-
-$("clearBtn").onclick = () => {
-    history.length = 0;
-    turns = [];
-    renderChat();
+function clearCabin() {
+    gen++;
+    busy = false;
+    cur = null;
+    logItems = [];
     lastResult = null;
-    renderDSL(null);
-};
-
-$("resetBtn").onclick = () => {
+    clearRings();
+    clearTimeout(statusTimer);
     state = initialState();
     state.model = pipeline;
     render();
     setRing(false);
     renderCards();
+}
+
+async function runDemo() {
+    const tok = ++demo.token;
+    if (demo.i >= DEMO_N || demo.state === "done") demo.i = 0;
+    if (demo.i === 0) {
+        clearCabin();
+        demo.shown = 0;
+        paintAll();
+    }
+    demo.state = "playing";
+    paintBar();
+    while (busy) {
+        await sleep(120);
+        if (tok !== demo.token) return;
+    }
+    while (demo.i < DEMO_N) {
+        const k = demo.i++;
+        demo.shown = k + 1;
+        paintBar();
+        await send(demoList()[k]);
+        if (tok !== demo.token) return;
+        await sleep(k === DEMO_N - 1 ? 600 : 2300);
+        if (tok !== demo.token) return;
+    }
+    demo.state = "done";
+    paintBar();
+}
+
+function pauseDemo() {
+    if (demo.state !== "playing") return;
+    demo.token++;
+    demo.state = "paused";
+    paintBar();
+}
+
+$("demoBtn").onclick = () => {
+    closePops();
+    if (demo.state === "playing") pauseDemo(); else runDemo();
 };
+
+$("resetBtn").onclick = () => {
+    closePops();
+    demo.token++;
+    demo.state = "idle";
+    demo.i = 0;
+    demo.shown = 0;
+    clearCabin();
+    paintAll();
+    const b = $("resetBtn");
+    b.classList.remove("spin");
+    void b.offsetWidth;
+    b.classList.add("spin");
+};
+
+/* ── try one sentence by hand: pick it from the list, or type it ── */
+async function sendUser(text) {
+    text = (text || "").trim();
+    if (!text) return;
+    pauseDemo();
+    closePops();
+    $("chatIn").value = "";
+    paintTry();
+    const g = gen;
+    while (busy) {
+        await sleep(100);
+        if (g !== gen) return;
+    }
+    send(text);
+}
+
+function closePops() {
+    $("tryPop").classList.remove("show");
+    $("log").classList.remove("show");
+    $("tryBtn").classList.remove("on");
+    $("logBtn").classList.remove("on");
+    $("tryBtn").setAttribute("aria-expanded", "false");
+    $("logBtn").setAttribute("aria-expanded", "false");
+}
+
+$("tryBtn").onclick = e => {
+    e.stopPropagation();
+    const open = !$("tryPop").classList.contains("show");
+    closePops();
+    if (!open) return;
+    $("tryPop").classList.add("show");
+    $("tryBtn").classList.add("on");
+    $("tryBtn").setAttribute("aria-expanded", "true");
+    paintTry();
+    if (matchMedia("(hover:hover)").matches) $("chatIn").focus();
+};
+
+$("logBtn").onclick = e => {
+    e.stopPropagation();
+    const open = !$("log").classList.contains("show");
+    closePops();
+    if (!open) return;
+    $("log").classList.add("show");
+    $("logBtn").classList.add("on");
+    $("logBtn").setAttribute("aria-expanded", "true");
+    $("logList").scrollTop = $("logList").scrollHeight;
+};
+
+$("tryList").onclick = e => {
+    const b = e.target.closest("button");
+    if (b) sendUser(b.textContent);
+};
+
+$("chatIn").oninput = paintTry;
+
+$("chatIn").onkeydown = e => {
+    if (e.key === "Enter") sendUser($("chatIn").value);
+};
+
+$("sendBtn").onclick = () => sendUser($("chatIn").value);
+
+document.addEventListener("pointerdown", e => {
+    if (!e.target.closest("#tryPop,#log,#tryBtn,#logBtn")) closePops();
+});
 
 document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {}
+    if (e.key === "Escape") closePops();
 });
 
-const DEMO = [ "Turn on the driver seat heating", "Open the rear-left window halfway", "Make the ambient light blue", "Open the sunshade", "Open the sunroof", "Turn on the windshield defog", "Set the temperature to 24 degrees", "Two degrees lower", "Navigate to Shenzhen North Station, avoid highways", "Show traffic", "Any gas stations within 3 km?", "The third one", "Play Qi Li Xiang by Jay Chou", "Save this song", "Turn on the A/C, then play another Jay Chou song" ];
+window.addEventListener("resize", () => $("pulseLayer").innerHTML = "");
 
-let demoRun = 0;
+/* small layouts show only the screen and its controls: bigger, easier to read */
+const mqSmall = matchMedia("(max-width:840px), (max-height:430px)");
 
-$("demoBtn").onclick = async () => {
-    if (busy) return;
-    const id = ++demoRun;
-    $("clearBtn").click();
-    for (const t of DEMO) {
-        if (id !== demoRun) return;
-        await send(t);
-        await new Promise(r => setTimeout(r, 2600));
-    }
-};
+const fitConsole = () => $("panel").setAttribute("viewBox", mqSmall.matches ? "76 90 336 186" : "0 4 480 296");
 
-$("resetBtn").addEventListener("click", () => {
-    demoRun++;
-    $("clearBtn").click();
-});
+mqSmall.addEventListener("change", fitConsole);
 
+fitConsole();
 const FIT = { "nav-dest": 112, "nav-sub": 112, "tour-dest": 190, "panel-status-title": 150, "panel-status-sub": 150 };
 function fitTexts() {
     for (const [id, w] of Object.entries(FIT)) {
@@ -4161,7 +4710,6 @@ function fitTexts() {
 const _renderFit = render; render = function () { const r = _renderFit.apply(this, arguments); try { fitTexts(); } catch (e) { } return r; };
 render();
 
-renderChat();
 
 applyLang();</script>
 </body>

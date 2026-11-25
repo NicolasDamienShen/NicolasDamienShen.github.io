@@ -103,61 +103,64 @@ let LANG = (() => { try { const s = localStorage.getItem('ns-lang'); if (s && /^
 const L = v => v == null ? '' : (typeof v === 'object' && !Array.isArray(v)) ? (v[LANG] ?? v.en ?? '') : v;
 const T = {
   en: {
-    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Feel free to scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: '✦ Click the cockpit screen to try my in-car voice demo — or just keep scrolling', tipCockpit: '▶ Try the in-car voice demo', cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: 'Cabin Voice — from what you say to what the car does', cockpitDesc: "An in-car voice assistant from my internship at Desay SV. It turns a request into a compact command language (DSL); each line drives one part of the cabin: A/C, seats, windows, sunroof and sunshade, defog, lights, music, navigation. To choose the model I compared several LLMs, a diffusion language model and a new architecture inspired by JEV (September 2026). The final system uses Mapika-2B to decide what to do and Qwen3-1.7B to fill in the values, and it handles both single- and multi-intent requests efficiently. This demo is an offline, text-only showcase: press ▶ Play demo, or click the car and the console yourself.", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
-    scroll: 'SCROLL', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
-    vrKicker: 'XR / VR & demos', vrTitle: 'Screens in the city', vrText: 'Each screen is a project. Click one — or pick from the list.',
+    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: "✦ Try my voice demo: click the screen · or keep scrolling", tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car. I compared LLMs, a diffusion model and a JEV-inspired architecture. In the end, Mapika-2B decides what to do and Qwen3-1.7B fills in the values. It works for one command or several. This demo is offline and text-only: press ▶ Play demo, or click the car.", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
+    scroll: 'SCROLL', keysHint: 'or hold →', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
+    vrKicker: 'XR / VR & demos', vrTitle: 'Screens in the city', vrText: "Each screen is a project. Click one, or pick from the list.",
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
-    gamesKicker: 'Games', gamesTitle: 'The desk', gamesText: 'The monitor runs my game — click the screen to play.', playBrowser: 'Plays in the browser', newTab: 'Opens in a new tab', holoHint: 'The little robot on the desk is friendly — click it',
-    nowKicker: 'Work in progress', nowTitle: 'Now building', galleryKicker: 'Photos · GIFs · 3D', galleryTitle: 'The photo wall', galleryText: 'Photos, GIFs and renders — keep scrolling, the camera walks you along the wall.', openGallery: 'Open gallery ⤢',
+    gamesKicker: 'Games', gamesTitle: 'The desk', gamesText: "Two games on the monitor. Click the screen to choose.", playBrowser: 'Plays in the browser', newTab: 'Opens in a new tab', holoHint: "Click the little robot on the desk",
+    nowKicker: 'Work in progress', nowTitle: 'Now building', galleryKicker: 'Photos · GIFs · 3D', galleryTitle: 'The photo wall', galleryText: "Photos, GIFs and renders. Keep scrolling to walk along the wall.", openGallery: 'Open gallery ⤢',
     contact: 'Contact', backStart: '↑ Back to the start', addLink: 'soon', emailPh: 'Email — coming soon',
     chStart: 'Start', chHello: 'Hello', chVr: 'XR / VR', chPapers: 'Slides & papers', chGames: 'Games', chNow: 'Now building', chGallery: 'Photo wall', chOutro: 'Last words', chContact: 'Contact', goTo: 'Go to',
-    tipWatch: '▶ Watch — ', tipOpen: '✦ Open — ', tipPlay: '▶ Play — ', tipView: '⤢ View — ', tipInside: '↓ Keep scrolling to step inside', tipTerm: '⌁ Now building — terminal', tipAbout: '◎ About me', tipVR: '⟲ Back to my XR / VR projects', tipBot: '♥ Say hi to my desk buddy',
-    videoSoon: 'VIDEO COMING SOON', watchOn: 'Watch on', ytFallback: 'Video not loading? Open on YouTube ↗', fullscreen: '⛶ Fullscreen', newTabBtn: 'Open in new tab ↗', clickFirst: 'Click the game to use the keyboard · Esc to leave',
-    playNewTab: '▶ Play — opens in a new tab', gameSoon: 'GAME COMING SOON', gifSoon: 'PREVIEW COMING SOON', openPdf: 'Open PDF ↗', page: 'Page', pagePh: 'coming soon', useArrows: 'use ← → keys', close: 'Close (Esc)',
+    tipWatch: '▶ Watch — ', tipOpen: '✦ Open — ', tipPlay: '▶ Play — ', tipView: '⤢ View — ', tipInside: "↓ Scroll to step inside", tipTerm: '⌁ Now building — terminal', tipAbout: '◎ About me', tipVR: '⟲ Back to my XR / VR projects', tipBot: '♥ Say hi to my desk buddy',
+    videoSoon: 'VIDEO COMING SOON', watchOn: 'Watch on', ytFallback: "Not loading? Open on YouTube ↗", fullscreen: '⛶ Fullscreen', newTabBtn: "New tab ↗", clickFirst: "Click the game to play · Esc to leave",
+    playNewTab: "▶ Play in a new tab", gameSoon: 'GAME COMING SOON', gifSoon: 'PREVIEW COMING SOON', openPdf: 'Open PDF ↗', page: 'Page', pagePh: 'coming soon', useArrows: 'use ← → keys', close: 'Close (Esc)',
     paper: 'Paper', slides: 'Slides', render: 'Render', photo: 'Photo', playFriend: '▶ Play it with a friend', about: 'About', backTour: '⟲ Back to the 3D tour', play: 'PLAY', clickToPlay: '▶ CLICK TO PLAY', gifHere: 'GIF / MP4 here', clickRead: 'click to read', clickOpen: 'click to open',
     phWelcome: 'Welcome to the portfolio of', phAfter: '', phRole: 'XR · AI · Human–Machine Interaction', phScroll: 'Feel free to scroll', phKeep: '— keep scrolling —',
     phItems: [['XR / VR projects', 'screens in the city'], ['Slides & papers', 'pages in the sky'], ['Games', 'on my desk'], ['Now building', 'the corkboard'], ['3D renders', 'the photo wall'], ['Last words', 'a paper plane']],
     loading: 'Nicolas Shen · loading the night',
-    readyPlay: 'READY TO PLAY?', henryKick: 'Personal assistant · 2026', henryAbout: "Hi, I'm Henry 👋 Nicolas built me in 2026 as his personal assistant: a trilingual, end-to-end voice assistant that runs fully locally on his computer with Ollama and open-source models, with nothing sent to the cloud. I understand and tell apart French, English and Chinese. I can search and answer like Siri, and I do real things on his machine, like organising folders or going on the internet to look things up. I'm not published or publicly released: I exist so Nicolas can understand, hands-on, what AI can really offer.", posterNote: 'Nov 2026 — I was there,\nmet some professors :)', now: 'now', tapToOpen: 'Tap to open', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: 'Click or scroll to begin', introSound: 'sound on', qAuto: 'Auto', qHigh: 'High', qMid: 'Medium', qLow: 'Low', quality: 'Quality', tipHenry: '☺ Henry — say hi', henry1: "I'm here whenever you need me.", henry2: 'Psst — the corkboard on the right shows what Nicolas is building now.', henry3: 'Lost? Press I for the simple index view.', henryAsk: 'Ask Henry…',
-    botSay: "Hi! I'm one of Nicolas's future projects — can't wait to meet you ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
+    readyPlay: 'READY TO PLAY?', henryKick: 'Personal assistant · 2026', henryAbout: "Hi, I'm Henry 👋 Nicolas built me in 2026 as his personal voice assistant. I run fully on his computer, with Ollama and open-source models. Nothing goes to the cloud. I speak French, English and Chinese. I search and answer like Siri, and I do real tasks: tidy folders, look things up online. I'm not public. I exist so Nicolas can learn, hands-on, what AI can really do.", posterNote: 'Nov 2026 — I was there,\nmet some professors :)', now: 'now', tapToOpen: 'Tap to open', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: 'Click or scroll to begin', introSound: 'sound on', qAuto: 'Auto', qHigh: 'High', qMid: 'Medium', qLow: 'Low', quality: 'Quality', tipHenry: '☺ Henry — say hi', henry1: "I'm here whenever you need me.", henry2: "Psst: the corkboard shows what Nicolas is building.", henry3: 'Lost? Press I for the simple index view.', henryAsk: 'Ask Henry…',
+    more: "more ▾", less: "less ▴", gamesPick: "Two games. Pick one.", playBtn: "▶ Play", backGames: "← Games", tipGames: "▶ Two games — choose one", pageHint: "Click left or right to turn the page", pageHintTap: "Tap left or right to turn the page", chooseGame: "CHOOSE A GAME", gLine_gravity: "Two-player co-op. Flip gravity, use portals.", gLine_charmed: "A gothic manor in the fog. Three brothers with magic.",
+    botSay: "Hi! I'm a future project of Nicolas. See you soon ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
   },
   fr: {
-    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "N'hésitez pas à défiler pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Cliquez sur l'écran du cockpit pour essayer ma démo vocale embarquée — ou continuez à défiler", tipCockpit: '▶ Essayer la démo vocale embarquée', cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: 'Cabin Voice — de la parole aux actions de la voiture', cockpitDesc: "Un assistant vocal embarqué issu de mon stage chez Desay SV. Il traduit une demande en un langage de commandes compact (DSL) ; chaque ligne pilote une partie de l'habitacle : clim, sièges, vitres, toit ouvrant et pare-soleil, désembuage, éclairage, musique, navigation. Pour choisir le modèle, j'ai comparé plusieurs LLM, un modèle de langage par diffusion et une nouvelle architecture inspirée de JEV (septembre 2026). Le système final utilise Mapika-2B pour décider quoi faire et Qwen3-1.7B pour compléter les valeurs ; il gère efficacement les demandes à intention unique comme à intentions multiples. Cette démo est une vitrine hors ligne, en texte uniquement : appuyez sur « ▶ Play demo », ou cliquez vous-même sur la voiture et la console.", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
-    scroll: 'DÉFILEZ', skip: "Envie d'une page simple ? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
-    vrKicker: 'XR / VR & démos', vrTitle: 'Écrans dans la ville', vrText: 'Chaque écran est un projet. Cliquez-en un — ou choisissez dans la liste.',
+    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Essayez ma démo vocale\u00a0: cliquez sur l'écran · ou continuez à défiler", tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture. J'ai comparé des LLM, un modèle de diffusion et une architecture inspirée de JEV. Au final, Mapika-2B décide quoi faire et Qwen3-1.7B complète les valeurs. Ça marche pour une commande ou plusieurs. Cette démo est hors ligne, en texte seulement\u00a0: appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture.", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
+    scroll: 'DÉFILEZ', keysHint: 'ou maintenez →', skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
+    vrKicker: 'XR / VR & démos', vrTitle: 'Écrans dans la ville', vrText: "Chaque écran est un projet. Cliquez-en un, ou choisissez dans la liste.",
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
-    gamesKicker: 'Jeux', gamesTitle: 'Le bureau', gamesText: "L'écran fait tourner mon jeu — cliquez dessus pour jouer.", playBrowser: 'Se joue dans le navigateur', newTab: "S'ouvre dans un nouvel onglet", holoHint: 'Le petit robot sur le bureau est sympa — cliquez dessus',
-    nowKicker: 'En cours', nowTitle: 'En construction', galleryKicker: 'Photos · GIF · 3D', galleryTitle: 'Le mur de photos', galleryText: 'Photos, GIF et rendus 3D — continuez à défiler, la caméra longe le mur.', openGallery: 'Ouvrir la galerie ⤢',
+    gamesKicker: 'Jeux', gamesTitle: 'Le bureau', gamesText: "Deux jeux sur l'écran. Cliquez dessus pour choisir.", playBrowser: 'Se joue dans le navigateur', newTab: "S'ouvre dans un nouvel onglet", holoHint: "Cliquez sur le petit robot du bureau",
+    nowKicker: 'En cours', nowTitle: 'En construction', galleryKicker: 'Photos · GIF · 3D', galleryTitle: 'Le mur de photos', galleryText: "Photos, GIF et rendus 3D. Continuez à défiler pour longer le mur.", openGallery: 'Ouvrir la galerie ⤢',
     contact: 'Contact', backStart: '↑ Retour au début', addLink: 'bientôt', emailPh: 'E-mail — bientôt disponible',
     chStart: 'Début', chHello: 'Bonjour', chVr: 'XR / VR', chPapers: 'Présentations', chGames: 'Jeux', chNow: 'En cours', chGallery: 'Mur de photos', chOutro: 'Derniers mots', chContact: 'Contact', goTo: 'Aller à',
-    tipWatch: '▶ Regarder — ', tipOpen: '✦ Ouvrir — ', tipPlay: '▶ Jouer — ', tipView: '⤢ Voir — ', tipInside: '↓ Continuez à défiler pour entrer', tipTerm: '⌁ En cours — terminal', tipAbout: '◎ À propos', tipVR: '⟲ Retour à mes projets XR / VR', tipBot: '♥ Dites bonjour à mon petit robot',
-    videoSoon: 'VIDÉO À VENIR', watchOn: 'Regarder sur', ytFallback: 'La vidéo ne charge pas ? Ouvrir sur YouTube ↗', fullscreen: '⛶ Plein écran', newTabBtn: 'Ouvrir dans un nouvel onglet ↗', clickFirst: "Cliquez sur le jeu pour utiliser le clavier · Échap pour quitter",
-    playNewTab: '▶ Jouer — nouvel onglet', gameSoon: 'JEU À VENIR', gifSoon: 'APERÇU À VENIR', openPdf: 'Ouvrir le PDF ↗', page: 'Page', pagePh: 'à venir', useArrows: 'touches ← →', close: 'Fermer (Échap)',
+    tipWatch: '▶ Regarder — ', tipOpen: '✦ Ouvrir — ', tipPlay: '▶ Jouer — ', tipView: '⤢ Voir — ', tipInside: "↓ Défilez pour entrer", tipTerm: '⌁ En cours — terminal', tipAbout: '◎ À propos', tipVR: '⟲ Retour à mes projets XR / VR', tipBot: '♥ Dites bonjour à mon petit robot',
+    videoSoon: 'VIDÉO À VENIR', watchOn: 'Regarder sur', ytFallback: "Ça ne charge pas\u00a0? Ouvrir sur YouTube ↗", fullscreen: '⛶ Plein écran', newTabBtn: "Nouvel onglet ↗", clickFirst: "Cliquez sur le jeu pour jouer · Échap pour quitter",
+    playNewTab: "▶ Jouer dans un nouvel onglet", gameSoon: 'JEU À VENIR', gifSoon: 'APERÇU À VENIR', openPdf: 'Ouvrir le PDF ↗', page: 'Page', pagePh: 'à venir', useArrows: 'touches ← →', close: 'Fermer (Échap)',
     paper: 'Article', slides: 'Présentation', render: 'Rendu', photo: 'Photo', playFriend: '▶ Y jouer avec un ami', about: 'À propos', backTour: '⟲ Revenir à la visite 3D', play: 'JOUER', clickToPlay: '▶ CLIQUEZ POUR JOUER', gifHere: 'GIF / MP4 ici', clickRead: 'cliquez pour lire', clickOpen: 'cliquez pour ouvrir',
     phWelcome: 'Bienvenue sur le portfolio de', phAfter: '', phRole: 'XR · IA · Interaction humain–machine', phScroll: "N'hésitez pas à défiler", phKeep: '— continuez —',
     phItems: [['Projets XR / VR', 'les écrans de la ville'], ['Présentations', 'des pages dans le ciel'], ['Jeux', 'sur mon bureau'], ['En cours', 'le tableau en liège'], ['Rendus 3D', 'le mur de photos'], ['Derniers mots', 'un avion en papier']],
     loading: 'Nicolas Shen · la nuit se charge',
-    readyPlay: 'PRÊT À JOUER ?', henryKick: 'Assistant personnel · 2026', henryAbout: "Salut, moi c'est Henry 👋 Nicolas m'a créé en 2026 pour être son assistant personnel : un assistant vocal trilingue de bout en bout, qui tourne entièrement en local sur son ordinateur avec Ollama et des modèles open source, sans rien envoyer dans le cloud. Je comprends et distingue le français, l'anglais et le chinois. Je peux chercher et répondre comme Siri, et j'agis vraiment sur sa machine : ranger des dossiers, aller sur Internet chercher des infos… Je ne suis pas publié : j'existe pour que Nicolas comprenne, concrètement, ce que l'IA peut vraiment offrir.", posterNote: "nov. 2026 — j'y étais,\nj'ai rencontré des profs :)", now: 'maintenant', tapToOpen: 'Touchez pour ouvrir', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: 'Cliquez ou faites défiler pour commencer', introSound: 'son activé', qAuto: 'Auto', qHigh: 'Haute', qMid: 'Moyenne', qLow: 'Basse', quality: 'Qualité ', tipHenry: '☺ Henry — dites bonjour', henry1: 'Je suis là dès que vous avez besoin de moi.', henry2: 'Psst — le tableau à droite montre ce que Nicolas construit en ce moment.', henry3: 'Perdu ? Appuyez sur I pour la vue index.', henryAsk: 'Demander à Henry…',
-    botSay: "Salut ! Je fais partie des futurs projets de Nicolas — j'ai hâte de vous rencontrer ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
+    readyPlay: 'PRÊT À JOUER ?', henryKick: 'Assistant personnel · 2026', henryAbout: "Salut, moi c'est Henry 👋 Nicolas m'a créé en 2026\u00a0: je suis son assistant vocal personnel. Je tourne entièrement sur son ordinateur, avec Ollama et des modèles open source. Rien ne part dans le cloud. Je parle français, anglais et chinois. Je cherche et je réponds comme Siri, et j'agis vraiment\u00a0: ranger des dossiers, chercher des infos en ligne. Je ne suis pas public. J'existe pour que Nicolas apprenne, en pratique, ce que l'IA sait vraiment faire.", posterNote: "nov. 2026 — j'y étais,\nj'ai rencontré des profs :)", now: 'maintenant', tapToOpen: 'Touchez pour ouvrir', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: "Cliquez ou défilez pour commencer", introSound: 'son activé', qAuto: 'Auto', qHigh: 'Haute', qMid: 'Moyenne', qLow: 'Basse', quality: 'Qualité ', tipHenry: '☺ Henry — dites bonjour', henry1: 'Je suis là dès que vous avez besoin de moi.', henry2: "Psst\u00a0: le tableau en liège montre ce que Nicolas construit.", henry3: "Perdu\u00a0? Appuyez sur I pour la vue index.", henryAsk: 'Demander à Henry…',
+    more: "suite ▾", less: "moins ▴", gamesPick: "Deux jeux. Choisissez-en un.", playBtn: "▶ Jouer", backGames: "← Jeux", tipGames: "▶ Deux jeux\u00a0: choisissez", pageHint: "Cliquez à gauche ou à droite pour tourner la page", pageHintTap: "Touchez à gauche ou à droite pour tourner la page", chooseGame: "CHOISISSEZ UN JEU", gLine_gravity: "Coop à deux. Inversez la gravité, passez les portails.", gLine_charmed: "Un manoir gothique dans la brume. Trois frères et leur magie.",
+    botSay: "Salut\u00a0! Je suis un futur projet de Nicolas. À bientôt ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
   },
   zh: {
-    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: '放心往下滑，还有更多内容 👇😄', chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: '✦ 点击中控屏，试试我的车载语音演示 —— 或者继续往下滑', tipCockpit: '▶ 试试车载语音演示', cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: 'Cabin Voice —— 从一句话到车的动作', cockpitDesc: "这是我在德赛西威实习期间做的车载语音助手。它把一句请求翻译成紧凑的指令语言（DSL）；每一行控制座舱的一个部分：空调、座椅、车窗、天窗与遮阳帘、除雾、氛围灯、音乐、导航。为了选定模型，我对比了多种大语言模型、扩散语言模型，以及受 JEV（2026 年 9 月）启发的新架构。最终方案由 Mapika-2B 负责决策、Qwen3-1.7B 负责补全参数，对单意图和多意图请求都同样高效。本演示为离线的纯文本展示：点击 ▶ Play demo，或者自己点点车和中控屏。", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
-    scroll: '向下滚动', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
+    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: "✦ 点击屏幕，试试我的语音演示 · 或继续往下滑", tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。我对比了多种大语言模型、扩散模型和受 JEV 启发的架构。最终由 Mapika-2B 决定做什么，Qwen3-1.7B 填入参数。一条或多条指令都能处理。本演示为离线纯文本版：点击 ▶ Play demo，或直接点车。", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
+    scroll: '向下滚动', keysHint: '或长按 →', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
     vrKicker: 'XR / VR 与演示', vrTitle: '城市里的屏幕', vrText: '每块屏幕都是一个项目。点击屏幕，或从列表中选择。',
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
-    gamesKicker: '游戏', gamesTitle: '书桌', gamesText: '显示器上运行着我的游戏 —— 点击屏幕即可游玩。', playBrowser: '浏览器内直接玩', newTab: '在新标签页打开', holoHint: '桌上的小机器人很友好 —— 点点它',
-    nowKicker: '进行中', nowTitle: '正在做', galleryKicker: '照片 · GIF · 3D', galleryTitle: '照片墙', galleryText: '照片、GIF 与渲染图 —— 继续往下滑，镜头会带你看完整面墙。', openGallery: '打开图库 ⤢',
+    gamesKicker: '游戏', gamesTitle: '书桌', gamesText: "显示器上有两款游戏。点击屏幕来选。", playBrowser: '浏览器内直接玩', newTab: '在新标签页打开', holoHint: "点一下桌上的小机器人",
+    nowKicker: '进行中', nowTitle: '正在做', galleryKicker: '照片 · GIF · 3D', galleryTitle: '照片墙', galleryText: "照片、GIF 与渲染图。继续往下滑，沿着墙走。", openGallery: '打开图库 ⤢',
     contact: '联系', backStart: '↑ 回到开头', addLink: '即将上线', emailPh: '邮箱 —— 即将公布',
     chStart: '开始', chHello: '你好', chVr: 'XR / VR', chPapers: '演示与论文', chGames: '游戏', chNow: '正在做', chGallery: '照片墙', chOutro: '最后的话', chContact: '联系', goTo: '前往',
     tipWatch: '▶ 观看 —— ', tipOpen: '✦ 打开 —— ', tipPlay: '▶ 游玩 —— ', tipView: '⤢ 查看 —— ', tipInside: '↓ 继续滚动，走进房间', tipTerm: '⌁ 正在做 —— 终端', tipAbout: '◎ 关于我', tipVR: '⟲ 回到我的 XR / VR 项目', tipBot: '♥ 跟我的桌面小机器人打个招呼',
-    videoSoon: '视频即将上线', watchOn: '在此观看：', ytFallback: '视频无法加载？在 YouTube 打开 ↗', fullscreen: '⛶ 全屏', newTabBtn: '在新标签页打开 ↗', clickFirst: '点击游戏画面即可用键盘操作 · 按 Esc 退出',
-    playNewTab: '▶ 游玩 —— 新标签页打开', gameSoon: '游戏即将上线', gifSoon: '预览即将上线', openPdf: '打开 PDF ↗', page: '页', pagePh: '即将上线', useArrows: '可用 ← → 键', close: '关闭（Esc）',
+    videoSoon: '视频即将上线', watchOn: '在此观看：', ytFallback: "加载不出来？在 YouTube 打开 ↗", fullscreen: '⛶ 全屏', newTabBtn: "新标签页 ↗", clickFirst: "点击游戏画面开始玩 · 按 Esc 退出",
+    playNewTab: "▶ 在新标签页玩", gameSoon: '游戏即将上线', gifSoon: '预览即将上线', openPdf: '打开 PDF ↗', page: '页', pagePh: '即将上线', useArrows: '可用 ← → 键', close: '关闭（Esc）',
     paper: '论文', slides: '演示文稿', render: '渲染', photo: '照片', playFriend: '▶ 和朋友一起玩', about: '关于', backTour: '⟲ 返回 3D 漫游', play: '开始', clickToPlay: '▶ 点击开始游戏', gifHere: '此处放 GIF / MP4', clickRead: '点击阅读', clickOpen: '点击打开',
     phWelcome: '欢迎来到', phAfter: ' 的作品集', phRole: 'XR · AI · 人机交互', phScroll: '请随意向下滑动', phKeep: '—— 继续滑动 ——',
     phItems: [['XR / VR 项目', '城市里的屏幕'], ['演示与论文', '天空中的纸页'], ['游戏', '在我的书桌上'], ['正在做', '软木板'], ['3D 渲染', '照片墙'], ['最后的话', '一架纸飞机']],
     loading: 'Nicolas Shen · 夜色加载中',
-    readyPlay: '准备好开玩了吗？', henryKick: '私人助理 · 2026', henryAbout: '你好，我是 Henry 👋 Nicolas 在 2026 年把我做成了他的私人助理：一个三语、端到端的语音助手，用 Ollama 和开源模型完全在他的电脑本地运行，不向云端发送任何数据。我能听懂并区分法语、英语和中文，能像 Siri 一样搜索和回答，还能在他的电脑上真正动手做事，比如整理文件夹、上网搜索信息。我并未公开发布：我的存在，是为了让 Nicolas 亲手弄明白 AI 真正能带来什么。', posterNote: '2026.11 —— 去现场啦，\n认识了几位教授 :)', now: '现在', tapToOpen: '轻点打开', introKick: 'NICOLAS SHEN · 作品集', introTitle: '点击或向下滑动，开始旅程', introSound: '声音已开启', qAuto: '自动', qHigh: '高', qMid: '中', qLow: '低', quality: '画质', tipHenry: '☺ Henry —— 打个招呼', henry1: '需要我的时候，我一直都在。', henry2: '悄悄说 —— 右边的软木板上是 Nicolas 正在做的项目。', henry3: '迷路了？按 I 打开索引视图。', henryAsk: '问问 Henry…',
-    botSay: '嗨！我是 Nicolas 未来的项目之一 —— 期待早日和你见面 ♥', backXR: '返回 XR', backXRsub: '回到城市里的屏幕',
+    readyPlay: '准备好开玩了吗？', henryKick: '私人助理 · 2026', henryAbout: "你好，我是 Henry 👋 Nicolas 在 2026 年创造了我，我是他的私人语音助手。我完全在他的电脑上运行，用 Ollama 和开源模型，数据不上云。我会说法语、英语和中文。我能像 Siri 一样搜索和回答，也能真正动手：整理文件夹、上网查资料。我没有公开发布。我的存在，是让 Nicolas 亲手弄明白 AI 到底能做什么。", posterNote: '2026.11 —— 去现场啦，\n认识了几位教授 :)', now: '现在', tapToOpen: '轻点打开', introKick: 'NICOLAS SHEN · 作品集', introTitle: '点击或向下滑动，开始旅程', introSound: '声音已开启', qAuto: '自动', qHigh: '高', qMid: '中', qLow: '低', quality: '画质', tipHenry: '☺ Henry —— 打个招呼', henry1: '需要我的时候，我一直都在。', henry2: "悄悄说：软木板上是 Nicolas 正在做的项目。", henry3: '迷路了？按 I 打开索引视图。', henryAsk: '问问 Henry…',
+    more: "展开 ▾", less: "收起 ▴", gamesPick: "两款游戏，选一个。", playBtn: "▶ 开始玩", backGames: "← 游戏", tipGames: "▶ 两款游戏，任你选", pageHint: "点击左侧或右侧翻页", pageHintTap: "轻点左侧或右侧翻页", chooseGame: "选择游戏", gLine_gravity: "双人合作。翻转重力，穿越传送门。", gLine_charmed: "雾中的哥特庄园。三兄弟与魔法。",
+    botSay: "嗨！我是 Nicolas 未来的项目。回头见 ♥", backXR: '返回 XR', backXRsub: '回到城市里的屏幕',
   },
 };
 const t = k => T[LANG][k] ?? T.en[k] ?? k;
@@ -983,6 +986,8 @@ function updateWalker(p, vel, tm, dt) {
     placeThumb(thumbPose(p)); if (Math.abs(p - phoneUI.lastP) > 1e-6 || tm - phoneUI.lastT > 1 / 24) { phoneUI.lastP = p; phoneUI.lastT = tm; drawPhone(p, tm); }
   }
   if (camera.aspect !== fitCockStop.aspect) fitCockStop(camera.aspect);
+  // the console sleeps while the phone is the subject; it starts up once the phone goes down, and powers back down if you scroll back
+  { const on = p >= COCK_ON, k = rig.cockK || 0; rig.cockK = REDUCED ? +on : clamp(k + (on ? dt / 1.6 : -dt / .7), 0, 1); rig.cockAwake = on && rig.cockK > .85; if (!rig.cockAwake && hovered && hovered === rig.cockMesh) setHover(null); }   // scrolling back puts it out of reach at once (no lingering pointer / tooltip)
   if (inCar) { if (tm - (rig.adasT || -1) > .05) { rig.adasT = tm; drawADAS(tm); rig.dashSpeed?.draw(Math.round(egoV * 3.6)); } drawCockpit(tm); }
   return pos;
 }
@@ -1063,9 +1068,18 @@ window.__intro = {
     return out;
   },
 };
+const COCK_ON = PHN.lower[0] + .002;   // story position where the console wakes: the chat is over and the phone is on its way down
 function drawCockpit(tm) {
-  const R = rig.cock; if (!R || tm - R.last < .045) return; R.last = tm;
-  const x = R.x, W = 1024, H = 600;
+  const R = rig.cock; if (!R) return;
+  const x = R.x, W = 1024, H = 600, wk = rig.cockK || 0, nowD = new Date(), clock = `${nowD.getHours()}:${String(nowD.getMinutes()).padStart(2, '0')}`;
+  if (wk <= 0) {   // standby: a dark, still panel with a faint clock (redrawn only when the minute changes) — nothing here asks for attention
+    if (R.sleep === clock) return; R.sleep = clock; R.last = -1;
+    x.fillStyle = '#030408'; x.fillRect(0, 0, W, H);
+    x.fillStyle = 'rgba(150,162,205,.13)'; x.textAlign = 'center'; x.font = F(500, 64, '"Space Grotesk"'); x.fillText(clock, W / 2, H / 2 + 22); x.textAlign = 'left';
+    R.t.needsUpdate = true; return;
+  }
+  R.sleep = null;
+  if (tm - R.last < (wk < 1 ? .025 : .045)) return; R.last = tm;
   const bg = x.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#0b0f24'); bg.addColorStop(1, '#141a3c'); x.fillStyle = bg; x.fillRect(0, 0, W, H);
   // top bar
   x.fillStyle = '#9ff0ff'; x.font = F(700, 22, '"Space Grotesk"'); x.textAlign = 'left'; x.fillText('CABIN VOICE', 34, 50);
@@ -1102,13 +1116,22 @@ function drawCockpit(tm) {
   x.fillStyle = `rgba(63,210,255,${.16 + .12 * pulse})`; rr2(x, ux, 452, uw, 98, 49); x.fill();
   x.strokeStyle = `rgba(159,240,255,${.55 + .45 * pulse})`; x.lineWidth = 3; x.stroke();
   x.fillStyle = '#e9fbff'; x.font = F(700, 34, '"Space Grotesk"'); x.textAlign = 'center'; x.fillText('▶  ' + t('tapToTry'), ux + uw / 2, 513); x.textAlign = 'left';
+  if (wk < 1) {   // start-up: backlight comes up, the name and a loading line show, then the interface fades in over them
+    const lit = smooth(clamp(wk / .28, 0, 1)), ui = smooth(clamp((wk - .5) / .5, 0, 1)), logo = lit * (1 - smooth(clamp((wk - .5) / .3, 0, 1)));
+    x.fillStyle = `rgba(${3 + 9 * lit | 0},${4 + 12 * lit | 0},${8 + 30 * lit | 0},${1 - ui})`; x.fillRect(0, 0, W, H);
+    x.textAlign = 'center';
+    if (lit < 1) { x.fillStyle = `rgba(150,162,205,${.13 * (1 - lit)})`; x.font = F(500, 64, '"Space Grotesk"'); x.fillText(clock, W / 2, H / 2 + 22); }
+    if (logo > .01) {
+      x.fillStyle = `rgba(159,240,255,${logo})`; x.font = F(700, 58, '"Space Grotesk"'); x.fillText('CABIN VOICE', W / 2, H / 2 - 6);
+      x.fillStyle = `rgba(127,233,255,${.16 * logo})`; rr2(x, W / 2 - 170, H / 2 + 44, 340, 6, 3); x.fill();
+      x.fillStyle = `rgba(127,233,255,${.9 * logo})`; rr2(x, W / 2 - 170, H / 2 + 44, Math.max(6, 340 * clamp(wk / .62, 0, 1)), 6, 3); x.fill();
+    }
+    x.textAlign = 'left';
+  }
   R.t.needsUpdate = true;
 }
-function openCockpit() {
-  openModal(esc(t('cockpitKicker')), t('cockpitTitle'), `<p class="mdesc" style="margin:0 0 14px">${esc(t('cockpitDesc'))}</p><div class="nluwrap"><iframe src="nlu.html" title="Cabin Voice demo"></iframe></div>`);
-  mbox.classList.add('wide');
-  const fit = () => { const w = $('.nluwrap', mbox); if (!w) return; $('iframe', w).style.transform = `scale(${w.clientWidth / 1440})`; };
-  fit(); requestAnimationFrame(fit); addEventListener('resize', fit); modalCleanup = () => removeEventListener('resize', fit);
+function openCockpit() {   // nlu.html is responsive: the iframe simply fills the room the pop-up has left
+  openModal(esc(t('cockpitKicker')), t('cockpitTitle'), { stage: `<div class="nluwrap"><iframe src="nlu.html" title="Cabin Voice demo"></iframe></div>`, info: `<p class="mdesc">${esc(t('cockpitDesc'))}</p><button class="more" hidden></button>` }, null, { cls: 'cock nosplit' });
 }
 
 /* ── sound: a quiet generated lo-fi loop + the message "ding". Browsers only allow audio after a click/tap/key. ── */
@@ -1191,6 +1214,7 @@ function loadCarModel(env) {
     const m = gltf.scene;
     const paint = new THREE.MeshPhysicalMaterial({ color: 0x17171f, metalness: .7, roughness: .32, clearcoat: 1, clearcoatRoughness: .06, envMap: env, envMapIntensity: 1.3 });
     const paint2 = new THREE.MeshPhysicalMaterial({ color: 0x0c0c12, metalness: .5, roughness: .4, clearcoat: .6, envMap: env });
+    const paintDS = paint.clone(), paint2DS = paint2.clone(); paintDS.side = paint2DS.side = THREE.DoubleSide;
     const glassM = new THREE.MeshPhysicalMaterial({ color: 0x07080f, metalness: .9, roughness: .03, envMap: env, envMapIntensity: 1.8, side: THREE.FrontSide });
     const inter = new THREE.MeshStandardMaterial({ color: 0x1b1822, roughness: .8, envMap: env, envMapIntensity: .3 });
     m.traverse(o => {
@@ -1204,7 +1228,10 @@ function loadCarModel(env) {
       else if (n === 'Headlight') { o.material = o.material.clone(); o.material.emissive = new THREE.Color('#eaf2ff'); o.material.emissiveIntensity = 2.2; }
       else if (n === 'Brakelight' || n === 'Signallight') { o.material = o.material.clone(); o.material.emissive = new THREE.Color(n === 'Brakelight' ? '#ff2a3a' : '#ffb050'); o.material.emissiveIntensity = n === 'Brakelight' ? 2.4 : .6; }
       else if (o.material.isMeshStandardMaterial) { o.material.envMap = env; o.material.envMapIntensity = .9; if (/Rim|Brake|Mirror|Hardware|Disc/.test(n) || !n) o.material.emissiveIntensity = /Rim/.test(n) ? .04 : .25; if (n === 'Dashboard') o.material.emissiveIntensity = .5; }
+      if (n === 'Tireside') { o.material.color.set(0x16161b); o.material.roughness = .6; }   // sidewalls lost their texture with the logos and came out white: plain rubber
       if (o.material.emissive && !o.material.emissiveMap && !/light/i.test(o.material.name || '')) o.material.emissive.set(0x000000);
+      // door mirrors: their shells are open sheets the model shows from both sides; one-sided paint left see-through slits around the glass and at the stalk
+      if (/^BodyDoor[LR]Mirror/.test(o.name) && (o.material === paint || o.material === paint2)) o.material = o.material === paint ? paintDS : paint2DS;
       if (/Emblem/i.test(o.name)) o.visible = false;
       if (/InteriorSteering(Wheel|Handle|Cylinder|DashColumn)/i.test(o.name)) o.visible = false;   // autopilot: the wheel is stowed
       if (o.isMesh && /^(BodyRoofPanel|InteriorCage|BodyPillars|InteriorPillar|BodyRearwindow|BodyWindshield|BodyWindshieldGasket|BodyDoor[LR]Window|BodyDoor[LR]WindowGasket)$/.test(o.name)) { o.material = (Array.isArray(o.material) ? o.material.map(m => m.clone()) : o.material.clone()); ROOF.push(o); }   // opens as you rise out of the car
@@ -1227,9 +1254,18 @@ function loadCarModel(env) {
     for (const w of ['FrontL', 'FrontR', 'RearL', 'RearR']) {
       const parts = ['Wheel' + w, 'Wheel' + w + 'Rim', 'Wheel' + w + 'BrakeDisc'].map(n => m.getObjectByName(n)).filter(Boolean);
       if (!parts.length) continue;
+      // the model ships with its front wheels steered ~30°: straighten each hub so its axle is the car's own left-right axis
+      // (the car drives straight, and a wheel spun about any other line wobbles out of its arch)
+      const hub = m.getObjectByName('Wheel' + w);
+      if (hub) {
+        const tx = new THREE.Vector3(1, 0, 0).transformDirection(car.matrixWorld), ax = new THREE.Vector3(1, 0, 0).transformDirection(hub.matrixWorld); if (ax.dot(tx) < 0) tx.negate();
+        const wq = hub.getWorldQuaternion(new THREE.Quaternion()), pq = hub.parent.getWorldQuaternion(new THREE.Quaternion());
+        hub.quaternion.copy(pq.invert().multiply(new THREE.Quaternion().setFromUnitVectors(ax, tx).multiply(wq))); hub.updateMatrixWorld(true);
+      }
       const box = new THREE.Box3(); parts.forEach(p => box.expandByObject(p));
-      const pivot = new THREE.Group(); car.add(pivot); pivot.position.copy(car.worldToLocal(box.getCenter(new THREE.Vector3()))); car.updateMatrixWorld(true);
+      const pivot = new THREE.Group(); car.add(pivot); pivot.position.copy(car.worldToLocal(hub ? hub.getWorldPosition(new THREE.Vector3()) : box.getCenter(new THREE.Vector3()))); car.updateMatrixWorld(true);
       parts.forEach(p => pivot.attach(p)); CARM.wheels.push(pivot);
+      const pad = (hub || m).getObjectByName('Wheel' + w + 'BrakePad'); if (pad) car.attach(pad);   // the caliper is bolted to the car: it does not turn with the wheel
     }
     CARM.bbox = new THREE.Box3().setFromObject(holder).applyMatrix4(new THREE.Matrix4().copy(car.matrixWorld).invert());
     CARM.model = holder; CARM.ok = true;
@@ -1983,7 +2019,7 @@ function buildRoom() {
   const st = new THREE.Mesh(new THREE.CylinderGeometry(.018, .022, .4, 16), std({ color: 0x2a2632, metalness: .8, roughness: .25 })); st.position.set(-.32, .97, -3.86); room.add(st);
   const bs = new THREE.Mesh(new THREE.CylinderGeometry(.13, .14, .016, 40), std({ color: 0x2a2632, metalness: .8, roughness: .25 })); bs.position.set(-.32, .788, -3.82); room.add(bs);
   screens.game = { c: mainC, x: mainC.getContext('2d'), t: main.material.map };
-  hot('room', main, () => t('tipPlay') + L(CONTENT.games[0]?.title), () => openGames(0));
+  hot('room', main, () => t('tipGames'), () => openGames());
 
 
   // side monitor — terminal (now building)
@@ -1994,7 +2030,7 @@ function buildRoom() {
   const st2 = new THREE.Mesh(new THREE.CylinderGeometry(.016, .02, .12, 16), metal2); st2.position.set(0, -.33, -.035); g2.add(st2);
   const bs2 = new THREE.Mesh(new THREE.CylinderGeometry(.1, .11, .014, 36), metal2); bs2.position.set(0, -.393, -.035); g2.add(bs2);
   screens.term = { c: tc, x: tc.getContext('2d'), t: term.material.map };
-  hot('room', term, () => t('tipHenry'), () => { henry.i = (henry.i + 1) % 3; henry.t = time; openModal(esc(t('henryKick')), 'Henry', `<p class="mdesc" style="font-size:16px;line-height:1.7;text-wrap:pretty">${esc(t('henryAbout'))}</p>`); mbox.classList.add('narrow'); modalCleanup = () => mbox.classList.remove('narrow'); });
+  hot('room', term, () => t('tipHenry'), () => { henry.i = (henry.i + 1) % 3; henry.t = time; openModal(esc(t('henryKick')), 'Henry', `<p class="mdesc big">${esc(t('henryAbout'))}</p>`, null, { cls: 'text' }); });
 
   // keyboard (real keycaps) + mouse
   {
@@ -2375,9 +2411,20 @@ function drawGame(t, dt) {
   const pulse = .5 + .5 * Math.sin(t * 3.2);
   x.fillStyle = 'rgba(8,6,22,.32)'; x.fillRect(0, 0, W, H);
   x.textAlign = 'center'; x.textBaseline = 'middle';
-  x.shadowColor = '#ffc46e'; x.shadowBlur = 10 + 8 * pulse; x.fillStyle = '#ffe2a8'; x.font = F(700, 25, '"Space Grotesk"'); x.fillText(T[LANG].readyPlay ?? T.en.readyPlay, W / 2, 70 + Math.sin(t * 2) * 2); x.shadowBlur = 0;
-  x.strokeStyle = `rgba(255,207,90,${.35 + .5 * pulse})`; x.lineWidth = 2; x.beginPath(); x.arc(W / 2, 112, 17 + pulse * 5, 0, 7); x.stroke();
-  x.fillStyle = '#ffcf5a'; x.beginPath(); x.arc(W / 2, 112, 15, 0, 7); x.fill(); x.fillStyle = '#1b1636'; x.beginPath(); x.moveTo(W / 2 - 5, 104); x.lineTo(W / 2 + 8, 112); x.lineTo(W / 2 - 5, 120); x.fill();
+  const logos = gameLogoImgs();
+  if (logos.length >= 2) {   // two games: show both emblems, the highlight hops from one to the other
+    x.shadowColor = '#ffc46e'; x.shadowBlur = 8 + 6 * pulse; x.fillStyle = '#ffe2a8'; x.font = F(700, 19, '"Space Grotesk"'); x.fillText(T[LANG].chooseGame ?? T.en.chooseGame, W / 2, 30); x.shadowBlur = 0;
+    const sel = Math.floor(t / 1.6) % 2;
+    logos.slice(0, 2).forEach((im, j) => {
+      const on = j === sel, s = 62 + (on ? 5 * pulse : 0), cx = W / 2 + (j ? 46 : -46), cy = 86;
+      if (on) { x.strokeStyle = `rgba(255,207,90,${.5 + .5 * pulse})`; x.lineWidth = 2; rr2(x, cx - s / 2 - 4, cy - s / 2 - 4, s + 8, s + 8, 19); x.stroke(); }
+      x.globalAlpha = on ? 1 : .82; x.drawImage(im, cx - s / 2, cy - s / 2, s, s); x.globalAlpha = 1;
+    });
+  } else {
+    x.shadowColor = '#ffc46e'; x.shadowBlur = 10 + 8 * pulse; x.fillStyle = '#ffe2a8'; x.font = F(700, 25, '"Space Grotesk"'); x.fillText(T[LANG].readyPlay ?? T.en.readyPlay, W / 2, 70 + Math.sin(t * 2) * 2); x.shadowBlur = 0;
+    x.strokeStyle = `rgba(255,207,90,${.35 + .5 * pulse})`; x.lineWidth = 2; x.beginPath(); x.arc(W / 2, 112, 17 + pulse * 5, 0, 7); x.stroke();
+    x.fillStyle = '#ffcf5a'; x.beginPath(); x.arc(W / 2, 112, 15, 0, 7); x.fill(); x.fillStyle = '#1b1636'; x.beginPath(); x.moveTo(W / 2 - 5, 104); x.lineTo(W / 2 + 8, 112); x.lineTo(W / 2 - 5, 120); x.fill();
+  }
   if (Math.sin(t * 4) > -.3) { x.fillStyle = 'rgba(255,255,255,.85)'; x.font = F(600, 10, '"JetBrains Mono"'); x.fillText(T[LANG].clickToPlay, W / 2, 148); }
   x.textAlign = 'left'; x.textBaseline = 'alphabetic';
   screens.game.t.needsUpdate = true;
@@ -2710,10 +2757,10 @@ function buildUI() {
   });
   { const qs = $('#quality'); const fill = () => { qs.innerHTML = ['auto', 'high', 'mid', 'low'].map(m => `<option value="${m}">${esc(t('quality'))}${LANG === 'zh' ? '：' : ': '}${esc(t({ auto: 'qAuto', high: 'qHigh', mid: 'qMid', low: 'qLow' }[m]))}</option>`).join(''); qs.value = QUAL.mode; }; fill(); retext.push(fill); qs.onchange = () => setQualityMode(qs.value); }
   $('#sound').onclick = () => SOUND.toggle();
-  { const gd = $('#guide'); const gf = () => { gd.innerHTML = `<span>${esc(t('scroll'))}</span><i></i>`; }; gf(); retext.push(gf); }
+  { const gd = $('#guide'); const gf = () => { gd.innerHTML = `<span>${esc(t('scroll'))}</span>${MOBILE ? '' : `<small>${esc(t('keysHint'))}</small>`}<i></i>`; }; gf(); retext.push(gf); }
   { const io = $('#intro');
     io.addEventListener('click', () => { dismissIntro(); if (scrollY < p2s(.009)) scrollTo({ top: p2s(.0095), behavior: 'smooth' }); });
-    const kick = e => { if (e.type !== 'keydown' || [' ', 'ArrowDown', 'PageDown', 'Enter'].includes(e.key)) dismissIntro(); };
+    const kick = e => { if (e.type !== 'keydown' || [' ', 'ArrowDown', 'ArrowRight', 'PageDown', 'Enter'].includes(e.key)) dismissIntro(); };
     addEventListener('wheel', e => { if (e.deltaY > 0) kick(e); }, { passive: true }); addEventListener('touchmove', kick, { passive: true }); addEventListener('keydown', kick); }
   const introFill = () => { const io = $('#intro'); if (io) io.innerHTML = `<div class="ik">${esc(t('introKick'))}</div><div class="it">${esc(t('introTitle'))}</div><div class="mouse" aria-hidden="true"><i></i></div><div class="is">♪ ${esc(t('introSound'))}</div>`; }; introFill(); retext.push(introFill); SOUND.refresh(); $('#cockHint').textContent = t('cockpitHint');
   $('#openIndex').onclick = openIndex; $('#watch-close').onclick = unfocus;
@@ -2734,90 +2781,193 @@ function contactLinks() {
 /* ════════════════════════ modals ════════════════════════ */
 const modal = $('#modal'), mbox = $('#mbox');
 let lastFocus = null, modalNav = null;
-function openModal(kicker, title, body, nav = null) {
-  lastFocus = document.activeElement; modalNav = nav;
-  mbox.innerHTML = `<div class="mhead"><div><div class="kicker">${kicker}</div><h3 id="m-title">${esc(title)}</h3></div><button class="x" aria-label="${esc(t('close'))}">✕</button></div>${body}`;
-  modal.hidden = false; $('.x', mbox).onclick = closeModal; $('.x', mbox).focus(); SOUND.setDuck(.25);
-  paused = true;
-}
 let modalCleanup = null;
 let modalNoArrows = false;
-function closeModal() { modalNoArrows = false; modal.hidden = true; mbox.innerHTML = ''; mbox.classList.remove('wide'); modalCleanup?.(); modalCleanup = null; paused = false; modalNav = null; SOUND.setDuck(1); lastFocus?.focus?.(); }
+// body: a string (text only) or { stage, info } — stage = the media, info = text, buttons and the ‹ › row. opt: { cls, ar (media width / height), lead (html before the title) }
+function openModal(kicker, title, body, nav = null, opt = {}) {
+  if (modal.hidden) lastFocus = document.activeElement;
+  modalCleanup?.(); modalCleanup = null; modalNoArrows = false; modalNav = nav;
+  const b = typeof body === 'string' ? { info: body } : body;
+  mbox.className = 'box card' + (opt.cls ? ' ' + opt.cls : ''); mbox.style.cssText = '';
+  if (opt.ar) mbox.style.setProperty('--ar', String(opt.ar));
+  mbox.innerHTML = `<div class="mhead">${opt.lead || ''}<div class="mtitle"><div class="kicker">${kicker}</div><h3 id="m-title">${esc(title)}</h3></div><button class="x" aria-label="${esc(t('close'))}">✕</button></div>${b.stage ? `<div class="mstage">${b.stage}</div>` : ''}<div class="minfo">${b.info || ''}</div>`;
+  modal.hidden = false; $('.x', mbox).onclick = closeModal; $('.x', mbox).focus(); SOUND.setDuck(.25);
+  paused = true;
+  const more = $('.more', mbox);
+  if (more) more.onclick = () => {   // long text: "more" shows it in place of the media (never a scrollbar)
+    const on = !mbox.classList.contains('reading'), r = mbox.getBoundingClientRect();
+    mbox.style.width = on ? r.width + 'px' : ''; mbox.style.height = on ? r.height + 'px' : '';
+    mbox.classList.toggle('reading', on); fitModal();
+  };
+  fitModal();
+}
+function closeModal() { modalNoArrows = false; modal.hidden = true; mbox.innerHTML = ''; mbox.className = 'box card'; mbox.style.cssText = ''; modalCleanup?.(); modalCleanup = null; paused = !idx.hidden; modalNav = null;   /* the index may still be open behind */ SOUND.setDuck(1); lastFocus?.focus?.(); }
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+for (const ev of ['wheel', 'touchmove']) modal.addEventListener(ev, e => { if (!e.target.closest?.('.pages')) e.preventDefault(); }, { passive: false });   // nothing scrolls behind (or inside) a pop-up; the document reader keeps its swipe
+// Fit the open pop-up to the window: pick the layout (media left / text right on wide windows, media on top otherwise), then, only if the text still
+// does not fit, tighten it and clamp it to the lines that fit, with a "more" toggle.
+function fitModal(ev) {
+  if (modal.hidden) return;
+  const info = $('.minfo', mbox); if (!info) return;
+  const st = $('.mstage', mbox), more = $('.more', mbox);
+  if (ev && mbox.classList.contains('reading')) { mbox.classList.remove('reading'); mbox.style.width = mbox.style.height = ''; }
+  const reading = mbox.classList.contains('reading');
+  const ar = parseFloat(mbox.style.getPropertyValue('--ar')) || 16 / 9, W = innerWidth, H = innerHeight;
+  mbox.classList.toggle('split', !!st && !reading && !mbox.classList.contains('nosplit') && W >= 640 && (W / H >= 1.45 || (ar < 1 && W >= 880)));
+  const ds = [...mbox.querySelectorAll('.mdesc')];
+  mbox.classList.remove('tight'); for (const d of ds) { d.classList.remove('clamp'); d.style.removeProperty('--lines'); }
+  if (more) { more.hidden = !reading; more.textContent = t(reading ? 'less' : 'more'); }
+  const over = () => mbox.scrollHeight > mbox.clientHeight + 1 || info.scrollHeight > info.clientHeight + 1;
+  if (!ds.length || !over()) return;
+  mbox.classList.add('tight'); if (!over()) return;
+  const n = ds.map(d => Math.max(1, Math.round(d.getBoundingClientRect().height / (parseFloat(getComputedStyle(d).lineHeight) || 22))));
+  if (more && st) more.hidden = false;
+  ds.forEach((d, j) => { d.classList.add('clamp'); d.style.setProperty('--lines', n[j]); });
+  for (let g = 0; g < 90 && over(); g++) { const j = n.indexOf(Math.max(...n)); if (n[j] <= 1) break; n[j]--; ds[j].style.setProperty('--lines', n[j]); }
+}
+addEventListener('resize', fitModal);
+document.fonts?.ready?.then(() => fitModal());
 const mediaPlaceholder = (title, sub, hue, note) => `<div class="media"><img alt="" src="${artURL(title, sub, hue)}"><span class="soon">${esc(note)}</span></div>`;
 const tags = arr => arr?.length ? `<div class="tags">${arr.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div>` : '';
-const navRow = (i, n) => n > 1 ? `<div class="mrow"><button class="navbtn" data-nav="-1" aria-label="${esc(t('prev'))}">←</button><span class="counter">${i + 1} / ${n} · ${esc(t('useArrows'))}</span><button class="navbtn" data-nav="1" aria-label="${esc(t('next'))}">→</button></div>` : '';
+const descP = (html, style = '') => html ? `<p class="mdesc"${style ? ` style="${style}"` : ''}>${html}</p><button class="more" hidden></button>` : '';
+const navRow = (i, n) => n > 1 ? `<div class="mrow navrow"><button class="navbtn" data-nav="-1" aria-label="${esc(t('prev'))}">←</button><span class="counter">${i + 1} / ${n}</span><button class="navbtn" data-nav="1" aria-label="${esc(t('next'))}">→</button></div>` : '';
 function wireNav() { mbox.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => modalNav?.(+b.dataset.nav)); }
 function linkify(text, links) { let h = esc(text); for (const [name, url] of Object.entries(links || {})) h = h.split(esc(name)).join(`<a href="${esc(url)}" target="_blank" rel="noopener" style="color:#ffd59a;text-decoration:underline;text-underline-offset:3px">${esc(name)}</a>`); return h; }
 function openVideo(i) {
-  const v = CONTENT.videos[i]; if (!v) return; const id = ytId(v.youtube), n = CONTENT.videos.length;
-  let media;
-  if (linkOnly(v)) media = `<div class="media"${v.portrait ? ' style="aspect-ratio:9/16;width:min(100%, calc(66vh * 9 / 16));margin:0 auto"' : ''}><img alt="${esc(L(v.title))}" src="${esc(v.poster || '')}"></div><div class="mrow"><a class="btn primary" href="${esc(extURL(v))}" target="_blank" rel="noopener">▶ ${esc(t('watchOn'))} ${esc(extName(v))} ↗</a></div>`;
-  else if (id) media = `<div class="media"><iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?autoplay=1&rel=0&modestbranding=1&hl=${LANG}" title="${esc(L(v.title))}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><div class="mrow"><a href="https://youtu.be/${esc(id)}" target="_blank" rel="noopener" class="counter">${esc(t('ytFallback'))}</a></div>`;
+  const v = CONTENT.videos[i]; if (!v) return; const id = ytId(v.youtube), n = CONTENT.videos.length, ttl = esc(L(v.title));
+  let media, act = '';
+  if (linkOnly(v)) { media = `<div class="media"><img alt="${ttl}" src="${esc(v.poster || '')}"></div>`; act = `<div class="mrow"><a class="btn primary" href="${esc(extURL(v))}" target="_blank" rel="noopener">▶ ${esc(t('watchOn'))} ${esc(extName(v))} ↗</a></div>`; }
+  else if (id) { media = `<div class="media"><iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?autoplay=1&rel=0&modestbranding=1&hl=${LANG}" title="${ttl}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`; act = `<div class="mrow"><a href="https://youtu.be/${esc(id)}" target="_blank" rel="noopener" class="counter">${esc(t('ytFallback'))}</a></div>`; }
   else if (v.video) media = `<div class="media"><video src="${esc(v.video)}" controls autoplay playsinline ${v.poster ? `poster="${esc(v.poster)}"` : ''}></video></div>`;
-  else if (driveId(v.drive)) media = `<div class="media"${v.portrait ? ' style="aspect-ratio:9/16;width:min(100%, calc(66vh * 9 / 16));margin:0 auto"' : ''}><iframe src="${drivePreview(driveId(v.drive))}" title="${esc(L(v.title))}" allow="autoplay; fullscreen"></iframe></div><div class="mrow"><a href="https://drive.google.com/file/d/${encodeURIComponent(driveId(v.drive))}/view" target="_blank" rel="noopener" class="counter">Google Drive ↗</a></div>`;
-  else if (v.poster) media = `<div class="media"><img alt="${esc(L(v.title))}" src="${esc(v.poster)}"><span class="soon">${esc(L(v.soon) || t('videoSoon'))}</span></div>`;
+  else if (driveId(v.drive)) { media = `<div class="media"><iframe src="${drivePreview(driveId(v.drive))}" title="${ttl}" allow="autoplay; fullscreen"></iframe></div>`; act = `<div class="mrow"><a href="https://drive.google.com/file/d/${encodeURIComponent(driveId(v.drive))}/view" target="_blank" rel="noopener" class="counter">Google Drive ↗</a></div>`; }
+  else if (v.poster) media = `<div class="media"><img alt="${ttl}" src="${esc(v.poster)}"><span class="soon">${esc(L(v.soon) || t('videoSoon'))}</span></div>`;
   else media = mediaPlaceholder(L(v.title), L(v.subtitle), hueOf(i), L(v.soon) || t('videoSoon'));
-  openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), `${media}<p class="mdesc" style="white-space:pre-line">${linkify(L(v.desc), v.links)}</p>${tags(v.tools)}${navRow(i, n)}`, d => openVideo((i + d + n) % n));
+  openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), { stage: media, info: `${descP(linkify(L(v.desc), v.links), 'white-space:pre-line')}${tags(v.tools)}${act}${navRow(i, n)}` }, d => openVideo((i + d + n) % n), { ar: v.portrait ? 9 / 16 : 16 / 9 });
   if ($('.media iframe, .media video', mbox)) SOUND.setDuck(0);   // the video's own sound only
   wireNav();
 }
+/* ── games: a chooser first (two cards, two logos), then the chosen game in the same window ── */
+// Original emblems, drawn here (no text inside: they are also painted on the 3D monitor).
+const GAME_LOGO = {
+  // Gravity Boy & Magic Gal: one platform, a blue block standing on it, a purple one hanging under it (gravity flipped), and a portal
+  gravity: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="240" height="240"><defs><linearGradient id="gvA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f1b4a"/><stop offset="1" stop-color="#2c1458"/></linearGradient><linearGradient id="gvB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ad8ff"/><stop offset="1" stop-color="#2f7dff"/></linearGradient><linearGradient id="gvP" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e09bff"/><stop offset="1" stop-color="#8a48f0"/></linearGradient><linearGradient id="gvR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58c4ff"/><stop offset="1" stop-color="#b86bff"/></linearGradient></defs><rect width="120" height="120" rx="27" fill="url(#gvA)"/><rect x=".75" y=".75" width="118.5" height="118.5" rx="26.25" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="1.5"/><g fill="#fff"><circle cx="19" cy="24" r="1.5" opacity=".8"/><circle cx="70" cy="17" r="1.1" opacity=".6"/><circle cx="16" cy="97" r="1.1" opacity=".5"/><circle cx="74" cy="104" r="1.4" opacity=".7"/></g><ellipse cx="92" cy="60" rx="12.5" ry="33" fill="#0b0826" stroke="url(#gvR)" stroke-width="5.5"/><ellipse cx="92" cy="60" rx="5" ry="20" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.4" stroke-dasharray="5 6"/><rect x="12" y="56" width="62" height="8" rx="4" fill="#efeaff"/><rect x="20" y="28" width="26" height="28" rx="8" fill="url(#gvB)"/><path d="M27 39l6 6 6-6" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="42" y="64" width="26" height="28" rx="8" fill="url(#gvP)"/><path d="M49 81l6-6 6 6" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  // Forever Charmed: a gothic arch, a manor in the fog under a thin moon, three lit windows and three sparks for the three brothers
+  charmed: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="240" height="240"><defs><radialGradient id="fcA" cx=".5" cy=".42" r=".75"><stop offset="0" stop-color="#3a1d3c"/><stop offset=".6" stop-color="#170d1f"/><stop offset="1" stop-color="#08050c"/></radialGradient><linearGradient id="fcS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b1840"/><stop offset="1" stop-color="#5a2f4e"/></linearGradient><linearGradient id="fcG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3dea6"/><stop offset="1" stop-color="#b98d42"/></linearGradient><clipPath id="fcC"><path d="M30 102V58c0-21 14-33 30-42 16 9 30 21 30 42v44z"/></clipPath></defs><rect width="120" height="120" rx="27" fill="url(#fcA)"/><rect x=".75" y=".75" width="118.5" height="118.5" rx="26.25" fill="none" stroke="#d8b56d" stroke-opacity=".35" stroke-width="1.5"/><path d="M30 102V58c0-21 14-33 30-42 16 9 30 21 30 42v44z" fill="url(#fcS)"/><g clip-path="url(#fcC)"><circle cx="60" cy="45" r="10" fill="#f6e7bd"/><circle cx="64.5" cy="42" r="9" fill="#33203f"/><path d="M36 104V80l8-9 8 9V68l8-15 8 15v12l8-9 8 9v24z" fill="#07040b"/><g fill="#ffcf7a"><path d="M42.5 92v-5a1.5 1.5 0 013 0v5z"/><path d="M58.5 80v-6a1.5 1.5 0 013 0v6z"/><path d="M74.5 92v-5a1.5 1.5 0 013 0v5z"/></g><path d="M26 97c9-5 16 3 25-1s15-5 23 0 13 3 22-2v12H26z" fill="#c9b8e6" opacity=".42"/><path d="M26 102c10-4 18 2 28-1s16-3 24 1 12 1 18-2v8H26z" fill="#e6dcf5" opacity=".4"/></g><path d="M30 102V58c0-21 14-33 30-42 16 9 30 21 30 42v44" fill="none" stroke="url(#fcG)" stroke-width="2.4" stroke-linecap="round"/><path d="M35 102V59c0-17 11-28 25-36.5C74 31 85 42 85 59v43" fill="none" stroke="#d8b56d" stroke-opacity=".5" stroke-width=".8"/><path d="M24 102h72" stroke="url(#fcG)" stroke-width="2.4" stroke-linecap="round"/><g fill="url(#fcG)"><path d="M60 3.5l1.4 3.6 3.6 1.4-3.6 1.4L60 13.500l-1.4-3.600-3.600-1.400 3.600-1.400z"/><path d="M27 27l1.1 2.9 2.900 1.100-2.900 1.100L27 35l-1.100-2.900-2.900-1.100 2.900-1.100z"/><path d="M93 27l1.1 2.900 2.900 1.100-2.900 1.100L93 35l-1.100-2.900-2.900-1.100 2.900-1.100z"/></g></svg>`,
+  other: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="240" height="240"><rect width="120" height="120" rx="27" fill="#1a1636"/><path d="M48 38l34 22-34 22z" fill="#ffcf5a"/></svg>`,
+};
+// the same emblems as images for the 3D monitor's attract screen; only the ones that loaded and can be painted on a canvas without tainting it
+function gameLogoImgs() {
+  if (!gameLogoImgs.all) {
+    try {
+      gameLogoImgs.all = CONTENT.games.slice(0, 2).map(g => {
+        const im = new Image();
+        im.onload = () => { try { const c = document.createElement('canvas'); c.width = c.height = 4; const cx = c.getContext('2d'); cx.drawImage(im, 0, 0, 4, 4); cx.getImageData(0, 0, 1, 1); im.ok = true; } catch (e) { } };
+        im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(gameLogo(g)); return im;
+      });
+    } catch (e) { return []; }   // called before the emblems are defined: not yet
+  }
+  return gameLogoImgs.all.filter(im => im.ok);
+}
+const gameKey = g => /gravity/i.test(g?.url || '') ? 'gravity' : /ashgrove|charmed/i.test((g?.url || '') + ' ' + L(g?.title)) ? 'charmed' : 'other';
+const gameLogo = g => GAME_LOGO[gameKey(g)];
+const gamePlayable = g => !!g?.url && (g.kind === 'pygame' || g.kind === 'web');
+// openGames() = the chooser. openGames(i) = play game i straight away (a phone gets the chooser, whose cards open the game full-page in a new tab).
 function openGames(i) {
-  const g = CONTENT.games[i]; if (!g) return; const n = CONTENT.games.length;
-  const small = Math.min(innerWidth, innerHeight) < 560;   // a phone: an in-modal iframe is too small to play, open the game full-page
-  let media;
-  if (g.url && (g.kind === 'pygame' || g.kind === 'web') && small) media = `<div class="media"><img alt="" src="${g.poster ? esc(g.poster) : artURL(L(g.title), t('play'), hueOf(i + 1))}"></div><div class="mrow"><a class="btn primary" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('playNewTab'))}</a></div>`;
-  else if (g.url && (g.kind === 'pygame' || g.kind === 'web')) media = `<div class="media"><iframe onload="try{this.contentWindow.focus()}catch(e){}" src="${esc(g.url)}" title="${esc(L(g.title))}" allow="autoplay; fullscreen; gamepad"></iframe></div><div class="mrow"><button class="btn ghost sm" id="fs">${esc(t('fullscreen'))}</button><a class="btn ghost sm" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('newTabBtn'))}</a><span class="counter">${esc(t('clickFirst'))}</span></div>`;
-  else if (g.url) media = `<div class="media"><img alt="" src="${g.poster ? esc(g.poster) : artURL(L(g.title), t('play'), hueOf(i + 1))}"></div><div class="mrow"><a class="btn primary" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('playNewTab'))}</a></div>`;
-  else media = mediaPlaceholder(L(g.title), (g.kind === 'pygame' || g.kind === 'web') ? 'pygame → JavaScript' : 'Claude', hueOf(i + 1), t('gameSoon'));
-  openModal(`03 · ${esc(t('gamesKicker'))} · ${i + 1}/${n}`, L(g.title), `${media}<p class="mdesc">${esc(L(g.desc))}</p>${navRow(i, n)}`, d => openGames((i + d + n) % n));
-  const fs = $('#fs'); if (fs) fs.onclick = () => $('.media iframe', mbox)?.requestFullscreen?.().catch(() => { });
-  if ($('.media iframe', mbox)) { SOUND.setDuck(0); modalNoArrows = true; mbox.querySelectorAll('.mrow .counter').forEach(c => { if (/\//.test(c.textContent) && c.textContent.includes('·')) c.textContent = `${i + 1} / ${n}`; }); }   // the game has its own sound and its own arrow keys
-  wireNav();
+  const G = CONTENT.games, n = G.length; if (!n) return;
+  const small = Math.min(innerWidth, innerHeight) < 560;   // a phone: an in-modal iframe is too small to play
+  const g = i == null ? null : G[i];
+  if (!g || small || !gamePlayable(g)) {
+    const card = (c, j) => {
+      const k = gameKey(c), ext = !!c.url && (small || !gamePlayable(c)), line = T[LANG]['gLine_' + k] ?? T.en['gLine_' + k];
+      const inner = `<span class="glogo" aria-hidden="true">${GAME_LOGO[k]}</span><span class="gtxt"><span class="gnum">${j + 1} / ${n}${c.year ? ' · ' + esc(c.year) : ''}</span><b class="gname">${esc(L(c.title))}</b>${line ? `<span class="gline">${esc(line)}</span>` : ''}<span class="btn primary sm gplay">${esc(!c.url ? t('gameSoon') : ext ? t('playBtn') + ' ↗' : t('playBtn'))}</span></span>`;
+      const cls = `gcard g-${k}${g === c ? ' on' : ''}`;
+      return ext ? `<a class="${cls}" href="${esc(c.url)}" target="_blank" rel="noopener" title="${esc(t('playNewTab'))}">${inner}</a>` : `<button class="${cls}" data-g="${j}"${c.url ? '' : ' disabled'}>${inner}</button>`;
+    };
+    openModal(`03 · ${esc(t('gamesKicker'))}`, t('gamesPick'), { info: `<div class="gpick">${G.map(card).join('')}</div>` }, null, { cls: 'pick' });
+    mbox.querySelectorAll('[data-g]').forEach(b => b.onclick = () => openGames(+b.dataset.g));
+    return;
+  }
+  const o = (i + 1) % n, og = G[o];
+  openModal(`03 · ${esc(t('gamesKicker'))} · ${i + 1}/${n}`, L(g.title), {
+    stage: `<div class="media"><iframe onload="try{this.contentWindow.focus()}catch(e){}" src="${esc(g.url)}" title="${esc(L(g.title))}" allow="autoplay; fullscreen; gamepad"></iframe></div>`,
+    info: `<div class="gfoot">${n > 1 ? `<button class="btn ghost sm gswitch" id="gsw"><span class="glogo" aria-hidden="true">${gameLogo(og)}</span>${esc(L(og.title))} →</button>` : ''}<button class="btn ghost sm" id="fs">${esc(t('fullscreen'))}</button><a class="btn ghost sm" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('newTabBtn'))}</a><span class="counter">${esc(t('clickFirst'))}</span></div>`
+  }, null, { cls: 'play nosplit', lead: `<button class="btn ghost sm gback" id="gback">${esc(t('backGames'))}</button>` });
+  $('#gback').onclick = () => openGames();
+  const sw = $('#gsw'); if (sw) sw.onclick = () => openGames(o);
+  $('#fs').onclick = () => $('.media iframe', mbox)?.requestFullscreen?.().catch(() => { });
+  SOUND.setDuck(0); modalNoArrows = true;   // the game has its own sound and its own arrow keys
 }
 // every photo on the wall, in wall order (the framed renders open the same viewer)
 const wallPhotos = () => (CONTENT.wall || []).filter(w => w.src);
+const arCache = new Map();   // photo src → width / height, so the viewer opens at the right shape
+const isClip = s => /\.(mp4|webm)$/i.test(s || '');
 function openWall(key) {
   const a = wallPhotos(); if (!a.length) return;
   let i = typeof key === 'number' ? key : a.findIndex(w => w.src === key); if (i < 0) i = 0; const it = a[i];
-  const media = /\.(mp4|webm)$/i.test(it.src) ? `<video src="${esc(it.src)}" autoplay loop muted playsinline></video>` : `<img alt="${esc(L(it.title))}" src="${esc(it.src)}">`;
-  openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), `<div class="media photo">${media}</div><div class="mrow"><button class="btn ghost sm" id="phfs">${esc(t('fullscreen'))}</button>${it.game != null ? ` <button class="btn sm" data-act="game" data-i="${it.game}">${esc(t('playFriend'))}</button>` : ''}</div>${L(it.desc) ? `<p class="mdesc">${esc(L(it.desc))}</p>` : ''}${navRow(i, a.length)}`, d => openWall((i + d + a.length) % a.length));
-  const fs = $('#phfs'); if (fs) fs.onclick = () => $('.media.photo', mbox)?.requestFullscreen?.().catch(() => { });
+  const media = isClip(it.src) ? `<video src="${esc(it.src)}" autoplay loop muted playsinline></video>` : `<img alt="${esc(L(it.title))}" src="${esc(it.src)}">`;
+  openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), {
+    stage: `<div class="media photo">${media}</div>`,
+    info: `${descP(esc(L(it.desc)))}<div class="mrow"><button class="btn ghost sm" id="phfs">${esc(t('fullscreen'))}</button>${it.game != null ? `<button class="btn primary sm" data-act="game" data-i="${it.game}">${esc(t('playFriend'))}</button>` : ''}</div>${navRow(i, a.length)}`
+  }, d => openWall((i + d + a.length) % a.length), { ar: arCache.get(it.src) || 1.5 });
+  const m = $('.media.photo > *', mbox), fitAr = (w, h) => clamp(w / h, .45, 2.8);
+  const setAr = () => { const w = m.naturalWidth || m.videoWidth, h = m.naturalHeight || m.videoHeight; if (!w || !h || !m.isConnected) return; const ar = fitAr(w, h); arCache.set(it.src, ar); if (Math.abs((parseFloat(mbox.style.getPropertyValue('--ar')) || 0) - ar) > .004) { mbox.style.setProperty('--ar', String(ar)); fitModal(); } };
+  setAr(); m.addEventListener(isClip(it.src) ? 'loadedmetadata' : 'load', setAr);
+  for (const d of [1, -1]) { const nb = a[(i + d + a.length) % a.length], src = nb && (isClip(nb.src) ? nb.poster : nb.src); if (src && !arCache.has(nb.src)) { const im = new Image(); im.onload = () => { if (!arCache.has(nb.src)) arCache.set(nb.src, fitAr(im.naturalWidth, im.naturalHeight)); }; im.src = src; } }   // the neighbours: ready before you press →
+  $('#phfs').onclick = () => $('.media.photo', mbox)?.requestFullscreen?.().catch(() => { });
   wireNav();
 }
 function openImage(i) {
   const g = CONTENT.gallery[i]; if (g?.src && wallPhotos().some(w => w.src === g.src)) return openWall(g.src);
   const a = CONTENT.gallery, it = a[i]; if (!it) return;
   const src = it.src ? esc(it.src) : artURL(L(it.title), 'Blender', hueOf(i), 1280, 720);
-  openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), `<div class="media"><img alt="${esc(L(it.title))}" src="${src}"></div>${L(it.desc) ? `<p class="mdesc">${esc(L(it.desc))}</p>` : ''}${navRow(i, a.length)}`, d => openImage((i + d + a.length) % a.length));
+  openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), { stage: `<div class="media"><img alt="${esc(L(it.title))}" src="${src}"></div>`, info: `${descP(esc(L(it.desc)))}${navRow(i, a.length)}` }, d => openImage((i + d + a.length) % a.length));
   wireNav();
 }
 function openNow(i) {
   const n = CONTENT.now[i]; if (!n) return; const N = CONTENT.now.length;
-  const media = n.media ? (/\.(mp4|webm)$/i.test(n.media) ? `<div class="media"><video src="${esc(n.media)}" autoplay loop muted playsinline></video></div>` : `<div class="media"><img alt="" src="${esc(n.media)}"></div>`)
+  const media = n.media ? (isClip(n.media) ? `<div class="media"><video src="${esc(n.media)}" autoplay loop muted playsinline></video></div>` : `<div class="media"><img alt="" src="${esc(n.media)}"></div>`)
     : mediaPlaceholder(L(n.title), L(n.status), hueOf(i + 5), t('gifSoon'));
-  openModal(`04 · ${esc(t('nowTitle'))} · ${esc(L(n.status))}`, L(n.title), `${media}<p class="mdesc">${esc(L(n.desc))}</p>${navRow(i, N)}`, d => openNow((i + d + N) % N));
+  openModal(`04 · ${esc(t('nowTitle'))} · ${esc(L(n.status))}`, L(n.title), { stage: media, info: `${descP(esc(realText(n.desc)))}${navRow(i, N)}` }, d => openNow((i + d + N) % N));
   wireNav();
 }
+/* ── document reader: click the left half of the page = previous, the right half = next (also ← → keys, swipe, fullscreen) ── */
+const pageCursor = d => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><circle cx='20' cy='20' r='17' fill='#0b0a18' fill-opacity='.82' stroke='#fff' stroke-opacity='.85' stroke-width='1.5'/><path d='${d}' fill='none' stroke='#fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>`)}") 20 20, pointer`;
+const CUR_PREV = pageCursor('M23 11l-9 9 9 9'), CUR_NEXT = pageCursor('M17 11l9 9-9 9');
+let pageHintSeen = false;
 function openPaper(i) {
   const d = CONTENT.papers[i]; if (!d) return;
-  const pages = d.pages?.length ? d.pages : [null, null, null];
-  let k = 0;
+  const pages = d.pages?.length ? d.pages : [null, null, null], N = pages.length;
+  let k = 0, lock = 0, lastX = null;
   const pageSrc = j => pages[j] ? esc(pages[j]) : artURL(L(d.title), `${t('page')} ${j + 1} — ${t('pagePh')}`, hueOf(i + 3 + j), 1280, 720);
-  const strip = pages.map((_, j) => `<img alt="${esc(t('page'))} ${j + 1}" src="${pageSrc(j)}" decoding="async" ${j < 3 ? 'fetchpriority="high"' : ''}>`).join('');
-  openModal(`02 · ${esc(d.kind === 'paper' ? t('paper') : t('slides'))}`, L(d.title),
-    `<div class="media pages${d.portrait ? ' tall' : ''}" id="pgs" tabindex="0">${strip}</div>
-     <div class="mrow"><button class="navbtn" id="pp" aria-label="${esc(t('prev'))}">←</button><span class="counter" id="pc" aria-live="polite">1 / ${pages.length}</span><button class="navbtn" id="pn" aria-label="${esc(t('next'))}">→</button>
-     <button class="btn ghost sm" id="pfs" style="margin-left:auto">${esc(t('fullscreen'))}</button>
-     ${d.pdf && !IN_ARTIFACT ? `<a class="btn ghost sm" href="${esc(d.pdf)}" target="_blank" rel="noopener">${esc(t('openPdf'))}</a>` : ''}</div><p class="mdesc">${esc(L(d.desc))}</p>`,
-    dd => { k = (k + dd + pages.length) % pages.length; const el = $('#pgs'); el.scrollTo({ left: k * el.clientWidth, behavior: 'instant' }); });   // instant paging (no slide animation)
-  const el = $('#pgs'), pc = $('#pc');
-  el.addEventListener('scroll', () => { const j = Math.round(el.scrollLeft / Math.max(1, el.clientWidth)); if (j !== k) { k = j; } pc.textContent = `${k + 1} / ${pages.length}`; }, { passive: true });
-  $('#pfs').onclick = () => { (el.requestFullscreen?.() || Promise.reject()).catch(() => { }); };
-  $('#pp').onclick = () => modalNav(-1); $('#pn').onclick = () => modalNav(1);
+  const strip = pages.map((_, j) => `<img alt="${esc(t('page'))} ${j + 1}" src="${pageSrc(j)}" draggable="false" decoding="async" ${j < 3 ? 'fetchpriority="high"' : ''}>`).join('');
+  openModal(`02 · ${esc(d.kind === 'paper' ? t('paper') : t('slides'))}`, L(d.title), {
+    stage: `<div class="media doc${d.portrait ? ' tall' : ''}" id="pgw"><div class="pages" id="pgs" tabindex="0">${strip}</div><span class="pgz l" aria-hidden="true">‹</span><span class="pgz r" aria-hidden="true">›</span>${pageHintSeen ? '' : `<span class="pghint">${esc(t(matchMedia('(hover: none)').matches ? 'pageHintTap' : 'pageHint'))}</span>`}</div>`,
+    info: `${descP(esc(L(d.desc)))}<div class="mrow"><button class="btn ghost sm" id="pfs">${esc(t('fullscreen'))}</button>${d.pdf && !IN_ARTIFACT ? `<a class="btn ghost sm" href="${esc(d.pdf)}" target="_blank" rel="noopener">${esc(t('openPdf'))}</a>` : ''}</div>
+     <div class="mrow navrow"><button class="navbtn" id="pp" aria-label="${esc(t('prev'))}">←</button><span class="counter" id="pc" aria-live="polite"></span><button class="navbtn" id="pn" aria-label="${esc(t('next'))}">→</button></div>`
+  }, dd => go(k + dd), { ar: d.portrait ? 1275 / 1650 : 16 / 9 });
+  pageHintSeen = true;
+  const wrap = $('#pgw'), el = $('#pgs'), pc = $('#pc'), pp = $('#pp'), pn = $('#pn');
+  const paint = () => { pc.textContent = `${k + 1} / ${N}`; pp.disabled = k === 0; pn.disabled = k === N - 1; wrap.classList.toggle('first', k === 0); wrap.classList.toggle('last', k === N - 1); };
+  let sw = 0; const snap = () => { lock = performance.now() + 150; sw = el.clientWidth; el.scrollTo({ left: k * el.clientWidth, behavior: 'instant' }); };   // instant paging (no slide animation)
+  const sideOf = x => { const r = el.getBoundingClientRect(); return x < r.left + r.width / 2 ? -1 : 1; };
+  const hover = x => { lastX = x; const s = x == null ? 0 : sideOf(x), can = s < 0 ? k > 0 : s > 0 && k < N - 1; wrap.classList.toggle('hl', can && s < 0); wrap.classList.toggle('hr', can && s > 0); el.style.cursor = !s ? '' : !can ? 'default' : s < 0 ? CUR_PREV : CUR_NEXT; };
+  const go = j => { j = clamp(j, 0, N - 1); if (j === k) return; k = j; snap(); paint(); hover(lastX); el.children[k + 1]?.decode?.().catch(() => { }); };   // nothing happens past the first / last page
+  const endIntro = () => wrap.classList.remove('intro');
+  wrap.classList.add('intro'); const introT = setTimeout(endIntro, 3600);
+  el.addEventListener('scroll', () => { if (performance.now() < lock) return; if (el.clientWidth !== sw) return snap(); const j = clamp(Math.round(el.scrollLeft / Math.max(1, el.clientWidth)), 0, N - 1); if (j !== k) { k = j; paint(); endIntro(); } }, { passive: true });   // swipe
+  el.addEventListener('pointermove', e => { if (e.pointerType !== 'touch') hover(e.clientX); });
+  el.addEventListener('pointerleave', () => hover(null));
+  el.addEventListener('click', e => { endIntro(); go(k + sideOf(e.clientX)); });
+  const ro = window.ResizeObserver ? new ResizeObserver(snap) : null; ro?.observe(el);   // window resized / fullscreen: stay on the same page
+  modalCleanup = () => { clearTimeout(introT); ro?.disconnect(); };
+  $('#pfs').onclick = () => { (wrap.requestFullscreen?.() || Promise.reject()).catch(() => { }); };
+  pp.onclick = () => go(k - 1); pn.onclick = () => go(k + 1);
+  paint();
 }
+// unwritten template texts in content.js ("Placeholder…") are never shown: the about window falls back to the intro line, a project simply gets no text
+const realText = v => { const s = L(v); return /^\s*(placeholder|texte provisoire|bio provisoire|占位)/i.test(s) ? '' : s; };
 function openAbout() {
-  openModal(`◎ ${esc(t('about'))}`, CONTENT.name, `<p class="mdesc" style="font-size:17px">${esc(L(CONTENT.about))}</p><p class="mdesc" style="color:var(--dim)">${esc(L(CONTENT.role))} · ${esc(L(CONTENT.location))}</p><div class="links" style="justify-content:flex-start">${contactLinks()}</div>`);
+  openModal(`◎ ${esc(t('about'))}`, CONTENT.name, `<p class="mdesc big">${esc(realText(CONTENT.about) || L(CONTENT.intro))}</p><p class="mdesc" style="color:var(--dim)">${esc(L(CONTENT.role))} · ${esc(L(CONTENT.location))}</p><div class="links" style="justify-content:flex-start;margin:16px 0 0">${contactLinks()}</div>`, null, { cls: 'text' });
 }
 
 /* ════════════════════════ index view (classic, accessible) ════════════════════════ */
@@ -2844,9 +2994,10 @@ function closeIndex() { if (idx.hidden) return; idx.hidden = true; paused = !mod
 addEventListener('keydown', e => {
   if (!modal.hidden) {
     if (e.key === 'Escape') closeModal();
-    else if (e.key === 'ArrowRight' && modalNav && !modalNoArrows) modalNav(1);
-    else if (e.key === 'ArrowLeft' && modalNav && !modalNoArrows) modalNav(-1);
-    else if (e.key === 'Tab') { const f = [...mbox.querySelectorAll('button,a,iframe,video,[tabindex]')]; if (f.length) { const a = f[0], b = f[f.length - 1]; if (e.shiftKey && document.activeElement === a) { e.preventDefault(); b.focus(); } else if (!e.shiftKey && document.activeElement === b) { e.preventDefault(); a.focus(); } } }
+    else if (e.key === 'ArrowRight' && modalNav && !modalNoArrows) { e.preventDefault(); modalNav(1); }
+    else if (e.key === 'ArrowLeft' && modalNav && !modalNoArrows) { e.preventDefault(); modalNav(-1); }
+    else if ([' ', 'PageDown', 'PageUp', 'Home', 'End', 'ArrowDown', 'ArrowUp'].includes(e.key) && !e.target.closest?.('button,a,input,textarea,select')) e.preventDefault();   // the page behind stays put
+    else if (e.key === 'Tab') { const f = [...mbox.querySelectorAll('button:not([hidden]):not([disabled]),a,iframe,video,[tabindex]')]; if (f.length) { const a = f[0], b = f[f.length - 1]; if (e.shiftKey && document.activeElement === a) { e.preventDefault(); b.focus(); } else if (!e.shiftKey && document.activeElement === b) { e.preventDefault(); a.focus(); } } }
     return;
   }
   if (e.target.closest('input,textarea')) return;
@@ -2854,6 +3005,37 @@ addEventListener('keydown', e => {
   else if (e.key === 'Escape' && !idx.hidden) closeIndex();
   else if ((e.key === 'i' || e.key === 'I') && !e.metaKey && !e.ctrlKey) idx.hidden ? openIndex() : closeIndex();
 });
+
+/* ── no mouse, no wheel: hold → (or ↓) to travel forward, ← (or ↑) to go back. It drives the real scroll position frame by
+   frame (so everything that follows the scroll keeps working), eases in on press and out on release; a tap is one small glide.
+   Idle while a window, the index, a text field, a video or a game has the keys. ── */
+const KEYNAV = { dir: 0, v: 0, y: 0, raf: 0, last: 0, key: '', off: 0, t0: 0 };
+const keyNavBlocked = e => !modal.hidden || !idx.hidden || paused
+  || !!(e && (e.altKey || e.ctrlKey || e.metaKey || e.target.closest?.('input,textarea,select,video,audio,iframe,[contenteditable]')))
+  || /^(IFRAME|INPUT|TEXTAREA|SELECT|VIDEO|AUDIO)$/.test(document.activeElement?.tagName || '');
+function keyNavTick(now) {
+  const K = KEYNAV, dt = clamp((now - K.last) / 1000, 0, .1); K.last = now;   // (a slow device still travels at about the same speed)
+  if (K.dir && K.off && now >= K.off) K.dir = 0;                  // released (a tap still lasts a moment: a small glide, not a jerk)
+  if (keyNavBlocked()) { K.dir = 0; K.v = 0; }
+  const vmax = clamp(innerHeight * .9, 420, 1000);                // px/s: about a steady wheel
+  K.v += (K.dir * vmax - K.v) * (1 - Math.exp(-dt * (K.dir ? 4.5 : 5.5)));
+  if (Math.abs(scrollY - K.y) > 2) K.y = scrollY;                 // something else moved the page (wheel, touch, a chapter button): follow it
+  K.y = clamp(K.y + K.v * dt, 0, maxScroll());
+  if (Math.abs(K.y - scrollY) >= .5) scrollTo(0, K.y);
+  if (!K.dir && Math.abs(K.v) < 6) { K.v = 0; K.raf = 0; return; }
+  K.raf = requestAnimationFrame(keyNavTick);
+}
+addEventListener('keydown', e => {
+  const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+  if (!d || !WEBGL || keyNavBlocked(e)) return;
+  e.preventDefault();                                             // not the browser's own 40 px hops
+  const K = KEYNAV; if (e.repeat && K.key === e.key && K.dir === d) return;
+  if (focus.want) unfocus();
+  K.dir = d; K.key = e.key; K.off = 0; K.t0 = performance.now();
+  if (!K.raf) { K.y = scrollY; K.last = K.t0; K.raf = requestAnimationFrame(keyNavTick); }
+});
+const keyNavRelease = e => { const K = KEYNAV; if (e && e.key !== K.key) return; if (K.dir && !K.off) K.off = Math.max(performance.now(), K.t0 + 170); };
+addEventListener('keyup', keyNavRelease); addEventListener('blur', () => keyNavRelease());
 
 /* ════════════════════════ picking (hover + click on 3D objects) ════════════════════════ */
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(-9, -9), parallax = new THREE.Vector2();
@@ -2872,7 +3054,7 @@ function pick3D() {
   if (mouse.x < -2) { setHover(null); return; }
   ray.setFromCamera(mouse, camera);
   const inCar = active === 'city' && cur < .145;   // inside the car: only the console screen reacts (billboards and slides are out there, not here)
-  const hits = ray.intersectObjects(inCar ? (rig.cockMesh ? [rig.cockMesh] : []) : hotspots[active], false);
+  const hits = ray.intersectObjects(inCar ? (rig.cockMesh && rig.cockAwake ? [rig.cockMesh] : []) : hotspots[active], false);   // …and only once it has started up (it sleeps during the phone chat)
   setHover(hits[0]?.distance < (active === 'city' ? 140 : 9) ? hits[0].object : null);
 }
 function setHover(o) {
@@ -2905,7 +3087,7 @@ function updateUI(p) {
   if (p > .0015) dismissIntro();
   { const sb = $('#sound'); if (sb) sb.classList.toggle('pending', introGone && !SOUND.on && SOUND.wanted); }
   { const fo = p > .136 && p < .168, el = document.getElementById('p-about'); if (el && el.classList.contains('force-open') !== fo) el.classList.toggle('force-open', fo); }
-  { const on = p > .114 && p < .132 && modal.hidden; if (cockHint.classList.contains('show') !== on) cockHint.classList.toggle('show', on); }
+  { const on = p > .114 && p < .132 && modal.hidden && !!rig.cockAwake; if (cockHint.classList.contains('show') !== on) cockHint.classList.toggle('show', on); }
   progEl.style.width = (p * 100).toFixed(2) + '%';
   let on = null;
   for (const c of CH) { const show = p >= c.r[0] && p <= c.r[1], e = $('#p-' + c.id); if (e.classList.contains('show') !== show) { e.classList.toggle('show', show); e.inert = !show; } if (show) on = c.id; }
@@ -3048,3 +3230,4 @@ addEventListener('message', e => { if (e.origin === location.origin && e.data?.n
 window.__setLang = setLang; window.__portfolio = { sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { target = cur = prevP = p; scrollTo(0, p2s(p)); }, state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
 
 // QA test hook (read-only): the pure camera path of the city part, without time effects (car parked at its 60 m stop)
+window.__portfolio.hot = (k, re) => { const h = hotspots[k].find(m => re.test(String(typeof m.userData.hot.label === 'function' ? m.userData.hot.label() : m.userData.hot.label))); h?.userData.hot.action(); return !!h; };
