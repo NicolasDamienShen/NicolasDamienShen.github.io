@@ -103,7 +103,7 @@ let LANG = (() => { try { const s = localStorage.getItem('ns-lang'); if (s && /^
 const L = v => v == null ? '' : (typeof v === 'object' && !Array.isArray(v)) ? (v[LANG] ?? v.en ?? '') : v;
 const T = {
   en: {
-    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: "✦ Try my voice demo: click the screen · or keep scrolling", tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car. I compared LLMs, a diffusion model and a JEV-inspired architecture. In the end, Mapika-2B decides what to do and Qwen3-1.7B fills in the values. It works for one command or several. This demo is offline and text-only: press ▶ Play demo, or click the car.", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
+    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', cockpitHint: "✦ Try my voice demo: click the screen · or keep scrolling", tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• One command or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
     scroll: 'SCROLL', keysHint: 'or hold →', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
     vrKicker: 'XR / VR & demos', vrTitle: 'Screens in the city', vrText: "Each screen is a project. Click one, or pick from the list.",
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
@@ -118,12 +118,12 @@ const T = {
     phWelcome: 'Welcome to the portfolio of', phAfter: '', phRole: 'XR · AI · Human–Machine Interaction', phScroll: 'Feel free to scroll', phKeep: '— keep scrolling —',
     phItems: [['XR / VR projects', 'screens in the city'], ['Slides & papers', 'pages in the sky'], ['Games', 'on my desk'], ['Now building', 'the corkboard'], ['3D renders', 'the photo wall'], ['Last words', 'a paper plane']],
     loading: 'Nicolas Shen · loading the night',
-    readyPlay: 'READY TO PLAY?', henryKick: 'Personal assistant · 2026', henryAbout: "Hi, I'm Henry 👋 Nicolas built me in 2026 as his personal voice assistant. I run fully on his computer, with Ollama and open-source models. Nothing goes to the cloud. I speak French, English and Chinese. I search and answer like Siri, and I do real tasks: tidy folders, look things up online. I'm not public. I exist so Nicolas can learn, hands-on, what AI can really do.", posterNote: 'Nov 2026 — I was there,\nmet some professors :)', now: 'now', tapToOpen: 'Tap to open', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: 'Click or scroll to begin', introSound: 'sound on', qAuto: 'Auto', qHigh: 'High', qMid: 'Medium', qLow: 'Low', quality: 'Quality', tipHenry: '☺ Henry — say hi', henry1: "I'm here whenever you need me.", henry2: "Psst: the corkboard shows what Nicolas is building.", henry3: 'Lost? Press I for the simple index view.', henryAsk: 'Ask Henry…',
+    readyPlay: 'READY TO PLAY?', henryKick: 'Personal assistant · 2026', henryAbout: "Hi, I'm Henry 👋 Nicolas built me in 2026 as his personal voice assistant.\nWhat I am:\n• Fully local: I run on his computer, with Ollama and open-source models\n• Private: nothing goes to the cloud\n• Trilingual: French, English, Chinese\nWhat I can do:\n• Search and answer, like Siri\n• Real tasks: tidy folders, look things up online\nI'm not public. I exist so Nicolas can learn, hands-on, what AI can really do.", posterNote: 'Nov 2026 — I was there,\nmet some professors :)', now: 'now', tapToOpen: 'Tap to open', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: 'Click or scroll to begin', introSound: 'sound on', qAuto: 'Auto', qHigh: 'High', qMid: 'Medium', qLow: 'Low', quality: 'Quality', tipHenry: '☺ Henry — say hi', henry1: "I'm here whenever you need me.", henry2: "Psst: the corkboard shows what Nicolas is building.", henry3: 'Lost? Press I for the simple index view.', henryAsk: 'Ask Henry…',
     more: "more ▾", less: "less ▴", gAbout: "ⓘ About", gamesPick: "Two games. Pick one.", playBtn: "▶ Play", backGames: "← Games", tipGames: "▶ Two games — choose one", pageHint: "Click left or right to turn the page", pageHintTap: "Tap left or right to turn the page", chooseGame: "CHOOSE A GAME", gLine_gravity: "Two-player co-op. Flip gravity, use portals.", gLine_charmed: "A solo, story-driven role-play, seen like a dollhouse.",
     botSay: "Hi! I'm a future project of Nicolas. See you soon ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
   },
   fr: {
-    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Essayez ma démo vocale\u00a0: cliquez sur l'écran · ou continuez à défiler", tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture. J'ai comparé des LLM, un modèle de diffusion et une architecture inspirée de JEV. Au final, Mapika-2B décide quoi faire et Qwen3-1.7B complète les valeurs. Ça marche pour une commande ou plusieurs. Cette démo est hors ligne, en texte seulement\u00a0: appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture.", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
+    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', cockpitHint: "✦ Essayez ma démo vocale\u00a0: cliquez sur l'écran · ou continuez à défiler", tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Une commande ou plusieurs\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
     scroll: 'DÉFILEZ', keysHint: 'ou maintenez →', skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
     vrKicker: 'XR / VR & démos', vrTitle: 'Écrans dans la ville', vrText: "Chaque écran est un projet. Cliquez-en un, ou choisissez dans la liste.",
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
@@ -138,12 +138,12 @@ const T = {
     phWelcome: 'Bienvenue sur le portfolio de', phAfter: '', phRole: 'XR · IA · Interaction humain–machine', phScroll: "N'hésitez pas à défiler", phKeep: '— continuez —',
     phItems: [['Projets XR / VR', 'les écrans de la ville'], ['Présentations', 'des pages dans le ciel'], ['Jeux', 'sur mon bureau'], ['En cours', 'le tableau en liège'], ['Rendus 3D', 'le mur de photos'], ['Derniers mots', 'un avion en papier']],
     loading: 'Nicolas Shen · la nuit se charge',
-    readyPlay: 'PRÊT À JOUER ?', henryKick: 'Assistant personnel · 2026', henryAbout: "Salut, moi c'est Henry 👋 Nicolas m'a créé en 2026\u00a0: je suis son assistant vocal personnel. Je tourne entièrement sur son ordinateur, avec Ollama et des modèles open source. Rien ne part dans le cloud. Je parle français, anglais et chinois. Je cherche et je réponds comme Siri, et j'agis vraiment\u00a0: ranger des dossiers, chercher des infos en ligne. Je ne suis pas public. J'existe pour que Nicolas apprenne, en pratique, ce que l'IA sait vraiment faire.", posterNote: "nov. 2026 — j'y étais,\nj'ai rencontré des profs :)", now: 'maintenant', tapToOpen: 'Touchez pour ouvrir', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: "Cliquez ou défilez pour commencer", introSound: 'son activé', qAuto: 'Auto', qHigh: 'Haute', qMid: 'Moyenne', qLow: 'Basse', quality: 'Qualité ', tipHenry: '☺ Henry — dites bonjour', henry1: 'Je suis là dès que vous avez besoin de moi.', henry2: "Psst\u00a0: le tableau en liège montre ce que Nicolas construit.", henry3: "Perdu\u00a0? Appuyez sur I pour la vue index.", henryAsk: 'Demander à Henry…',
+    readyPlay: 'PRÊT À JOUER ?', henryKick: 'Assistant personnel · 2026', henryAbout: "Salut, moi c'est Henry 👋 Nicolas m'a créé en 2026\u00a0: je suis son assistant vocal personnel.\nCe que je suis\u00a0:\n• 100\u00a0% local\u00a0: je tourne sur son ordinateur, avec Ollama et des modèles open source\n• Privé\u00a0: rien ne part dans le cloud\n• Trilingue\u00a0: français, anglais, chinois\nCe que je sais faire\u00a0:\n• Chercher et répondre, comme Siri\n• Agir vraiment\u00a0: ranger des dossiers, chercher des infos en ligne\nJe ne suis pas public. J'existe pour que Nicolas apprenne, en pratique, ce que l'IA sait vraiment faire.", posterNote: "nov. 2026 — j'y étais,\nj'ai rencontré des profs :)", now: 'maintenant', tapToOpen: 'Touchez pour ouvrir', introKick: 'NICOLAS SHEN · PORTFOLIO', introTitle: "Cliquez ou défilez pour commencer", introSound: 'son activé', qAuto: 'Auto', qHigh: 'Haute', qMid: 'Moyenne', qLow: 'Basse', quality: 'Qualité ', tipHenry: '☺ Henry — dites bonjour', henry1: 'Je suis là dès que vous avez besoin de moi.', henry2: "Psst\u00a0: le tableau en liège montre ce que Nicolas construit.", henry3: "Perdu\u00a0? Appuyez sur I pour la vue index.", henryAsk: 'Demander à Henry…',
     more: "suite ▾", less: "moins ▴", gAbout: "ⓘ À propos", gamesPick: "Deux jeux. Choisissez-en un.", playBtn: "▶ Jouer", backGames: "← Jeux", tipGames: "▶ Deux jeux\u00a0: choisissez", pageHint: "Cliquez à gauche ou à droite pour tourner la page", pageHintTap: "Touchez à gauche ou à droite pour tourner la page", chooseGame: "CHOISISSEZ UN JEU", gLine_gravity: "Coop à deux. Inversez la gravité, passez les portails.", gLine_charmed: "Un jeu de rôle solo, narratif, vu comme une maison de poupée.",
     botSay: "Salut\u00a0! Je suis un futur projet de Nicolas. À bientôt ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
   },
   zh: {
-    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: "✦ 点击屏幕，试试我的语音演示 · 或继续往下滑", tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。我对比了多种大语言模型、扩散模型和受 JEV 启发的架构。最终由 Mapika-2B 决定做什么，Qwen3-1.7B 填入参数。一条或多条指令都能处理。本演示为离线纯文本版：点击 ▶ Play demo，或直接点车。", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
+    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', cockpitHint: "✦ 点击屏幕，试试我的语音演示 · 或继续往下滑", tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 一条或多条指令都能处理\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
     scroll: '向下滚动', keysHint: '或长按 →', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
     vrKicker: 'XR / VR 与演示', vrTitle: '城市里的屏幕', vrText: '每块屏幕都是一个项目。点击屏幕，或从列表中选择。',
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
@@ -158,7 +158,7 @@ const T = {
     phWelcome: '欢迎来到', phAfter: ' 的作品集', phRole: 'XR · AI · 人机交互', phScroll: '请随意向下滑动', phKeep: '—— 继续滑动 ——',
     phItems: [['XR / VR 项目', '城市里的屏幕'], ['演示与论文', '天空中的纸页'], ['游戏', '在我的书桌上'], ['正在做', '软木板'], ['3D 渲染', '照片墙'], ['最后的话', '一架纸飞机']],
     loading: 'Nicolas Shen · 夜色加载中',
-    readyPlay: '准备好开玩了吗？', henryKick: '私人助理 · 2026', henryAbout: "你好，我是 Henry 👋 Nicolas 在 2026 年创造了我，我是他的私人语音助手。我完全在他的电脑上运行，用 Ollama 和开源模型，数据不上云。我会说法语、英语和中文。我能像 Siri 一样搜索和回答，也能真正动手：整理文件夹、上网查资料。我没有公开发布。我的存在，是让 Nicolas 亲手弄明白 AI 到底能做什么。", posterNote: '2026.11 —— 去现场啦，\n认识了几位教授 :)', now: '现在', tapToOpen: '轻点打开', introKick: 'NICOLAS SHEN · 作品集', introTitle: '点击或向下滑动，开始旅程', introSound: '声音已开启', qAuto: '自动', qHigh: '高', qMid: '中', qLow: '低', quality: '画质', tipHenry: '☺ Henry —— 打个招呼', henry1: '需要我的时候，我一直都在。', henry2: "悄悄说：软木板上是 Nicolas 正在做的项目。", henry3: '迷路了？按 I 打开索引视图。', henryAsk: '问问 Henry…',
+    readyPlay: '准备好开玩了吗？', henryKick: '私人助理 · 2026', henryAbout: "你好，我是 Henry 👋 Nicolas 在 2026 年创造了我，我是他的私人语音助手。\n我是谁：\n• 完全本地：在他的电脑上运行，用 Ollama 和开源模型\n• 隐私：数据不上云\n• 三种语言：法语、英语、中文\n我能做什么：\n• 像 Siri 一样搜索和回答\n• 真正动手：整理文件夹、上网查资料\n我没有公开发布。我的存在，是让 Nicolas 亲手弄明白 AI 到底能做什么。", posterNote: '2026.11 —— 去现场啦，\n认识了几位教授 :)', now: '现在', tapToOpen: '轻点打开', introKick: 'NICOLAS SHEN · 作品集', introTitle: '点击或向下滑动，开始旅程', introSound: '声音已开启', qAuto: '自动', qHigh: '高', qMid: '中', qLow: '低', quality: '画质', tipHenry: '☺ Henry —— 打个招呼', henry1: '需要我的时候，我一直都在。', henry2: "悄悄说：软木板上是 Nicolas 正在做的项目。", henry3: '迷路了？按 I 打开索引视图。', henryAsk: '问问 Henry…',
     more: "展开 ▾", less: "收起 ▴", gAbout: "ⓘ 简介", gamesPick: "两款游戏，选一个。", playBtn: "▶ 开始玩", backGames: "← 游戏", tipGames: "▶ 两款游戏，任你选", pageHint: "点击左侧或右侧翻页", pageHintTap: "轻点左侧或右侧翻页", chooseGame: "选择游戏", gLine_gravity: "双人合作。翻转重力，穿越传送门。", gLine_charmed: "单人剧情角色扮演，以玩偶屋视角展开。",
     botSay: "嗨！我是 Nicolas 未来的项目。回头见 ♥", backXR: '返回 XR', backXRsub: '回到城市里的屏幕',
   },
@@ -693,7 +693,8 @@ function buildTraffic() {
 const car = new THREE.Group();
 const CAR_X = 4.6;
 // COCK: the centre screen, placed so it sits whole in your left peripheral view while you read the phone (16:10 → 16:9)
-const EYE = new THREE.Vector3(.42, 1.1, -.02), PHONE = new THREE.Vector3(.425, 1.03, -.245), COCK = new THREE.Vector3(0, .91, -.8);
+const CLOCK = '20:27';   // the story's time: a night drive (phone, lock screen, console)
+const EYE = new THREE.Vector3(.42, 1.1, -.02), PHONE = new THREE.Vector3(.425, 1.052, -.205), COCK = new THREE.Vector3(0, .91, -.8);
 const COCK_YAW = .3, COCK_S = .9, PHONE_LOOK = PHONE.clone().add(new THREE.Vector3(-.015, .012, 0));
 const ROAD_BASE = new THREE.Vector3(-.9, .62, -8), ROAD_LOOK = ROAD_BASE.clone();
 // where you lean to at the console stop: close enough to read it, far enough that it fits a portrait phone screen too
@@ -938,7 +939,7 @@ function drawLock(x, W, H, p, tm, hh) {
 }
 function drawPhone(p, tm) {
   const x = phoneUI.x, W = 480, H = 1040; x.setTransform(2, 0, 0, 2, 0, 0);
-  const now = new Date(), hh = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const now = new Date(), hh = CLOCK;
   const o = ease(clamp((p - PHN.open[0]) / (PHN.open[1] - PHN.open[0]), 0, 1));
   if (o < 1) {
     drawLock(x, W, H, p, tm, hh);
@@ -957,14 +958,15 @@ function drawPhone(p, tm) {
 // car motion: drives itself down the avenue
 // the car drives on its own (time only; your scrolling doesn't change its speed). While you are inside it, it keeps driving: full speed for ~60 m,
 // then slower traffic, and only a very long read brings it to a stop (~165 m on), so the rise out of the roof stays near the same stretch of street
-const DRIVE = { d: 0, v: 4.2, t: 0 };
+const DRIVE = { d: 0, v: 5, t: 0 };
 const carPos = p => {
   if (time !== DRIVE.t) {
     const dt = clamp(time - DRIVE.t, 0, .1); DRIVE.t = time;
-    const want = p < .14 ? (DRIVE.d < 60 ? 4.2 : DRIVE.d < 105 ? 4.2 - 2.4 * smooth((DRIVE.d - 60) / 45) : 1.8 * smooth(clamp((165 - DRIVE.d) / 60, 0, 1))) : 4.2;   // keeps driving while you read (slows to a crawl, only stops after ~1.5 min)
+    // autopilot: cruises at 18 km/h, never under 15 km/h; only a long read (~1 min) brings it to the red light at the end of the avenue
+    const want = p < .14 ? (DRIVE.d < 220 ? 5 : DRIVE.d < 268 ? 4.2 : 4.2 * smooth(clamp((300 - DRIVE.d) / 32, 0, 1))) : 5;
     DRIVE.v += (want - DRIVE.v) * (1 - Math.exp(-dt * 1.5)); DRIVE.d += Math.max(0, DRIVE.v) * dt;
   }
-  const z = 70 - Math.min(DRIVE.d, 228); return new THREE.Vector3(CAR_X, 0, z);   // speed comes from time only: scrolling never pushes the car
+  const z = 70 - Math.min(DRIVE.d, 300); return new THREE.Vector3(CAR_X, 0, z);   // speed comes from time only: scrolling never pushes the car
 };
 const walkerPos = carPos;
 let carSpeed = 0, lastCarZ = 70;
@@ -1071,7 +1073,7 @@ window.__intro = {
 const COCK_ON = PHN.lower[0] + .002;   // story position where the console wakes: the chat is over and the phone is on its way down
 function drawCockpit(tm) {
   const R = rig.cock; if (!R) return;
-  const x = R.x, W = 1024, H = 600, wk = rig.cockK || 0, nowD = new Date(), clock = `${nowD.getHours()}:${String(nowD.getMinutes()).padStart(2, '0')}`;
+  const x = R.x, W = 1024, H = 600, wk = rig.cockK || 0, clock = CLOCK;
   if (wk <= 0) {   // standby: a dark, still panel with a faint clock (redrawn only when the minute changes) — nothing here asks for attention
     if (R.sleep === clock) return; R.sleep = clock; R.last = -1;
     x.fillStyle = '#030408'; x.fillRect(0, 0, W, H);
@@ -1084,7 +1086,7 @@ function drawCockpit(tm) {
   // top bar
   x.fillStyle = '#9ff0ff'; x.font = F(700, 22, '"Space Grotesk"'); x.textAlign = 'left'; x.fillText('CABIN VOICE', 34, 50);
   x.fillStyle = '#5c6a93'; x.font = F(500, 16, '"JetBrains Mono"'); x.fillText('NLU → DSL · on-device', 200, 50);
-  const now = new Date(); x.fillStyle = '#e6e9ef'; x.textAlign = 'right'; x.font = F(600, 22, '"Space Grotesk"'); x.fillText(`${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`, W - 34, 50); x.textAlign = 'left';
+  const now = new Date(); x.fillStyle = '#e6e9ef'; x.textAlign = 'right'; x.font = F(600, 22, '"Space Grotesk"'); x.fillText(CLOCK, W - 34, 50); x.textAlign = 'left';
   x.fillStyle = 'rgba(127,233,255,.12)'; x.fillRect(34, 68, W - 68, 1.5);
   // which example is playing
   const per = 4.2, k = Math.floor(tm / per) % COCK_EX.length, f = (tm % per) / per, [utt, dsl, part] = COCK_EX[k];
@@ -1131,7 +1133,7 @@ function drawCockpit(tm) {
   R.t.needsUpdate = true;
 }
 function openCockpit() {   // nlu.html is responsive: the iframe simply fills the room the pop-up has left
-  openModal(esc(t('cockpitKicker')), t('cockpitTitle'), { stage: `<div class="nluwrap"><iframe src="nlu.html" title="Cabin Voice demo"></iframe></div>`, info: `<p class="mdesc">${esc(t('cockpitDesc'))}</p><button class="more" hidden></button>` }, null, { cls: 'cock nosplit' });
+  openModal(esc(t('cockpitKicker')), t('cockpitTitle'), { stage: `<div class="nluwrap"><iframe src="nlu.html" title="Cabin Voice demo"></iframe></div>`, info: `<div class="mdesc">${richDesc(t('cockpitDesc'))}</div><button class="more" hidden></button>` }, null, { cls: 'cock nosplit' });
 }
 
 /* ── sound: a quiet generated lo-fi loop + the message "ding". Browsers only allow audio after a click/tap/key. ── */
@@ -1298,17 +1300,17 @@ function drawChatLayer(p, tm) {
   const ph = smooth(clamp((p - CHAT.photo) / .0025, 0, 1));
   const gates = [.001, ...CHAT.msgs.map(m => m + .0022)], ends = [...CHAT.msgs, CHAT.photo]; const typing = gates.some((g, i) => p > g && p < ends[i]);
   const liked = p >= CHAT.tap2, burst = clamp((p - CHAT.tap2) / .0045, 0, 1);
-  const now = new Date(), hh = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const hh = CLOCK;
   // top-down conversation: date, his message, his photo, then "typing…" under the last item
   let y = 178;
-  if (m1 > 0 || typing) { x.fillStyle = 'rgba(220,214,245,.45)'; x.font = F(500, 13); x.textAlign = 'center'; x.fillText(`${t('today')} ${hh}`, W / 2, y); x.textAlign = 'left'; }
+  if (m1 > 0 || typing) { x.fillStyle = 'rgba(220,214,245,.45)'; x.font = F(500, 15); x.textAlign = 'center'; x.fillText(`${t('today')} ${hh}`, W / 2, y); x.textAlign = 'left'; }
   y += 18;
   ['chatMsg', 'chatMsg2', 'chatMsg3'].forEach((key, i) => {
     const m = ms[i]; if (m <= 0) return;
-    x.font = F(500, 21); const lines = wrapLines(x, t(key), 290), lh = 29, mh = lines.length * lh + 22, mw = Math.min(330, Math.max(...lines.map(l => x.measureText(l).width)) + 34);
+    x.font = F(500, 25); const lines = wrapLines(x, t(key), 340), lh = 34, mh = lines.length * lh + 24, mw = Math.min(386, Math.max(...lines.map(l => x.measureText(l).width)) + 38);
     const bx = 22, by = y + (1 - m) * 22, last = ms[i + 1] === undefined || ms[i + 1] <= 0;
     x.save(); x.globalAlpha = m; x.fillStyle = '#332d5c'; rr2(x, bx, by, mw, mh, 20); x.fill(); if (last) x.fillRect(bx, by + mh - 18, 18, 18); else x.fillRect(bx, by, 10, mh);
-    x.fillStyle = '#f3efff'; lines.forEach((l, j) => x.fillText(l, bx + 17, by + 31 + j * lh)); x.restore();
+    x.fillStyle = '#f3efff'; lines.forEach((l, j) => x.fillText(l, bx + 19, by + 36 + j * lh)); x.restore();
     y += mh + 6;
   });
   if (ms[0] > 0) y += 6;
@@ -1336,8 +1338,8 @@ function drawChatLayer(p, tm) {
   x.save(); x.beginPath(); x.arc(76, 108, 25, 0, 7); x.clip();
   if (meImg) x.drawImage(meImg, 51, 83, 50, 50); else { const ag = x.createLinearGradient(51, 83, 101, 133); ag.addColorStop(0, '#ffc46e'); ag.addColorStop(1, '#c9b8ff'); x.fillStyle = ag; x.fillRect(51, 83, 50, 50); x.fillStyle = '#1b1636'; x.font = F(700, 18); x.textAlign = 'center'; x.fillText('NS', 76, 115); x.textAlign = 'left'; }
   x.restore(); x.fillStyle = '#4ade80'; x.beginPath(); x.arc(95, 127, 6.5, 0, 7); x.fill(); x.strokeStyle = '#1c1934'; x.lineWidth = 2.5; x.stroke();
-  x.fillStyle = '#f3efff'; x.font = F(650, 22, '"Space Grotesk"'); x.fillText(t('chatName'), 114, 104, 250);
-  x.fillStyle = typing ? '#9fffcf' : 'rgba(220,214,245,.6)'; x.font = F(400, 14); x.fillText(typing ? t('typing') : t('chatStatus'), 114, 127);
+  x.fillStyle = '#f3efff'; x.font = F(650, 25, '"Space Grotesk"'); x.fillText(t('chatName'), 114, 104, 250);
+  x.fillStyle = typing ? '#9fffcf' : 'rgba(220,214,245,.6)'; x.font = F(400, 16); x.fillText(typing ? t('typing') : t('chatStatus'), 114, 128);
   x.strokeStyle = '#c9b8ff'; x.lineWidth = 2.2; rr2(x, 380, 98, 26, 18, 4); x.stroke(); x.beginPath(); x.moveTo(406, 107); x.lineTo(416, 100); x.lineTo(416, 116); x.closePath(); x.stroke();
   x.beginPath(); x.arc(448, 107, 10, 0, 7); x.stroke();
   // input bar (you never type — you just read)
@@ -2030,7 +2032,7 @@ function buildRoom() {
   const st2 = new THREE.Mesh(new THREE.CylinderGeometry(.016, .02, .12, 16), metal2); st2.position.set(0, -.33, -.035); g2.add(st2);
   const bs2 = new THREE.Mesh(new THREE.CylinderGeometry(.1, .11, .014, 36), metal2); bs2.position.set(0, -.393, -.035); g2.add(bs2);
   screens.term = { c: tc, x: tc.getContext('2d'), t: term.material.map };
-  hot('room', term, () => t('tipHenry'), () => { henry.i = (henry.i + 1) % 3; henry.t = time; openModal(esc(t('henryKick')), 'Henry', `<p class="mdesc big">${esc(t('henryAbout'))}</p>`, null, { cls: 'text' }); });
+  hot('room', term, () => t('tipHenry'), () => { henry.i = (henry.i + 1) % 3; henry.t = time; openModal(esc(t('henryKick')), 'Henry', `<div class="mdesc big">${richDesc(t('henryAbout'))}</div>`, null, { cls: 'text read henry' }); });
 
   // keyboard (real keycaps) + mouse
   {
@@ -2710,7 +2712,7 @@ function buildPanels() {
   <section class="panel side card" id="p-vr"><div class="kicker"><b>01</b> · ${esc(t('vrKicker'))}</div><h2>${esc(t('vrTitle'))}</h2>
     <p>${esc(t('vrText'))}</p>${itemList(C.videos, 'video', v => L(v.subtitle))}</section>
   <section class="panel side card" id="p-papers"><div class="kicker"><b>02</b> · ${esc(t('papersKicker'))}</div>
-    <h2 id="sl-title"></h2><p id="sl-desc"></p>
+    <h2 id="sl-title"></h2><div id="sl-desc" class="sdesc"></div>
     <div class="row"><button class="navbtn" id="sl-prev" aria-label="${esc(t('prev'))}">←</button><span class="counter" id="sl-count" aria-live="polite"></span><button class="navbtn" id="sl-next" aria-label="${esc(t('next'))}">→</button>
     <button class="btn primary sm" id="sl-open" style="margin-left:auto">${esc(t('openBtn'))}</button></div></section>
   <section class="panel side card" id="p-games"><div class="kicker"><b>03</b> · ${esc(t('gamesKicker'))}</div><h2>${esc(t('gamesTitle'))}</h2>
@@ -2769,7 +2771,7 @@ function buildUI() {
 let curSlide = -1;
 function setSlidePanel(i) {
   if (i === curSlide) return; curSlide = i; const d = CONTENT.papers[i]; if (!d) return;
-  $('#sl-title').textContent = L(d.title); $('#sl-desc').textContent = L(d.desc); $('#sl-count').textContent = `${i + 1} / ${CONTENT.papers.length}`;
+  $('#sl-title').textContent = L(d.title); $('#sl-desc').innerHTML = richDesc(L(d.desc)); $('#sl-count').textContent = `${i + 1} / ${CONTENT.papers.length}`;
 }
 function contactLinks() {
   const c = CONTENT.contact, out = [];
@@ -2815,13 +2817,20 @@ function fitModal(ev) {
   const ar = parseFloat(mbox.style.getPropertyValue('--ar')) || 16 / 9, W = innerWidth, H = innerHeight;
   mbox.classList.toggle('split', !!st && !reading && !mbox.classList.contains('nosplit') && W >= 640 && (W / H >= 1.45 || (ar < 1 && W >= 880)));
   const ds = [...mbox.querySelectorAll('.mdesc')];
-  mbox.classList.remove('tight'); for (const d of ds) { d.classList.remove('clamp'); d.style.removeProperty('--lines'); }
+  mbox.classList.remove('tight'); for (const d of ds) { d.classList.remove('clamp'); d.style.removeProperty('--lines'); d.querySelectorAll('.cut').forEach(x => x.classList.remove('cut')); }
   if (more) { more.hidden = !reading; more.textContent = t(reading ? 'less' : 'more'); }
   const over = () => mbox.scrollHeight > mbox.clientHeight + 1 || info.scrollHeight > info.clientHeight + 1;
   if (!ds.length || !over()) return;
   mbox.classList.add('tight'); if (!over()) return;
-  const n = ds.map(d => Math.max(1, Math.round(d.getBoundingClientRect().height / (parseFloat(getComputedStyle(d).lineHeight) || 22))));
   if (more && st) more.hidden = false;
+  // a list: drop whole points from the end first (never half a bullet), the longest description first; "more" shows them all
+  const parts = ds.map(d => [...d.querySelectorAll(':scope > .mp, :scope > .mh, :scope > .mlist > li')]);
+  for (let g = 0; g < 60 && over(); g++) {
+    const j = parts.reduce((a, p, k) => p.length > parts[a].length ? k : a, 0), p = parts[j].pop(); if (!p) break;
+    p.classList.add('cut'); const ul = p.closest('.mlist'); if (ul && !ul.querySelector('li:not(.cut)')) ul.classList.add('cut');
+  }
+  if (!over()) return;
+  const n = ds.map(d => Math.max(1, Math.round(d.getBoundingClientRect().height / (parseFloat(getComputedStyle(d).lineHeight) || 22))));
   ds.forEach((d, j) => { d.classList.add('clamp'); d.style.setProperty('--lines', n[j]); });
   for (let g = 0; g < 90 && over(); g++) { const j = n.indexOf(Math.max(...n)); if (n[j] <= 1) break; n[j]--; ds[j].style.setProperty('--lines', n[j]); }
 }
@@ -2829,7 +2838,23 @@ addEventListener('resize', fitModal);
 document.fonts?.ready?.then(() => fitModal());
 const mediaPlaceholder = (title, sub, hue, note) => `<div class="media"><img alt="" src="${artURL(title, sub, hue)}"><span class="soon">${esc(note)}</span></div>`;
 const tags = arr => arr?.length ? `<div class="tags">${arr.map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div>` : '';
-const descP = (html, style = '') => html ? `<p class="mdesc"${style ? ` style="${style}"` : ''}>${html}</p><button class="more" hidden></button>` : '';
+const descP = (html, style = '') => html ? `<div class="mdesc"${style ? ` style="${style}"` : ''}>${html}</div><button class="more" hidden></button>` : '';
+/* Descriptions (content.js and long T strings): the first line is a short lead, then one fact per line starting with "• ".
+   "• Label: text" shows the label in bold. A short line ending with ":" is a small heading; any other line is a paragraph. */
+const descLines = s => String(s ?? '').split('\n').map(x => x.trim()).filter(Boolean);
+const BUL = /^[•\-–]\s+/;
+const descLead = s => { const l = descLines(s)[0] || ''; return BUL.test(l) ? '' : l; };   // the lead alone (index tiles)
+function richDesc(s, links) {
+  const out = []; let li = null;
+  const lab = x => { const m = x.match(/^([^,，、。.:：;!?！？«»"“()（）]{1,26}?)(\u00a0?:\s|：)([\s\S]+)$/); return m ? `<b class="ml">${linkify(m[1], links)}${esc(m[2].trimEnd())}</b>${m[2] === '：' ? '' : ' '}${linkify(m[3], links)}` : linkify(x, links); };
+  const flush = () => { if (li) out.push(`<ul class="mlist">${li.join('')}</ul>`); li = null; };
+  for (const x of descLines(s)) {
+    if (BUL.test(x)) { (li ??= []).push(`<li>${lab(x.replace(BUL, ''))}</li>`); continue; }
+    flush();
+    out.push(/[:：]$/.test(x) && x.length <= 40 ? `<p class="mh">${linkify(x.replace(/[\s\u00a0]*[:：]$/, ''), links)}</p>` : `<p class="${out.length ? 'mp' : 'mlead'}">${linkify(x, links)}</p>`);
+  }
+  flush(); return out.join('');
+}
 const navRow = (i, n) => n > 1 ? `<div class="mrow navrow"><button class="navbtn" data-nav="-1" aria-label="${esc(t('prev'))}">←</button><span class="counter">${i + 1} / ${n}</span><button class="navbtn" data-nav="1" aria-label="${esc(t('next'))}">→</button></div>` : '';
 function wireNav() { mbox.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => modalNav?.(+b.dataset.nav)); }
 function linkify(text, links) { let h = esc(text); for (const [name, url] of Object.entries(links || {})) h = h.split(esc(name)).join(`<a href="${esc(url)}" target="_blank" rel="noopener" style="color:#ffd59a;text-decoration:underline;text-underline-offset:3px">${esc(name)}</a>`); return h; }
@@ -2842,7 +2867,7 @@ function openVideo(i) {
   else if (driveId(v.drive)) { media = `<div class="media"><iframe src="${drivePreview(driveId(v.drive))}" title="${ttl}" allow="autoplay; fullscreen"></iframe></div>`; act = `<div class="mrow"><a href="https://drive.google.com/file/d/${encodeURIComponent(driveId(v.drive))}/view" target="_blank" rel="noopener" class="counter">Google Drive ↗</a></div>`; }
   else if (v.poster) media = `<div class="media"><img alt="${ttl}" src="${esc(v.poster)}"><span class="soon">${esc(L(v.soon) || t('videoSoon'))}</span></div>`;
   else media = mediaPlaceholder(L(v.title), L(v.subtitle), hueOf(i), L(v.soon) || t('videoSoon'));
-  openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), { stage: media, info: `${descP(linkify(L(v.desc), v.links), 'white-space:pre-line')}${tags(v.tools)}${act}${navRow(i, n)}` }, d => openVideo((i + d + n) % n), { ar: v.portrait ? 9 / 16 : 16 / 9, cls: 'video' + (v.portrait ? '' : ' nosplit') });   // as big as the window allows: the text gives way first
+  openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), { stage: media, info: `${descP(richDesc(L(v.desc), v.links))}${tags(v.tools)}${act}${navRow(i, n)}` }, d => openVideo((i + d + n) % n), { ar: v.portrait ? 9 / 16 : 16 / 9, cls: 'video' + (v.portrait ? '' : ' nosplit') });   // as big as the window allows: the text gives way first
   if ($('.media iframe, .media video', mbox)) SOUND.setDuck(0);   // the video's own sound only
   wireNav();
 }
@@ -2906,7 +2931,7 @@ function openGameInfo(i) {
   const small = Math.min(innerWidth, innerHeight) < 560, ext = !!g.url && (small || !gamePlayable(g));
   const play = !g.url ? '' : ext ? `<a class="btn primary" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('playBtn'))} ↗</a>` : `<button class="btn primary" id="gip">${esc(t('playBtn'))}</button>`;
   openModal(`03 · ${esc(t('gamesKicker'))} · ${i + 1}/${n}${g.year ? ' · ' + esc(g.year) : ''}`, L(g.title), {
-    info: `<div class="gabout g-${k}"><span class="glogo" aria-hidden="true">${GAME_LOGO[k]}</span><div class="gatxt"><p class="mdesc" style="white-space:pre-line">${esc(L(g.desc))}</p><div class="mrow">${play}<button class="btn ghost" id="gib">${esc(t('backGames'))}</button></div></div></div>`
+    info: `<div class="gabout g-${k}"><span class="glogo" aria-hidden="true">${GAME_LOGO[k]}</span><div class="gatxt"><div class="mdesc">${richDesc(L(g.desc))}</div><div class="mrow">${play}<button class="btn ghost" id="gib">${esc(t('backGames'))}</button></div></div></div>`
   }, null, { cls: 'pick' });
   const p = $('#gip'); if (p) p.onclick = () => openGames(i);
   $('#gib').onclick = () => openGames();
@@ -2921,7 +2946,7 @@ function openWall(key) {
   const media = isClip(it.src) ? `<video src="${esc(it.src)}" autoplay loop muted playsinline></video>` : `<img alt="${esc(L(it.title))}" src="${esc(it.src)}">`;
   openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), {
     stage: `<div class="media photo">${media}</div>`,
-    info: `${descP(esc(L(it.desc)))}<div class="mrow"><button class="btn ghost sm" id="phfs">${esc(t('fullscreen'))}</button>${it.game != null ? `<button class="btn primary sm" data-act="game" data-i="${it.game}">${esc(t('playFriend'))}</button>` : ''}</div>${navRow(i, a.length)}`
+    info: `${descP(richDesc(L(it.desc)))}<div class="mrow"><button class="btn ghost sm" id="phfs">${esc(t('fullscreen'))}</button>${it.game != null ? `<button class="btn primary sm" data-act="game" data-i="${it.game}">${esc(t('playFriend'))}</button>` : ''}</div>${navRow(i, a.length)}`
   }, d => openWall((i + d + a.length) % a.length), { ar: arCache.get(it.src) || 1.5 });
   const m = $('.media.photo > *', mbox), fitAr = (w, h) => clamp(w / h, .45, 2.8);
   const setAr = () => { const w = m.naturalWidth || m.videoWidth, h = m.naturalHeight || m.videoHeight; if (!w || !h || !m.isConnected) return; const ar = fitAr(w, h); arCache.set(it.src, ar); if (Math.abs((parseFloat(mbox.style.getPropertyValue('--ar')) || 0) - ar) > .004) { mbox.style.setProperty('--ar', String(ar)); fitModal(); } };
@@ -2934,14 +2959,14 @@ function openImage(i) {
   const g = CONTENT.gallery[i]; if (g?.src && wallPhotos().some(w => w.src === g.src)) return openWall(g.src);
   const a = CONTENT.gallery, it = a[i]; if (!it) return;
   const src = it.src ? esc(it.src) : artURL(L(it.title), 'Blender', hueOf(i), 1280, 720);
-  openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), { stage: `<div class="media"><img alt="${esc(L(it.title))}" src="${src}"></div>`, info: `${descP(esc(L(it.desc)))}${navRow(i, a.length)}` }, d => openImage((i + d + a.length) % a.length));
+  openModal(`05 · ${esc(t('galleryKicker'))} · ${i + 1}/${a.length}`, L(it.title), { stage: `<div class="media"><img alt="${esc(L(it.title))}" src="${src}"></div>`, info: `${descP(richDesc(L(it.desc)))}${navRow(i, a.length)}` }, d => openImage((i + d + a.length) % a.length));
   wireNav();
 }
 function openNow(i) {
   const n = CONTENT.now[i]; if (!n) return; const N = CONTENT.now.length;
   const media = n.media ? (isClip(n.media) ? `<div class="media"><video src="${esc(n.media)}" autoplay loop muted playsinline></video></div>` : `<div class="media"><img alt="" src="${esc(n.media)}"></div>`)
     : mediaPlaceholder(L(n.title), L(n.status), hueOf(i + 5), t('gifSoon'));
-  openModal(`04 · ${esc(t('nowTitle'))} · ${esc(L(n.status))}`, L(n.title), { stage: media, info: `${descP(esc(realText(n.desc)))}${navRow(i, N)}` }, d => openNow((i + d + N) % N));
+  openModal(`04 · ${esc(t('nowTitle'))} · ${esc(L(n.status))}`, L(n.title), { stage: media, info: `${descP(richDesc(realText(n.desc)))}${navRow(i, N)}` }, d => openNow((i + d + N) % N));
   wireNav();
 }
 /* ── document reader: click the left half of the page = previous, the right half = next (also ← → keys, swipe, fullscreen) ── */
@@ -2956,7 +2981,7 @@ function openPaper(i) {
   const strip = pages.map((_, j) => `<img alt="${esc(t('page'))} ${j + 1}" src="${pageSrc(j)}" draggable="false" decoding="async" ${j < 3 ? 'fetchpriority="high"' : ''}>`).join('');
   openModal(`02 · ${esc(d.kind === 'paper' ? t('paper') : t('slides'))}`, L(d.title), {
     stage: `<div class="media doc${d.portrait ? ' tall' : ''}" id="pgw"><div class="pages" id="pgs" tabindex="0">${strip}</div><span class="pgz l" aria-hidden="true">‹</span><span class="pgz r" aria-hidden="true">›</span>${pageHintSeen ? '' : `<span class="pghint">${esc(t(matchMedia('(hover: none)').matches ? 'pageHintTap' : 'pageHint'))}</span>`}</div>`,
-    info: `${descP(esc(L(d.desc)))}<div class="mrow"><button class="btn ghost sm" id="pfs">${esc(t('fullscreen'))}</button>${d.pdf && !IN_ARTIFACT ? `<a class="btn ghost sm" href="${esc(d.pdf)}" target="_blank" rel="noopener">${esc(t('openPdf'))}</a>` : ''}</div>
+    info: `${descP(richDesc(L(d.desc)))}<div class="mrow"><button class="btn ghost sm" id="pfs">${esc(t('fullscreen'))}</button>${d.pdf && !IN_ARTIFACT ? `<a class="btn ghost sm" href="${esc(d.pdf)}" target="_blank" rel="noopener">${esc(t('openPdf'))}</a>` : ''}</div>
      <div class="mrow navrow"><button class="navbtn" id="pp" aria-label="${esc(t('prev'))}">←</button><span class="counter" id="pc" aria-live="polite"></span><button class="navbtn" id="pn" aria-label="${esc(t('next'))}">→</button></div>`
   }, dd => go(k + dd), { ar: d.portrait ? 1275 / 1650 : 16 / 9 });
   pageHintSeen = true;
@@ -2981,22 +3006,22 @@ function openPaper(i) {
 // unwritten template texts in content.js ("Placeholder…") are never shown: the about window falls back to the intro line, a project simply gets no text
 const realText = v => { const s = L(v); return /^\s*(placeholder|texte provisoire|bio provisoire|占位)/i.test(s) ? '' : s; };
 function openAbout() {
-  openModal(`◎ ${esc(t('about'))}`, CONTENT.name, `<p class="mdesc big">${esc(realText(CONTENT.about) || L(CONTENT.intro))}</p><p class="mdesc" style="color:var(--dim)">${esc(L(CONTENT.role))} · ${esc(L(CONTENT.location))}</p><div class="links" style="justify-content:flex-start;margin:16px 0 0">${contactLinks()}</div>`, null, { cls: 'text' });
+  openModal(`◎ ${esc(t('about'))}`, CONTENT.name, `<div class="mdesc big">${richDesc(realText(CONTENT.about) || L(CONTENT.intro))}<ul class="mlist dim"><li>${esc(L(CONTENT.role))}</li><li>${esc(L(CONTENT.location))}</li></ul></div><div class="links" style="justify-content:flex-start;margin:18px 0 0">${contactLinks()}</div>`, null, { cls: 'text read' });
 }
 
 /* ════════════════════════ index view (classic, accessible) ════════════════════════ */
 const idx = $('#index');
 function buildIndex() {
   const C = CONTENT;
-  const tile = (act, i, img, title, sub) => `<button class="tile" data-act="${act}" data-i="${i}"><img alt="" loading="lazy" src="${img}"><span class="meta"><b>${esc(title)}</b><span>${esc(sub)}</span></span></button>`;
+  const tile = (act, i, img, title, sub, desc) => `<button class="tile" data-act="${act}" data-i="${i}"><img alt="" loading="lazy" src="${img}"><span class="meta"><b>${esc(title)}</b><span>${esc(sub)}</span>${descLead(desc) ? `<span class="tl">${esc(descLead(desc))}</span>` : ''}</span></button>`;
   idx.innerHTML = `<div class="wrap">
     <div class="kicker">${esc(t('index'))}</div><h1 id="idx-title">${esc(C.name)}</h1><p class="lead">${esc(L(C.intro))} <br><span style="font-size:13px">${esc(L(C.role))}</span></p>
     <div class="cta" style="justify-content:flex-start"><button class="btn primary" id="backTour">${esc(t('backTour'))}</button><button class="btn ghost" data-act="about">${esc(t('aboutMe'))}</button></div>
-    <section><h2>01 · ${esc(t('vrKicker'))}</h2><div class="grid">${C.videos.map((v, i) => tile('video', i, v.poster ? esc(v.poster) : artURL(L(v.title), L(v.subtitle), hueOf(i)), L(v.title), L(v.subtitle))).join('')}</div></section>
-    <section><h2>02 · ${esc(t('papersKicker'))}</h2><div class="grid">${C.papers.map((d, i) => tile('paper', i, d.pages?.[0] ? esc(d.pages[0]) : artURL(L(d.title), d.kind === 'paper' ? t('paper') : t('slides'), hueOf(i + 3)), L(d.title), d.kind === 'paper' ? t('paper') : t('slides'))).join('')}</div></section>
-    <section><h2>03 · ${esc(t('gamesKicker'))}</h2><div class="grid">${C.games.map((g, i) => tile('game', i, g.poster ? esc(g.poster) : artURL(L(g.title), t('play'), hueOf(i + 1)), L(g.title), (g.kind === 'pygame' || g.kind === 'web') ? t('playBrowser') : t('newTab'))).join('')}</div></section>
-    <section><h2>04 · ${esc(t('nowTitle'))}</h2><div class="grid">${C.now.map((n, i) => tile('now', i, n.media && !/\.(mp4|webm)$/i.test(n.media) ? esc(n.media) : artURL(L(n.title), L(n.status), hueOf(i + 5)), L(n.title), L(n.status))).join('')}</div></section>
-    <section><h2>05 · ${esc(t('galleryKicker'))}</h2><div class="grid">${wallPhotos().map((w, i) => tile('wall', i, esc(w.poster || w.src), L(w.title), /\.(mp4|webm)$/i.test(w.src) ? 'GIF' : t('photo'))).join('')}</div></section>
+    <section><h2>01 · ${esc(t('vrKicker'))}</h2><div class="grid">${C.videos.map((v, i) => tile('video', i, v.poster ? esc(v.poster) : artURL(L(v.title), L(v.subtitle), hueOf(i)), L(v.title), L(v.subtitle), L(v.desc))).join('')}</div></section>
+    <section><h2>02 · ${esc(t('papersKicker'))}</h2><div class="grid">${C.papers.map((d, i) => tile('paper', i, d.pages?.[0] ? esc(d.pages[0]) : artURL(L(d.title), d.kind === 'paper' ? t('paper') : t('slides'), hueOf(i + 3)), L(d.title), d.kind === 'paper' ? t('paper') : t('slides'), L(d.desc))).join('')}</div></section>
+    <section><h2>03 · ${esc(t('gamesKicker'))}</h2><div class="grid">${C.games.map((g, i) => tile('game', i, g.poster ? esc(g.poster) : artURL(L(g.title), t('play'), hueOf(i + 1)), L(g.title), (g.kind === 'pygame' || g.kind === 'web') ? t('playBrowser') : t('newTab'), L(g.desc))).join('')}</div></section>
+    <section><h2>04 · ${esc(t('nowTitle'))}</h2><div class="grid">${C.now.map((n, i) => tile('now', i, n.media && !/\.(mp4|webm)$/i.test(n.media) ? esc(n.media) : artURL(L(n.title), L(n.status), hueOf(i + 5)), L(n.title), L(n.status), realText(n.desc))).join('')}</div></section>
+    <section><h2>05 · ${esc(t('galleryKicker'))}</h2><div class="grid">${wallPhotos().map((w, i) => tile('wall', i, esc(w.poster || w.src), L(w.title), /\.(mp4|webm)$/i.test(w.src) ? 'GIF' : t('photo'), L(w.desc))).join('')}</div></section>
     <section><h2>06 · ${esc(t('contact'))}</h2><div class="links" style="justify-content:flex-start">${contactLinks()}</div></section>
     ${`<p class="credits">Car model: “Car Concept” by the Khronos Group, based on a public-domain model by Unity Fan — <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, logos removed, materials changed. 3D: three.js.</p>`}
   </div>`;
@@ -3123,7 +3148,13 @@ function frame(now) {
   const inRoom = p >= 0.565;
   active = inRoom ? 'room' : 'city';
   let wpos = null, roll = 0;
-  if (!inRoom) { wpos = walkerPos(p); roll = sample(K_CITY, p, camPos, camLook, wpos); }
+  if (!inRoom) {
+    wpos = walkerPos(p);
+    // once you are out of the window, the rise eases its anchor back to where the flyover expects the car (the car itself keeps
+    // driving): however long you stayed inside, the climb into the city is the same smooth arc
+    const ex = smooth(clamp((p - .142) / .014, 0, 1)), zMin = 70 - 165; if (ex > 0 && wpos.z < zMin) wpos.z += (zMin - wpos.z) * ex;
+    roll = sample(K_CITY, p, camPos, camLook, wpos);
+  }
   else {
     roll = sample(K_ROOM, p, camPos, camLook);
     // portrait / narrow screens: step back along the view line so each stop still fits, but stay inside the room
@@ -3241,7 +3272,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 scrollTo(0, 0); addEventListener('pageshow', () => { scrollTo(0, 0); target = cur = 0; });
 setTimeout(() => { for (const d of CONTENT.papers) for (const src of d.pages || []) { const im = new Image(); im.decoding = 'async'; im.src = src; } }, 9000);
 addEventListener('message', e => { if (e.origin === location.origin && e.data?.ns === 'close-game' && !modal.hidden) closeModal(); });
-window.__setLang = setLang; window.__portfolio = { sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { target = cur = prevP = p; scrollTo(0, p2s(p)); }, state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
+window.__setLang = setLang; window.__portfolio = { drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { target = cur = prevP = p; scrollTo(0, p2s(p)); }, state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
 
 // QA test hook (read-only): the pure camera path of the city part, without time effects (car parked at its 60 m stop)
 window.__portfolio.hot = (k, re) => { const h = hotspots[k].find(m => re.test(String(typeof m.userData.hot.label === 'function' ? m.userData.hot.label() : m.userData.hot.label))); h?.userData.hot.action(); return !!h; };

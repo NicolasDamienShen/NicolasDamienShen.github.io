@@ -96,6 +96,12 @@ body.panels-open .foldhead .chev{transform:rotate(180deg)}
 .kicker b{color:var(--mag);font-weight:600}
 h2{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:-.01em;margin:8px 0 6px;line-height:1.15}
 .side p{margin:0 0 12px;color:var(--dim);font-size:14.5px;line-height:1.5}
+.side .sdesc{margin:0 0 12px;color:var(--dim);font-size:14px;line-height:1.45}
+.side .sdesc p{margin:0;font-size:inherit}.side .sdesc .mlead{color:var(--ink)}
+.side .sdesc ul{list-style:none;margin:6px 0 0;padding:0}
+.side .sdesc li{position:relative;padding-left:15px;margin-top:3px}
+.side .sdesc li::before{content:"";position:absolute;left:3px;top:calc(.5lh - 2.5px);width:5px;height:5px;border-radius:50%;background:var(--cyan)}
+.side .sdesc .ml{color:var(--ink);font-weight:600}
 .list{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
 .item{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:12px;border:1px solid transparent;transition:.2s}
 .item:hover,.item:focus-visible{background:rgba(201,184,255,.07);border-color:rgba(201,184,255,.35)}
@@ -211,10 +217,21 @@ body.focused #tip{display:none}
 #modal .box.text{--bw:660px}
 #modal .box.cock{--bw:1500px;--W:calc(100vw - 2*var(--mpad))}
 #modal .box.play{--bw:1500px;--W:calc(100vw - 2*var(--mpad))}
-#modal .box.pick{--bw:900px}
+#modal .box.pick{--bw:1240px}
+@media (min-width:641px){
+#modal .box.pick .gcard{padding:clamp(24px,4vh,44px) 26px clamp(22px,3.5vh,38px)}
+#modal .box.pick .gcard .glogo{width:clamp(110px,26vh,240px)}
+#modal .box.pick .gcard .gnum{font-size:12.5px;margin-top:clamp(14px,2.4vh,24px)}
+#modal .box.pick .gcard .gname{font-size:clamp(22px,3.2vh,30px)}
+#modal .box.pick .gcard.g-charmed .gname{font-size:clamp(27px,3.9vh,37px)}
+#modal .box.pick .gcard .gline{font-size:clamp(14.5px,2vh,17.5px);max-width:34ch}
+#modal .box.pick .gcard .gplay{margin-top:clamp(14px,2.4vh,24px);font-size:15px;padding:10px 22px}
+#modal .box.pick .gwrap .ginfo{font-size:13px;padding:6px 13px;top:14px;right:14px}
+#modal .box.pick .gabout .glogo{width:clamp(110px,26vh,240px)}
+#modal .box.pick .gabout .mdesc{font-size:clamp(15px,2.1vh,18px)}}
 #modal .box.video{--bw:2400px;--W:calc(100vw - 2*var(--mpad));--side:clamp(220px,22vw,320px)}
 #modal .box.video:not(.split){width:var(--w);height:var(--H)}
-#modal .box.video:not(.split) .mstage{flex:1 1 auto;min-height:min(calc(var(--H) - 250px),calc(var(--sw) / var(--ar)))}
+#modal .box.video:not(.split) .mstage{flex:1 1 auto;min-height:min(calc(var(--H) - 250px),calc(var(--sw) / var(--ar)))}   /* the media gives up a little room so a few points of the text can show */
 #modal .box.video:not(.split):not(.nosplit) .mstage{min-height:min(calc(var(--H) - 280px),calc(var(--sw) / var(--ar)))}
 @media (max-width:640px){#modal .box.video:not(.split) .mstage,#modal .box.video:not(.split):not(.nosplit) .mstage{min-height:min(calc(var(--H) - 310px),calc(var(--sw) / var(--ar)))}}
 #modal .box.video:not(.split) .minfo{flex:none;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:14px;row-gap:6px}
@@ -222,6 +239,8 @@ body.focused #tip{display:none}
 #modal .box.video:not(.split) .minfo > *{margin-top:0;margin-bottom:0}
 #modal .box.video:not(.split) .navrow{margin-left:auto;padding-top:0}
 #modal .box.video:not(.split) .mdesc{font-size:14px;line-height:1.45}
+#modal .box.video:not(.split) .minfo > .more{border-bottom:0;text-decoration:underline dotted;text-underline-offset:3px}
+@media (min-width:900px){#modal .box.video:not(.split) .mdesc .mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));column-gap:30px}}
 @keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}}
 .mhead{flex:none;display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;min-width:0}
 .mhead .mtitle{min-width:0}
@@ -242,8 +261,10 @@ body.focused #tip{display:none}
 .box.reading .mstage{display:none}
 .box.reading .minfo{flex:1 1 auto;margin-top:0;overflow:hidden}
 .box.reading .navrow{margin-top:auto;padding-top:12px}
+#modal .box.reading:not(.tight) .mdesc{font-size:16.5px;line-height:1.6}   /* "more": the text has the whole window, so it can be bigger */
 .box.cock .minfo{order:1;margin:0 0 12px}.box.cock .mstage{order:2}
 .box.cock .mdesc{font-size:14.5px}
+@media (min-width:900px){.box.cock .mdesc .mlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:30px}}
 /* the voice demo takes all the room left in the window; if that gets small, the text above is clamped ("more") */
 #modal .box.cock{width:var(--w);height:min(var(--H),1000px)}
 .box.cock .mstage{flex:1 1 auto;min-height:min(480px,calc(var(--H) - 150px));container-type:normal;display:block}
@@ -272,6 +293,29 @@ body.focused #tip{display:none}
 .box.tight .mdesc.big{font-size:14.5px;line-height:1.5}
 .box.tight .mdesc{font-size:14px;line-height:1.45}
 .clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--lines,3);overflow:hidden}
+/* descriptions: a short lead line, then one fact per bullet ("Label: text" = bold label) */
+.mdesc > :first-child{margin-top:0}
+.mdesc .mlead{margin:0;color:#f1eeff;font-weight:500}
+.mdesc .mp{margin:.55em 0 0}
+.mdesc .mh{margin:.9em 0 0;font-family:var(--mono);font-size:max(11.5px,.74em);letter-spacing:.14em;text-transform:uppercase;color:var(--amb)}
+.mdesc .mlist{list-style:none;margin:.4em 0 0;padding:0}
+.mdesc .mh + .mlist{margin-top:.2em}
+:lang(zh) .mdesc .mh{font-family:inherit;font-size:.86em;letter-spacing:.06em;font-weight:600}
+.mdesc .mlist li{position:relative;margin:.3em 0 0;padding-left:1.15em}
+.mdesc .mlist li::before{content:"";position:absolute;left:.18em;top:calc(.5lh - .19em);width:.38em;height:.38em;border-radius:50%;background:var(--cyan);opacity:.9}
+.mdesc .ml{color:#fff;font-weight:600}
+.mdesc .mlist.dim{color:var(--dim)}
+.mdesc .mlist.dim li::before{background:var(--dim)}
+.mdesc .cut{display:none!important}
+/* the bigger, easier reading pop-ups (Henry, about) */
+#modal .box.read{--bw:780px}
+.box.read .mhead h3{font-size:clamp(22px,2.6vw,28px)}
+.box.read .mdesc.big{font-size:clamp(16px,.55vw + 11px,19px);line-height:1.6;color:#e6e2fb}
+.box.read .mdesc.big .mlead{font-size:1.06em;line-height:1.5}
+.box.read .mdesc.big .mlist li{margin-top:.38em}
+.box.read .mdesc.big .mlead + .mlist{margin-top:.6em}
+.box.henry .mdesc.big .mp{margin-top:1em;color:var(--dim);font-size:.94em}
+.box.tight.read .mdesc.big{font-size:15.5px;line-height:1.5}
 .more{all:unset;cursor:pointer;align-self:flex-start;margin-top:4px;font-family:var(--mono);font-size:12px;color:var(--amb);border-bottom:1px dotted currentColor}
 .more[hidden]{display:none}
 .more:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
@@ -289,7 +333,7 @@ body.focused #tip{display:none}
 .gwrap .ginfo{position:absolute;top:10px;right:10px;z-index:2;padding:5px 11px;font-size:12px;background:rgba(10,8,24,.55)}
 .gabout{display:flex;gap:26px;align-items:center;min-height:0}.gabout .glogo{width:clamp(90px,20vh,170px);aspect-ratio:1;flex:none;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
 .gabout .gatxt{min-width:0;flex:1}.gabout .mdesc{font-size:15px;line-height:1.55;margin:0 0 14px}
-@media (max-width:560px){.gabout{flex-direction:column;gap:12px;text-align:center}.gabout .glogo{width:clamp(70px,16vh,110px)}.gabout .mrow{justify-content:center}.gwrap .ginfo{top:auto;bottom:10px}}
+@media (max-width:560px){.gabout{flex-direction:column;gap:12px;text-align:center}.gabout .mdesc{text-align:left}.gabout .glogo{width:clamp(70px,16vh,110px)}.gabout .mrow{justify-content:center}.gwrap .ginfo{top:auto;bottom:10px}}
 .gpick{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-height:0}
 .gcard{all:unset;box-sizing:border-box;cursor:pointer;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 22px 22px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.035);transition:border-color .2s,transform .2s,box-shadow .2s,background .2s}
 .gcard.g-gravity{--gc:#6fb8ff;background:linear-gradient(160deg,rgba(63,140,255,.13),rgba(160,90,255,.1))}
@@ -353,6 +397,7 @@ body.focused #tip{display:none}
 .tile .meta{padding:12px 14px}
 .tile .meta b{display:block;font-size:15px}
 .tile .meta span{font-size:12.5px;color:var(--dim)}
+.tile .meta .tl{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:6px;font-size:13px;line-height:1.4;color:#cfc8ee}
 
 /* loader */
 #loader{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;transition:opacity .6s}

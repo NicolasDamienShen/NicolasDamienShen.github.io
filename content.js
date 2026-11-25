@@ -39,18 +39,18 @@ export const CONTENT = {
       subtitle: { en: "Blender · 2022", fr: "Blender · 2022", zh: "Blender · 2022" },
       youtube: "", drive: "https://drive.google.com/file/d/1592xPGiZ7LJzdpEYvS-xrRU4Rhx-dZ5x/view", video: "", poster: "media/dronecity.jpg", soon: { en: "VIDEO COMING SOON", fr: "VIDÉO BIENTÔT", zh: "视频即将上线" },
       desc: {
-        en: "My biggest Blender project (2022): a fictional city patrolled by drones, inspired by the last Divergent film. Built, lit, animated and rendered in Blender.",
-        fr: "Mon plus grand projet Blender (2022) : une ville imaginaire patrouillée par des drones, inspirée du dernier film de la saga Divergente. Modélisée, éclairée, animée et rendue dans Blender.",
-        zh: "我规模最大的 Blender 项目（2022）：一座由无人机巡逻的虚构城市，灵感来自《分歧者》系列的最后一部电影。在 Blender 中完成建模、灯光、动画与渲染。"
+        en: "My biggest Blender project.\n• Year: 2022\n• A fictional city patrolled by drones\n• Inspired by the last Divergent film\n• Built, lit, animated and rendered in Blender",
+        fr: "Mon plus grand projet Blender.\n• Année : 2022\n• Une ville imaginaire patrouillée par des drones\n• Inspirée du dernier film de la saga Divergente\n• Modélisée, éclairée, animée et rendue dans Blender",
+        zh: "我规模最大的 Blender 项目。\n• 年份：2022\n• 一座由无人机巡逻的虚构城市\n• 灵感来自《分歧者》系列的最后一部电影\n• 在 Blender 中完成建模、灯光、动画与渲染"
       },
       tools: ["Blender", "3D", "Animation"] },
     { title: { en: "Temporal Echoes", fr: "Temporal Echoes", zh: "Temporal Echoes" },
       subtitle: { en: "CAVE VR · time & dance · 2024", fr: "CAVE VR · temps & danse · 2024", zh: "CAVE VR · 时间与舞蹈 · 2024" },
       portrait: true, youtube: "", drive: "https://drive.google.com/file/d/1gQqoQ4cCsuxnyJJB91L0geiyQYd4C0Vk/view", video: "", poster: "media/temporal.jpg", soon: { en: "VIDEO COMING SOON", fr: "VIDÉO BIENTÔT", zh: "视频即将上线" },
       desc: {
-        en: "A CAVE VR piece about time and dance, with Jignesh Bhatt at UTC (API RV01, July 2024). Your moves come back seconds later as glowing RGB echoes: you dance with your past self. A nod to the 007 spotlight titles.",
-        fr: "Une expérience VR en CAVE sur le temps et la danse, avec Jignesh Bhatt à l'UTC (API RV01, juillet 2024). Vos gestes reviennent quelques secondes plus tard en échos RVB lumineux : vous dansez avec votre moi passé. Clin d'œil aux projecteurs des génériques de 007.",
-        zh: "关于时间与舞蹈的 CAVE VR 作品，与 Jignesh Bhatt 在 UTC 完成（API RV01，2024 年 7 月）。你的动作几秒后化作发光的 RGB“回声”：你在和过去的自己共舞。致敬 007 片头的聚光灯。"
+        en: "A CAVE VR piece about time and dance.\n• With: Jignesh Bhatt\n• Where: UTC · API RV01 · July 2024\n• Your moves come back seconds later as glowing RGB echoes\n• You dance with your past self\n• A nod to the 007 spotlight titles",
+        fr: "Une expérience VR en CAVE sur le temps et la danse.\n• Avec : Jignesh Bhatt\n• Où : UTC · API RV01 · juillet 2024\n• Vos gestes reviennent quelques secondes plus tard en échos RVB lumineux\n• Vous dansez avec votre moi passé\n• Clin d'œil aux projecteurs des génériques de 007",
+        zh: "关于时间与舞蹈的 CAVE VR 作品。\n• 合作：Jignesh Bhatt\n• 地点：UTC · API RV01 · 2024 年 7 月\n• 你的动作几秒后化作发光的 RGB“回声”\n• 你在和过去的自己共舞\n• 致敬 007 片头的聚光灯"
       },
       tools: ["CAVE", "Motion capture", "Unity", "Dance", "HMI"] },
     { title: { en: "La Forêt Virtuelle", fr: "La Forêt Virtuelle", zh: "虚拟森林" },
@@ -58,18 +58,18 @@ export const CONTENT = {
       youtube: "https://www.youtube.com/watch?v=Evb4mRWAgO0", video: "", poster: "media/foret.jpg",
       links: { "Boris Labbé": "https://www.borislabbe.com/", "Indira Thouvenin": "https://www.linkedin.com/in/indiravirtualreality/" },
       desc: {
-        en: "A 6-month RV01 project at UTC (2025) with the artist Boris Labbé, supervised by Indira Thouvenin. In the Heudiasyc CAVE, light and sound tell a forest's secret stories. Let the drone guide you.\n\nVideo and VR software: Lise Leclef & Nicolas Shen.",
-        fr: "Un projet RV01 de 6 mois à l'UTC (2025) avec l'artiste Boris Labbé, encadré par Indira Thouvenin. Dans le CAVE d'Heudiasyc, lumières et sons racontent les secrets d'une forêt. Laissez le drone vous guider.\n\nVidéo et logiciel VR : Lise Leclef & Nicolas Shen.",
-        zh: "UTC RV01 课程 6 个月的项目（2025），与艺术家 Boris Labbé 合作，由 Indira Thouvenin 指导。在 Heudiasyc 的 CAVE 里，光与声讲述森林的秘密。跟着无人机走吧。\n\n视频与 VR 软件：Lise Leclef & Nicolas Shen。"
+        en: "A forest's secret stories, told by light and sound. Let the drone guide you.\n• With: the artist Boris Labbé\n• Supervised by: Indira Thouvenin\n• Course: RV01 at UTC · 6 months · 2025\n• Where: the Heudiasyc CAVE\n• Video & VR software: Lise Leclef & Nicolas Shen",
+        fr: "Lumières et sons racontent les secrets d'une forêt. Laissez le drone vous guider.\n• Avec : l'artiste Boris Labbé\n• Encadrement : Indira Thouvenin\n• Cours : RV01 à l'UTC · 6 mois · 2025\n• Lieu : le CAVE d'Heudiasyc\n• Vidéo et logiciel VR : Lise Leclef & Nicolas Shen",
+        zh: "光与声讲述森林的秘密。跟着无人机走吧。\n• 合作：艺术家 Boris Labbé\n• 指导：Indira Thouvenin\n• 课程：UTC RV01 · 6 个月 · 2025\n• 地点：Heudiasyc 的 CAVE\n• 视频与 VR 软件：Lise Leclef & Nicolas Shen"
       },
       tools: ["VR", "CAVE", "Motion capture", "Stereo 3D", "Robotics", "Spatial sound", "HMI"] },
     { title: { en: "EarWeGo", fr: "EarWeGo", zh: "EarWeGo" },
       subtitle: { en: "Under construction · 2026–2027", fr: "En construction · 2026–2027", zh: "建设中 · 2026–2027" },
       youtube: "", video: "", poster: "media/earwego.jpg", soon: { en: "UNDER CONSTRUCTION · 2026–2027", fr: "EN CONSTRUCTION · 2026–2027", zh: "建设中 · 2026–2027" },
       desc: {
-        en: "Hum in the car, get real music back. I lead this AI music assistant at Desay SV (Advanced Research): Qwen2.5-Omni-7B + LoRA, fully local. Humming becomes Strudel code; one sentence edits it (\"add drums\"). Internal prototype, paper in preparation.",
-        fr: "Fredonnez en voiture, la musique vous répond. Je dirige cet assistant musical IA chez Desay SV (Recherche avancée) : Qwen2.5-Omni-7B + LoRA, 100 % local. Le fredonnement devient du code Strudel, modifiable en une phrase (« ajoute de la batterie »). Prototype interne, article en préparation.",
-        zh: "在车里哼一段，就能变成真正的音乐。我在德赛西威前瞻研究部主导这个 AI 音乐助手：Qwen2.5-Omni-7B + LoRA，完全本地运行。哼唱变成 Strudel 代码，一句话就能改（“加鼓”）。内部原型，论文准备中。"
+        en: "An AI music assistant: hum in the car, get real music back.\n• My role: I lead it at Desay SV (Advanced Research)\n• Model: Qwen2.5-Omni-7B + LoRA, fully local\n• Humming becomes Strudel code\n• One sentence edits it (\"add drums\")\n• Status: internal prototype, paper in preparation",
+        fr: "Un assistant musical IA : fredonnez en voiture, la musique vous répond.\n• Mon rôle : je le dirige chez Desay SV (Recherche avancée)\n• Modèle : Qwen2.5-Omni-7B + LoRA, 100 % local\n• Le fredonnement devient du code Strudel\n• Modifiable en une phrase (« ajoute de la batterie »)\n• Statut : prototype interne, article en préparation",
+        zh: "AI 音乐助手：在车里哼一段，就能变成真正的音乐。\n• 我的角色：在德赛西威前瞻研究部主导\n• 模型：Qwen2.5-Omni-7B + LoRA，完全本地运行\n• 哼唱变成 Strudel 代码\n• 一句话就能改（“加鼓”）\n• 状态：内部原型，论文准备中"
       },
       tools: ["Qwen2.5-Omni", "LoRA", "Audio", "Strudel", "HMI"] },
   ],
@@ -78,24 +78,24 @@ export const CONTENT = {
   papers: [
     { title: { en: "Temporal Echoes · project pitch", fr: "Temporal Echoes · présentation", zh: "Temporal Echoes · 项目提案" }, kind: "slides",
       pages: Array.from({ length: 7 }, (_, i) => `media/slides/te/p-${i + 1}.jpg`), pdf: "media/pdf/temporal-echoes.pdf",
-      desc: { en: "The pitch for Temporal Echoes (API RV01, July 2024), with Jignesh Bhatt: the idea, how moves are buffered and replayed as echoes, and the four-day plan.",
-              fr: "La présentation de Temporal Echoes (API RV01, juillet 2024), avec Jignesh Bhatt : l'idée, comment les mouvements sont mémorisés puis rejoués en échos, et le plan sur quatre jours.",
-              zh: "Temporal Echoes 的项目提案（API RV01，2024 年 7 月），与 Jignesh Bhatt 合作：创意、动作如何缓存并延时重放成“回声”，以及四天的计划。" } },
+      desc: { en: "The pitch for Temporal Echoes.\n• With: Jignesh Bhatt · API RV01 · July 2024\n• The idea\n• How moves are buffered and replayed as echoes\n• The four-day plan",
+              fr: "La présentation de Temporal Echoes.\n• Avec : Jignesh Bhatt · API RV01 · juillet 2024\n• L'idée\n• Comment les mouvements sont mémorisés puis rejoués en échos\n• Le plan sur quatre jours",
+              zh: "Temporal Echoes 的项目提案。\n• 合作：Jignesh Bhatt · API RV01 · 2024 年 7 月\n• 创意\n• 动作如何缓存并延时重放成“回声”\n• 四天的计划" } },
     { title: { en: "Choosing an avatar · CAVE pre-study", fr: "Aide aux choix d'avatar · pré-étude CAVE", zh: "虚拟化身选择 · CAVE 预研究" }, kind: "paper", portrait: true,
       pages: Array.from({ length: 8 }, (_, i) => `media/slides/av/p-${i + 1}.jpg`), pdf: "media/pdf/aide-choix-avatar.pdf",
-      desc: { en: "My first HMI work, in the Heudiasyc CAVE (2025), supervised by Indira Thouvenin and Yohan Bouvet. For Mattéo's PhD AVATOUCH (two linked CAVEs): how should you see yourself? Full OptiTrack suit or six trackers? I built six views to compare. MiddleVR, Motive, Unity.",
-              fr: "Mon premier travail d'IHM, dans le CAVE d'Heudiasyc (2025), encadré par Indira Thouvenin et Yohan Bouvet. Pour la thèse AVATOUCH de Mattéo (deux CAVE reliés) : comment se voir soi-même ? Combinaison OptiTrack complète ou six constellations ? J'ai construit six vues pour comparer. MiddleVR, Motive, Unity.",
-              zh: "我在 Heudiasyc CAVE 的第一项人机交互工作（2025），由 Indira Thouvenin 和 Yohan Bouvet 指导。为 Mattéo 的博士课题 AVATOUCH（连接两个 CAVE）做前期研究：人该如何看到自己？完整的 OptiTrack 动捕服，还是六组追踪器？我做了六种视角来比较。MiddleVR、Motive、Unity。" } },
+      desc: { en: "My first HMI work: how should you see yourself?\n• Supervised by: Indira Thouvenin, Yohan Bouvet (Heudiasyc CAVE, 2025)\n• For: Mattéo's PhD AVATOUCH (two linked CAVEs)\n• Full OptiTrack suit or six trackers?\n• What I did: six views to compare\n• Tools: MiddleVR, Motive, Unity",
+              fr: "Mon premier travail d'IHM : comment se voir soi-même ?\n• Encadrement : Indira Thouvenin, Yohan Bouvet (CAVE d'Heudiasyc, 2025)\n• Pour : la thèse AVATOUCH de Mattéo (deux CAVE reliés)\n• Combinaison OptiTrack complète ou six constellations ?\n• Mon travail : six vues pour comparer\n• Outils : MiddleVR, Motive, Unity",
+              zh: "我的第一项人机交互工作：人该如何看到自己？\n• 指导：Indira Thouvenin、Yohan Bouvet（Heudiasyc CAVE，2025）\n• 用途：Mattéo 的博士课题 AVATOUCH（连接两个 CAVE）的前期研究\n• 完整的 OptiTrack 动捕服，还是六组追踪器？\n• 我的工作：做了六种视角来比较\n• 工具：MiddleVR、Motive、Unity" } },
     { title: { en: "La Forêt Virtuelle · RV01 defence", fr: "La Forêt Virtuelle · soutenance RV01", zh: "虚拟森林 · RV01 答辩" }, kind: "slides",
       pages: Array.from({ length: 12 }, (_, i) => `media/slides/fv/p-${String(i + 1).padStart(2, "0")}.jpg`), pdf: "media/pdf/foret-virtuelle-RV01.pdf",
-      desc: { en: "The final RV01 defence (UTC, autumn 2025), with Lise Leclef: a forest–drone–human ecosystem in the CAVE, built with Unity, OptiTrack and MiddleVR. Light becomes sound; the drone's trust depends on your distance.",
-              fr: "La soutenance finale de RV01 (UTC, automne 2025), avec Lise Leclef : un écosystème forêt–drone–humain dans le CAVE, avec Unity, OptiTrack et MiddleVR. La lumière devient son ; la confiance du drone dépend de votre distance.",
-              zh: "RV01 最终答辩（UTC，2025 年秋季学期），与 Lise Leclef 合作：CAVE 中的森林—无人机—人生态系统，用 Unity、OptiTrack 和 MiddleVR 搭建。光变成声音；无人机的信任取决于你离它多远。" } },
+      desc: { en: "The final RV01 defence: a forest–drone–human ecosystem in the CAVE.\n• With: Lise Leclef · UTC · autumn 2025\n• Tools: Unity, OptiTrack, MiddleVR\n• Light becomes sound\n• The drone's trust depends on your distance",
+              fr: "La soutenance finale de RV01 : un écosystème forêt–drone–humain dans le CAVE.\n• Avec : Lise Leclef · UTC · automne 2025\n• Outils : Unity, OptiTrack, MiddleVR\n• La lumière devient son\n• La confiance du drone dépend de votre distance",
+              zh: "RV01 最终答辩：CAVE 中的森林—无人机—人生态系统。\n• 合作：Lise Leclef · UTC · 2025 年秋季学期\n• 工具：Unity、OptiTrack、MiddleVR\n• 光变成声音\n• 无人机的信任取决于你离它多远" } },
     { title: { en: "SY31 · Guided mapping with a TurtleBot", fr: "SY31 · Cartographie guidée TurtleBot", zh: "SY31 · TurtleBot 引导式建图" }, kind: "slides",
       pages: Array.from({ length: 10 }, (_, i) => `media/slides/sy/p-${String(i + 1).padStart(2, "0")}.jpg`), pdf: "media/pdf/sy31-turtlebot.pdf",
-      desc: { en: "Mapping with a TurtleBot3 (UTC, SY31), with Anh Thi Huynh, supervised by Joëlle Al Hage. Lidar, camera, odometry and sonar, all live: the robot drives a full loop and maps it, despite measurement errors. Hardware and software on a real robot: really inspiring.",
-              fr: "Cartographie avec un TurtleBot3 (UTC, SY31), avec Anh Thi Huynh, encadré par Joëlle Al Hage. Lidar, caméra, odométrie et sonar, en temps réel : le robot fait un tour complet et le cartographie, malgré les erreurs de mesure. Matériel et logiciel sur un vrai robot : vraiment inspirant.",
-              zh: "用 TurtleBot3 建图（UTC，SY31），与 Anh Thi Huynh 合作，由 Joëlle Al Hage 指导。激光雷达、摄像头、里程计、声呐，全部实时处理：机器人走完一圈并画出地图，还要应对测量误差。软硬件结合，跑在真机器人上：非常有启发。" } },
+      desc: { en: "Mapping with a TurtleBot3.\n• With: Anh Thi Huynh\n• Supervised by: Joëlle Al Hage · SY31 at UTC\n• Live sensors: lidar, camera, odometry, sonar\n• A full loop, mapped despite measurement errors\n• Hardware + software on a real robot: really inspiring",
+              fr: "Cartographie avec un TurtleBot3.\n• Avec : Anh Thi Huynh\n• Encadrement : Joëlle Al Hage · SY31 à l'UTC\n• Capteurs en temps réel : lidar, caméra, odométrie, sonar\n• Un tour complet cartographié, malgré les erreurs de mesure\n• Matériel et logiciel sur un vrai robot : vraiment inspirant",
+              zh: "用 TurtleBot3 建图。\n• 合作：Anh Thi Huynh\n• 指导：Joëlle Al Hage · UTC SY31 课程\n• 实时传感器：激光雷达、摄像头、里程计、声呐\n• 机器人走完一圈并画出地图，还要应对测量误差\n• 软硬件结合，跑在真机器人上：非常有启发" } },
   ],
 
 
@@ -105,18 +105,18 @@ export const CONTENT = {
       title: { en: "Gravity Boy & Magic Gal", fr: "Gravity Boy & Magic Gal", zh: "Gravity Boy & Magic Gal" },
       kind: "pygame", url: "games/gravity-js/index.html", poster: "media/gravity.jpg", year: "2021",
       desc: {
-        en: "Covid times, 2021: made with my brother, inspired by Fireboy & Watergirl. Two players who only win together. Python and pygame, all by hand: made before the AI era, so every bug is 100% handwritten. 🐛 Blue: W A D · S flips gravity · E levers. Purple: arrows · ↓ portals · Enter levers. Each player reaches their own door.",
-        fr: "Covid, 2021 : créé avec mon frère, inspiré de Fireboy & Watergirl. Deux joueurs qui ne gagnent qu'ensemble. Python et pygame, tout à la main : fait avant l'ère de l'IA, donc chaque bug est 100 % artisanal. 🐛 Bleu : W A D · S inverse la gravité · E leviers. Violet : flèches · ↓ portails · Entrée leviers. Chacun rejoint sa propre porte.",
-        zh: "2021 年疫情期间和我哥哥一起做的，灵感来自《森林冰火人》。双人游戏，只有合作才能赢。Python 和 pygame 全手写：诞生于 AI 时代之前，所以每个 bug 都是纯手工的。🐛 蓝色：W A D · S 翻转重力 · E 拉杆。紫色：方向键 · ↓ 传送门 · 回车拉杆。两人各自走进自己的门。"
+        en: "Two players who only win together, each to their own door.\n• With my brother · Covid times, 2021\n• Inspired by Fireboy & Watergirl\n• Python + pygame, all by hand: made before the AI era, so every bug is 100% handwritten 🐛\n• Blue: W A D · S flips gravity · E levers\n• Purple: arrows · ↓ portals · Enter levers",
+        fr: "Deux joueurs qui ne gagnent qu'ensemble, chacun jusqu'à sa propre porte.\n• Avec mon frère · pendant le Covid, 2021\n• Inspiré de Fireboy & Watergirl\n• Python + pygame, tout à la main : fait avant l'ère de l'IA, donc chaque bug est 100 % artisanal 🐛\n• Bleu : W A D · S inverse la gravité · E leviers\n• Violet : flèches · ↓ portails · Entrée leviers",
+        zh: "双人游戏，只有合作才能赢，两人各自走进自己的门。\n• 和我哥哥一起做的 · 2021 年疫情期间\n• 灵感来自《森林冰火人》\n• Python + pygame 全手写：诞生于 AI 时代之前，所以每个 bug 都是纯手工的 🐛\n• 蓝色：W A D · S 翻转重力 · E 拉杆\n• 紫色：方向键 · ↓ 传送门 · 回车拉杆"
       }
     },
     {
       title: { en: "Forever Charmed (fan-made)", fr: "Forever Charmed (fan-made)", zh: "Forever Charmed（同人作品）" },
       kind: "web", url: "games/ashgrove/index.html", poster: "media/ashgrove.jpg", year: "2026",
       desc: {
-        en: "Inspired by Charmed (1998): a childhood dream, made in 2026. My experiment in making games with AI: a method and architecture built around AI's strengths and weaknesses, ergonomic controls, playtesting. Not finished yet. A full replica is coming, with the fan community's suggestions.",
-        fr: "Inspiré de Charmed (1998) : un rêve d'enfant, réalisé en 2026. Mon expérience de création de jeux avec l'IA : une méthode et une architecture pensées selon ses forces et ses faiblesses, des commandes ergonomiques, des tests de jeu. Pas encore fini. Une réplique complète arrive, avec les suggestions de la communauté de fans.",
-        zh: "灵感来自美剧《圣女魔咒》（Charmed，1998）：2026 年实现的童年梦想。也是我用 AI 做游戏的实验：围绕 AI 的长处和短板设计方法与架构，操作顺手，反复试玩。还没做完。完整复刻版即将到来，会采纳粉丝社区的建议。"
+        en: "Inspired by Charmed (1998): a childhood dream, made in 2026.\n• My experiment in making games with AI\n• A method and architecture built around AI's strengths and weaknesses\n• Ergonomic controls, playtesting\n• Not finished yet\n• Coming: a full replica, with the fan community's suggestions",
+        fr: "Inspiré de Charmed (1998) : un rêve d'enfant, réalisé en 2026.\n• Mon expérience de création de jeux avec l'IA\n• Une méthode et une architecture pensées selon ses forces et ses faiblesses\n• Des commandes ergonomiques, des tests de jeu\n• Pas encore fini\n• À venir : une réplique complète, avec les suggestions de la communauté de fans",
+        zh: "灵感来自美剧《圣女魔咒》（Charmed，1998）：2026 年实现的童年梦想。\n• 我用 AI 做游戏的实验\n• 围绕 AI 的长处和短板设计方法与架构\n• 操作顺手，反复试玩\n• 还没做完\n• 即将推出：完整复刻版，会采纳粉丝社区的建议"
       }
     },
   ],
@@ -124,10 +124,10 @@ export const CONTENT = {
   // 04 · Corkboard — current work (GIF / MP4 loops)
   now: [
     { title: { en: "In-cabin voice agent", fr: "Agent vocal embarqué", zh: "车载语音助手" }, status: { en: "In progress", fr: "En cours", zh: "进行中" }, media: "",
-      desc: { en: "Spoken requests become DSL commands for the cabin. I compared LLMs, a diffusion LM and a JEV-inspired architecture (Sept 2026). Final system: Mapika-2B decides, Qwen3-1.7B fills in the values, one or many intents. Try the offline, text-only demo on the car's centre screen.", fr: "Les demandes orales deviennent des commandes DSL pour l'habitacle. J'ai comparé des LLM, un modèle de diffusion et une architecture inspirée de JEV (sept. 2026). Au final : Mapika-2B décide, Qwen3-1.7B complète les valeurs, une ou plusieurs intentions. Essayez la démo hors ligne, texte seul, sur l'écran central de la voiture.", zh: "把口头请求变成控制座舱的 DSL 指令。我对比了大语言模型、扩散语言模型和受 JEV 启发的架构（2026 年 9 月）。最终方案：Mapika-2B 做决策，Qwen3-1.7B 补全参数，单意图、多意图都行。在车内中控屏上试试离线纯文本演示。" } },
+      desc: { en: "Spoken requests become DSL commands for the cabin.\n• Compared: LLMs, a diffusion LM, a JEV-inspired architecture (Sept 2026)\n• Final system: Mapika-2B decides, Qwen3-1.7B fills in the values\n• One or many intents\n• Try it: the offline, text-only demo on the car's centre screen", fr: "Les demandes orales deviennent des commandes DSL pour l'habitacle.\n• Comparé : des LLM, un modèle de diffusion, une architecture inspirée de JEV (sept. 2026)\n• Au final : Mapika-2B décide, Qwen3-1.7B complète les valeurs\n• Une ou plusieurs intentions\n• À essayer : la démo hors ligne, texte seul, sur l'écran central de la voiture", zh: "把口头请求变成控制座舱的 DSL 指令。\n• 对比：大语言模型、扩散语言模型、受 JEV 启发的架构（2026 年 9 月）\n• 最终方案：Mapika-2B 做决策，Qwen3-1.7B 补全参数\n• 单意图、多意图都行\n• 试一试：车内中控屏上的离线纯文本演示" } },
     { title: { en: "Research paper", fr: "Article de recherche", zh: "研究论文" }, status: { en: "Draft", fr: "Brouillon", zh: "草稿" }, media: "", desc: ph },
     { title: { en: "This portfolio", fr: "Ce portfolio", zh: "这个作品集" }, status: { en: "You're inside it", fr: "Vous êtes dedans", zh: "你正身处其中" }, media: "",
-      desc: { en: "A scroll-driven 3D site built with Three.js — designed as an HMI piece in itself.", fr: "Un site 3D piloté par le défilement, construit avec Three.js — pensé comme un projet d'IHM à part entière.", zh: "用 Three.js 打造、由滚动驱动的 3D 网站 —— 它本身就是一件人机交互作品。" } },
+      desc: { en: "Designed as an HMI piece in itself.\n• A scroll-driven 3D site\n• Built with Three.js", fr: "Pensé comme un projet d'IHM à part entière.\n• Un site 3D piloté par le défilement\n• Construit avec Three.js", zh: "它本身就是一件人机交互作品。\n• 由滚动驱动的 3D 网站\n• 用 Three.js 打造" } },
   ],
 
   // 05 · Photo wall (Blender renders, photos)
@@ -174,20 +174,20 @@ export const CONTENT = {
       desc: { en: "Drones in the City Animation (2022) before materials: colour-coded towers on a circular base.", fr: "Drones in the City Animation (2022) avant les matériaux : des tours colorées par groupe sur une base circulaire.", zh: "Drones in the City Animation（2022）加材质前：按颜色区分的高塔立在圆形底座上。" } },
     // 5 · Gravity Boy & Magic Gal: the hand-drawn draft, the final game, and the domino heart
     { src: "media/wall/5-gravity-draft.jpg", game: 0, title: { en: "Gravity Boy & Magic Gal · first sketch", fr: "Gravity Boy & Magic Gal · premier croquis", zh: "Gravity Boy & Magic Gal · 手绘草图" },
-      desc: { en: "The level, drawn by hand on squared paper before any code. Go play it again with a friend! I know, the lava is a bit touchy… next fix, I promise.", fr: "Le niveau, dessiné à la main sur papier quadrillé avant la moindre ligne de code. Allez y rejouer avec un ami ! Je sais, la lave est un peu susceptible… prochain correctif, promis.", zh: "写代码之前，在方格纸上手绘的关卡。叫上朋友再玩一局吧！我知道，熔岩有点太敏感了……下次一定修，我保证。" } },
+      desc: { en: "The level, drawn by hand on squared paper before any code.\n• Go play it again with a friend!\n• I know, the lava is a bit touchy… next fix, I promise.", fr: "Le niveau, dessiné à la main sur papier quadrillé avant la moindre ligne de code.\n• Allez y rejouer avec un ami !\n• Je sais, la lave est un peu susceptible… prochain correctif, promis.", zh: "写代码之前，在方格纸上手绘的关卡。\n• 叫上朋友再玩一局吧！\n• 我知道，熔岩有点太敏感了……下次一定修，我保证。" } },
     { src: "media/wall/5-gravity-final.jpg", title: { en: "Gravity Boy & Magic Gal · final game", fr: "Gravity Boy & Magic Gal · jeu final", zh: "Gravity Boy & Magic Gal · 最终版" },
       desc: { en: "The finished game, written in Python with pygame.", fr: "Le jeu terminé, écrit en Python avec pygame.", zh: "完成的游戏，用 Python 和 pygame 编写。" } },
     { src: "media/wall/5-heart.mp4", poster: "media/wall/5-heart.jpg", title: { en: "Domino heart", fr: "Cœur de dominos", zh: "多米诺爱心" },
       desc: { en: "A heart of dominoes falling one after another: a Blender physics animation.", fr: "Un cœur de dominos qui tombent les uns après les autres : une animation physique dans Blender.", zh: "多米诺骨牌依次倒下组成一颗心：Blender 物理动画。" } },
     // 6 · Concours général (Sorbonne), UTCrew at the 2024 diploma ceremony, and the UTC logo animation
     { src: "media/wall/6-concours.jpg", title: { en: "Concours général · Sorbonne", fr: "Concours général · Sorbonne", zh: "法国全国中学优等生会考 · 索邦" },
-      desc: { en: "Prize ceremony at the Sorbonne: Concours général, Chinese composition and translation. 2023 (ALCG).", fr: "Remise des prix à la Sorbonne : Concours général, composition et version chinoises. 2023 (ALCG).", zh: "在索邦大学的颁奖典礼：法国全国中学优等生会考（Concours général）中文写作与翻译。2023 年（ALCG）。" } },
+      desc: { en: "Prize ceremony at the Sorbonne.\n• Concours général: Chinese composition and translation\n• 2023 (ALCG)", fr: "Remise des prix à la Sorbonne.\n• Concours général : composition et version chinoises\n• 2023 (ALCG)", zh: "在索邦大学的颁奖典礼。\n• 法国全国中学优等生会考（Concours général）：中文写作与翻译\n• 2023 年（ALCG）" } },
     { src: "media/wall/6-utcrew-2024.jpg", title: { en: "UTCrew · diploma ceremony 2024", fr: "UTCrew · remise des diplômes 2024", zh: "UTCrew · 2024 毕业典礼" },
-      desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024. In 2025 I was the crew's secretary for six months: responsibility, communication, money. And the stage is always fun and thrilling! Photo: Eva Guignabodet.", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024. En 2025, j'ai été secrétaire de l'association pendant six mois : responsabilité, communication, gestion de l'argent. Et la scène, c'est toujours aussi amusant et grisant ! Photo : Eva Guignabodet.", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。2025 年我当了六个月的社团秘书：责任、沟通、管钱。站上舞台永远好玩又刺激！摄影：Eva Guignabodet。" } },
+      desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024.\n• 2025: the crew's secretary for six months\n• Responsibility, communication, money\n• And the stage is always fun and thrilling!\n• Photo: Eva Guignabodet", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024.\n• 2025 : secrétaire de l'association pendant six mois\n• Responsabilité, communication, gestion de l'argent\n• Et la scène, c'est toujours aussi amusant et grisant !\n• Photo : Eva Guignabodet", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。\n• 2025 年：当了六个月的社团秘书\n• 责任、沟通、管钱\n• 站上舞台永远好玩又刺激！\n• 摄影：Eva Guignabodet" } },
     { src: "media/wall/6-utc-logo.mp4", poster: "media/wall/6-utc-logo.jpg", title: { en: "UTC logo · integration 2023", fr: "Logo de l'UTC · intégration 2023", zh: "UTC 校徽 · 2023 迎新" },
-      desc: { en: "September 2023, a UTC integration week \"homework\": the school logo animated in Blender, in its base colours, silver and gold. The U got eyes, like a smile :) welcoming us to five years of new ideas and new encounters.",
-              fr: "Septembre 2023, un « devoir » de la semaine d'intégration de l'UTC : le logo de l'école animé dans Blender, dans ses couleurs de base, l'argent et l'or. Le U a reçu des yeux, comme un sourire :) pour nous accueillir : cinq ans de nouvelles idées et de nouvelles rencontres.",
-              zh: "2023 年 9 月，UTC 迎新周的一份“作业”：用 Blender 做的校徽动画，用的是校徽的基础色：银与金。U 上加了一双眼睛，像一个笑脸 :) 欢迎我们开启五年的新知识与新相遇。" } },
+      desc: { en: "September 2023: a UTC integration week \"homework\".\n• The school logo, animated in Blender\n• In its base colours, silver and gold\n• The U got eyes, like a smile :)\n• Welcoming us to five years of new ideas and new encounters",
+              fr: "Septembre 2023 : un « devoir » de la semaine d'intégration de l'UTC.\n• Le logo de l'école, animé dans Blender\n• Dans ses couleurs de base, l'argent et l'or\n• Le U a reçu des yeux, comme un sourire :)\n• Pour nous accueillir : cinq ans de nouvelles idées et de nouvelles rencontres",
+              zh: "2023 年 9 月，UTC 迎新周的一份“作业”。\n• 用 Blender 做的校徽动画\n• 校徽的基础色：银与金\n• U 上加了一双眼睛，像一个笑脸 :)\n• 欢迎我们开启五年的新知识与新相遇" } },
   ],
 
   // The ending: the letter that folds into a plane, and the closing words

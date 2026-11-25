@@ -591,7 +591,7 @@
   <text x="98" y="72" text-anchor="middle" fill="#3fd2ff" font-size="12" font-weight="600">68 km/h</text>
   <text id="cluster-sub" x="98" y="88" text-anchor="middle" fill="#6f7fe8" font-size="9">412 km range</text>
 </g>
-<g id="panel-clock" transform="translate(104 -8)"><rect x="252" y="52" width="54" height="46" rx="6" fill="url(#pScreen)" stroke="#3fd2ff" stroke-width="1"/><text x="279" y="76" text-anchor="middle" fill="#dfe9ff" font-size="13" font-weight="300">15:48</text><text x="279" y="90" text-anchor="middle" fill="#6f7fe8" font-size="8">24℃ outside</text></g>
+<g id="panel-clock" transform="translate(104 -8)"><rect x="252" y="52" width="54" height="46" rx="6" fill="url(#pScreen)" stroke="#3fd2ff" stroke-width="1"/><text x="279" y="76" text-anchor="middle" fill="#dfe9ff" font-size="13" font-weight="300">20:27</text><text x="279" y="90" text-anchor="middle" fill="#6f7fe8" font-size="8">24℃ outside</text></g>
 
 
 <g id="panel-screen" transform="translate(46 -25.2) scale(1.1)">
@@ -2679,7 +2679,7 @@ function targetsFor(line) {
     const p = c.params, t = c.tool;
     if (t === "ac") {
         const z = p.zone;
-        if (z === "windshield" || z === "all glass") return [ "glass-front" ];
+        if (z === "windshield" || z === "all glass" || (!z && [ "defog", "defrost" ].includes(p.mode))) return [ "glass-front" ];
         if (z === "rear glass" || z === "rear window") return [ "glass-rear" ];
         if (z === "mirrors") return [ "mirror-l", "mirror-r" ];
         const zs = ZONE_TEMP[z] || ZONE_TEMP["whole car"];
