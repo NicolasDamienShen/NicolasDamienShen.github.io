@@ -2842,7 +2842,7 @@ function openVideo(i) {
   else if (driveId(v.drive)) { media = `<div class="media"><iframe src="${drivePreview(driveId(v.drive))}" title="${ttl}" allow="autoplay; fullscreen"></iframe></div>`; act = `<div class="mrow"><a href="https://drive.google.com/file/d/${encodeURIComponent(driveId(v.drive))}/view" target="_blank" rel="noopener" class="counter">Google Drive ↗</a></div>`; }
   else if (v.poster) media = `<div class="media"><img alt="${ttl}" src="${esc(v.poster)}"><span class="soon">${esc(L(v.soon) || t('videoSoon'))}</span></div>`;
   else media = mediaPlaceholder(L(v.title), L(v.subtitle), hueOf(i), L(v.soon) || t('videoSoon'));
-  openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), { stage: media, info: `${descP(linkify(L(v.desc), v.links), 'white-space:pre-line')}${tags(v.tools)}${act}${navRow(i, n)}` }, d => openVideo((i + d + n) % n), { ar: v.portrait ? 9 / 16 : 16 / 9 });
+  openModal(`01 · ${esc(t('vrKicker'))} · ${i + 1}/${n}`, L(v.title), { stage: media, info: `${descP(linkify(L(v.desc), v.links), 'white-space:pre-line')}${tags(v.tools)}${act}${navRow(i, n)}` }, d => openVideo((i + d + n) % n), { ar: v.portrait ? 9 / 16 : 16 / 9, cls: 'video' + (v.portrait ? '' : ' nosplit') });   // as big as the window allows: the text gives way first
   if ($('.media iframe, .media video', mbox)) SOUND.setDuck(0);   // the video's own sound only
   wireNav();
 }

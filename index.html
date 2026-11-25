@@ -212,6 +212,16 @@ body.focused #tip{display:none}
 #modal .box.cock{--bw:1500px;--W:calc(100vw - 2*var(--mpad))}
 #modal .box.play{--bw:1500px;--W:calc(100vw - 2*var(--mpad))}
 #modal .box.pick{--bw:900px}
+#modal .box.video{--bw:2400px;--W:calc(100vw - 2*var(--mpad));--side:clamp(220px,22vw,320px)}
+#modal .box.video:not(.split){width:var(--w);height:var(--H)}
+#modal .box.video:not(.split) .mstage{flex:1 1 auto;min-height:min(calc(var(--H) - 250px),calc(var(--sw) / var(--ar)))}
+#modal .box.video:not(.split):not(.nosplit) .mstage{min-height:min(calc(var(--H) - 280px),calc(var(--sw) / var(--ar)))}
+@media (max-width:640px){#modal .box.video:not(.split) .mstage,#modal .box.video:not(.split):not(.nosplit) .mstage{min-height:min(calc(var(--H) - 310px),calc(var(--sw) / var(--ar)))}}
+#modal .box.video:not(.split) .minfo{flex:none;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:14px;row-gap:6px}
+#modal .box.video:not(.split) .minfo > .mdesc,#modal .box.video:not(.split) .minfo > .more{flex:0 0 100%}
+#modal .box.video:not(.split) .minfo > *{margin-top:0;margin-bottom:0}
+#modal .box.video:not(.split) .navrow{margin-left:auto;padding-top:0}
+#modal .box.video:not(.split) .mdesc{font-size:14px;line-height:1.45}
 @keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}}
 .mhead{flex:none;display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;min-width:0}
 .mhead .mtitle{min-width:0}
