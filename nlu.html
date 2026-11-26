@@ -3334,9 +3334,9 @@ function genMap(seed) {
     };
 }
 
-function mapHTML(k, traffic, located) {
+function mapHTML(k, traffic, located, avoid) {   /* avoid: the direct highway is drawn crossed out, the chosen route goes around it */
     const M = genMap(k), TC = [ "#3ddc84", "#ff8c42", "#ff3b6b", "#3ddc84" ];
-    return `${M.deco}<path d="${M.route}" fill="none" stroke="#2fd1a8" stroke-width="3" stroke-linecap="round" opacity=".9" filter="url(#pGlow)"/>\n    <g id="nav-traffic" opacity="${traffic ? 1 : 0}" stroke-width="3.5" stroke-linecap="round" fill="none">${M.seg.map((d, i) => `<path d="${d}" stroke="${TC[i]}"/>`).join("")}</g>\n    <g id="nav-me" opacity="${located ? 1 : 0}"><circle cx="${M.me[0]}" cy="${M.me[1]}" r="9" fill="none" stroke="#2fd1a8" stroke-width="1"><animate attributeName="r" values="6;14;6" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="1.8s" repeatCount="indefinite"/></circle></g>\n    <circle cx="${M.me[0]}" cy="${M.me[1]}" r="4" fill="#dfe9ff"/><circle r="3" fill="#2fd1a8" filter="url(#pGlow)"><animateMotion dur="4s" repeatCount="indefinite" path="${M.route}"/></circle>\n    <g filter="url(#pGlow)"><path d="M${M.pin[0]} ${M.pin[1]} C ${M.pin[0] - 2.5} ${M.pin[1] - 5} ${M.pin[0] - 7.5} ${M.pin[1] - 7.5} ${M.pin[0] - 7.5} ${M.pin[1] - 12.5} A 7.5 7.5 0 1 1 ${M.pin[0] + 7.5} ${M.pin[1] - 12.5} C ${M.pin[0] + 7.5} ${M.pin[1] - 7.5} ${M.pin[0] + 2.5} ${M.pin[1] - 5} ${M.pin[0]} ${M.pin[1]} Z" fill="#ff3b4e" stroke="#ffd6db" stroke-width=".6"/><circle cx="${M.pin[0]}" cy="${M.pin[1] - 12.5}" r="3" fill="#fff"/></g>`;
+    const HW = avoid ? (() => { const [x0, y0] = M.me, [x1, y1] = M.pin, mx = (x0 + x1) / 2, ys = M.route.match(/-?[\d.]+/g).map(Number).filter((v, i) => i % 2), top = Math.max(121, Math.min(...ys) - 14), my = 2 * top - (y0 + y1) / 2, lb = lang === "zh" ? "高速 ✕" : "Highway ✕"; return `<path d="M${x0} ${y0} Q ${mx} ${my} ${x1} ${y1}" fill="none" stroke="#ff9f43" stroke-width="5" stroke-linecap="round" opacity=".22"/><path d="M${x0} ${y0} Q ${mx} ${my} ${x1} ${y1}" fill="none" stroke="#ff9f43" stroke-width="1.6" stroke-dasharray="3 4" opacity=".8"/><rect x="${mx - 24}" y="${top - 6}" width="48" height="12" rx="6" fill="#1a1230" stroke="#ff9f43" stroke-width=".6"/><text x="${mx}" y="${top + 2.4}" text-anchor="middle" fill="#ffb870" font-size="7" font-weight="700">${lb}</text>`; })() : ""; return `${M.deco}${HW}<path d="${M.route}" fill="none" stroke="#2fd1a8" stroke-width="3" stroke-linecap="round" opacity=".9" filter="url(#pGlow)"/>\n    <g id="nav-traffic" opacity="${traffic ? 1 : 0}" stroke-width="3.5" stroke-linecap="round" fill="none">${M.seg.map((d, i) => `<path d="${d}" stroke="${TC[i]}"/>`).join("")}</g>\n    <g id="nav-me" opacity="${located ? 1 : 0}"><circle cx="${M.me[0]}" cy="${M.me[1]}" r="9" fill="none" stroke="#2fd1a8" stroke-width="1"><animate attributeName="r" values="6;14;6" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0;.8" dur="1.8s" repeatCount="indefinite"/></circle></g>\n    <circle cx="${M.me[0]}" cy="${M.me[1]}" r="4" fill="#dfe9ff"/><circle r="3" fill="#2fd1a8" filter="url(#pGlow)"><animateMotion dur="4s" repeatCount="indefinite" path="${M.route}"/></circle>\n    <g filter="url(#pGlow)"><path d="M${M.pin[0]} ${M.pin[1]} C ${M.pin[0] - 2.5} ${M.pin[1] - 5} ${M.pin[0] - 7.5} ${M.pin[1] - 7.5} ${M.pin[0] - 7.5} ${M.pin[1] - 12.5} A 7.5 7.5 0 1 1 ${M.pin[0] + 7.5} ${M.pin[1] - 12.5} C ${M.pin[0] + 7.5} ${M.pin[1] - 7.5} ${M.pin[0] + 2.5} ${M.pin[1] - 5} ${M.pin[0]} ${M.pin[1]} Z" fill="#ff3b4e" stroke="#ffd6db" stroke-width=".6"/><circle cx="${M.pin[0]}" cy="${M.pin[1] - 12.5}" r="3" fill="#fff"/></g>`;
 }
 
 HANDLERS.nav = function(s, p, fx, warn) {
@@ -4159,15 +4159,15 @@ function renderExt() {
         if ($(want).getAttribute("opacity") !== "1") showScreen(want);
     }
     {
-        const key = `${state.nav.map}|${state.nav.traffic ? 1 : 0}|${state.nav.located ? 1 : 0}`;
+        const key = `${state.nav.map}|${state.nav.traffic ? 1 : 0}|${state.nav.located ? 1 : 0}|${state.nav.route || ""}|${lang}`;
         if ($("nav-map").dataset.k !== key) {
             $("nav-map").dataset.k = key;
-            $("nav-map").innerHTML = mapHTML(state.nav.map, state.nav.traffic, state.nav.located);
+            $("nav-map").innerHTML = mapHTML(state.nav.map, state.nav.traffic, state.nav.located, /avoid|highway|高速/i.test(state.nav.route || ""));
         }
     }
     {
-        const parts = [ state.nav.start ? "from " + state.nav.start : null, state.nav.route, state.nav.remaining || "ETA 24 min" ].filter(Boolean);
-        let t = parts.join(" · ") + " · demo";
+        const zh = lang === "zh", parts = [ state.nav.start ? (zh ? "从 " : "from ") + state.nav.start : null, state.nav.route ? vv(state.nav.route) : null, state.nav.remaining || (zh ? "约 24 分钟" : "ETA 24 min") ].filter(Boolean);
+        let t = parts.join(" · ") + (zh ? " · 演示" : " · demo");
         if (t.length > 36) t = parts.join(" · ");
         if (t.length > 36) t = t.slice(0, 35) + "…";
         $("nav-sub").textContent = t;
