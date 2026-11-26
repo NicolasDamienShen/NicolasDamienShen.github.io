@@ -697,6 +697,7 @@ const CLOCK = '20:27';   // the story's time: a night drive (phone, lock screen,
 const EYE = new THREE.Vector3(.42, 1.1, -.02), PHONE = new THREE.Vector3(.425, 1.052, -.205), COCK = new THREE.Vector3(0, .91, -.8);
 const COCK_YAW = .3, COCK_S = .9, PHONE_LOOK = PHONE.clone().add(new THREE.Vector3(-.015, .012, 0));
 const ROAD_BASE = new THREE.Vector3(-.9, .62, -8), ROAD_LOOK = ROAD_BASE.clone();
+const AHEAD_LOOK = new THREE.Vector3(0, .78, -22);   // the opening: head up, eyes on the road dead ahead, until the phone rings
 // where you lean to at the console stop: close enough to read it, far enough that it fits a portrait phone screen too
 const CK_POS = new THREE.Vector3();
 function fitCockStop(aspect) {
@@ -1624,7 +1625,7 @@ let introGone = false;
 function dismissIntro() { if (introGone) return; introGone = true; const io = $('#intro'); if (!io) return; io.classList.add('gone'); setTimeout(() => { io.style.display = 'none'; }, 1400); }
 const ROOF = [];
 function setRoof(f) { for (const o of ROOF) { if (!/^BodyDoorRWindow/.test(o.name)) continue; o.visible = f > .01; for (const m of [].concat(o.material)) { m.transparent = f < .99; m.opacity = f; m.depthWrite = f > .99; } } }
-const PRESENT = [.85, .866], FOLDS = [.898, .94], FLIGHT = [.94, .978];   // letter held still & readable .866 → .898
+const PRESENT = [.85, .866], FOLDS = [.898, .94], FLIGHT = [.94, .978], AWAY = [.978, .991], BLING = [.987, .996];   // then: out into the stars → one sparkle   // letter held still & readable .866 → .898
 const handFont = () => LANG === 'zh' ? '"Long Cang","Ma Shan Zheng","Noto Sans SC",cursive' : 'Caveat, cursive';
 function drawLetter(c) {
   const x = c.getContext('2d'), W = c.width, H = c.height;
@@ -1672,12 +1673,21 @@ function buildFinale(std) {
     }
   }
   const base = g.attributes.position.array.slice();
-  const front = new THREE.Mesh(g, std({ map: t, roughness: .9, side: THREE.FrontSide, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: .03 }));
-  const back = new THREE.Mesh(g, std({ color: 0xece6de, roughness: .9, side: THREE.BackSide }));
+  const front = new THREE.Mesh(g, std({ map: t, roughness: .9, side: THREE.FrontSide, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: .03, fog: false }));
+  const back = new THREE.Mesh(g, std({ color: 0xece6de, roughness: .9, side: THREE.BackSide, fog: false, emissive: 0xffe6c4, emissiveIntensity: 0 }));
   const sheet = new THREE.Group(); sheet.add(front, back); room.add(sheet);
-  const glowS = new THREE.Sprite(new THREE.SpriteMaterial({ map: (() => { const cc = makeCanvas(64, 64), xx = cc.getContext('2d'), gr = xx.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,214,160,.8)'); gr.addColorStop(1, 'rgba(255,214,160,0)'); xx.fillStyle = gr; xx.fillRect(0, 0, 64, 64); return tex(cc); })(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 }));
+  const glowS = new THREE.Sprite(new THREE.SpriteMaterial({ map: (() => { const cc = makeCanvas(64, 64), xx = cc.getContext('2d'), gr = xx.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(255,214,160,.8)'); gr.addColorStop(1, 'rgba(255,214,160,0)'); xx.fillStyle = gr; xx.fillRect(0, 0, 64, 64); return tex(cc); })(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0, fog: false }));
   glowS.scale.setScalar(.7); room.add(glowS);
-  Object.assign(fin, { sheet, g, base, glowS });
+  // the end: the plane becomes a star — one four-point flash, then a small star that stays and twinkles
+  const sc = makeCanvas(256, 256), sx = sc.getContext('2d');
+  { const C = 128, ray = (ang, len, wid) => { sx.save(); sx.translate(C, C); sx.rotate(ang); const gr = sx.createLinearGradient(0, 0, len, 0); gr.addColorStop(0, 'rgba(255,250,235,1)'); gr.addColorStop(.35, 'rgba(255,236,200,.55)'); gr.addColorStop(1, 'rgba(255,220,180,0)'); sx.fillStyle = gr; sx.beginPath(); sx.moveTo(0, -wid); sx.lineTo(len, 0); sx.lineTo(0, wid); sx.closePath(); sx.fill(); sx.restore(); };
+    for (let k = 0; k < 4; k++) ray(k * Math.PI / 2, 124, 9);                 // the four long points
+    for (let k = 0; k < 4; k++) ray(Math.PI / 4 + k * Math.PI / 2, 46, 4);    // four short ones between them
+    const core = sx.createRadialGradient(C, C, 0, C, C, 40); core.addColorStop(0, 'rgba(255,255,255,1)'); core.addColorStop(.3, 'rgba(255,240,210,.7)'); core.addColorStop(1, 'rgba(255,220,180,0)'); sx.fillStyle = core; sx.fillRect(0, 0, 256, 256); }
+  const starM = () => new THREE.SpriteMaterial({ map: tex(sc), transparent: true, opacity: 0, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending, fog: false, toneMapped: false });
+  const bling = new THREE.Sprite(starM()); bling.renderOrder = 6; bling.visible = false; room.add(bling);
+  const star = new THREE.Sprite(starM()); star.renderOrder = 6; star.visible = false; room.add(star);
+  Object.assign(fin, { sheet, g, base, glowS, bling, star, mats: [front.material, back.material] });
 }
 // rotate the vertices selected by `sel` about the line (P, D) by angle a
 const _p = new THREE.Vector3(), _P = new THREE.Vector3(), _D = new THREE.Vector3();
@@ -1720,6 +1730,7 @@ function foldPaper(f) {
 const FP = [new THREE.Vector3(0, 1.36, 3.35), new THREE.Vector3(-.75, 1.5, 4.35), new THREE.Vector3(-1.9, 2.5, 8.5), new THREE.Vector3(-3.6, 3.6, 13.5)];
 const _a = new THREE.Vector3(), _b = new THREE.Vector3(), _m4 = new THREE.Matrix4(), _qa = new THREE.Quaternion(), _qb = new THREE.Quaternion();
 const SILL = new THREE.Vector3(0, .94, 3.6), SHOW = new THREE.Vector3(0, 1.36, 3.35);
+const AWAY_C = new THREE.Vector3(-4.06, 3.9, 14.85), AWAY_END = new THREE.Vector3(-4.0, 5.9, 15.5), _c2 = new THREE.Vector3();   // up into the sky, kept in front of the painted city (z 16): it shrinks to look far
 function facingQ(pos, out) { _m4.lookAt(camera.position, pos, new THREE.Vector3(0, 1, 0)); return out.setFromRotationMatrix(_m4); }
 function flightQ(fwd, out) {   // local +y → forward, local −x → up (keel down)
   const up = new THREE.Vector3(0, 1, 0), xa = up.clone().negate(), za = new THREE.Vector3().crossVectors(xa, fwd).normalize(), ya = new THREE.Vector3().crossVectors(za, xa).normalize();
@@ -1731,6 +1742,7 @@ function updateFinale(p, t) {
   foldPaper(f);
   const S = fin.sheet;
   if (g <= 0) {
+    fin.mats[0].emissiveIntensity = .03; fin.mats[1].emissiveIntensity = 0;
     // lying on the sill → lifted up and turned to face you
     S.position.lerpVectors(SILL, SHOW, pr); S.position.y += Math.sin(t * 1.3) * .006 * pr;
     _qa.setFromEuler(new THREE.Euler(-Math.PI / 2, 0, Math.PI)); facingQ(S.position, _qb);
@@ -1738,12 +1750,31 @@ function updateFinale(p, t) {
     if (f > .76) { flightQ(_a.copy(FP[1]).sub(FP[0]).normalize(), _qa); S.quaternion.slerp(_qa, smooth((f - .76) / .24)); }
     S.scale.setScalar(1);
   } else {
-    const e = ease(g); bez(FP[0], FP[1], FP[2], FP[3], e, _a); bez(FP[0], FP[1], FP[2], FP[3], Math.min(1, e + .02), _b);
+    const e = g * g * (2 - g); bez(FP[0], FP[1], FP[2], FP[3], e, _a);   // eases in, leaves at speed: the flight carries on into AWAY without a stop bez(FP[0], FP[1], FP[2], FP[3], Math.min(1, e + .02), _b);
     S.position.copy(_a); S.position.y += Math.sin(t * 1.3) * .006 * (1 - e);   // the sill bob fades out instead of snapping off at launch
     flightQ(_b.sub(_a).normalize(), S.quaternion); S.rotateY(Math.sin(g * 8) * .25);
+    S.scale.setScalar(1);
+    const w = clamp((p - AWAY[0]) / (AWAY[1] - AWAY[0]), 0, 1);
+    if (w > 0) {   // keeps going the way it was flying, curving up into the sky, smaller and smaller
+      const e2 = -2 * w * w * w + 3 * w * w + 1.9 * (w * w * w - 2 * w * w + w), q = (u, o) => { const v = 1 - u; return o.set(0, 0, 0).addScaledVector(FP[3], v * v).addScaledVector(AWAY_C, 2 * v * u).addScaledVector(AWAY_END, u * u); };
+      q(e2, _a); q(Math.min(1, e2 + .02), _b); if (e2 >= .98) _b.copy(_a).add(_a).sub(q(e2 - .02, _c2));
+      S.position.copy(_a); flightQ(_b.sub(_a).normalize(), S.quaternion); S.rotateY(Math.sin((g + w) * 8) * .25 * (1 - w));
+      S.scale.setScalar(1 - .72 * e2);
+    }
+    // out in the dark it catches the moonlight: a pale paper streak you can follow up to the end
+    fin.mats[0].emissiveIntensity = .03 + .5 * smooth(w); fin.mats[1].emissiveIntensity = .55 * smooth(w);
   }
+  // the plane becomes a star: it shrinks to a point while one four-point flash blooms where it was
+  const bl = clamp((p - BLING[0]) / (BLING[1] - BLING[0]), 0, 1), shine = Math.pow(Math.sin(Math.PI * bl), 1.4);
+  S.visible = bl < .45; if (bl > 0) S.scale.multiplyScalar(Math.max(.001, 1 - smooth(Math.min(1, bl / .45))));
+  const B = fin.bling, St = fin.star;
+  B.visible = bl > 0 && bl < 1; B.position.copy(AWAY_END); B.material.opacity = shine; B.scale.setScalar(.25 + 2.1 * shine); B.material.rotation = .25 + bl * .5;
+  const stay = smooth(clamp((bl - .55) / .45, 0, 1));
+  St.visible = stay > 0; St.position.copy(AWAY_END); St.material.opacity = stay * (.62 + .3 * Math.sin(t * 2.6)); St.scale.setScalar(.52 + .07 * Math.sin(t * 2.6)); St.material.rotation = .25;
   fin.glowS.position.copy(S.position);
-  fin.glowS.material.opacity = (p > PRESENT[0] ? .1 : 0) * (1 - .6 * smooth(clamp(f / .3, 0, 1))) * (1 - clamp((g - .8) / .2, 0, 1));   // softer once folding: no glare on the plane
+  { const w = clamp((p - AWAY[0]) / (AWAY[1] - AWAY[0]), 0, 1), trail = Math.sin(Math.PI * Math.min(1, w * 1.1)) * .22;   // a soft warm halo while it flies away
+    fin.glowS.material.opacity = Math.max((p > PRESENT[0] ? .1 : 0) * (1 - .6 * smooth(clamp(f / .3, 0, 1))) * (1 - clamp((g - .8) / .2, 0, 1)), trail);
+    fin.glowS.scale.setScalar(.7); }   // softer once folding: no glare on the plane
 }
 
 /* ════════════════════════ desk buddy: a little robot with a mind of its own ════════════════════════ */
@@ -1775,17 +1806,17 @@ function buildBot(std) {
   const hc = makeCanvas(128, 128), hx = hc.getContext('2d'); hx.translate(64, 70); hx.scale(1.9, 1.9);
   hx.shadowColor = '#ff7aa8'; hx.shadowBlur = 10; hx.fillStyle = '#ff8fb5'; hx.beginPath(); hx.moveTo(0, 12); hx.bezierCurveTo(-24, -4, -14, -26, 0, -12); hx.bezierCurveTo(14, -26, 24, -4, 0, 12); hx.fill();
   const heart = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex(hc), transparent: true, depthWrite: false, opacity: 0, color: glow('#ffffff', 1.3) })); heart.scale.setScalar(.08); room.add(heart);
-  const sbc = makeCanvas(720, 230), sbx = sbc.getContext('2d'), sbt = tex(sbc);
-  const drawSay = () => { sbx.clearRect(0, 0, 720, 230); sbx.fillStyle = '#f7f3ff'; rr2(sbx, 6, 6, 708, 186, 40); sbx.fill(); sbx.beginPath(); sbx.moveTo(330, 190); sbx.lineTo(360, 226); sbx.lineTo(390, 190); sbx.fill();
-    sbx.fillStyle = '#0d0a1c'; sbx.font = F(700, 34); sbx.textAlign = 'center'; const ws = LANG === 'zh' ? [...t('botSay')] : t('botSay').split(' '); const ls = []; let l = '';
-    for (const w of ws) { const tt = l ? l + (LANG === 'zh' ? '' : ' ') + w : w; if (sbx.measureText(tt).width > 640 && l) { ls.push(l); l = w; } else l = tt; } if (l) ls.push(l);
-    ls.slice(0, 3).forEach((s, i) => sbx.fillText(s, 360, 100 - (Math.min(3, ls.length) - 1) * 21 + i * 44)); sbt.needsUpdate = true; };
+  const sbc = makeCanvas(760, 300), sbx = sbc.getContext('2d'), sbt = tex(sbc);   // big type: readable from the desk view, even on a phone
+  const drawSay = () => { sbx.clearRect(0, 0, 760, 300); sbx.fillStyle = '#f7f3ff'; rr2(sbx, 6, 6, 748, 246, 46); sbx.fill(); sbx.beginPath(); sbx.moveTo(346, 250); sbx.lineTo(380, 294); sbx.lineTo(414, 250); sbx.fill();
+    sbx.fillStyle = '#0d0a1c'; sbx.textAlign = 'center'; sbx.textBaseline = 'middle'; const ws = LANG === 'zh' ? [...t('botSay')] : t('botSay').split(' '); let ls = [], fs = 66;
+    for (; fs >= 34; fs -= 2) { sbx.font = F(700, fs); ls = []; let l = ''; for (const w of ws) { const tt = l ? l + (LANG === 'zh' ? '' : ' ') + w : w; if (sbx.measureText(tt).width > 680 && l) { ls.push(l); l = w; } else l = tt; } if (l) ls.push(l); if (ls.length * fs * 1.2 <= 216) break; }
+    ls.forEach((s, i) => sbx.fillText(s, 380, 129 + (i - (ls.length - 1) / 2) * fs * 1.2)); sbx.textBaseline = 'alphabetic'; sbt.needsUpdate = true; };
   drawSay(); retext.push(drawSay);
-  const say = new THREE.Sprite(new THREE.SpriteMaterial({ map: sbt, transparent: true, depthWrite: false, opacity: 0, toneMapped: false, color: new THREE.Color(.74, .74, .74) })); say.scale.set(.46, .147, 1); say.renderOrder = 5; room.add(say);
+  const say = new THREE.Sprite(new THREE.SpriteMaterial({ map: sbt, transparent: true, depthWrite: false, opacity: 0, toneMapped: false, color: new THREE.Color(.9, .9, .9) })); say.scale.set(.6, .6 * 300 / 760, 1); say.renderOrder = 5; room.add(say);
   Object.assign(bot, { g, headG: head, legs, arms, face: { c: fc, x: fx, t: ft }, heart, tip, sayS: say, say: 0 });
   bot.order = [0, 1, 2, 3, 4, 5].sort(() => rnd() - .5);
   bot.path = BOT_PATTERNS[bot.order[0]]();
-  hot('room', hit, () => t('tipBot'), () => { bot.react = 2.2; bot.pause = 0; bot.say = 5; });
+  hot('room', hit, () => t('tipBot'), () => { bot.react = 2.2; bot.pause = 0; bot.say = 6.5; });
 }
 function drawBotFace(mode, look, blink) {
   const { x, t: tt } = bot.face; x.clearRect(0, 0, 160, 96);
@@ -1804,7 +1835,7 @@ const _bc = new THREE.Vector3();
 function updateBot(t, dt) {
   if (!bot.g) return;
   let moving = false;
-  if (bot.say > 0) { bot.say -= dt; const k = 5 - bot.say; bot.sayS.material.opacity = Math.min(1, k * 4, bot.say * 1.5); bot.sayS.position.set(bot.x, .78 + .29 + Math.sin(k * 2) * .005, bot.z); } else bot.sayS.material.opacity = 0;
+  if (bot.say > 0) { bot.say -= dt; const k = 6.5 - bot.say; bot.sayS.material.opacity = Math.min(1, k * 4, bot.say * 1.5); const sk = camera.aspect < 1 ? 1.5 : 1; bot.sayS.scale.set(.6 * sk, .6 * sk * 300 / 760, 1); bot.sayS.position.set(bot.x, .78 + .217 + .118 * sk + Math.sin(k * 2) * .005, bot.z);   /* a portrait phone sees the desk smaller: a bigger bubble */ } else bot.sayS.material.opacity = 0;
   if (bot.react > 0) {
     bot.react -= dt;
     const k = 2.2 - bot.react;
@@ -2470,22 +2501,31 @@ function drawTerm(tm) {
   x.fillStyle = 'rgba(201,184,255,.7)'; x.font = F(500, 10.5, '"JetBrains Mono"'); x.fillText(tm < 0 ? '' : '· assistant', 62, 20);
   x.fillStyle = '#4ade80'; x.beginPath(); x.arc(W - 58, 16, 4, 0, 7); x.fill(); x.fillStyle = 'rgba(220,214,245,.7)'; x.fillText('online', W - 50, 20);
   // face (kaomoji)
-  x.fillStyle = 'rgba(28,22,54,.9)'; rr2(x, 16, 42, W - 32, 150, 22); x.fill(); x.strokeStyle = 'rgba(201,184,255,.25)'; x.lineWidth = 1; x.stroke();
+  x.fillStyle = 'rgba(28,22,54,.9)'; rr2(x, 16, 40, W - 32, 104, 22); x.fill(); x.strokeStyle = 'rgba(201,184,255,.25)'; x.lineWidth = 1; x.stroke();
   const happy = tm - henry.t < 2.2, blink = (tm % 3.7) > 3.55, wave = Math.sin(tm * 6) > 0;
   const face = happy ? '(≧▽≦)' : blink ? '(－‿－)' : '(＾‿＾)';
-  x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = F(700, 40, '"Noto Sans SC"'); x.fillStyle = '#ffe7a8'; x.shadowColor = '#ffc46e'; x.shadowBlur = 12;
-  const fw = x.measureText(face).width; x.fillText(face, W / 2 - 10, 120 + Math.sin(tm * 2) * 2);
-  x.font = F(700, 34, '"Noto Sans SC"'); x.fillText(wave ? 'ノ' : 'ﾉ', W / 2 - 10 + fw / 2 + 14, 104 + (wave ? -3 : 2)); x.shadowBlur = 0;
-  x.font = F(500, 13, '"Noto Sans SC"'); x.fillStyle = 'rgba(201,184,255,.8)';
-  ['✦', '♪', '⋆', '✧'].forEach((s, k) => { const a = tm * .6 + k * 1.6; x.globalAlpha = .4 + .4 * Math.sin(a * 2); x.fillText(s, W / 2 + Math.cos(a) * 112, 116 + Math.sin(a * 1.3) * 52); }); x.globalAlpha = 1;
-  // speech bubble
+  x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = F(700, 34, '"Noto Sans SC"'); x.fillStyle = '#ffe7a8'; x.shadowColor = '#ffc46e'; x.shadowBlur = 12;
+  const fw = x.measureText(face).width; x.fillText(face, W / 2 - 10, 94 + Math.sin(tm * 2) * 2);
+  x.font = F(700, 29, '"Noto Sans SC"'); x.fillText(wave ? 'ノ' : 'ﾉ', W / 2 - 10 + fw / 2 + 12, 80 + (wave ? -3 : 2)); x.shadowBlur = 0;
+  x.font = F(500, 12, '"Noto Sans SC"'); x.fillStyle = 'rgba(201,184,255,.8)';
+  ['✦', '♪', '⋆', '✧'].forEach((s, k) => { const a = tm * .6 + k * 1.6; x.globalAlpha = .4 + .4 * Math.sin(a * 2); x.fillText(s, W / 2 + Math.cos(a) * 112, 92 + Math.sin(a * 1.3) * 36); }); x.globalAlpha = 1;
+  // speech bubble: most of the screen, big type, so it reads from the room
   const say = tr(['henry1', 'henry2', 'henry3'][henry.i]);
-  x.fillStyle = '#d9d1f0'; rr2(x, 16, 206, W - 32, 102, 18); x.fill(); x.beginPath(); x.moveTo(60, 206); x.lineTo(72, 192); x.lineTo(84, 206); x.fill();
-  x.fillStyle = '#120e24'; x.font = F(700, 17); x.textAlign = 'left'; x.textBaseline = 'alphabetic';
-  const words = LANG === 'zh' ? [...say] : say.split(' '); let line = '', yy = 234; const lines = [];
-  for (const w of words) { const tt = line ? line + (LANG === 'zh' ? '' : ' ') + w : w; if (x.measureText(tt).width > W - 60 && line) { lines.push(line); line = w; } else line = tt; } if (line) lines.push(line);
+  const BY = 156, BH = 156, PAD = 16;
+  x.fillStyle = '#e4ddf7'; rr2(x, 12, BY, W - 24, BH, 20); x.fill(); x.beginPath(); x.moveTo(58, BY); x.lineTo(72, BY - 14); x.lineTo(86, BY); x.fill();
+  x.fillStyle = '#120e24'; x.textAlign = 'left'; x.textBaseline = 'middle';
+  let lines = [], fs = 31;
+  if (henry.fitKey === say) ({ lines, fs } = henry.fit);   // measured once per sentence, not every frame
+  else for (const words = LANG === 'zh' ? [...say] : say.split(' '); fs >= 20; fs -= 1) {   // the biggest type that still fits in four lines
+    x.font = F(700, fs); lines = []; let line = '';
+    for (const w of words) { const tt = line ? line + (LANG === 'zh' ? '' : ' ') + w : w; if (x.measureText(tt).width > W - 24 - 2 * PAD && line) { lines.push(line); line = w; } else line = tt; } if (line) lines.push(line);
+    if (lines.length * fs * 1.22 <= BH - 18 && lines.length <= 4) break;
+  }
+  henry.fitKey = say; henry.fit = { lines, fs }; x.font = F(700, fs);
+  const LH = fs * 1.22, ls = lines.slice(0, 4); let yy = BY + BH / 2 - (ls.length - 1) * LH / 2;
   const shown = Math.floor(clamp((tm - henry.t) * 40, 0, 999)); let left = henry.t > 0 ? shown : 999;
-  for (const l of lines.slice(0, 3)) { const s = [...l].slice(0, Math.max(0, left)).join(''); left -= [...l].length; x.fillText(s, 30, yy); yy += 24; }
+  for (const l of ls) { const s = [...l].slice(0, Math.max(0, left)).join(''); left -= [...l].length; x.fillText(s, 12 + PAD, yy); yy += LH; }
+  x.textBaseline = 'alphabetic';
   // input pill
   x.fillStyle = 'rgba(255,255,255,.07)'; rr2(x, 16, 318, W - 32, 30, 15); x.fill(); x.fillStyle = 'rgba(220,214,245,.45)'; x.font = F(400, 12); x.fillText(tr('henryAsk'), 32, 337);
   x.strokeStyle = '#c9b8ff'; x.lineWidth = 2; rr2(x, W - 44, 325, 10, 16, 5); x.stroke(); x.beginPath(); x.arc(W - 39, 336, 9, .2, Math.PI - .2); x.stroke();
@@ -2499,9 +2539,9 @@ const BB = CONTENT.videos.map((v, i) => { const side = i % 2 === 0 ? -1 : 1, z =
 const BBP = [.214, .244, .274, .304];          // where each screen is centred in the scroll
 const K_CITY = [
   // in the car: your eyes on the phone (rel = relative to the car, which keeps driving)
-  { p: 0.000, rel: 1, turn: 1, pos: EYE.clone(), look: ROAD_LOOK },                // looking out of the front of the car
-  { p: 0.004, rel: 1, turn: 1, pos: EYE.clone(), look: ROAD_LOOK },
-  { p: 0.008, rel: 1, turn: 1, pos: EYE.clone(), look: ROAD_LOOK },
+  { p: 0.000, rel: 1, turn: 1, pos: EYE.clone(), look: AHEAD_LOOK },               // looking straight out of the front of the car
+  { p: 0.004, rel: 1, turn: 1, pos: EYE.clone(), look: AHEAD_LOOK },
+  { p: 0.008, rel: 1, turn: 1, pos: EYE.clone(), look: AHEAD_LOOK },               // the phone rings here: only then does the gaze go down to it
   { p: 0.018, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },   // the phone rings, you take it out (gaze a hair left of it: the console stays in view)
   { p: 0.022, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },
   { p: 0.104, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },
@@ -2816,15 +2856,16 @@ const modal = $('#modal'), mbox = $('#mbox');
 let lastFocus = null, modalNav = null;
 let modalCleanup = null;
 let modalNoArrows = false;
+let modalBack = null;   // where ✕ goes back to (null: it closes)
 // body: a string (text only) or { stage, info } — stage = the media, info = text, buttons and the ‹ › row. opt: { cls, ar (media width / height), lead (html before the title) }
 function openModal(kicker, title, body, nav = null, opt = {}) {
   if (modal.hidden) lastFocus = document.activeElement;
-  modalCleanup?.(); modalCleanup = null; modalNoArrows = false; modalNav = nav;
+  modalCleanup?.(); modalCleanup = null; modalNoArrows = false; modalNav = nav; modalBack = opt.back || null;
   const b = typeof body === 'string' ? { info: body } : body;
   mbox.className = 'box card' + (opt.cls ? ' ' + opt.cls : ''); mbox.style.cssText = '';
   if (opt.ar) mbox.style.setProperty('--ar', String(opt.ar));
   mbox.innerHTML = `<div class="mhead">${opt.lead || ''}<div class="mtitle"><div class="kicker">${kicker}</div><h3 id="m-title">${esc(title)}</h3></div><button class="x" aria-label="${esc(t('close'))}">✕</button></div>${b.stage ? `<div class="mstage">${b.stage}</div>` : ''}<div class="minfo">${b.info || ''}</div>`;
-  modal.hidden = false; $('.x', mbox).onclick = closeModal; $('.x', mbox).focus(); SOUND.setDuck(.25);
+  modal.hidden = false; $('.x', mbox).onclick = dismissModal; $('.x', mbox).focus(); SOUND.setDuck(.25);
   paused = true;
   const more = $('.more', mbox);
   if (more) more.onclick = () => {   // long text: "more" shows it in place of the media (never a scrollbar)
@@ -2834,8 +2875,10 @@ function openModal(kicker, title, body, nav = null, opt = {}) {
   };
   fitModal();
 }
-function closeModal() { modalNoArrows = false; modal.hidden = true; mbox.innerHTML = ''; mbox.className = 'box card'; mbox.style.cssText = ''; modalCleanup?.(); modalCleanup = null; paused = !idx.hidden; modalNav = null;   /* the index may still be open behind */ SOUND.setDuck(1); lastFocus?.focus?.(); }
-modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+function closeModal() { modalBack = null; modalNoArrows = false; modal.hidden = true; mbox.innerHTML = ''; mbox.className = 'box card'; mbox.style.cssText = ''; modalCleanup?.(); modalCleanup = null; paused = !idx.hidden; modalNav = null;   /* the index may still be open behind */ SOUND.setDuck(1); lastFocus?.focus?.(); }
+// ✕ / Esc / a click outside: a page opened from another one (a game's About) goes back to it; anything else closes
+function dismissModal() { const b = modalBack; if (b) b(); else closeModal(); }
+modal.addEventListener('click', e => { if (e.target === modal) dismissModal(); });
 for (const ev of ['wheel', 'touchmove']) modal.addEventListener(ev, e => { if (!e.target.closest?.('.pages')) e.preventDefault(); }, { passive: false });   // nothing scrolls behind (or inside) a pop-up; the document reader keeps its swipe
 // Fit the open pop-up to the window: pick the layout (media left / text right on wide windows, media on top otherwise), then, only if the text still
 // does not fit, tighten it and clamp it to the lines that fit, with a "more" toggle.
@@ -2951,19 +2994,19 @@ function openGames(i) {
     info: `<div class="gfoot">${n > 1 ? `<button class="btn ghost sm gswitch" id="gsw"><span class="glogo" aria-hidden="true">${gameLogo(og)}</span>${esc(L(og.title))} →</button>` : ''}${L(g.desc) ? `<button class="btn ghost sm" id="ginf">${esc(t('gAbout'))}</button>` : ''}<button class="btn ghost sm" id="fs">${esc(t('fullscreen'))}</button><a class="btn ghost sm" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('newTabBtn'))}</a><span class="counter">${esc(t('clickFirst'))}</span></div>`
   }, null, { cls: 'play nosplit', lead: `<button class="btn ghost sm gback" id="gback">${esc(t('backGames'))}</button>` });
   $('#gback').onclick = () => openGames();
-  const gi = $('#ginf'); if (gi) gi.onclick = () => openGameInfo(i);
+  const gi = $('#ginf'); if (gi) gi.onclick = () => openGameInfo(i, true);
   const sw = $('#gsw'); if (sw) sw.onclick = () => openGames(o);
   $('#fs').onclick = () => $('.media iframe', mbox)?.requestFullscreen?.().catch(() => { });
   SOUND.setDuck(0); modalNoArrows = true;   // the game has its own sound and its own arrow keys
 }
 // a game's own page: its emblem, its full description, then Play or back to the two games (no scrolling)
-function openGameInfo(i) {
+function openGameInfo(i, fromGame = false) {
   const g = CONTENT.games[i]; if (!g) return; const k = gameKey(g), n = CONTENT.games.length;
   const small = Math.min(innerWidth, innerHeight) < 560, ext = !!g.url && (small || !gamePlayable(g));
   const play = !g.url ? '' : ext ? `<a class="btn primary" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('playBtn'))} ↗</a>` : `<button class="btn primary" id="gip">${esc(t('playBtn'))}</button>`;
   openModal(`03 · ${esc(t('gamesKicker'))} · ${i + 1}/${n}${g.year ? ' · ' + esc(g.year) : ''}`, L(g.title), {
     info: `<div class="gabout g-${k}"><span class="glogo" aria-hidden="true">${GAME_LOGO[k]}</span><div class="gatxt"><div class="mdesc">${richDesc(L(g.desc))}</div><div class="mrow">${play}<button class="btn ghost" id="gib">${esc(t('backGames'))}</button></div></div></div>`
-  }, null, { cls: 'pick' });
+  }, null, { cls: 'pick', back: fromGame ? () => openGames(i) : () => openGames() });   // ✕ goes back to the game (or the chooser), never out of the games
   const p = $('#gip'); if (p) p.onclick = () => openGames(i);
   $('#gib').onclick = () => openGames();
 }
@@ -3063,7 +3106,7 @@ function closeIndex() { if (idx.hidden) return; idx.hidden = true; paused = !mod
 
 addEventListener('keydown', e => {
   if (!modal.hidden) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') dismissModal();
     else if (e.key === 'ArrowRight' && modalNav && !modalNoArrows) { e.preventDefault(); modalNav(1); }
     else if (e.key === 'ArrowLeft' && modalNav && !modalNoArrows) { e.preventDefault(); modalNav(-1); }
     else if ([' ', 'PageDown', 'PageUp', 'Home', 'End', 'ArrowDown', 'ArrowUp'].includes(e.key) && !e.target.closest?.('button,a,input,textarea,select')) e.preventDefault();   // the page behind stays put
@@ -3079,18 +3122,33 @@ addEventListener('keydown', e => {
 /* ── no mouse, no wheel: hold → (or ↓) to travel forward, ← (or ↑) to go back. It drives the real scroll position frame by
    frame (so everything that follows the scroll keeps working), eases in on press and out on release; a tap is one small glide.
    Idle while a window, the index, a text field, a video or a game has the keys. ── */
-const KEYNAV = { dir: 0, v: 0, y: 0, raf: 0, last: 0, key: '', off: 0, t0: 0, used: 0, hintGone: false };
+const KEYNAV = { wait: 0, dir: 0, v: 0, y: 0, raf: 0, last: 0, key: '', off: 0, t0: 0, used: 0, hintGone: false };
 const keyNavBlocked = e => !modal.hidden || !idx.hidden || paused
   || !!(e && (e.altKey || e.ctrlKey || e.metaKey || e.target.closest?.('input,textarea,select,video,audio,iframe,[contenteditable]')))
   || /^(IFRAME|INPUT|TEXTAREA|SELECT|VIDEO|AUDIO)$/.test(document.activeElement?.tagName || '');
+// the still views, as scroll positions (recomputed when the window changes size)
+function keyStops() {
+  const key = innerWidth + 'x' + innerHeight + ':' + maxScroll();
+  if (keyStops.key !== key) { keyStops.key = key; keyStops.ys = [...BBP.map(p => p + .005), .6215, .704, ...WALL_GROUPS.map((G, i) => .7345 + i * .0175 + .00575), .882].map(p => Math.round(p2s(p))); }
+  return keyStops.ys;
+}
 function keyNavTick(now) {
   const K = KEYNAV, dt = clamp((now - K.last) / 1000, 0, .1); K.last = now;   // (a slow device still travels at about the same speed)
   if (K.dir && K.off && now >= K.off) K.dir = 0;                  // released (a tap still lasts a moment: a small glide, not a jerk)
   if (keyNavBlocked()) { K.dir = 0; K.v = 0; }
-  const vmax = clamp(innerHeight * .45, 210, 500);                // px/s: an unhurried glide (half a steady wheel)
-  K.v += (K.dir * vmax - K.v) * (1 - Math.exp(-dt * (K.dir ? 4.5 : 5.5)));
+  if (!K.dir) K.wait = 0;
   if (Math.abs(scrollY - K.y) > 2) K.y = scrollY;                 // something else moved the page (wheel, touch, a chapter button): follow it
-  K.y = clamp(K.y + K.v * dt, 0, maxScroll());
+  // holding an arrow still pauses at every still view (each screen, the desk, the board, each photo set, the letter): it eases in, waits, then goes on
+  const ys = keyStops(), ahead = K.dir ? ys.filter(y => (y - K.y) * K.dir > .5).sort((a, b) => (a - b) * K.dir)[0] : undefined;
+  const near = ahead === undefined ? 1 : clamp(.25 + Math.abs(ahead - K.y) / (innerHeight * .55), .25, 1);
+  const vmax = clamp(innerHeight * .36, 170, 400) * near;          // px/s: an unhurried glide
+  if (K.wait && now < K.wait) K.v = 0;
+  else {
+    K.wait = 0;
+    K.v += (K.dir * vmax - K.v) * (1 - Math.exp(-dt * (K.dir ? 4.5 : 5.5)));
+    const y0 = K.y; K.y = clamp(K.y + K.v * dt, 0, maxScroll());
+    if (K.dir && ahead !== undefined && (K.y - ahead) * K.dir >= 0 && (y0 - ahead) * K.dir < 0) { K.y = ahead; K.v = 0; K.wait = now + 2300; }
+  }
   { const ly = cockLockY(); if (ly !== null && K.y > ly && scrollY <= ly + 1) { K.y = ly; K.v = Math.min(K.v, 0); if (K.dir > 0) cockNudge(); } }   // the console stop holds until the demo has been opened
   if (Math.abs(K.y - scrollY) >= .5) scrollTo(0, K.y);
   if (!K.dir && Math.abs(K.v) < 6) { K.v = 0; K.raf = 0; return; }
@@ -3102,7 +3160,7 @@ addEventListener('keydown', e => {
   e.preventDefault();                                             // not the browser's own 40 px hops
   const K = KEYNAV; if (e.repeat && K.key === e.key && K.dir === d) return;
   if (focus.want) unfocus();
-  K.dir = d; K.key = e.key; K.off = 0; K.t0 = performance.now(); K.used = K.t0;
+  K.dir = d; K.key = e.key; K.off = 0; K.t0 = performance.now(); K.used = K.t0; K.wait = 0;   // a fresh press moves on straight away
   if (!K.raf) { K.y = scrollY; K.last = K.t0; K.raf = requestAnimationFrame(keyNavTick); }
 });
 const keyNavRelease = e => { const K = KEYNAV; if (e && e.key !== K.key) return; if (K.dir && !K.off) K.off = Math.max(performance.now(), K.t0 + 170); };
@@ -3382,7 +3440,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 scrollTo(0, 0); addEventListener('pageshow', () => { scrollTo(0, 0); target = cur = 0; });
 setTimeout(() => { for (const d of CONTENT.papers) for (const src of d.pages || []) { const im = new Image(); im.decoding = 'async'; im.src = src; } }, 9000);
 addEventListener('message', e => { if (e.origin === location.origin && e.data?.ns === 'close-game' && !modal.hidden) closeModal(); });
-window.__setLang = setLang; window.__portfolio = { drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
+window.__setLang = setLang; window.__portfolio = { finPos: () => { const v = fin.sheet.getWorldPosition(new THREE.Vector3()), w = v.clone().project(camera); return { world: v.toArray().map(x => +x.toFixed(2)), scr: [Math.round((w.x + 1) / 2 * innerWidth), Math.round((1 - w.y) / 2 * innerHeight), +w.z.toFixed(3)], vis: fin.sheet.visible, s: +fin.sheet.scale.x.toFixed(2) }; }, botSay: () => { bot.say = 6.5; }, games: openGames, gameInfo: openGameInfo, drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
 
 // QA test hook (read-only): the pure camera path of the city part, without time effects (car parked at its 60 m stop)
 window.__portfolio.hot = (k, re) => { const h = hotspots[k].find(m => re.test(String(typeof m.userData.hot.label === 'function' ? m.userData.hot.label() : m.userData.hot.label))); h?.userData.hot.action(); return !!h; };

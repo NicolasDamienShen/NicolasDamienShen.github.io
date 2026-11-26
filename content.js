@@ -114,9 +114,9 @@ export const CONTENT = {
       title: { en: "Forever Charmed (fan-made)", fr: "Forever Charmed (fan-made)", zh: "Forever Charmed（同人作品）" },
       kind: "web", url: "games/ashgrove/index.html", poster: "media/ashgrove.jpg", year: "2026",
       desc: {
-        en: "Inspired by Charmed (1998): a childhood dream, made in 2026.\n• My experiment in making games with AI\n• A method and architecture built around AI's strengths and weaknesses\n• Ergonomic controls, playtesting\n• Not finished yet\n• Coming: a full replica, with the fan community's suggestions",
-        fr: "Inspiré de Charmed (1998) : un rêve d'enfant, réalisé en 2026.\n• Mon expérience de création de jeux avec l'IA\n• Une méthode et une architecture pensées selon ses forces et ses faiblesses\n• Des commandes ergonomiques, des tests de jeu\n• Pas encore fini\n• À venir : une réplique complète, avec les suggestions de la communauté de fans",
-        zh: "灵感来自美剧《圣女魔咒》（Charmed，1998）：2026 年实现的童年梦想。\n• 我用 AI 做游戏的实验\n• 围绕 AI 的长处和短板设计方法与架构\n• 操作顺手，反复试玩\n• 还没做完\n• 即将推出：完整复刻版，会采纳粉丝社区的建议"
+        en: "Inspired by Charmed (1998): a childhood dream, made in 2026.\n• My experiment in making games with AI\n• A method and architecture built around AI's strengths and weaknesses\n• Ergonomic controls, playtesting\n• A playable demo of what's possible, with the game's existing mechanics\n• Coming: a full replica, assembled and polished, with the fan community's suggestions",
+        fr: "Inspiré de Charmed (1998) : un rêve d'enfant, réalisé en 2026.\n• Mon expérience de création de jeux avec l'IA\n• Une méthode et une architecture pensées selon ses forces et ses faiblesses\n• Des commandes ergonomiques, des tests de jeu\n• Une démo jouable de l'étendue des possibilités, avec les mécaniques déjà en place\n• À venir : une réplique complète, assemblée et peaufinée, avec les suggestions de la communauté de fans",
+        zh: "灵感来自美剧《圣女魔咒》（Charmed，1998）：2026 年实现的童年梦想。\n• 我用 AI 做游戏的实验\n• 围绕 AI 的长处和短板设计方法与架构\n• 操作顺手，反复试玩\n• 可试玩，用现有机制展示各种可能性\n• 即将推出：完整复刻版，进一步整合与打磨，并采纳粉丝社区的建议"
       }
     },
   ],
