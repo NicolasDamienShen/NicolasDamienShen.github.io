@@ -46,7 +46,7 @@ function qualityTick(dt) {
   if (QUAL.acc < 1) return;
   const fps = QUAL.n / QUAL.acc; QUAL.acc = 0; QUAL.n = 0;
   if (fps < 45 && QUAL.lvl > 0) { setQuality(QUAL.lvl - 1); QUAL.good = 0; QUAL.max = Math.min(QUAL.max, QUAL.lvl + 1); }
-  else if (fps > 57 && QUAL.lvl < QUAL.max) { if (++QUAL.good >= 4) { setQuality(QUAL.lvl + 1); QUAL.good = 0; } }
+  else if (fps > 57 && QUAL.lvl < QUAL.max) { if (++QUAL.good >= 6 && Math.abs(target - cur) < 1e-4 && !KEYNAV.dir) { setQuality(QUAL.lvl + 1); QUAL.good = 0; } }   // up only while the view is still
   else QUAL.good = 0;
 }
 let _seed = 20261123;
@@ -180,12 +180,14 @@ function setLang(l) {
   if (!T[l]) return; LANG = l; try { localStorage.setItem('ns-lang', l); } catch (e) { }
   document.documentElement.lang = l === 'zh' ? 'zh-CN' : l;
   document.querySelectorAll('#langs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
-  const fontsReady = document.fonts?.load ? Promise.all([document.fonts.load(`600 40px "Noto Sans SC"`, '欢迎作品集'), document.fonts.load(`700 40px "Long Cang"`, '谢谢你')]).catch(() => { }) : Promise.resolve();
+  // the Chinese fonts are big: only fetched (and only redraw the 3D texts when they arrive) when Chinese is shown. In English or French
+  // they used to arrive a few seconds in and redraw every canvas at once: a visible hitch right after the opening fade
+  const fontsReady = l === 'zh' && document.fonts?.load ? Promise.all([document.fonts.load(`600 40px "Noto Sans SC"`, '欢迎作品集'), document.fonts.load(`700 40px "Long Cang"`, '谢谢你')]).catch(() => { }) : null;
   buildPanels(); if (!idx.hidden || idx.innerHTML) { idx.innerHTML = ''; if (!idx.hidden) { buildIndex(); } }
   curSlide = -1; lastCh = ''; setSlidePanel(0);
   SOUND.refresh();
   for (const f of retext) f();
-  fontsReady.then(() => { for (const f of retext) f(); });
+  fontsReady?.then(() => { let i = 0; const step = () => { if (LANG !== l || i >= retext.length) return; retext[i++](); requestAnimationFrame(step); }; requestAnimationFrame(step); });   // one canvas per frame: no single heavy frame
 }
 
 
