@@ -29,8 +29,18 @@ function setQuality(l) {
   QUAL.lvl = l; curPR = -1;
   if (bloom) bloom.enabled = l > 0;
 }
+// behind the loader: a few frames to warm up, ~0.8 s to measure, set the quality once, then fade the loader in a steady scene
+function bootWarm(now, dt) {
+  const B = QUAL.boot; B.n++;
+  if (B.n > 4) { B.acc += dt; B.m = (B.m || 0) + 1; }
+  const done = B.acc >= .8 || now - B.t0 > 3500;
+  if (!done) return;
+  if (QUAL.auto && B.m) { const fps = B.m / Math.max(B.acc, 1e-3); if (fps < 24 && QUAL.lvl > 0) setQuality(0); else if (fps < 45 && QUAL.lvl > 0) setQuality(QUAL.lvl - 1); QUAL.max = Math.min(QUAL.max, QUAL.lvl + 1); }
+  QUAL.boot = null; QUAL.warm = -1.6;   // no quality change while the loader fades
+  $('#loader').classList.add('out');
+}
 function qualityTick(dt) {
-  if (document.hidden || paused || !QUAL.auto) return;
+  if (document.hidden || paused || !QUAL.auto || QUAL.boot) return;
   QUAL.warm += dt; if (QUAL.warm < 1.2) return;             // ignore the very first hitches only: the opening must be smooth too
   QUAL.acc += dt; QUAL.n++;
   if (QUAL.acc < 1) return;
@@ -3302,6 +3312,7 @@ function frame(now) {
   requestAnimationFrame(frame);
   const dt = clamp((now - last) / 1000, 0, .05); last = now;
   if (paused || document.hidden) return;
+  if (QUAL.boot) bootWarm(now, dt);
   time += dt;
   cur = REDUCED ? target : cur + (target - cur) * (1 - Math.exp(-dt * (4.2 + 2.6 * (1 - smooth(clamp((cur - .09) / .02, 0, 1))))));   // the phone chat follows the wheel more closely (light, immediate); the car and the city keep their softer glide
   if (Math.abs(target - cur) < 1e-5) cur = target;
@@ -3437,8 +3448,10 @@ async function boot() {
   addEventListener('resize', resize);
   onScroll(); cur = prevP = target;
   renderer.compile(room, camera); renderer.compile(city, camera);
+  // upload every texture now, behind the loader, instead of during the first visible frames
+  for (const sc of [city, room]) sc.traverse(o => { const ms = o.material ? [].concat(o.material) : []; for (const m of ms) for (const k of ['map', 'emissiveMap', 'alphaMap', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap']) if (m[k]?.isTexture && m[k].image) try { renderer.initTexture(m[k]); } catch (e) { } });
+  QUAL.boot = { t0: performance.now(), n: 0, acc: 0 };   // the first frames run behind the loader: they warm up and pick the quality, then the loader fades
   requestAnimationFrame(frame);
-  setTimeout(() => $('#loader').classList.add('out'), 250);
   if (REDUCED) openIndex();
 }
 boot();
