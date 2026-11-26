@@ -112,7 +112,7 @@ let LANG = (() => { try { const s = localStorage.getItem('ns-lang'); if (s && /^
 const L = v => v == null ? '' : (typeof v === 'object' && !Array.isArray(v)) ? (v[LANG] ?? v.en ?? '') : v;
 const T = {
   en: {
-    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
+    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Compared: LLMs, a diffusion model, a JEV-inspired architecture\n• Final system: Mapika-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
     scroll: 'SCROLL', keysHint: 'hold to move', cockLock: 'Click the screen to continue', cockLockT: 'Tap the screen to continue', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
     vrKicker: 'XR / VR & demos', vrTitle: 'Screens in the city', vrText: "Each screen is a project. Click one, or pick from the list.",
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
@@ -132,7 +132,7 @@ const T = {
     botSay: "Hi! I'm a future project of Nicolas. See you soon ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
   },
   fr: {
-    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, moi c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
+    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, c’est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparé\u00a0: des LLM, un modèle de diffusion, une architecture inspirée de JEV\n• Au final\u00a0: Mapika-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture", tapToTry: 'TOUCHEZ POUR ESSAYER', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
     scroll: 'DÉFILEZ', keysHint: 'maintenez pour avancer', cockLock: "Cliquez sur l'écran pour continuer", cockLockT: "Touchez l'écran pour continuer", skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
     vrKicker: 'XR / VR & démos', vrTitle: 'Écrans dans la ville', vrText: "Chaque écran est un projet. Cliquez-en un, ou choisissez dans la liste.",
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
@@ -152,7 +152,7 @@ const T = {
     botSay: "Salut\u00a0! Je suis un futur projet de Nicolas. À bientôt ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
   },
   zh: {
-    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
+    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的架构\n• 最终方案：Mapika-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击 ▶ Play demo，或直接点车", tapToTry: '点击试玩', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
     scroll: '向下滚动', keysHint: '长按方向键前进', cockLock: '点击屏幕继续', cockLockT: '点击屏幕继续', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
     vrKicker: 'XR / VR 与演示', vrTitle: '城市里的屏幕', vrText: '每块屏幕都是一个项目。点击屏幕，或从列表中选择。',
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
@@ -176,13 +176,24 @@ const t = k => T[LANG][k] ?? T.en[k] ?? k;
 const CJK = '"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei"';
 const F = (w, px, fam = '"Space Grotesk"') => `${w} ${px}px ${fam},${CJK},sans-serif`;
 const retext = [];
+// every Chinese character the site can show, so the 3D canvases get Noto Sans SC (not a fallback) for all of them, in every weight used
+let _zhFonts = null;
+function zhFontsReady() {
+  if (_zhFonts) return _zhFonts;
+  const seen = new Set(), walk = v => { if (typeof v === 'string') { for (const ch of v) if (ch.charCodeAt(0) > 0x2e7f) seen.add(ch); } else if (Array.isArray(v)) v.forEach(walk); else if (v && typeof v === 'object') for (const k in v) if (k !== 'en' && k !== 'fr') walk(v[k]); };
+  walk(T.zh); walk(CONTENT);
+  const txt = [...seen].join('') || '中文';
+  const fams = ['400 16px "Noto Sans SC"', '500 16px "Noto Sans SC"', '600 16px "Noto Sans SC"', '700 16px "Noto Sans SC"', '600 16px "Noto Serif SC"', '700 16px "Long Cang"'];
+  _zhFonts = Promise.race([Promise.all(fams.map(f => document.fonts.load(f, txt).catch(() => { }))), new Promise(r => setTimeout(r, 8000))]);
+  return _zhFonts;
+}
 function setLang(l) {
   if (!T[l]) return; LANG = l; try { localStorage.setItem('ns-lang', l); } catch (e) { }
   document.documentElement.lang = l === 'zh' ? 'zh-CN' : l;
   document.querySelectorAll('#langs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
   // the Chinese fonts are big: only fetched (and only redraw the 3D texts when they arrive) when Chinese is shown. In English or French
   // they used to arrive a few seconds in and redraw every canvas at once: a visible hitch right after the opening fade
-  const fontsReady = l === 'zh' && document.fonts?.load ? Promise.all([document.fonts.load(`600 40px "Noto Sans SC"`, '欢迎作品集'), document.fonts.load(`700 40px "Long Cang"`, '谢谢你')]).catch(() => { }) : null;
+  const fontsReady = l === 'zh' && document.fonts?.load ? zhFontsReady() : null;
   buildPanels(); if (!idx.hidden || idx.innerHTML) { idx.innerHTML = ''; if (!idx.hidden) { buildIndex(); } }
   curSlide = -1; lastCh = ''; setSlidePanel(0);
   SOUND.refresh();
@@ -1312,7 +1323,17 @@ function plateTex() { const c = makeCanvas(256, 64), x = c.getContext('2d'); x.f
 
 /* ── the chat on the phone ── */
 let meImg = null; if (CONTENT.me?.photo) loadImg(CONTENT.me.photo).then(i => meImg = i).catch(() => { });
-function wrapLines(x, text, maxW) { const out = []; let line = ''; const words = LANG === 'zh' ? [...text] : text.split(' '); for (const w of words) { const test = line ? line + (LANG === 'zh' ? '' : ' ') + w : w; if (x.measureText(test).width > maxW && line) { out.push(line); line = w; } else line = test; } if (line) out.push(line); return out; }
+// Chinese line breaking: Latin words stay whole, closing punctuation never starts a line, a no-break space glues its neighbours (emoji)
+function zhTokens(text) {
+  const out = []; let glue = false;
+  for (const tk of text.match(/[A-Za-z0-9@._'’\-]+|[^\S\u00a0]+|\u00a0|[\s\S]/gu) || []) {
+    if (tk === '\u00a0') { if (out.length) out[out.length - 1] += ' '; glue = true; continue; }
+    if ((glue || /^[，。、！？：；）》」』,.!?:;)…]$/.test(tk)) && out.length) out[out.length - 1] += tk; else out.push(tk);
+    glue = false;
+  }
+  return out;
+}
+function wrapLines(x, text, maxW) { const out = []; let line = ''; const words = LANG === 'zh' ? zhTokens(text) : text.split(' '); for (const w of words) { const test = line ? line + (LANG === 'zh' ? '' : ' ') + w : w; if (x.measureText(test.trimEnd()).width > maxW && line.trim()) { out.push(line.trimEnd()); line = LANG === 'zh' ? w.trimStart() : w; } else line = test; } if (line.trim()) out.push(line.trimEnd()); return out; }
 function drawChatLayer(p, tm) {
   const x = phoneUI.x, W = 480, H = 1040;
   const bg = x.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#1b1934'); bg.addColorStop(1, '#262043'); x.fillStyle = bg; x.fillRect(0, 0, W, H);
@@ -1329,7 +1350,7 @@ function drawChatLayer(p, tm) {
   y += 18;
   ['chatMsg', 'chatMsg2', 'chatMsg3'].forEach((key, i) => {
     const m = ms[i]; if (m <= 0) return;
-    x.font = F(500, 25); const lines = wrapLines(x, t(key), 340), lh = 34, mh = lines.length * lh + 24, mw = Math.min(386, Math.max(...lines.map(l => x.measureText(l).width)) + 38);
+    x.font = F(500, 25); const lines = wrapLines(x, t(key), 352), lh = 34, mh = lines.length * lh + 24, mw = Math.min(396, Math.max(...lines.map(l => x.measureText(l).width)) + 38);
     const bx = 22, by = y + (1 - m) * 22, last = ms[i + 1] === undefined || ms[i + 1] <= 0;
     x.save(); x.globalAlpha = m; x.fillStyle = '#332d5c'; rr2(x, bx, by, mw, mh, 20); x.fill(); if (last) x.fillRect(bx, by + mh - 18, 18, 18); else x.fillRect(bx, by, 10, mh);
     x.fillStyle = '#f3efff'; lines.forEach((l, j) => x.fillText(l, bx + 19, by + 36 + j * lh)); x.restore();
@@ -1823,7 +1844,7 @@ function buildBot(std) {
   const heart = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex(hc), transparent: true, depthWrite: false, opacity: 0, color: glow('#ffffff', 1.3) })); heart.scale.setScalar(.08); room.add(heart);
   const sbc = makeCanvas(760, 300), sbx = sbc.getContext('2d'), sbt = tex(sbc);   // big type: readable from the desk view, even on a phone
   const drawSay = () => { sbx.clearRect(0, 0, 760, 300); sbx.fillStyle = '#f7f3ff'; rr2(sbx, 6, 6, 748, 246, 46); sbx.fill(); sbx.beginPath(); sbx.moveTo(346, 250); sbx.lineTo(380, 294); sbx.lineTo(414, 250); sbx.fill();
-    sbx.fillStyle = '#0d0a1c'; sbx.textAlign = 'center'; sbx.textBaseline = 'middle'; const ws = LANG === 'zh' ? [...t('botSay')] : t('botSay').split(' '); let ls = [], fs = 66;
+    sbx.fillStyle = '#0d0a1c'; sbx.textAlign = 'center'; sbx.textBaseline = 'middle'; const ws = LANG === 'zh' ? zhTokens(t('botSay')) : t('botSay').split(' '); let ls = [], fs = 66;
     for (; fs >= 34; fs -= 2) { sbx.font = F(700, fs); ls = []; let l = ''; for (const w of ws) { const tt = l ? l + (LANG === 'zh' ? '' : ' ') + w : w; if (sbx.measureText(tt).width > 680 && l) { ls.push(l); l = w; } else l = tt; } if (l) ls.push(l); if (ls.length * fs * 1.2 <= 216) break; }
     ls.forEach((s, i) => sbx.fillText(s, 380, 129 + (i - (ls.length - 1) / 2) * fs * 1.2)); sbx.textBaseline = 'alphabetic'; sbt.needsUpdate = true; };
   drawSay(); retext.push(drawSay);
@@ -2439,13 +2460,17 @@ function buildCorkboard(std) {
     hot('room', pol, () => '⌁ ' + L(it.title) + ' — ' + L(it.status), () => openNow(i));
   });
   // sticky notes
-  const notes = [['ship it ✦', '#ffe066'], ['train v2', '#ff9ec4'], ['sleep?', '#9ef0ff']];
+  const notes = [[{ en: 'ship it ✦', fr: 'on livre ✦', zh: '上线 ✦' }, '#ffe066'], [{ en: 'train v2', fr: 'train v2', zh: '训练 v2' }, '#ff9ec4'], [{ en: 'sleep?', fr: 'dodo\u00a0?', zh: '睡觉？' }, '#9ef0ff']];
   notes.forEach(([txt, col], i) => {
-    const c = makeCanvas(160, 160), x = c.getContext('2d'); x.fillStyle = col; x.fillRect(0, 0, 160, 160); x.fillStyle = '#2a1a30'; x.font = '700 40px Caveat, cursive'; x.textAlign = 'center'; x.fillText(txt, 80, 92);
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(.2, .2), std({ map: tex(c) })); m.position.set(-1.35 + i * 1.32, -.66, .03); m.rotation.z = rr(-.2, .2); board.add(m);
+    const c = makeCanvas(160, 160), x = c.getContext('2d'), nt = tex(c);
+    const draw = () => { x.fillStyle = col; x.fillRect(0, 0, 160, 160); x.fillStyle = '#2a1a30'; x.font = `700 ${LANG === 'zh' ? 34 : 40}px ${handFont()}`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(L(txt), 80, 80, 148); x.textBaseline = 'alphabetic'; nt.needsUpdate = true; };
+    draw(); retext.push(draw);
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.2, .2), std({ map: nt })); m.position.set(-1.35 + i * 1.32, -.66, .03); m.rotation.z = rr(-.2, .2); board.add(m);
   });
-  const sign = new THREE.Mesh(new THREE.PlaneGeometry(1.9, .36), new THREE.MeshBasicMaterial({ map: tex(neonText('now building', HEX.amb, 1024, 190, '600 110px "Space Grotesk",sans-serif')), transparent: true, depthWrite: false, color: glow('#ffffff', 1.35) }));
+  const SIGN = { en: 'now building', fr: 'en chantier', zh: '正在做' }, signFont = () => LANG === 'zh' ? `700 104px "Noto Sans SC",${CJK},sans-serif` : '600 110px "Space Grotesk",sans-serif';
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(1.9, .36), new THREE.MeshBasicMaterial({ map: tex(neonText(L(SIGN), HEX.amb, 1024, 190, signFont())), transparent: true, depthWrite: false, color: glow('#ffffff', 1.35) }));
   sign.position.set(3.25, 2.5, -3.965); room.add(sign);
+  retext.push(() => { const old = sign.material.map; sign.material.map = tex(neonText(L(SIGN), HEX.amb, 1024, 190, signFont())); old?.dispose(); });   // the neon speaks the page's language
   let fl = 0; tickers.push((t) => { fl = (Math.sin(t * 17) > .93 && Math.sin(t * .9) > .5) ? .6 : 1.35; sign.material.color.setScalar(fl); });
 }
 function drawPolaroid(p, t) {
@@ -2457,7 +2482,7 @@ function drawPolaroid(p, t) {
     ctx.strokeStyle = HEX.cyan; ctx.lineWidth = 3; ctx.beginPath();
     for (let x = 0; x <= 260; x += 4) { const y = 135 + Math.sin(x * .05 + t * 3 + p.i) * 30 * Math.sin(t + p.i); x ? ctx.lineTo(20 + x, y) : ctx.moveTo(20, y); } ctx.stroke();
     ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(30, 222, 240, 10); ctx.fillStyle = HEX.mag; ctx.fillRect(30, 222, 240 * ((t * .12 + p.i * .3) % 1), 10);
-    ctx.fillStyle = '#fff'; ctx.font = '600 13px "JetBrains Mono",monospace'; ctx.font = F(600, 13, '"JetBrains Mono"'); ctx.fillText(T[LANG].gifHere, 30, 44);
+    
   }
   ctx.fillStyle = '#2a1a30'; ctx.font = `700 ${LANG === 'zh' ? 26 : 30}px ${handFont()}`; ctx.textAlign = 'center'; ctx.fillText(L(p.it.title), 150, 292, 270);
   ctx.fillStyle = '#8a4a6a'; ctx.font = `700 ${LANG === 'zh' ? 19 : 22}px ${handFont()}`; ctx.fillText(L(p.it.status), 150, 324, 270); ctx.textAlign = 'left';
@@ -2531,7 +2556,7 @@ function drawTerm(tm) {
   x.fillStyle = '#120e24'; x.textAlign = 'left'; x.textBaseline = 'middle';
   let lines = [], fs = 31;
   if (henry.fitKey === say) ({ lines, fs } = henry.fit);   // measured once per sentence, not every frame
-  else for (const words = LANG === 'zh' ? [...say] : say.split(' '); fs >= 20; fs -= 1) {   // the biggest type that still fits in four lines
+  else for (const words = LANG === 'zh' ? zhTokens(say) : say.split(' '); fs >= 20; fs -= 1) {   // the biggest type that still fits in four lines
     x.font = F(700, fs); lines = []; let line = '';
     for (const w of words) { const tt = line ? line + (LANG === 'zh' ? '' : ' ') + w : w; if (x.measureText(tt).width > W - 24 - 2 * PAD && line) { lines.push(line); line = w; } else line = tt; } if (line) lines.push(line);
     if (lines.length * fs * 1.22 <= BH - 18 && lines.length <= 4) break;

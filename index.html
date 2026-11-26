@@ -49,12 +49,24 @@ button{font:inherit;color:inherit}
 #langs button:hover{color:var(--ink)}
 #langs button[aria-pressed="true"]{background:#f1ecff;color:#0b0a18}
 #langs button:focus-visible{outline:2px solid var(--cyan)}
-:lang(zh-CN) body{font-family:"Space Grotesk","Noto Sans SC",sans-serif;font-weight:500;-webkit-font-smoothing:antialiased}
-:lang(zh-CN) #intro .it{font-family:"Noto Serif SC",serif;font-weight:600;letter-spacing:.04em}
-:lang(zh-CN) h2,:lang(zh-CN) .w2{font-weight:600}
-:lang(zh-CN) .words .w2,:lang(zh-CN) #p-about h2,:lang(zh-CN) #p-contact h2,:lang(zh-CN) .words .sig{font-family:"Noto Serif SC",serif;font-style:normal;letter-spacing:.02em;font-weight:600}
+/* Chinese: every font stack falls back to Noto Sans SC / Noto Serif SC (loaded), then the good system fonts, never to a
+   generic CJK monospace or a fake italic. Latin letters keep their own fonts; Chinese gets proper weights and spacing */
+:root:lang(zh-CN){--body:"Space Grotesk","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --display:"Space Grotesk","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"JetBrains Mono","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",monospace;
+  --serif:"Instrument Serif","Noto Serif SC","Songti SC","STSong",serif}
+:lang(zh-CN) body{font-family:var(--body);font-weight:400;-webkit-font-smoothing:antialiased;font-synthesis:none}
+:lang(zh-CN) #intro .it{font-family:"Noto Serif SC","Songti SC",serif;font-weight:600;letter-spacing:.06em}
+:lang(zh-CN) h2,:lang(zh-CN) .w2,:lang(zh-CN) .mhead h3,:lang(zh-CN) .gcard .gname,:lang(zh-CN) #index h1{font-weight:600;letter-spacing:.02em}
+:lang(zh-CN) .words .w2,:lang(zh-CN) #p-about h2,:lang(zh-CN) #p-contact h2,:lang(zh-CN) .words .sig,:lang(zh-CN) .gcard.g-charmed .gname{font-family:"Noto Serif SC","Songti SC",serif;font-style:normal;letter-spacing:.04em;font-weight:600}
 :lang(zh-CN) .words .w2{font-size:clamp(24px,3.4vw,42px);line-height:1.4}
-:lang(zh-CN) .kicker,:lang(zh-CN) .role,:lang(zh-CN) .hint,:lang(zh-CN) .scrollcue{font-family:"JetBrains Mono","Noto Sans SC",monospace}
+:lang(zh-CN) .kicker,:lang(zh-CN) .role,:lang(zh-CN) .hint,:lang(zh-CN) .scrollcue,:lang(zh-CN) #intro .ik,:lang(zh-CN) #intro .is,:lang(zh-CN) .words .w1,:lang(zh-CN) .gcard .gnum,:lang(zh-CN) #chapters button,:lang(zh-CN) .tag,:lang(zh-CN) .counter{letter-spacing:.08em}
+:lang(zh-CN) .kicker,:lang(zh-CN) .role{font-weight:500;line-height:1.3}
+:lang(zh-CN) .mhead h3{line-height:1.34;padding-bottom:1px}
+:lang(zh-CN) .mdesc{line-height:1.75;letter-spacing:.02em}
+#intro .it,#p-contact h2,.words .w2,#p-about h2{text-wrap:balance}   /* no lone last word ("next.", "旅程") on narrow screens */
+:lang(zh-CN) #intro .it,:lang(zh-CN) .words .w2{word-break:keep-all}
+:lang(zh-CN) .mdesc b,:lang(zh-CN) .mdesc strong{font-weight:600}
 /* chapter nav */
 #chapters{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:6px}
 #chapters button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:6px 4px;font-size:12px;letter-spacing:.06em;color:var(--dim);font-family:var(--mono)}

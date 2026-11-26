@@ -17,20 +17,20 @@ export const CONTENT = {
   // Leave empty to show the default home screen with apps.
   phone: { home: "" },
   role: {
-    en: "Engineering student · XR · AI · Human–Machine Interaction",
-    fr: "Élève ingénieur · XR · IA · Interaction humain–machine",
-    zh: "工程专业学生 · XR · AI · 人机交互",
+    en: "Computer Science engineering student · XR · HCI · AI",
+    fr: "Élève ingénieur en informatique · XR · IHM · IA",
+    zh: "计算机工程专业学生 · XR · 人机交互 · AI",
   },
   intro: {
-    en: "I design immersive and intelligent interfaces — from VR in a CAVE to on-device AI agents for the car cabin.",
-    fr: "Je conçois des interfaces immersives et intelligentes — de la VR dans un CAVE aux agents IA embarqués dans l'habitacle.",
-    zh: "我设计沉浸式与智能化的交互界面 —— 从 CAVE 里的虚拟现实，到汽车座舱中的端侧 AI 智能体。",
+    en: "I build interactive XR experiences and AI-powered interfaces — from VR in a CAVE to on-device AI agents for the car cabin.",
+    fr: "Je conçois des expériences XR interactives et des interfaces pilotées par l'IA — de la VR dans un CAVE aux agents IA embarqués dans l'habitacle.",
+    zh: "我打造交互式 XR 体验和 AI 驱动的界面 —— 从 CAVE 里的虚拟现实，到汽车座舱中的端侧 AI 智能体。",
   },
-  location: { en: "France · Guangzhou · Hong Kong", fr: "France · Canton · Hong Kong", zh: "法国 · 广州 · 香港" },
+  location: { en: "Hong Kong · Compiègne, France", fr: "Hong Kong · Compiègne, France", zh: "香港 · 法国贡比涅" },
   about: {
-    en: "Placeholder bio — 3–4 lines: who you are, what you study (UTC, GI), what you're building now, and what you want to do next (HMI / XR / AI).",
-    fr: "Bio provisoire — 3–4 lignes : qui vous êtes, vos études (UTC, GI), ce que vous construisez, et la suite (IHM / XR / IA).",
-    zh: "占位简介 —— 3–4 行：你是谁、所学专业（UTC，GI）、正在做什么、接下来想做什么（人机交互 / XR / AI）。",
+    en: "I build interactive XR experiences and multimodal AI interfaces, and my goal is to bring the two together.\n• Study: engineering degree in Computer Science at UTC, Compiègne (2023–2028)\n• XR research: CAVE projects at the CNRS Heudiasyc lab (La Forêt Virtuelle, AVATOUCH, Immersive Ballet, Temporal Echoes)\n• Now: R&D intern at Desay SV, Advanced Research: AI assistants for the car cabin (Aug 2026 – Feb 2027)\n• Interested in: how people engage with virtual worlds through body and senses, and how AI makes that more intuitive\n• Next: a six-month research internship from February 2028, then a PhD from autumn 2028, in XR, HCI and AI\n• Languages: French, Mandarin Chinese, English",
+    fr: "Je conçois des expériences XR interactives et des interfaces d'IA multimodales, et mon objectif est de réunir les deux.\n• Études : diplôme d'ingénieur en informatique à l'UTC, Compiègne (2023–2028)\n• Recherche XR : projets dans le CAVE du laboratoire CNRS Heudiasyc (La Forêt Virtuelle, AVATOUCH, Ballet immersif, Temporal Echoes)\n• Aujourd'hui : stagiaire R&D chez Desay SV, Recherche avancée : assistants IA pour l'habitacle (août 2026 – févr. 2027)\n• Ce qui m'intéresse : comment on vit un monde virtuel avec son corps et ses sens, et comment l'IA le rend plus intuitif\n• Ensuite : un stage de recherche de six mois dès février 2028, puis une thèse dès l'automne 2028, entre XR, IHM et IA\n• Langues : français, chinois mandarin, anglais",
+    zh: "我打造交互式 XR 体验和多模态 AI 界面，目标是把两者结合起来。\n• 学业：法国贡比涅技术大学（UTC）计算机工程师学位（2023–2028）\n• XR 研究：在 CNRS Heudiasyc 实验室的 CAVE 中完成的项目（虚拟森林、AVATOUCH、沉浸式芭蕾、Temporal Echoes）\n• 现在：德赛西威前瞻研究部研发实习生，研究汽车座舱 AI 助手（2026 年 8 月 – 2027 年 2 月）\n• 兴趣：人如何用身体和感官进入虚拟世界，以及 AI 如何让这种体验更直观\n• 下一步：2028 年 2 月起为期六个月的研究实习，2028 年秋季起攻读博士，方向为 XR、人机交互与 AI\n• 语言：法语、普通话、英语",
   },
 
   // 01 · Screens in the city (YouTube links/IDs or video files), oldest first
@@ -48,19 +48,19 @@ export const CONTENT = {
       subtitle: { en: "CAVE VR · time & dance · 2024", fr: "CAVE VR · temps & danse · 2024", zh: "CAVE VR · 时间与舞蹈 · 2024" },
       portrait: true, youtube: "", drive: "https://drive.google.com/file/d/1gQqoQ4cCsuxnyJJB91L0geiyQYd4C0Vk/view", video: "", poster: "media/temporal.jpg", soon: { en: "VIDEO COMING SOON", fr: "VIDÉO BIENTÔT", zh: "视频即将上线" },
       desc: {
-        en: "A CAVE VR piece about time and dance.\n• With: Jignesh Bhatt\n• Where: UTC · API RV01 · July 2024\n• Context: two weeks of intro to XR concepts and equipment, learning the CAVE through this project\n• Your moves come back seconds later as glowing RGB echoes (real time in the video shown)\n• You dance with your past self\n• A nod to the 007 spotlight titles",
-        fr: "Une expérience VR en CAVE sur le temps et la danse.\n• Avec : Jignesh Bhatt\n• Où : UTC · API RV01 · juillet 2024\n• Contexte : deux semaines d'initiation aux notions et équipements XR, en apprenant le CAVE avec ce projet\n• Vos gestes reviennent quelques secondes plus tard en échos RVB lumineux (en temps réel dans la vidéo présentée)\n• Vous dansez avec votre moi passé\n• Clin d'œil aux projecteurs des génériques de 007",
-        zh: "关于时间与舞蹈的 CAVE VR 作品。\n• 合作：Jignesh Bhatt\n• 地点：UTC · API RV01 · 2024 年 7 月\n• 背景：为期两周的 XR 概念与设备入门，借这个项目学会使用 CAVE\n• 你的动作几秒后化作发光的 RGB“回声”（展示视频中为实时效果）\n• 你在和过去的自己共舞\n• 致敬 007 片头的聚光灯"
+        en: "A CAVE VR piece about time and dance.\n• With: Jignesh Bhatt\n• Where: UTC summer school “VR for Digital Art Creation” · API RV01 · July 2024\n• Context: two weeks of intro to XR concepts and equipment, learning the CAVE through this project\n• Your moves come back seconds later as glowing RGB echoes (real time in the video shown)\n• You dance with your past self\n• A nod to the 007 spotlight titles",
+        fr: "Une expérience VR en CAVE sur le temps et la danse.\n• Avec : Jignesh Bhatt\n• Où : école d'été de l'UTC « VR pour la création artistique numérique » · API RV01 · juillet 2024\n• Contexte : deux semaines d'initiation aux notions et équipements XR, en apprenant le CAVE avec ce projet\n• Vos gestes reviennent quelques secondes plus tard en échos RVB lumineux (en temps réel dans la vidéo présentée)\n• Vous dansez avec votre moi passé\n• Clin d'œil aux projecteurs des génériques de 007",
+        zh: "关于时间与舞蹈的 CAVE VR 作品。\n• 合作：Jignesh Bhatt\n• 地点：UTC 暑期学校“面向数字艺术创作的 VR” · API RV01 · 2024 年 7 月\n• 背景：为期两周的 XR 概念与设备入门，借这个项目学会使用 CAVE\n• 你的动作几秒后化作发光的 RGB“回声”（展示视频中为实时效果）\n• 你在和过去的自己共舞\n• 致敬 007 片头的聚光灯"
       },
       tools: ["CAVE", "Motion capture", "Unity", "Dance", "HMI"] },
     { title: { en: "La Forêt Virtuelle", fr: "La Forêt Virtuelle", zh: "虚拟森林" },
-      subtitle: { en: "RV01 · UTC · Heudiasyc CAVE · 2025", fr: "RV01 · UTC · CAVE Heudiasyc · 2025", zh: "RV01 · UTC · Heudiasyc CAVE · 2025" },
+      subtitle: { en: "RV01 · UTC · Heudiasyc CAVE · 2025–2026", fr: "RV01 · UTC · CAVE Heudiasyc · 2025–2026", zh: "RV01 · UTC · Heudiasyc CAVE · 2025–2026" },
       youtube: "https://www.youtube.com/watch?v=Evb4mRWAgO0", video: "", poster: "media/foret.jpg",
       links: { "Boris Labbé": "https://www.borislabbe.com/", "Indira Thouvenin": "https://www.linkedin.com/in/indiravirtualreality/", "Blanche Nguyen": "https://blanche-nguyen.framer.website/foret-virtuelle" },
       desc: {
-        en: "A forest's secret stories, told by light and sound. Let the drone guide you.\n• With: the artist Boris Labbé\n• Supervised by: Indira Thouvenin\n• Course: RV01 at UTC · 6 months · 2025\n• Where: the Heudiasyc CAVE\n• Video & VR software: Lise Leclef & Nicolas Shen\n• Afterwards: reused in 2026 for a UX study by Blanche Nguyen & Léo Cholvy, on how a drone's speed changes how people perceive it\n• Their finding: at natural speed the drone felt like a social partner; too fast, it felt intrusive",
-        fr: "Lumières et sons racontent les secrets d'une forêt. Laissez le drone vous guider.\n• Avec : l'artiste Boris Labbé\n• Encadrement : Indira Thouvenin\n• Cours : RV01 à l'UTC · 6 mois · 2025\n• Lieu : le CAVE d'Heudiasyc\n• Vidéo et logiciel VR : Lise Leclef & Nicolas Shen\n• Ensuite : reprise en 2026 pour une étude UX de Blanche Nguyen & Léo Cholvy, sur l'effet de la vitesse d'un drone sur sa perception\n• Leur résultat : à vitesse naturelle, le drone est perçu comme un partenaire social ; trop rapide, il devient intrusif",
-        zh: "光与声讲述森林的秘密。跟着无人机走吧。\n• 合作：艺术家 Boris Labbé\n• 指导：Indira Thouvenin\n• 课程：UTC RV01 · 6 个月 · 2025\n• 地点：Heudiasyc 的 CAVE\n• 视频与 VR 软件：Lise Leclef & Nicolas Shen\n• 后续：2026 年被 Blanche Nguyen 与 Léo Cholvy 用于一项 UX 研究，探讨无人机的速度如何影响人们对它的感知\n• 研究发现：速度自然时，无人机被视为社交伙伴；太快则让人觉得被侵扰"
+        en: "A forest's secret stories, told by light and sound. Let the drone guide you.\n• With: the artist Boris Labbé\n• Supervised by: Indira Thouvenin\n• Course: RV01 at UTC, in the Heudiasyc CAVE · Sep 2025 – Feb 2026\n• Video & VR software: Lise Leclef & Nicolas Shen\n• My part: empathic robots that keep their distance and speak with their eyes; the visitor–tree–drone interactions\n• Afterwards: reused in 2026 for a UX study by Blanche Nguyen & Léo Cholvy, on how a drone's speed changes how people perceive it\n• Their finding: at natural speed the drone felt like a social partner; too fast, it felt intrusive",
+        fr: "Lumières et sons racontent les secrets d'une forêt. Laissez le drone vous guider.\n• Avec : l'artiste Boris Labbé\n• Encadrement : Indira Thouvenin\n• Cours : RV01 à l'UTC, dans le CAVE d'Heudiasyc · sept. 2025 – févr. 2026\n• Vidéo et logiciel VR : Lise Leclef & Nicolas Shen\n• Ma part : des robots empathiques qui gardent leurs distances et s'expriment par le regard ; les interactions visiteur–arbres–drone\n• Ensuite : reprise en 2026 pour une étude UX de Blanche Nguyen & Léo Cholvy, sur l'effet de la vitesse d'un drone sur sa perception\n• Leur résultat : à vitesse naturelle, le drone est perçu comme un partenaire social ; trop rapide, il devient intrusif",
+        zh: "光与声讲述森林的秘密。跟着无人机走吧。\n• 合作：艺术家 Boris Labbé\n• 指导：Indira Thouvenin\n• 课程：UTC RV01，在 Heudiasyc 的 CAVE 中 · 2025 年 9 月 – 2026 年 2 月\n• 视频与 VR 软件：Lise Leclef & Nicolas Shen\n• 我的部分：会保持社交距离、用眼睛表达情绪的共情机器人；参观者、树木与无人机之间的交互\n• 后续：2026 年被 Blanche Nguyen 与 Léo Cholvy 用于一项 UX 研究，探讨无人机的速度如何影响人们对它的感知\n• 研究发现：速度自然时，无人机被视为社交伙伴；太快则让人觉得被侵扰"
       },
       tools: ["VR", "CAVE", "Motion capture", "Stereo 3D", "Robotics", "Spatial sound", "HMI"] },
     { title: { en: "EarWeGo", fr: "EarWeGo", zh: "EarWeGo" },
@@ -83,19 +83,19 @@ export const CONTENT = {
               zh: "Temporal Echoes 的项目提案。\n• 合作：Jignesh Bhatt · API RV01 · 2024 年 7 月\n• 创意\n• 动作如何缓存并延时重放成“回声”\n• 四天的计划" } },
     { title: { en: "Choosing an avatar · CAVE pre-study", fr: "Aide aux choix d'avatar · pré-étude CAVE", zh: "虚拟化身选择 · CAVE 预研究" }, kind: "paper", portrait: true,
       pages: Array.from({ length: 8 }, (_, i) => `media/slides/av/p-${i + 1}.jpg`), pdf: "media/pdf/aide-choix-avatar.pdf",
-      desc: { en: "My first HMI work: how should you see yourself?\n• Supervised by: Indira Thouvenin, Yohan Bouvet (Heudiasyc CAVE, 2025)\n• For: Mattéo's PhD AVATOUCH (two linked CAVEs)\n• Full OptiTrack suit or six trackers?\n• What I did: six views to compare\n• Tools: MiddleVR, Motive, Unity",
-              fr: "Mon premier travail d'IHM : comment se voir soi-même ?\n• Encadrement : Indira Thouvenin, Yohan Bouvet (CAVE d'Heudiasyc, 2025)\n• Pour : la thèse AVATOUCH de Mattéo (deux CAVE reliés)\n• Combinaison OptiTrack complète ou six constellations ?\n• Mon travail : six vues pour comparer\n• Outils : MiddleVR, Motive, Unity",
-              zh: "我的第一项人机交互工作：人该如何看到自己？\n• 指导：Indira Thouvenin、Yohan Bouvet（Heudiasyc CAVE，2025）\n• 用途：Mattéo 的博士课题 AVATOUCH（连接两个 CAVE）的前期研究\n• 完整的 OptiTrack 动捕服，还是六组追踪器？\n• 我的工作：做了六种视角来比较\n• 工具：MiddleVR、Motive、Unity" } },
+      desc: { en: "My first HMI work: how should you see yourself?\n• Supervised by: Indira Thouvenin, Yohan Bouvet (Heudiasyc CAVE, 2025)\n• For: AVATOUCH (PEPR eNSEMBLE), Mattéo's PhD on two linked CAVEs\n• Full OptiTrack suit or six trackers?\n• What I did: a literature review, a Unity scene with six views to compare, and the report for the team\n• Tools: MiddleVR, Motive, Unity",
+              fr: "Mon premier travail d'IHM : comment se voir soi-même ?\n• Encadrement : Indira Thouvenin, Yohan Bouvet (CAVE d'Heudiasyc, 2025)\n• Pour : AVATOUCH (PEPR eNSEMBLE), la thèse de Mattéo sur deux CAVE reliés\n• Combinaison OptiTrack complète ou six constellations ?\n• Mon travail : un état de l'art, une scène Unity avec six vues à comparer, et le rapport pour l'équipe\n• Outils : MiddleVR, Motive, Unity",
+              zh: "我的第一项人机交互工作：人该如何看到自己？\n• 指导：Indira Thouvenin、Yohan Bouvet（Heudiasyc CAVE，2025）\n• 用途：AVATOUCH（PEPR eNSEMBLE），Mattéo 关于连接两个 CAVE 的博士课题的前期研究\n• 完整的 OptiTrack 动捕服，还是六组追踪器？\n• 我的工作：文献综述、在 Unity 中做了六种视角来比较，并为团队撰写报告\n• 工具：MiddleVR、Motive、Unity" } },
     { title: { en: "La Forêt Virtuelle · RV01 defence", fr: "La Forêt Virtuelle · soutenance RV01", zh: "虚拟森林 · RV01 答辩" }, kind: "slides",
       pages: Array.from({ length: 12 }, (_, i) => `media/slides/fv/p-${String(i + 1).padStart(2, "0")}.jpg`), pdf: "media/pdf/foret-virtuelle-RV01.pdf",
       desc: { en: "The final RV01 defence: a forest–drone–human ecosystem in the CAVE.\n• With: Lise Leclef · UTC · autumn 2025\n• Tools: Unity, OptiTrack, MiddleVR\n• Light becomes sound\n• The drone's trust depends on your distance",
               fr: "La soutenance finale de RV01 : un écosystème forêt–drone–humain dans le CAVE.\n• Avec : Lise Leclef · UTC · automne 2025\n• Outils : Unity, OptiTrack, MiddleVR\n• La lumière devient son\n• La confiance du drone dépend de votre distance",
               zh: "RV01 最终答辩：CAVE 中的森林—无人机—人生态系统。\n• 合作：Lise Leclef · UTC · 2025 年秋季学期\n• 工具：Unity、OptiTrack、MiddleVR\n• 光变成声音\n• 无人机的信任取决于你离它多远" } },
-    { title: { en: "SY31 · Guided mapping with a TurtleBot", fr: "SY31 · Cartographie guidée TurtleBot", zh: "SY31 · TurtleBot 引导式建图" }, kind: "slides",
+    { title: { en: "SY31 · Autonomous maze mapping with a TurtleBot3", fr: "SY31 · Cartographie autonome d'un labyrinthe (TurtleBot3)", zh: "SY31 · TurtleBot3 自主迷宫建图" }, kind: "slides",
       pages: Array.from({ length: 10 }, (_, i) => `media/slides/sy/p-${String(i + 1).padStart(2, "0")}.jpg`), pdf: "media/pdf/sy31-turtlebot.pdf",
-      desc: { en: "Mapping with a TurtleBot3.\n• With: Anh Thi Huynh\n• Supervised by: Joëlle Al Hage · SY31 at UTC\n• Live sensors: lidar, camera, odometry, sonar\n• A full loop, mapped despite measurement errors\n• Hardware + software on a real robot: really inspiring",
-              fr: "Cartographie avec un TurtleBot3.\n• Avec : Anh Thi Huynh\n• Encadrement : Joëlle Al Hage · SY31 à l'UTC\n• Capteurs en temps réel : lidar, caméra, odométrie, sonar\n• Un tour complet cartographié, malgré les erreurs de mesure\n• Matériel et logiciel sur un vrai robot : vraiment inspirant",
-              zh: "用 TurtleBot3 建图。\n• 合作：Anh Thi Huynh\n• 指导：Joëlle Al Hage · UTC SY31 课程\n• 实时传感器：激光雷达、摄像头、里程计、声呐\n• 机器人走完一圈并画出地图，还要应对测量误差\n• 软硬件结合，跑在真机器人上：非常有启发" } },
+      desc: { en: "A robot that maps an unknown maze and picks its own route.\n• With: Anh Thi Huynh · SY31 at UTC · Feb – Jul 2026\n• Supervised by: Joëlle Al Hage\n• Pose from wheel encoders + gyrometer\n• Lidar point cloud and occupancy grid; camera reads coloured arrows; sonar times each turn\n• ROS, RViz, Python, on a real robot: really inspiring",
+              fr: "Un robot qui cartographie un labyrinthe inconnu et choisit seul sa route.\n• Avec : Anh Thi Huynh · SY31 à l'UTC · févr. – juil. 2026\n• Encadrement : Joëlle Al Hage\n• Position par les encodeurs des roues + le gyromètre\n• Nuage de points et grille d'occupation au lidar ; la caméra lit des flèches colorées ; le sonar cale chaque virage\n• ROS, RViz, Python, sur un vrai robot : vraiment inspirant",
+              zh: "让机器人自己绘制未知迷宫的地图，并自主选择路线。\n• 合作：Anh Thi Huynh · UTC SY31 课程 · 2026 年 2 月 – 7 月\n• 指导：Joëlle Al Hage\n• 用轮式编码器 + 陀螺仪估计位姿\n• 激光雷达生成点云和占据栅格地图；摄像头识别彩色箭头；声呐决定转弯时机\n• ROS、RViz、Python，跑在真机器人上：非常有启发" } },
   ],
 
 
@@ -123,10 +123,11 @@ export const CONTENT = {
 
   // 04 · Corkboard — current work (GIF / MP4 loops)
   now: [
-    { title: { en: "In-cabin voice agent", fr: "Agent vocal embarqué", zh: "车载语音助手" }, status: { en: "In progress", fr: "En cours", zh: "进行中" }, media: "",
+    { title: { en: "In-cabin voice agent", fr: "Agent vocal embarqué", zh: "车载语音助手" }, status: { en: "In progress", fr: "En cours", zh: "进行中" }, media: "media/now/voice.jpg",
       desc: { en: "Spoken requests become DSL commands for the cabin.\n• Compared: LLMs, a diffusion LM, a JEV-inspired architecture (Sept 2026)\n• Final system: Mapika-2B decides, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several (e.g. “seat heating on and open the window”)\n• Try it: the offline, text-only demo on the car's centre screen", fr: "Les demandes orales deviennent des commandes DSL pour l'habitacle.\n• Comparé : des LLM, un modèle de diffusion, une architecture inspirée de JEV (sept. 2026)\n• Au final : Mapika-2B décide, Qwen3-1.7B complète les valeurs\n• Mono et multi-intention : une phrase peut contenir une demande ou plusieurs (ex. « chauffe mon siège et ouvre la fenêtre »)\n• À essayer : la démo hors ligne, texte seul, sur l'écran central de la voiture", zh: "把口头请求变成控制座舱的 DSL 指令。\n• 对比：大语言模型、扩散语言模型、受 JEV 启发的架构（2026 年 9 月）\n• 最终方案：Mapika-2B 做决策，Qwen3-1.7B 补全参数\n• 单意图、多意图都能理解：一句话里可以有一个或多个请求（如“打开座椅加热并打开车窗”）\n• 试一试：车内中控屏上的离线纯文本演示" } },
-    { title: { en: "Research paper", fr: "Article de recherche", zh: "研究论文" }, status: { en: "Draft", fr: "Brouillon", zh: "草稿" }, media: "", desc: ph },
-    { title: { en: "This portfolio", fr: "Ce portfolio", zh: "这个作品集" }, status: { en: "You're inside it", fr: "Vous êtes dedans", zh: "你正身处其中" }, media: "",
+    { title: { en: "What's next", fr: "La suite", zh: "下一步" }, status: { en: "From 2028", fr: "Dès 2028", zh: "2028 年起" }, media: "media/now/next.jpg",
+      desc: { en: "XR and AI, together.\n• A six-month research internship from February 2028\n• Then a PhD from autumn 2028\n• At the meeting point of XR, HCI and AI: body, senses and AI agents in immersive worlds", fr: "La XR et l'IA, ensemble.\n• Un stage de recherche de six mois dès février 2028\n• Puis une thèse dès l'automne 2028\n• À la croisée de la XR, de l'IHM et de l'IA : le corps, les sens et les agents IA dans les mondes immersifs", zh: "XR 与 AI，合二为一。\n• 2028 年 2 月起：为期六个月的研究实习\n• 2028 年秋季起：攻读博士\n• 方向：XR、人机交互与 AI 的交叉，身体、感官与沉浸式世界中的 AI 智能体" } },
+    { title: { en: "This portfolio", fr: "Ce portfolio", zh: "这个作品集" }, status: { en: "You're inside it", fr: "Vous êtes dedans", zh: "你正身处其中" }, media: "media/now/portfolio.jpg",
       desc: { en: "Designed as an HMI piece in itself.\n• A scroll-driven 3D site\n• Built with Three.js", fr: "Pensé comme un projet d'IHM à part entière.\n• Un site 3D piloté par le défilement\n• Construit avec Three.js", zh: "它本身就是一件人机交互作品。\n• 由滚动驱动的 3D 网站\n• 用 Three.js 打造" } },
   ],
 
@@ -184,7 +185,7 @@ export const CONTENT = {
     { src: "media/wall/6-concours.jpg", note: { en: "Sorbonne 2023", fr: "Sorbonne 2023", zh: "索邦 2023" }, title: { en: "Concours général · Sorbonne", fr: "Concours général · Sorbonne", zh: "法国全国中学优等生会考 · 索邦" },
       desc: { en: "Prize ceremony at the Sorbonne.\n• Concours général: Chinese composition and translation\n• 2023 (ALCG)", fr: "Remise des prix à la Sorbonne.\n• Concours général : composition et version chinoises\n• 2023 (ALCG)", zh: "在索邦大学的颁奖典礼。\n• 法国全国中学优等生会考（Concours général）：中文写作与翻译\n• 2023 年（ALCG）" } },
     { src: "media/wall/6-utcrew-2024.jpg", note: { en: "on stage!", fr: "sur scène !", zh: "上台啦！" }, title: { en: "UTCrew · diploma ceremony 2024", fr: "UTCrew · remise des diplômes 2024", zh: "UTCrew · 2024 毕业典礼" },
-      desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024.\n• 2025: the crew's secretary for six months\n• Responsibility, communication, money\n• And the stage is always fun and thrilling!\n• Photo: Eva Guignabodet", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024.\n• 2025 : secrétaire de l'association pendant six mois\n• Responsabilité, communication, gestion de l'argent\n• Et la scène, c'est toujours aussi amusant et grisant !\n• Photo : Eva Guignabodet", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。\n• 2025 年：当了六个月的社团秘书\n• 责任、沟通、管钱\n• 站上舞台永远好玩又刺激！\n• 摄影：Eva Guignabodet" } },
+      desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024.\n• 2025: secretary for six months of a 40-member crew\n• Admin, communication, finances, merch and gigs\n• And the stage is always fun and thrilling!\n• Photo: Eva Guignabodet", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024.\n• 2025 : secrétaire pendant six mois d'une troupe de 40 membres\n• Administration, communication, finances, merch et prestations\n• Et la scène, c'est toujours aussi amusant et grisant !\n• Photo : Eva Guignabodet", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。\n• 2025 年：在 40 人的舞团当了六个月秘书\n• 行政、沟通、财务、周边和演出对接\n• 站上舞台永远好玩又刺激！\n• 摄影：Eva Guignabodet" } },
     { src: "media/wall/6-utc-logo.mp4", note: { en: "UTC logo", fr: "logo de l\'UTC", zh: "UTC 校徽" }, poster: "media/wall/6-utc-logo.jpg", title: { en: "UTC logo · integration 2023", fr: "Logo de l'UTC · intégration 2023", zh: "UTC 校徽 · 2023 迎新" },
       desc: { en: "September 2023: a UTC integration week \"homework\".\n• The school logo, animated in Blender\n• In its base colours, silver and gold\n• The U got eyes, like a smile :)\n• Welcoming us to five years of new ideas and new encounters",
               fr: "Septembre 2023 : un « devoir » de la semaine d'intégration de l'UTC.\n• Le logo de l'école, animé dans Blender\n• Dans ses couleurs de base, l'argent et l'or\n• Le U a reçu des yeux, comme un sourire :)\n• Pour nous accueillir : cinq ans de nouvelles idées et de nouvelles rencontres",
