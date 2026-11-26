@@ -1253,6 +1253,7 @@ function loadCarModel(env) {
     let bb = new THREE.Box3().setFromObject(holder), sz = bb.getSize(new THREE.Vector3());
     if (sz.x > sz.z) { m.rotation.y = Math.PI / 2; }
     holder.updateMatrixWorld(true);
+    for (const nm of ['BodyWindshieldWipers', 'BodyWindshieldWipersBase']) { const o = m.getObjectByName(nm); if (o) o.visible = false; }   // no wipers: from the seat they were a black bar across the view
     const hl = m.getObjectByName('BodyHeadlights'); const hp = new THREE.Box3().setFromObject(hl).getCenter(new THREE.Vector3());
     bb = new THREE.Box3().setFromObject(holder); const c0 = bb.getCenter(new THREE.Vector3());
     if (hp.z > c0.z) m.rotation.y += Math.PI;
@@ -1718,8 +1719,8 @@ function foldPaper(f) {
     foldStep(pos, n, _P.set(0, top, 0), _D.set(-k, -1, 0).normalize(), -Math.PI * B, (x, y) => x < 0 && x < -(top - y) * k - 1e-6, eps * 2 * B);
     foldStep(pos, n, _P.set(0, top, 0), _D.set(k, -1, 0).normalize(), Math.PI * B, (x, y) => x > 0 && x > (top - y) * k + 1e-6, eps * 2 * B);
   }
-  // 3 · fold in half along the centre
-  if (C > 0) foldStep(pos, n, _P.set(0, 0, 0), _D.set(0, 1, 0), Math.PI * C * .97, (x, y, z, i) => side[i] > 0, 0);
+  // 3 · fold in half along the centre, towards the written side: the letter ends up inside, only blank paper outside
+  if (C > 0) foldStep(pos, n, _P.set(0, 0, 0), _D.set(0, 1, 0), -Math.PI * C * .97, (x, y, z, i) => side[i] > 0, 0);
   // 4 · wings down on each side of the keel
   if (Dw > 0) {
     const kx = -PW * .1;
