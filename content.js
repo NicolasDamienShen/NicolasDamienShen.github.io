@@ -56,11 +56,11 @@ export const CONTENT = {
     { title: { en: "La Forêt Virtuelle", fr: "La Forêt Virtuelle", zh: "虚拟森林" },
       subtitle: { en: "RV01 · UTC · Heudiasyc CAVE · 2025", fr: "RV01 · UTC · CAVE Heudiasyc · 2025", zh: "RV01 · UTC · Heudiasyc CAVE · 2025" },
       youtube: "https://www.youtube.com/watch?v=Evb4mRWAgO0", video: "", poster: "media/foret.jpg",
-      links: { "Boris Labbé": "https://www.borislabbe.com/", "Indira Thouvenin": "https://www.linkedin.com/in/indiravirtualreality/" },
+      links: { "Boris Labbé": "https://www.borislabbe.com/", "Indira Thouvenin": "https://www.linkedin.com/in/indiravirtualreality/", "Blanche Nguyen": "https://blanche-nguyen.framer.website/foret-virtuelle" },
       desc: {
-        en: "A forest's secret stories, told by light and sound. Let the drone guide you.\n• With: the artist Boris Labbé\n• Supervised by: Indira Thouvenin\n• Course: RV01 at UTC · 6 months · 2025\n• Where: the Heudiasyc CAVE\n• Video & VR software: Lise Leclef & Nicolas Shen",
-        fr: "Lumières et sons racontent les secrets d'une forêt. Laissez le drone vous guider.\n• Avec : l'artiste Boris Labbé\n• Encadrement : Indira Thouvenin\n• Cours : RV01 à l'UTC · 6 mois · 2025\n• Lieu : le CAVE d'Heudiasyc\n• Vidéo et logiciel VR : Lise Leclef & Nicolas Shen",
-        zh: "光与声讲述森林的秘密。跟着无人机走吧。\n• 合作：艺术家 Boris Labbé\n• 指导：Indira Thouvenin\n• 课程：UTC RV01 · 6 个月 · 2025\n• 地点：Heudiasyc 的 CAVE\n• 视频与 VR 软件：Lise Leclef & Nicolas Shen"
+        en: "A forest's secret stories, told by light and sound. Let the drone guide you.\n• With: the artist Boris Labbé\n• Supervised by: Indira Thouvenin\n• Course: RV01 at UTC · 6 months · 2025\n• Where: the Heudiasyc CAVE\n• Video & VR software: Lise Leclef & Nicolas Shen\n• Afterwards: reused in 2026 for a UX study by Blanche Nguyen & Léo Cholvy, on how a drone's speed changes how people perceive it (I was not part of it)",
+        fr: "Lumières et sons racontent les secrets d'une forêt. Laissez le drone vous guider.\n• Avec : l'artiste Boris Labbé\n• Encadrement : Indira Thouvenin\n• Cours : RV01 à l'UTC · 6 mois · 2025\n• Lieu : le CAVE d'Heudiasyc\n• Vidéo et logiciel VR : Lise Leclef & Nicolas Shen\n• Ensuite : reprise en 2026 pour une étude UX de Blanche Nguyen & Léo Cholvy, sur l'effet de la vitesse d'un drone sur sa perception (je n'y ai pas participé)",
+        zh: "光与声讲述森林的秘密。跟着无人机走吧。\n• 合作：艺术家 Boris Labbé\n• 指导：Indira Thouvenin\n• 课程：UTC RV01 · 6 个月 · 2025\n• 地点：Heudiasyc 的 CAVE\n• 视频与 VR 软件：Lise Leclef & Nicolas Shen\n• 后续：2026 年被 Blanche Nguyen 与 Léo Cholvy 用于一项 UX 研究，探讨无人机的速度如何影响人们对它的感知（我未参与）"
       },
       tools: ["VR", "CAVE", "Motion capture", "Stereo 3D", "Robotics", "Spatial sound", "HMI"] },
     { title: { en: "EarWeGo", fr: "EarWeGo", zh: "EarWeGo" },
