@@ -48,9 +48,9 @@ export const CONTENT = {
       subtitle: { en: "CAVE VR · time & dance · 2024", fr: "CAVE VR · temps & danse · 2024", zh: "CAVE VR · 时间与舞蹈 · 2024" },
       portrait: true, youtube: "", drive: "https://drive.google.com/file/d/1gQqoQ4cCsuxnyJJB91L0geiyQYd4C0Vk/view", video: "", poster: "media/temporal.jpg", soon: { en: "VIDEO COMING SOON", fr: "VIDÉO BIENTÔT", zh: "视频即将上线" },
       desc: {
-        en: "A CAVE VR piece about time and dance.\n• With: Jignesh Bhatt\n• Where: UTC · API RV01 · July 2024\n• Your moves come back seconds later as glowing RGB echoes\n• You dance with your past self\n• A nod to the 007 spotlight titles",
-        fr: "Une expérience VR en CAVE sur le temps et la danse.\n• Avec : Jignesh Bhatt\n• Où : UTC · API RV01 · juillet 2024\n• Vos gestes reviennent quelques secondes plus tard en échos RVB lumineux\n• Vous dansez avec votre moi passé\n• Clin d'œil aux projecteurs des génériques de 007",
-        zh: "关于时间与舞蹈的 CAVE VR 作品。\n• 合作：Jignesh Bhatt\n• 地点：UTC · API RV01 · 2024 年 7 月\n• 你的动作几秒后化作发光的 RGB“回声”\n• 你在和过去的自己共舞\n• 致敬 007 片头的聚光灯"
+        en: "A CAVE VR piece about time and dance.\n• With: Jignesh Bhatt\n• Where: UTC · API RV01 · July 2024\n• Your moves come back seconds later as glowing RGB echoes (real time in the video shown)\n• You dance with your past self\n• A nod to the 007 spotlight titles",
+        fr: "Une expérience VR en CAVE sur le temps et la danse.\n• Avec : Jignesh Bhatt\n• Où : UTC · API RV01 · juillet 2024\n• Vos gestes reviennent quelques secondes plus tard en échos RVB lumineux (en temps réel dans la vidéo présentée)\n• Vous dansez avec votre moi passé\n• Clin d'œil aux projecteurs des génériques de 007",
+        zh: "关于时间与舞蹈的 CAVE VR 作品。\n• 合作：Jignesh Bhatt\n• 地点：UTC · API RV01 · 2024 年 7 月\n• 你的动作几秒后化作发光的 RGB“回声”（展示视频中为实时效果）\n• 你在和过去的自己共舞\n• 致敬 007 片头的聚光灯"
       },
       tools: ["CAVE", "Motion capture", "Unity", "Dance", "HMI"] },
     { title: { en: "La Forêt Virtuelle", fr: "La Forêt Virtuelle", zh: "虚拟森林" },
