@@ -28,15 +28,14 @@ function setQualityMode(m) {
 function setQuality(l) {
   QUAL.lvl = l; curPR = -1;
   if (bloom) bloom.enabled = l > 0;
-  if (composer) { const ms = l > 0 ? 4 : 0; for (const rt of [composer.renderTarget1, composer.renderTarget2]) if (rt.samples !== ms) { rt.samples = ms; rt.dispose(); } }
 }
 function qualityTick(dt) {
   if (document.hidden || paused || !QUAL.auto) return;
-  QUAL.warm += dt; if (QUAL.warm < 4) return;               // ignore loading hitches
+  QUAL.warm += dt; if (QUAL.warm < 1.2) return;             // ignore the very first hitches only: the opening must be smooth too
   QUAL.acc += dt; QUAL.n++;
-  if (QUAL.acc < 1.5) return;
+  if (QUAL.acc < 1) return;
   const fps = QUAL.n / QUAL.acc; QUAL.acc = 0; QUAL.n = 0;
-  if (fps < 38 && QUAL.lvl > 0) { setQuality(QUAL.lvl - 1); QUAL.good = 0; QUAL.max = Math.min(QUAL.max, QUAL.lvl + 1); }
+  if (fps < 45 && QUAL.lvl > 0) { setQuality(QUAL.lvl - 1); QUAL.good = 0; QUAL.max = Math.min(QUAL.max, QUAL.lvl + 1); }
   else if (fps > 57 && QUAL.lvl < QUAL.max) { if (++QUAL.good >= 4) { setQuality(QUAL.lvl + 1); QUAL.good = 0; } }
   else QUAL.good = 0;
 }
@@ -836,7 +835,7 @@ function buildPhoneRig() {
   const front = new THREE.Mesh(new THREE.ShapeGeometry(roundRectShape(.0712, .1472, .0112), 10), new THREE.MeshBasicMaterial({ color: 0x050507 })); front.position.z = .0043; pr.add(front);
   for (const [y, h] of [[.035, .016], [.012, .016]]) { const b = new THREE.Mesh(new THREE.BoxGeometry(.0016, h, .003), body.material); b.position.set(-.0368, y, 0); pr.add(b); }
   const pw = new THREE.Mesh(new THREE.BoxGeometry(.0016, .022, .003), body.material); pw.position.set(.0368, .02, 0); pr.add(pw);
-  const pc = makeCanvas(960, 2080); phoneUI.c = pc; phoneUI.x = pc.getContext('2d'); phoneUI.t = tex(pc); phoneUI.t.anisotropy = 16;
+  const pc = makeCanvas(960, 2080); phoneUI.c = pc; phoneUI.x = pc.getContext('2d'); phoneUI.t = tex(pc); phoneUI.t.generateMipmaps = false; phoneUI.t.minFilter = THREE.LinearFilter;   /* seen up close: no mip chain to rebuild 30 times a second */
   const screen = new THREE.Mesh(new THREE.ShapeGeometry(roundRectShape(.0676, .1446, .0098), 10), new THREE.MeshBasicMaterial({ map: phoneUI.t, color: glow('#ffffff', .95) }));
   { const uv = screen.geometry.attributes.uv, p = screen.geometry.attributes.position; for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / .0676 + .5, p.getY(i) / .1446 + .5); }
   screen.position.z = .0046; pr.add(screen);
@@ -982,7 +981,9 @@ function updateWalker(p, vel, tm, dt) {
   const ds = Math.abs(lastCarZ - pos.z); lastCarZ = pos.z; carSpeed += (ds / Math.max(dt, 1e-3) - carSpeed) * .1;
   rig.wheels.forEach(w => w.rotation.x -= ds / .34); CARM.wheels.forEach(w => w.rotation.x -= ds / .34);
   rig.steer.rotation.z = Math.sin(tm * .4) * .08;
-  const eyeW = car.localToWorld(EYE.clone()), inCar = camera.position.distanceTo(eyeW) < .7;
+  const eyeW = car.localToWorld(EYE.clone()), dEye = camera.position.distanceTo(eyeW), inCar = dEye < .7;
+  { const c = car.worldToLocal(_hudP.copy(camera.position)), out = Math.max(Math.abs(c.x) - .8, c.y - 1.36, -.9 - c.z, c.z - 1.1, 0);   // how far the head is outside the cabin
+    const k = 1 - smooth(clamp(out / .12, 0, 1)); rig.adasMesh.visible = k > .01; rig.adasMesh.material.opacity = .85 * k; }   // the windshield HUD only exists from inside the car: it is gone the moment the head leaves the cabin
   chatEvents(p, tm);
   const lower = 1 - smooth(clamp((p - PHN.up[0]) / (PHN.up[1] - PHN.up[0]), 0, 1)) + smooth(clamp((p - PHN.lower[0]) / (PHN.lower[1] - PHN.lower[0]), 0, 1));
   rig.phone.visible = inCar && lower < .999;
@@ -990,7 +991,7 @@ function updateWalker(p, vel, tm, dt) {
     const b = tm - buzzT, j = b < .55 ? 1 - b / .55 : 0;
     rig.phone.position.copy(PHONE).add(_pv.set(Math.sin(b * 130) * .0011 * j, -.19 * lower, .07 * lower));
     rig.phone.quaternion.copy(rig.phoneQ); rig.phone.rotateZ(-.055 + Math.sin(b * 95) * .028 * j); rig.phone.rotateX(-.6 * lower);
-    placeThumb(thumbPose(p)); if (Math.abs(p - phoneUI.lastP) > 1e-6 || tm - phoneUI.lastT > 1 / 24) { phoneUI.lastP = p; phoneUI.lastT = tm; drawPhone(p, tm); }
+    placeThumb(thumbPose(p)); if (tm - phoneUI.lastT > (Math.abs(p - phoneUI.lastP) > 1e-6 ? 1 / 30 : 1 / 24)) { phoneUI.lastP = p; phoneUI.lastT = tm; drawPhone(p, tm); }
   }
   if (camera.aspect !== fitCockStop.aspect) fitCockStop(camera.aspect);
   // the console sleeps while the phone is the subject; it starts up once the phone goes down, and powers back down if you scroll back
@@ -1000,7 +1001,7 @@ function updateWalker(p, vel, tm, dt) {
 }
 // the AR-HUD shows what is really around the car: the actual traffic and the actual pedestrians, at their real distances
 let egoV = 0, egoLastZ = null;
-const _hudObjs = [];
+const _hudObjs = [], _hudP = new THREE.Vector3();
 function drawADAS(tm) {
   const { x, t: tt } = rig.adas, W = 512, H = 288;
   x.clearRect(0, 0, W, H);
@@ -3371,9 +3372,12 @@ function frame(now) {
   qualityTick(dt);
   // close-ups (the phone, the console) get extra resolution; never below 1 except on Low
   const closeUp = !inRoom && p < .1415, dpr = devicePixelRatio || 1;
-  const wantPR = QUAL.lvl === 2 ? (closeUp ? Math.min(Math.max(dpr * 1.5, 2), 2.5) : Math.min(Math.max(dpr, 1.25), 2))
-    : QUAL.lvl === 1 ? (closeUp ? Math.min(Math.max(dpr, 1.5), 1.75) : Math.min(Math.max(dpr, 1), 1.25))
-      : (closeUp ? 1 : .85);
+  // a pixel budget per level, whatever the screen: a big retina window no longer renders 4-6x the pixels it shows
+  const budget = [1.0e6, 2.0e6, 3.3e6][QUAL.lvl] * (closeUp ? 1.25 : 1), cap = Math.sqrt(budget / Math.max(1, innerWidth * innerHeight));
+  const want0 = QUAL.lvl === 2 ? (closeUp ? Math.min(Math.max(dpr, 1.5), 2) : Math.min(dpr, 2))
+    : QUAL.lvl === 1 ? (closeUp ? Math.min(Math.max(dpr, 1.25), 1.5) : Math.min(dpr, 1.25)) : (closeUp ? 1 : .85);
+  const wantPR = Math.round(clamp(Math.min(want0, cap), .6, 2) * 20) / 20;
+  { const ms = QUAL.lvl > 0 && wantPR < 1.45 ? 4 : 0; for (const rt of [composer.renderTarget1, composer.renderTarget2]) if (rt.samples !== ms) { rt.samples = ms; rt.dispose(); } }   // enough pixels already: no multisampling on top
   if (wantPR !== curPR) { curPR = wantPR; renderer.setPixelRatio(curPR); composer.setPixelRatio(curPR); composer.setSize(innerWidth, innerHeight); }
   renderer.toneMappingExposure = inRoom ? 1.2 : 1.0;
   const bump = (c, w) => clamp(1 - Math.abs(p - c) / w, 0, 1);
@@ -3382,7 +3386,8 @@ function frame(now) {
   if (active === 'city') {
     updateWalker(p, vel, time, dt); updatePeople(time, dt);
     updatePapers(p, time, dt);
-    for (const b of billboards) { if (camera.position.distanceTo(b.grp.position) < 160) drawBillboard(b, time); b.hover += ((hovered === b.screen ? 1 : 0) - b.hover) * .15; }
+    camera.updateMatrixWorld(); _frus.setFromProjectionMatrix(_pm.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
+    for (const b of billboards) { if (time - (b.drawnT || -1) > 1 / 15 && camera.position.distanceTo(b.grp.position) < 160 && _frus.intersectsObject(b.screen)) { b.drawnT = time; drawBillboard(b, time); } b.hover += ((hovered === b.screen ? 1 : 0) - b.hover) * .15; }
     for (const s of sheets) s.hover += ((hovered === s.m ? 1 : 0) - s.hover) * .12;
     renderPass.scene = city; { const sk = smooth(clamp((p - .395) / .015, 0, 1)) * (1 - smooth(clamp((p - .526) / .015, 0, 1))); bloom.strength = (.18 + .32 * smooth(clamp((p - .128) / .022, 0, 1))) * (1 - sk); bloom.threshold = .6 + .4 * sk; } bloom.radius = .7;
     { const k = smooth(clamp((p - .5) / .05, 0, 1)); if (HOMEFX.glow) { HOMEFX.glow.material.opacity = .4 * k; HOMEFX.refl.material.opacity = k; HOMEFX.win.material.color.setScalar(.45 + 1.0 * k); } }
@@ -3396,6 +3401,7 @@ function frame(now) {
   if (cssObj) cssRenderer.render(cssScene, camera);
 }
 
+const _frus = new THREE.Frustum(), _pm = new THREE.Matrix4();
 /* ════════════════════════ boot ════════════════════════ */
 function resize() {
   if (!WEBGL) return;
@@ -3441,7 +3447,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 scrollTo(0, 0); addEventListener('pageshow', () => { scrollTo(0, 0); target = cur = 0; });
 setTimeout(() => { for (const d of CONTENT.papers) for (const src of d.pages || []) { const im = new Image(); im.decoding = 'async'; im.src = src; } }, 9000);
 addEventListener('message', e => { if (e.origin === location.origin && e.data?.ns === 'close-game' && !modal.hidden) closeModal(); });
-window.__setLang = setLang; window.__portfolio = { kn: () => ({ ...KEYNAV, ys: keyStops(), sy: scrollY, lock: cockLockY() }), finPos: () => { const v = fin.sheet.getWorldPosition(new THREE.Vector3()), w = v.clone().project(camera); return { world: v.toArray().map(x => +x.toFixed(2)), scr: [Math.round((w.x + 1) / 2 * innerWidth), Math.round((1 - w.y) / 2 * innerHeight), +w.z.toFixed(3)], vis: fin.sheet.visible, s: +fin.sheet.scale.x.toFixed(2) }; }, botSay: () => { bot.say = 6.5; }, games: openGames, gameInfo: openGameInfo, drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
+window.__setLang = setLang; window.__portfolio = { THREE, renderer: () => renderer, kn: () => ({ ...KEYNAV, ys: keyStops(), sy: scrollY, lock: cockLockY() }), finPos: () => { const v = fin.sheet.getWorldPosition(new THREE.Vector3()), w = v.clone().project(camera); return { world: v.toArray().map(x => +x.toFixed(2)), scr: [Math.round((w.x + 1) / 2 * innerWidth), Math.round((1 - w.y) / 2 * innerHeight), +w.z.toFixed(3)], vis: fin.sheet.visible, s: +fin.sheet.scale.x.toFixed(2) }; }, botSay: () => { bot.say = 6.5; }, games: openGames, gameInfo: openGameInfo, drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
 
 // QA test hook (read-only): the pure camera path of the city part, without time effects (car parked at its 60 m stop)
 window.__portfolio.hot = (k, re) => { const h = hotspots[k].find(m => re.test(String(typeof m.userData.hot.label === 'function' ? m.userData.hot.label() : m.userData.hot.label))); h?.userData.hot.action(); return !!h; };
