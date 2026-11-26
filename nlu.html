@@ -2523,14 +2523,14 @@ document.querySelectorAll("#panel-models g[data-model]").forEach(g => g.addEvent
 }));
 
 /* The scripted sentences, in demo order: English and Chinese say the same thing and give the same commands. */
-const DEMO_EN = [ "Turn on the driver seat heating", "Open the rear-left window halfway", "Make the ambient light blue", "Open the sunshade", "Open the sunroof", "Turn on the windshield defog", "Set the temperature to 24 degrees", "Two degrees lower", "Navigate to Shenzhen North Station, avoid highways", "Show traffic", "Any gas stations within 3 km?", "The third one", "Play Qi Li Xiang by Jay Chou", "Save this song", "Turn on the A/C, then play another Jay Chou song" ];
+const DEMO_EN = [ "Turn on the driver seat heating", "Open the rear-left window halfway", "Make the ambient light green", "Open the sunshade", "Open the sunroof", "Turn on the windshield defog", "Set the temperature to 24 degrees", "Two degrees lower", "Navigate to Shenzhen North Station, avoid highways", "Show traffic", "Any gas stations within 3 km?", "The third one", "Play Qi Li Xiang by Jay Chou", "Save this song", "Turn on the A/C, then play another Jay Chou song" ];
 
-const DEMO_ZH = [ "打开主驾座椅加热", "左后车窗开一半", "氛围灯调成蓝色", "打开遮阳帘", "打开天窗", "打开除雾", "温度调到24度", "再低两度", "导航去深圳北站，不走高速", "显示路况", "三公里内有加油站吗？", "第三个", "播放周杰伦的七里香", "收藏这首歌", "打开空调，再放一首周杰伦的歌" ];
+const DEMO_ZH = [ "打开主驾座椅加热", "左后车窗开一半", "氛围灯调成绿色", "打开遮阳帘", "打开天窗", "打开除雾", "温度调到24度", "再低两度", "导航去深圳北站，不走高速", "显示路况", "三公里内有加油站吗？", "第三个", "播放周杰伦的七里香", "收藏这首歌", "打开空调，再放一首周杰伦的歌" ];
 
 const DEMO_DSL = [
     "seat: action|on zone|driver mode|heating",
     "win: action|on zone|rear_left degree|half",
-    "light: action|set mode|colour color|blue",
+    "light: action|set mode|colour color|green",
     "shade: action|on zone|rear_row",            /* rear sunshade only: the front one stays closed */
     "win: action|on zone|sunroof",
     "ac: action|on mode|defog",

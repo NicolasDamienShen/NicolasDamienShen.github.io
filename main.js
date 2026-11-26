@@ -697,7 +697,7 @@ const CLOCK = '20:27';   // the story's time: a night drive (phone, lock screen,
 const EYE = new THREE.Vector3(.42, 1.1, -.02), PHONE = new THREE.Vector3(.425, 1.052, -.205), COCK = new THREE.Vector3(0, .91, -.8);
 const COCK_YAW = .3, COCK_S = .9, PHONE_LOOK = PHONE.clone().add(new THREE.Vector3(-.015, .012, 0));
 const ROAD_BASE = new THREE.Vector3(-.9, .62, -8), ROAD_LOOK = ROAD_BASE.clone();
-const AHEAD_LOOK = new THREE.Vector3(0, .78, -22);   // the opening: head up, eyes on the road dead ahead, until the phone rings
+const AHEAD_LOOK = new THREE.Vector3(0, -.6, -22), AHEAD_EYE = new THREE.Vector3(.42, 1.26, -.02);   // the opening: head raised, eyes on the road dead ahead, until the phone rings
 // where you lean to at the console stop: close enough to read it, far enough that it fits a portrait phone screen too
 const CK_POS = new THREE.Vector3();
 function fitCockStop(aspect) {
@@ -1038,7 +1038,7 @@ function drawADAS(tm) {
 const COCK_EX = [
   [{ en: 'Turn on the driver seat heating', fr: 'Allume le chauffage du siège conducteur', zh: '打开主驾座椅加热' }, 'seat: action|on zone|driver mode|heating', 'seat'],
   [{ en: 'Open the rear-left window halfway', fr: 'Ouvre la vitre arrière gauche à moitié', zh: '把左后车窗打开一半' }, 'win: action|on zone|rear_left degree|half', 'win'],
-  [{ en: 'Make the ambient light blue', fr: "Passe l'éclairage d'ambiance en bleu", zh: '氛围灯换成蓝色' }, 'light: action|set mode|colour color|blue', 'light'],
+  [{ en: 'Make the ambient light green', fr: "Passe l'éclairage d'ambiance en vert", zh: '氛围灯调成绿色' }, 'light: action|set mode|colour color|green', 'light'],
   [{ en: 'Navigate to the airport, avoid highways', fr: "Va à l'aéroport, sans autoroute", zh: '导航去机场，避开高速' }, 'nav: action|navigate end|Airport route|avoid_highways', 'nav'],
 ];
 function buildCockpit() {
@@ -1102,7 +1102,7 @@ function drawCockpit(tm) {
   const lit = smooth(clamp((f - .45) / .15, 0, 1));
   const seats = [[-30, -40], [30, -40], [-34, 40], [0, 40], [34, 40]];
   seats.forEach(([sx, sy], i) => { x.fillStyle = part === 'seat' && i === 0 ? `rgba(255,106,61,${.25 + .55 * lit})` : '#1c2350'; rr2(x, sx - 17, sy - 20, 34, 40, 9); x.fill(); x.strokeStyle = '#3a4580'; x.lineWidth = 1.5; x.stroke(); });
-  x.strokeStyle = part === 'light' ? `rgba(63,140,255,${.3 + .7 * lit})` : 'rgba(111,127,232,.35)'; x.lineWidth = 4; x.beginPath(); x.moveTo(-74, -60); x.lineTo(-74, 80); x.moveTo(74, -60); x.lineTo(74, 80); x.stroke();
+  x.strokeStyle = part === 'light' ? `rgba(61,220,132,${.3 + .7 * lit})` : 'rgba(111,127,232,.35)'; x.lineWidth = 4; x.beginPath(); x.moveTo(-74, -60); x.lineTo(-74, 80); x.moveTo(74, -60); x.lineTo(74, 80); x.stroke();
   if (part === 'win') { x.fillStyle = `rgba(63,210,255,${.6 * lit})`; x.fillRect(-84, 10, 8, 60 * (.5 + .5 * lit)); }
   if (part === 'nav') { x.strokeStyle = `rgba(47,209,168,${lit})`; x.lineWidth = 3; x.setLineDash([8, 8]); x.lineDashOffset = -tm * 40; x.beginPath(); x.moveTo(0, -175); x.bezierCurveTo(0, -230, 60, -230, 90, -260); x.stroke(); x.setLineDash([]); }
   x.restore();
@@ -1730,7 +1730,7 @@ function foldPaper(f) {
 const FP = [new THREE.Vector3(0, 1.36, 3.35), new THREE.Vector3(-.75, 1.5, 4.35), new THREE.Vector3(-1.9, 2.5, 8.5), new THREE.Vector3(-3.6, 3.6, 13.5)];
 const _a = new THREE.Vector3(), _b = new THREE.Vector3(), _m4 = new THREE.Matrix4(), _qa = new THREE.Quaternion(), _qb = new THREE.Quaternion();
 const SILL = new THREE.Vector3(0, .94, 3.6), SHOW = new THREE.Vector3(0, 1.36, 3.35);
-const AWAY_C = new THREE.Vector3(-4.06, 3.9, 14.85), AWAY_END = new THREE.Vector3(-4.0, 5.9, 15.5), _c2 = new THREE.Vector3();   // up into the sky, kept in front of the painted city (z 16): it shrinks to look far
+const AWAY_C = new THREE.Vector3(-4.06, 3.9, 14.85), AWAY_END = new THREE.Vector3(-4.35, 4.05, 15.55), _c2 = new THREE.Vector3();   // up into the sky, kept in front of the painted city (z 16): it shrinks to look far
 function facingQ(pos, out) { _m4.lookAt(camera.position, pos, new THREE.Vector3(0, 1, 0)); return out.setFromRotationMatrix(_m4); }
 function flightQ(fwd, out) {   // local +y → forward, local −x → up (keel down)
   const up = new THREE.Vector3(0, 1, 0), xa = up.clone().negate(), za = new THREE.Vector3().crossVectors(xa, fwd).normalize(), ya = new THREE.Vector3().crossVectors(za, xa).normalize();
@@ -1750,12 +1750,13 @@ function updateFinale(p, t) {
     if (f > .76) { flightQ(_a.copy(FP[1]).sub(FP[0]).normalize(), _qa); S.quaternion.slerp(_qa, smooth((f - .76) / .24)); }
     S.scale.setScalar(1);
   } else {
-    const e = g * g * (2 - g); bez(FP[0], FP[1], FP[2], FP[3], e, _a);   // eases in, leaves at speed: the flight carries on into AWAY without a stop bez(FP[0], FP[1], FP[2], FP[3], Math.min(1, e + .02), _b);
+    const e = g * g * (2 - g); bez(FP[0], FP[1], FP[2], FP[3], e, _a); bez(FP[0], FP[1], FP[2], FP[3], Math.min(1, e + .02), _b);   // eases in, leaves at speed: the flight carries on into AWAY without a stop
+    if (e >= .98) { bez(FP[0], FP[1], FP[2], FP[3], e - .02, _c2); _b.copy(_a).add(_a).sub(_c2); }   // at the very end, keep the heading
     S.position.copy(_a); S.position.y += Math.sin(t * 1.3) * .006 * (1 - e);   // the sill bob fades out instead of snapping off at launch
     flightQ(_b.sub(_a).normalize(), S.quaternion); S.rotateY(Math.sin(g * 8) * .25);
     S.scale.setScalar(1);
     const w = clamp((p - AWAY[0]) / (AWAY[1] - AWAY[0]), 0, 1);
-    if (w > 0) {   // keeps going the way it was flying, curving up into the sky, smaller and smaller
+    if (w > 0) {   // keeps going the way it was flying, at about that height, smaller and smaller
       const e2 = -2 * w * w * w + 3 * w * w + 1.9 * (w * w * w - 2 * w * w + w), q = (u, o) => { const v = 1 - u; return o.set(0, 0, 0).addScaledVector(FP[3], v * v).addScaledVector(AWAY_C, 2 * v * u).addScaledVector(AWAY_END, u * u); };
       q(e2, _a); q(Math.min(1, e2 + .02), _b); if (e2 >= .98) _b.copy(_a).add(_a).sub(q(e2 - .02, _c2));
       S.position.copy(_a); flightQ(_b.sub(_a).normalize(), S.quaternion); S.rotateY(Math.sin((g + w) * 8) * .25 * (1 - w));
@@ -2539,9 +2540,9 @@ const BB = CONTENT.videos.map((v, i) => { const side = i % 2 === 0 ? -1 : 1, z =
 const BBP = [.214, .244, .274, .304];          // where each screen is centred in the scroll
 const K_CITY = [
   // in the car: your eyes on the phone (rel = relative to the car, which keeps driving)
-  { p: 0.000, rel: 1, turn: 1, pos: EYE.clone(), look: AHEAD_LOOK },               // looking straight out of the front of the car
-  { p: 0.004, rel: 1, turn: 1, pos: EYE.clone(), look: AHEAD_LOOK },
-  { p: 0.008, rel: 1, turn: 1, pos: EYE.clone(), look: AHEAD_LOOK },               // the phone rings here: only then does the gaze go down to it
+  { p: 0.000, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },               // looking straight out of the front of the car
+  { p: 0.004, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },
+  { p: 0.008, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },               // the phone rings here: only then does the gaze go down to it
   { p: 0.018, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },   // the phone rings, you take it out (gaze a hair left of it: the console stays in view)
   { p: 0.022, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },
   { p: 0.104, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },
@@ -3129,7 +3130,7 @@ const keyNavBlocked = e => !modal.hidden || !idx.hidden || paused
 // the still views, as scroll positions (recomputed when the window changes size)
 function keyStops() {
   const key = innerWidth + 'x' + innerHeight + ':' + maxScroll();
-  if (keyStops.key !== key) { keyStops.key = key; keyStops.ys = [...BBP.map(p => p + .005), .6215, .704, ...WALL_GROUPS.map((G, i) => .7345 + i * .0175 + .00575), .882].map(p => Math.round(p2s(p))); }
+  if (keyStops.key !== key) { keyStops.key = key; keyStops.ys = WALL_GROUPS.map((G, i) => .7345 + i * .0175 + .00575).map(p => Math.round(p2s(p))); }   // only the photo sets
   return keyStops.ys;
 }
 function keyNavTick(now) {
@@ -3138,16 +3139,16 @@ function keyNavTick(now) {
   if (keyNavBlocked()) { K.dir = 0; K.v = 0; }
   if (!K.dir) K.wait = 0;
   if (Math.abs(scrollY - K.y) > 2) K.y = scrollY;                 // something else moved the page (wheel, touch, a chapter button): follow it
-  // holding an arrow still pauses at every still view (each screen, the desk, the board, each photo set, the letter): it eases in, waits, then goes on
+  // holding an arrow pauses briefly at each photo set: it eases in, waits, then goes on
   const ys = keyStops(), ahead = K.dir ? ys.filter(y => (y - K.y) * K.dir > .5).sort((a, b) => (a - b) * K.dir)[0] : undefined;
-  const near = ahead === undefined ? 1 : clamp(.25 + Math.abs(ahead - K.y) / (innerHeight * .55), .25, 1);
+  const near = ahead === undefined ? 1 : clamp(.45 + Math.abs(ahead - K.y) / (innerHeight * .4), .45, 1);
   const vmax = clamp(innerHeight * .36, 170, 400) * near;          // px/s: an unhurried glide
   if (K.wait && now < K.wait) K.v = 0;
   else {
     K.wait = 0;
     K.v += (K.dir * vmax - K.v) * (1 - Math.exp(-dt * (K.dir ? 4.5 : 5.5)));
     const y0 = K.y; K.y = clamp(K.y + K.v * dt, 0, maxScroll());
-    if (K.dir && ahead !== undefined && (K.y - ahead) * K.dir >= 0 && (y0 - ahead) * K.dir < 0) { K.y = ahead; K.v = 0; K.wait = now + 2300; }
+    if (K.dir && ahead !== undefined && (K.y - ahead) * K.dir >= 0 && (y0 - ahead) * K.dir < 0) { K.y = ahead; K.v = 0; K.wait = now + 1300; }
   }
   { const ly = cockLockY(); if (ly !== null && K.y > ly && scrollY <= ly + 1) { K.y = ly; K.v = Math.min(K.v, 0); if (K.dir > 0) cockNudge(); } }   // the console stop holds until the demo has been opened
   if (Math.abs(K.y - scrollY) >= .5) scrollTo(0, K.y);
@@ -3440,7 +3441,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 scrollTo(0, 0); addEventListener('pageshow', () => { scrollTo(0, 0); target = cur = 0; });
 setTimeout(() => { for (const d of CONTENT.papers) for (const src of d.pages || []) { const im = new Image(); im.decoding = 'async'; im.src = src; } }, 9000);
 addEventListener('message', e => { if (e.origin === location.origin && e.data?.ns === 'close-game' && !modal.hidden) closeModal(); });
-window.__setLang = setLang; window.__portfolio = { finPos: () => { const v = fin.sheet.getWorldPosition(new THREE.Vector3()), w = v.clone().project(camera); return { world: v.toArray().map(x => +x.toFixed(2)), scr: [Math.round((w.x + 1) / 2 * innerWidth), Math.round((1 - w.y) / 2 * innerHeight), +w.z.toFixed(3)], vis: fin.sheet.visible, s: +fin.sheet.scale.x.toFixed(2) }; }, botSay: () => { bot.say = 6.5; }, games: openGames, gameInfo: openGameInfo, drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
+window.__setLang = setLang; window.__portfolio = { kn: () => ({ ...KEYNAV, ys: keyStops(), sy: scrollY, lock: cockLockY() }), finPos: () => { const v = fin.sheet.getWorldPosition(new THREE.Vector3()), w = v.clone().project(camera); return { world: v.toArray().map(x => +x.toFixed(2)), scr: [Math.round((w.x + 1) / 2 * innerWidth), Math.round((1 - w.y) / 2 * innerHeight), +w.z.toFixed(3)], vis: fin.sheet.visible, s: +fin.sheet.scale.x.toFixed(2) }; }, botSay: () => { bot.say = 6.5; }, games: openGames, gameInfo: openGameInfo, drive: d => { if (d != null) DRIVE.d = d; return DRIVE.d; }, sim: () => ({ people: people.filter(o => o.kind !== 'idle').map(o => [o.kind, +o.x.toFixed(2), +o.z.toFixed(2)]), cars: TRAFFIC.map(c => [c.x, +c.z.toFixed(2), +(c.vc ?? c.v).toFixed(2)]), ego: [CAR_X, +car.position.z.toFixed(2)] }), goP: p => { if (p > COCK_LOCK_P) cockUnlock(); target = cur = prevP = p; cockLastY = p2s(p); scrollTo(0, p2s(p)); }, cockDone: () => cockDone, cockLockY: () => cockLockY(), state: () => ({ p: cur, active }), pick: () => { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(0, 0), camera); const h = rc.intersectObjects(city.children, true).filter(x => x.object.visible).slice(0, 3); return h.map(x => { const o = x.object, g = o.geometry; g.computeBoundingBox(); const sz = g.boundingBox.getSize(new THREE.Vector3()); return (o.name || o.type) + '@' + x.distance.toFixed(2) + ' ' + o.material.type + ' op' + o.material.opacity + ' size' + sz.toArray().map(v => v.toFixed(2)) + ' par:' + (o.parent === car ? 'car' : o.parent?.type); }); }, cam: () => { const d = new THREE.Vector3(); camera.getWorldDirection(d); const l = car.worldToLocal(camera.position.clone()); return { pos: l.toArray().map(v => +v.toFixed(3)), dir: d.toArray().map(v => +v.toFixed(3)), carZ: +car.position.z.toFixed(2), near: camera.near }; } };
 
 // QA test hook (read-only): the pure camera path of the city part, without time effects (car parked at its 60 m stop)
 window.__portfolio.hot = (k, re) => { const h = hotspots[k].find(m => re.test(String(typeof m.userData.hot.label === 'function' ? m.userData.hot.label() : m.userData.hot.label))); h?.userData.hot.action(); return !!h; };
