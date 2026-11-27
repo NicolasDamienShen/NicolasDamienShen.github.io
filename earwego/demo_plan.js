@@ -259,7 +259,7 @@
       case 'redo': return 'Redo';
       case 'play': return a.from_bar ? `Play from bar ${a.from_bar}` : 'Play';
       case 'stop': return 'Pause';
-      case 'export': return {wav: 'Export WAV', midi: 'Export MIDI', mp3: 'Export MP3', code: 'Copy the Strudel code', menu: 'Open the export menu'}[a.format];
+      case 'export': return {wav: 'Export WAV', midi: 'Export MIDI', mp3: 'Export MP3', code: 'Copy the Strudel code', menu: 'Open the export menu (the demo never downloads by itself)'}[a.format];
       case 'orchestrate': return a.style ? `Switch to the “${a.style}” orchestration (all three parts, undoable)` : 'Open orchestration ideas (three sets picked for this song)';
       case 'adapt_idiom': return `Rewrite the ${PART_EN[a.part || 'lh']} to suit its instrument (compare first)`;
       case 'hum': return 'Hum a new melody';
@@ -285,9 +285,8 @@
   const NOTE_EN = [[/^这首歌只有 (\d+) 小节$/, m => `Only ${m[1]} bars in this song`], [/^这首歌还没有(副歌|前奏|尾声)$/, m => `No ${{副歌: 'chorus', 前奏: 'intro', 尾声: 'outro'}[m[1]]} yet`], [/^版本线上只有 (\d+) 个版本，没有第 (\d+) 版，回到了第 (\d+) 版$/, m => `Only ${m[1]} version(s) — went to version ${m[3]}`]];
   const tr = (list, s) => { for (const [re, f] of list) { const m = re.exec(s || ''); if (m) return f(m); } return null; };
   const ZH2EN = {};   // 演示用到的中文说法 → 英文（追问的选项、也可以：）
-  P.EN_SCRIPT = ['loop bars 7 to 9', 'raise the last two notes of bar 3 by a semitone', 'higher', 'undo', 'change the melody to cello', 'try another one', 'switch back',
-    'change the accompaniment to choir', 'sustained notes', 'use this one', 'slow down bars 5 to 8', 'suggest an orchestration', 'the green notes in section 4', 'raise them a semitone',
-    'make the left hand deeper', 'export mp3', 'dismiss'];
+  P.EN_SCRIPT = ['loop bars 7 to 9', 'raise the last two notes of bar 3 by a semitone', 'higher', 'undo', 'change the melody to electric piano', 'switch back',
+    'change the second melody to vibraphone', 'make bars 9 to 12 quieter', 'use b', 'suggest an orchestration', 'slow down bars 5 to 8', 'dismiss'];
   (B.script || []).forEach((z, i) => { if (P.EN_SCRIPT[i]) ZH2EN[z] = P.EN_SCRIPT[i]; });
   Object.assign(ZH2EN, {'一键写成整首歌': 'make the whole song', '整首慢一点': 'slow down the whole song', '不用了': 'no thanks', '整首循环播放': 'loop the whole song', '副歌更活泼一点': 'make the chorus more lively',
     '第三段的绿色音': 'the green notes in section 3', '写个副歌': 'write a chorus', '第3小节最后两个音升高半音': 'raise the last two notes of bar 3 by a semitone', '主旋律换成小提琴': 'change the melody to violin',
@@ -353,6 +352,7 @@
     }
     delete r._how;
     r = limits(r, ctx);
+    (r.actions || []).forEach((a, i) => { if (a.do === 'export' && a.format !== 'menu') { a.format = 'menu'; if (r.say && r.say.plan) r.say.plan[i] = '打开导出菜单（演示版不会自动下载）'; if (r.say) r.say.rewritten = ''; } });
     r.actions = r.actions || []; r.transcript = heard; r.say = r.say || {}; r.say.heard = heard;
     if (r.clarify && how === 'fallback') r.clarify.options = DEMO_OPTS[baseKey(ctx)].slice();
     if (lang() === 'en') toEn(r, ctx, heard);

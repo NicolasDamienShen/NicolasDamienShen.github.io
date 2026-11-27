@@ -21,6 +21,8 @@
   .go.wait { opacity: .6; animation: none !important; }
   #load { position: fixed; inset: 0; display: grid; place-items: start center; padding-top: 8vh; box-sizing: border-box; color: #c9b8ff; font: 13px ui-monospace, Menlo, monospace; letter-spacing: .2em; }
   .gone { opacity: 0 !important; }
+  #music { position: fixed; right: 12px; bottom: 12px; z-index: 3; min-width: 34px; height: 30px; padding: 0 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); background: rgba(10,8,20,.62); color: rgba(255,255,255,.85); font: 600 13px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; cursor: pointer; }
+  #music:hover { background: rgba(40,30,70,.8); } #music[aria-pressed="false"] { color: rgba(255,255,255,.5); }
   /* title card: the first thing you see, then it melts into the level */
   #title { position: absolute; inset: 0; display: grid; place-content: start center; padding-top: 5vmin; box-sizing: border-box; gap: 2vmin; text-align: center; cursor: pointer;
            background: radial-gradient(120% 90% at 50% 40%, rgba(16,12,40,.72), rgba(6,5,14,.92)); color: #fff;
@@ -76,6 +78,7 @@
 </div>
 <div id="touch" class="pill">This one needs a keyboard (two players share it), so try it on a computer.</div>
 <div id="load">LOADING…</div>
+<button id="music" type="button" hidden aria-label="Music">♪</button>
 <a id="back" href="../../index.html" style="position:fixed;left:12px;top:12px;z-index:5;display:none;padding:.45em .9em;border-radius:999px;background:rgba(10,8,20,.72);border:1px solid rgba(255,255,255,.25);color:#fff;font:600 13px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;text-decoration:none">← Back to the portfolio</a>
 <script>
 /* Gravity Boy & Magic Gal: written in Python/pygame in 2021 with my brother.
@@ -312,7 +315,7 @@ function keyUp(code) {
 const titleEl = document.getElementById('title'); let titleUp = true;
 // nothing starts before the sprites are loaded: the title card waits, and says so
 const goEl = titleEl.querySelector('.go'), goText = goEl ? goEl.textContent : ''; if (goEl) { goEl.textContent = 'Loading…'; goEl.classList.add('wait'); } titleEl.style.cursor = 'progress';
-function startGame() { if (!titleUp || !ready) return; titleUp = false; titleEl.classList.add('out'); hint.classList.add('gone'); reset(); grabFocus(); setTimeout(() => titleEl.remove(), 1000); }
+function startGame() { if (!titleUp || !ready) return; BGM.start(); titleUp = false; titleEl.classList.add('out'); hint.classList.add('gone'); reset(); grabFocus(); setTimeout(() => titleEl.remove(), 1000); }
 titleEl.addEventListener('pointerdown', e => { e.preventDefault(); startGame(); });
 addEventListener('keydown', e => { if (!titleUp || e.key === 'Escape' || e.ctrlKey || e.metaKey || e.altKey) return; e.preventDefault(); e.stopImmediatePropagation(); startGame(); }, true);
 const releaseAll = () => [...held].forEach(keyUp);
@@ -355,6 +358,39 @@ Promise.all(names.map(load)).then(() => {
   const loop = now => { acc += Math.min(250, now - last); last = now; let n = 0; while (acc >= 1000 / FPS) { if (!titleUp) update(); acc -= 1000 / FPS; n++; } if (n) draw(); requestAnimationFrame(loop); };
   requestAnimationFrame(loop);
 });
+})();
+
+// ── background music (a/bgm.mp3, NS 11-27): starts with the game (browsers only allow sound after a click or key),
+//    loops without a gap, M or the ♪ button mutes it (remembered), pauses when the tab is hidden
+const BGM = (() => {
+  let ctx = null, gain = null, buf = null, src = null, want = false, muted = false;
+  try { muted = localStorage.getItem('gb-music-off') === '1'; } catch (e) { }
+  const btn = document.getElementById('music');
+  const draw = () => { btn.textContent = muted ? '♪ off' : '♪'; btn.setAttribute('aria-pressed', String(!muted)); btn.title = muted ? 'Music off (M)' : 'Music on (M)'; };
+  const VOL = .42;
+  function play() {
+    if (!ctx || !buf || src || !want) return;
+    src = ctx.createBufferSource(); src.buffer = buf; src.loop = true; src.connect(gain); src.start();
+    gain.gain.cancelScheduledValues(ctx.currentTime); gain.gain.setValueAtTime(0, ctx.currentTime); gain.gain.linearRampToValueAtTime(muted ? 0 : VOL, ctx.currentTime + 1.6);
+  }
+  function start() {
+    want = true; btn.hidden = false;
+    try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    if (!gain) { gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination); }
+    if (ctx.state === 'suspended') ctx.resume();
+    if (buf) return play();
+    fetch('a/bgm.mp3').then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then(b => new Promise((ok, no) => ctx.decodeAudioData(b, ok, no))).then(b => { buf = b; play(); }).catch(() => { btn.hidden = true; });   // no file: just no music
+  }
+  function toggle() {
+    muted = !muted; draw(); try { localStorage.setItem('gb-music-off', muted ? '1' : '0'); } catch (e) { }
+    if (gain && ctx) { gain.gain.cancelScheduledValues(ctx.currentTime); gain.gain.setTargetAtTime(muted ? 0 : VOL, ctx.currentTime, .12); }
+  }
+  btn.addEventListener('click', e => { e.stopPropagation(); toggle(); try { document.getElementById('c').focus(); } catch (er) { } });
+  addEventListener('keydown', e => { if ((e.key === 'm' || e.key === 'M') && want && !e.ctrlKey && !e.metaKey) toggle(); });
+  document.addEventListener('visibilitychange', () => { if (!ctx) return; if (document.hidden) ctx.suspend(); else if (want) ctx.resume(); });
+  draw();
+  return { start, toggle };
 })();
 </script>
 </body>

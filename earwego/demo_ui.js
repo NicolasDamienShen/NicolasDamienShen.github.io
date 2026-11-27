@@ -209,7 +209,7 @@
   /* ---------------------------------------------------------------- 幕后（每一句话走了哪条路） */
   const tr = document.createElement('div'); tr.id = 'ewgTrace'; tr.className = 'ewg-raw'; tr.setAttribute('aria-live', 'polite');
   const tab = document.createElement('button'); tab.type = 'button'; tab.id = 'ewgTraceTab'; tab.className = 'ewg-raw';
-  document.body.append(tr); if (lead) lead.appendChild(tab); else document.body.appendChild(tab);
+  // NS 11-27：去掉“幕后”卡片和它的按钮（不挂到页面上，下面的代码碰到它们也不会显示）
   let T = null, trT = null, pollT = null, trOpen = false, trPinned = false;
   function placeFloat() {
     const sm = document.querySelector('.stage-main'), st = document.getElementById('status'); if (!sm) return;
@@ -237,7 +237,7 @@
   function hideTrace(toTab) { tr.classList.remove('on'); trOpen = false; tab.setAttribute('aria-pressed', 'false'); if (toTab && T) { drawTab(); tab.classList.add('on'); } }
   function drawTab() { tab.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8M11 6h8M11 12h8M11 18h8"/></svg><i></i>'; tab.setAttribute('aria-label', tt('trBtn')); tab.title = tt('trBtn'); }
   tab.onclick = () => { if (trOpen) { trPinned = false; hideTrace(true); } else { trPinned = true; clearTimeout(trT); showTrace(); } };
-  addEventListener('ewg-plan', e => {
+  if (false) addEventListener('ewg-plan', e => {
     const res = e.detail.res, sim = SIM.pendingSim === e.detail.text;
     T = {res, trace: res._trace, sim, simN: SIM.lastN}; SIM.pendingSim = null;
     showTrace(); clearInterval(pollT); clearTimeout(trT);

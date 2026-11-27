@@ -36,9 +36,14 @@
   body.ewg-tour .lane-h .lane-lg{display:none !important}
   body.ewg-tour .lane-name{pointer-events:none}
   body.ewg-tour #title{display:none}
-  #ewgTourVeil{position:fixed;z-index:60;display:grid;place-items:center;border-radius:16px;background:rgba(18,19,23,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#F2F2F5;
+  #ewgTourVeil{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:#121317;color:#F2F2F5;
     transition:opacity 520ms cubic-bezier(.2,0,0,1)}
   #ewgTourVeil.out{opacity:0;pointer-events:none}
+  #ewgTourVeil .vskip{position:absolute;left:22px;top:16px;height:28px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:600;color:#9A9AA5;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+  #ewgTourVeil .vskip:hover{color:#F2F2F5;background:rgba(255,255,255,.06)}
+  #ewgTourVeil .vlang{position:absolute;right:22px;top:14px;display:flex;padding:2px;border-radius:8px;background:rgba(255,255,255,.08)}
+  #ewgTourVeil .vlang button{min-width:40px;height:26px;padding:0 9px;border-radius:6px;font-size:12px;font-weight:600;color:#9A9AA5}
+  #ewgTourVeil .vlang button[aria-pressed="true"]{background:rgba(255,255,255,.14);color:#F2F2F5}
   #ewgTourVeil .in{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
   #ewgTourVeil h1{margin:0;font-size:28px;line-height:34px;font-weight:700;letter-spacing:-.01em}
   #ewgTourVeil p{margin:0;font-size:15px;color:#9A9AA5}
@@ -90,7 +95,7 @@
 
   /* ---------------------------------------------------------------- 位置 */
   function stageRect() { const sm = document.querySelector('.stage'); return sm ? sm.getBoundingClientRect() : {left: 0, top: 0, width: innerWidth, height: innerHeight, right: innerWidth, bottom: innerHeight}; }
-  function placeVeil() { const r = stageRect(); Object.assign(veil.style, {left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px'}); }
+  function placeVeil() { /* 整个窗口：第一眼就是“哼一段”，看不到页面在载入 */ }
   let tipTarget = null, tipSide = 'left';
   function placeTip() {
     if (!tipTarget) { const r = stageRect(); tip.dataset.side = 'none'; tip.style.left = Math.round(r.left + r.width / 2 - tip.offsetWidth / 2) + 'px'; tip.style.top = Math.round(r.top + 70) + 'px'; ring.classList.remove('on'); return; }
@@ -149,8 +154,9 @@
   }
   function stepHum() {
     placeVeil(); veil.classList.remove('out');
-    veil.innerHTML = `<div class="in"><h1>${esc(T('humT'))}</h1><p>${esc(T('humS'))}</p><button type="button" class="rec" aria-label="${esc(T('humT'))}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 4a3 3 0 00-3 3v5a3 3 0 006 0V7a3 3 0 00-3-3z"/><path d="M6 11.5a6 6 0 0012 0M12 17.5V20"/></svg></button><p class="n" style="font:600 11px/16px var(--mono);color:#686872">${esc(T('step')(1))}</p></div>`;
-    veil.querySelector('.rec').onclick = startHum;
+    veil.innerHTML = `<div class="in"><h1>${esc(T('humT'))}</h1><p>${esc(T('humS'))}</p><button type="button" class="rec" aria-label="${esc(T('humT'))}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 4a3 3 0 00-3 3v5a3 3 0 006 0V7a3 3 0 00-3-3z"/><path d="M6 11.5a6 6 0 0012 0M12 17.5V20"/></svg></button><p class="n" style="font:600 11px/16px var(--mono);color:#686872">${esc(T('step')(1))}</p></div><button type="button" class="vskip">${esc(T('skip'))}</button><div class="vlang"><button type="button" data-l="zh">中文</button><button type="button" data-l="en">EN</button></div>`;
+    veil.querySelector('.rec').onclick = startHum; veil.querySelector('.vskip').onclick = () => endTour(true);
+    veil.querySelectorAll('.vlang button').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.l === L())); b.onclick = () => I18 && I18.set(b.dataset.l); });
     hideTip();
   }
   function startHum() {
@@ -177,7 +183,7 @@
     veil.innerHTML = `<div class="in"><p style="color:#F2F2F5;font-size:17px;font-weight:600">${esc(T('notes'))}</p><div class="bar"><i></i></div></div>`;
     setTimeout(() => {
       const s = song(); if (s) { render(); }
-      veil.classList.add('out'); popIn('mel');
+      document.documentElement.classList.remove('ewg-tb'); veil.classList.add('out'); popIn('mel');
       const lane = document.querySelector('.lane[data-lane="mel"]');
       setTimeout(() => { showTip(`<span class="n">${esc(T('step')(1))}</span><b>${esc(T('yours'))}</b>`, () => { const r = lane && lane.getBoundingClientRect(); return r && {left: r.left + r.width * .45, top: r.top + 6, width: 1, height: 1, right: r.left + r.width * .45, bottom: r.top + 7}; }, 'top'); }, 900);
       setTimeout(() => stepVoice(0), 3200);
@@ -233,7 +239,7 @@
   function endTour(full) {        // 完整版：按钮都回来，歌是整首 song24
     const s = song(); if (s && FULL) { if (!s.lh || !s.lh.length) s.lh = clone(FULL.lh); if (!s.sec && FULL.sec) s.sec = clone(FULL.sec); }
     SIM.tourSend = null; SIM.tourLine = () => null; lineI = -1;
-    veil.classList.add('out'); hideTip(); skip.remove();
+    document.documentElement.classList.remove('ewg-tb'); veil.classList.add('out'); hideTip(); skip.remove();
     if (full) { document.body.classList.remove('ewg-tour'); try { const u = new URL(location.href); u.searchParams.delete('tour'); history.replaceState(history.state, '', u.toString()); } catch (e) { /* */ } }
     render();
     if (full && window.EWG_DEMO_UI) setTimeout(() => window.EWG_DEMO_UI.showCoach(true), 400);

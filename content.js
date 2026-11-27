@@ -168,7 +168,7 @@ export const CONTENT = {
     { src: "media/wall/2-wolf-top.jpg", note: { en: "see the wolf?", fr: "tu vois le loup ?", zh: "看出狼脸了吗？" }, title: { en: "Wolf spaceship · top view", fr: "Vaisseau loup · vue du dessus", zh: "狼形飞船 · 俯视图" },
       desc: { en: "Seen from above, the wolf's face appears.", fr: "Vu du dessus, la tête du loup apparaît.", zh: "从上方看，狼的脸就出现了。" } },
     { src: "media/wall/2-spaceship-interior.mp4", note: { en: "look at the end of the tunnel!", fr: "regarde au bout du tunnel !", zh: "看看隧道尽头！" }, poster: "media/wall/2-spaceship-interior.jpg", title: { en: "Wolf spaceship · interior", fr: "Vaisseau loup · intérieur", zh: "狼形飞船 · 内部" },
-      desc: { en: "Inside the ship: a corridor assembled from modular pieces.", fr: "À l'intérieur : un couloir assemblé à partir de pièces modulaires.", zh: "飞船内部：由模块化组件拼成的走廊。" } },
+      desc: { en: "Inside the ship: a corridor assembled from modular pieces I designed myself.", fr: "À l'intérieur : un couloir assemblé à partir de modules que j'ai conçus moi-même.", zh: "飞船内部：用我自己设计的模块化组件拼成的走廊。" } },
     // 3 · Tiny room, and Tigrou
     { src: "media/wall/3-tinyroom-a.jpg", note: { en: "tiny room · blockout", fr: "petite chambre · maquette", zh: "小房间 · 白模" }, title: { en: "Tiny room · blockout", fr: "Petite chambre · maquette", zh: "小房间 · 白模" },
       desc: { en: "A small bedroom in Blender, every part in a flat colour before texturing.", fr: "Une petite chambre dans Blender, chaque élément en couleur unie avant les textures.", zh: "Blender 中的小卧室，贴图前每个部件都是纯色。" } },
