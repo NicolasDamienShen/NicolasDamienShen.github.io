@@ -231,6 +231,23 @@ body.focused #tip{display:none}
   font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:rgba(233,240,255,.86);text-shadow:0 1px 10px rgba(0,0,0,.85);white-space:nowrap}
 #cockTip::before{content:"";display:inline-block;width:6px;height:6px;margin:0 9px 1px 0;border-radius:50%;background:#9ff0ff;box-shadow:0 0 8px rgba(127,233,255,.8);vertical-align:middle}
 #cockTip.show{opacity:1;transform:translate(-50%,0)}
+/* the voice demo: a pointer to ✕ once it has been tried, then an invitation to keep scrolling (the story is not over) */
+.xhint{margin-left:auto;align-self:center;margin-right:10px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:#e9f6ff;background:rgba(127,233,255,.12);border:1px solid rgba(127,233,255,.45);border-radius:999px;padding:7px 14px;white-space:nowrap;opacity:0;transform:translateX(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+.xhint.show{opacity:1;transform:none}
+.xhint + .x{margin-left:0}
+.x.pulse{border-color:rgba(127,233,255,.8);animation:xpulse 1.6s ease-out infinite}
+@keyframes xpulse{0%{box-shadow:0 0 0 0 rgba(127,233,255,.55)}100%{box-shadow:0 0 0 14px rgba(127,233,255,0)}}
+@media (max-width:560px){.xhint{display:none}.xhint + .x{margin-left:auto}
+  body #keepScroll{font-size:11px;letter-spacing:.04em;padding:10px 16px;white-space:normal;text-align:center;width:max-content;max-width:calc(100vw - 40px)}}
+/* on a phone the pointer takes the place of the small kicker line, right beside ✕ */
+#mbox .kicker.khint{color:#9ff0ff;text-transform:none;letter-spacing:.04em;font-weight:600;animation:khint 2.4s ease-in-out infinite}
+@keyframes khint{0%,100%{opacity:1}50%{opacity:.6}}
+#keepScroll{position:fixed;left:50%;bottom:max(64px,calc(env(safe-area-inset-bottom) + 48px));z-index:22;pointer-events:none;transform:translate(-50%,8px);opacity:0;transition:opacity .6s ease,transform .6s ease;
+  font-family:var(--mono);font-size:13px;letter-spacing:.12em;color:#f1ecff;background:rgba(18,14,36,.78);border:1px solid rgba(201,184,255,.4);border-radius:999px;padding:11px 20px;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.45)}
+#keepScroll::after{content:"↓";display:inline-block;margin-left:10px;color:#ffc46e;animation:ksb 1.4s ease-in-out infinite}
+#keepScroll.show{opacity:1;transform:translate(-50%,0)}
+@keyframes ksb{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.x.pulse,#keepScroll::after{animation:none}}
 @keyframes guideBob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 @keyframes nudge2{0%,100%{transform:translateY(0);text-shadow:0 0 0 rgba(255,122,122,0)}50%{transform:translateY(4px);text-shadow:0 0 14px rgba(255,122,122,.45)}}
 #modal{--mpad:20px;position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:var(--mpad);overflow:hidden;background:rgba(3,2,10,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -473,6 +490,7 @@ body.focused #tip{display:none}
 <div id="guide" aria-hidden="true"></div>
 <nav id="chapters" aria-label="Chapters"></nav>
 <div id="cockTip" role="status" aria-live="polite"></div>
+<div id="keepScroll" role="status" aria-live="polite"></div>
 <div id="panels"></div>
 <div id="track" aria-hidden="true"></div>
 <div id="tip" role="tooltip"></div>

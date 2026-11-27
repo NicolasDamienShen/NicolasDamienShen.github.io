@@ -4562,6 +4562,9 @@ function clearCabin() {
     renderCards();
 }
 
+// tell the portfolio around this page what happened, so it can point at its close button (no-op when opened on its own)
+const tellParent = ev => { try { if (parent !== window) parent.postMessage({ ns: "nlu", ev }, location.origin); } catch (e) { } };
+
 async function runDemo() {
     const tok = ++demo.token;
     if (demo.i >= DEMO_N || demo.state === "done") demo.i = 0;
@@ -4581,12 +4584,14 @@ async function runDemo() {
         demo.shown = k + 1;
         paintBar();
         await send(demoList()[k]);
+        tellParent("step");
         if (tok !== demo.token) return;
         await sleep(k === DEMO_N - 1 ? 600 : 2300);
         if (tok !== demo.token) return;
     }
     demo.state = "done";
     paintBar();
+    tellParent("done");
 }
 
 function pauseDemo() {
@@ -4628,7 +4633,8 @@ async function sendUser(text) {
         await sleep(100);
         if (g !== gen) return;
     }
-    send(text);
+    await send(text);
+    tellParent("used");
 }
 
 function closePops() {
