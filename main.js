@@ -1950,9 +1950,9 @@ function buildPhotoWall(std) {
   const frames = [], pics = [], WX = 4.975;
   // the 18 big slots: 2, 3 or 4 per group (each wall item names its group; "wall3d: false" items stay in the index only), slightly scattered
   const W3 = (CONTENT.wall || []).filter(w => w.wall3d !== false), grpOf = it => it.group ?? (parseInt((it.src || '').split('/').pop(), 10) - 1);
-  const PAT = { 1: [[0, 0]], 2: [[-.225, .06], [.225, -.06]], 4: [[-.225, .18], [.225, .18], [-.225, -.18], [.225, -.18]] };
+  const PAT = { 1: [[0, 0]], 2: [[-.225, .06], [.225, -.06]], 4: [[-.21, .155], [.21, .155], [-.21, -.155], [.21, -.155]] };   // four prints: a smaller 2 × 2, so the set keeps the size of a trio
   const slots = []; WALL_GROUPS.forEach((G, gi) => { const mine = W3.filter(it => grpOf(it) === gi), pat = mine.length === 3 ? (G.top ? [[-.225, .18], [.225, .18], [0, -.18]] : [[0, .18], [-.225, -.18], [.225, -.18]]) : PAT[mine.length] || [];
-    mine.forEach((it, k) => { const [dz, dy] = pat[k]; slots.push({ it, z: G.z + dz * WS + rr(-.015, .015), y: G.y + dy * WS + rr(-.012, .012), rot: rr(-.045, .045), w: .38 * WS, h: .26 * WS, side: Math.sign(dz) }); }); });   // h: squarer shots stop at 1.46:1, so the two rows never touch
+    mine.forEach((it, k) => { const [dz, dy] = pat[k]; const sc = mine.length === 4 ? .8 : 1; slots.push({ it, z: G.z + dz * WS + rr(-.015, .015), y: G.y + dy * WS + rr(-.012, .012), rot: rr(-.045, .045), w: .38 * WS * sc, h: .26 * WS * sc, side: Math.sign(dz) }); }); });   // h: squarer shots stop at 1.46:1, so the two rows never touch
   const rows = 6, cols = 24, z0 = -3.55, z1 = 3.05, y0 = .98, y1 = 2.62;
   let k = 0;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
@@ -2004,8 +2004,9 @@ function buildPhotoWall(std) {
     // a few words in felt-tip marker on the bottom strip (content.js `note`), in the site language
     if (it.note) {
       const nc = makeCanvas(640, 128), nt = tex(nc), hz = (i * 7 % 5 - 2) / 2, hr = (i * 3 % 7 - 3) / 3;   // fixed per print (no rnd(): the rest of the room keeps its layout)
-      note = new THREE.Mesh(new THREE.PlaneGeometry(.36, .072), new THREE.MeshBasicMaterial({ map: nt, transparent: true, depthWrite: false }));
-      note.position.set(-sl.side * .055 + hz * .02, PY - ph / 2 - PB / 2, .003); note.rotation.z = -.02 + hr * .035; g.add(note);   // written a little toward the trio's centre: clear of the screen edges and the section card
+      const ns = sl.w / (.38 * WS);   // smaller prints (a set of four) get a smaller note
+      note = new THREE.Mesh(new THREE.PlaneGeometry(.36 * ns, .072 * ns), new THREE.MeshBasicMaterial({ map: nt, transparent: true, depthWrite: false }));
+      note.position.set((-sl.side * .055 + hz * .02) * ns, PY - ph / 2 - PB / 2, .003); note.rotation.z = -.02 + hr * .035; g.add(note);   // written a little toward the trio's centre: clear of the screen edges and the section card
       const asked = new Set();
       const drawNote = () => {
         const x = nc.getContext('2d'), s = L(it.note), fam = handFont(); let px = 92;
