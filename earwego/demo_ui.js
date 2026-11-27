@@ -162,8 +162,9 @@
   SIM.active = () => !!SIM.cur;
   SIM.start = function (how_) {
     if (SIM.cur || V.busy) return;
+    if (SIM.tourSend && !(SIM.tourLine && SIM.tourLine())) return;   // 导览里：只有轮到“按住 V”那一步才说
     hideCoach();
-    const text = SIM.next(), n = SIM.i % Math.max(1, script().length) + 1, chars = Array.from(text), en = L() === 'en';
+    const text = (SIM.tourSend && SIM.tourLine && SIM.tourLine()) || SIM.next(), n = SIM.i % Math.max(1, script().length) + 1, chars = Array.from(text), en = L() === 'en';
     const dur = Math.max(900, en ? text.split(' ').length * 300 : chars.length * 150);
     const r = SIM.cur = {text, n, t0: performance.now(), dur, raf: 0, toggled: false, sim: true, peak: 1, hist: []};
     V.rec = r;                                        // voice.js 的按键 / 麦克风处理看 V.rec（松开、Esc、点一下）
@@ -193,6 +194,7 @@
   function finish(r) {
     SIM.cur = null; V.rec = null; cancelAnimationFrame(r.raf); UI.mic.classList.remove('rec'); UI.box.style.setProperty('--lvl', '0'); el.tm.textContent = '';
     el.heard.textContent = '「' + r.text + '」';
+    if (SIM.tourSend && SIM.tourSend(r.text)) return;              // 导览：这一句由 demo_tour.js 演出来
     SIM.i++; SIM.lastN = r.n; SIM.pendingSim = r.text;
     VO.send({text: r.text});
   }
@@ -279,5 +281,5 @@
   window.EWG_DEMO_UI = {openType, openHow, closeHow, showCoach, hideCoach, showTrace, hideTrace, SIM};
 
   // 打开以后：默认歌载入后，在麦克风旁边提示一下
-  setTimeout(() => { placeFloat(); if (!V.busy && !SIM.cur && !/(^|[?&])(nocoach|blank=1)\b/.test(location.search) && curSongSafe()) showCoach(); }, 1600);
+  setTimeout(() => { placeFloat(); if (!V.busy && !SIM.cur && !/(^|[?&])(nocoach|blank=1|tour=1)\b/.test(location.search) && curSongSafe()) showCoach(); }, 1600);
 })();

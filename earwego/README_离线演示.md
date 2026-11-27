@@ -12,7 +12,7 @@
 - 顶栏「演示版 · 离线」：真的产品（Qwen2.5-Omni-7B + LoRA，dictate_server → arr_worker）和这个演示各用什么。旁边的小图标：幕后（每一句话走了哪条路）。
 
 ## 网址参数
-`?lang=en` 英文 · `?blank=1` 空着打开（和 b 一样，b 的测试用）· `?nocoach` 不弹提示卡 · `#backup` 备用歌 · `#code=…` 载入一段代码
+`?tour=1` 一分钟导览（作品集打开的就是这个）· `?lang=en` 英文 · `?blank=1` 空着打开（和 b 一样，b 的测试用）· `?nocoach` 不弹提示卡 · `#backup` 备用歌 · `#code=…` 载入一段代码
 
 ## 重新生成 / 测试
 - `python3 tools/build_offline_c.py OUT_DIR`

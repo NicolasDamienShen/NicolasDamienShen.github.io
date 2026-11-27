@@ -122,7 +122,7 @@ const T = {
     chStart: 'Start', chHello: 'Hello', chVr: 'XR / VR', chPapers: 'Slides & papers', chGames: 'Games', chNow: 'Now building', chGallery: 'Photo wall', chOutro: 'Last words', chContact: 'Contact', goTo: 'Go to',
     tipWatch: '▶ Watch — ', tipOpen: '✦ Open — ', tipPlay: '▶ Play — ', tipView: '⤢ View — ', tipInside: "↓ Scroll to step inside", tipTerm: '⌁ Now building — terminal', tipAbout: '◎ About me', tipVR: '⟲ Back to my XR / VR projects', tipBot: '♥ Say hi to my desk buddy',
     videoSoon: 'VIDEO COMING SOON', watchOn: 'Watch on', ytFallback: "Not loading? Open on YouTube ↗", fullscreen: '⛶ Fullscreen', newTabBtn: "New tab ↗", clickFirst: "Click the game to play · Esc to leave",
-    playNewTab: "▶ Play in a new tab", tryDemo: '▶ Try the demo', demoNewTab: 'Open in a new tab ↗', demoKicker: 'Offline demo', demoNote: 'Voice is simulated: hold V, or type in the bubble. Best on a computer.', gameSoon: 'GAME COMING SOON', gifSoon: 'PREVIEW COMING SOON', openPdf: 'Open PDF ↗', page: 'Page', pagePh: 'coming soon', useArrows: 'use ← → keys', close: 'Close (Esc)',
+    playNewTab: "▶ Play in a new tab", tryDemo: '▶ Try the demo', demoNewTab: 'Open in a new tab ↗', demoKicker: 'One-minute demo', demoNote: 'A guided tour: hum, then talk to it. Best on a computer.', gameSoon: 'GAME COMING SOON', gifSoon: 'PREVIEW COMING SOON', openPdf: 'Open PDF ↗', page: 'Page', pagePh: 'coming soon', useArrows: 'use ← → keys', close: 'Close (Esc)',
     paper: 'Paper', slides: 'Slides', render: 'Render', photo: 'Photo', playFriend: '▶ Play it with a friend', about: 'About', backTour: '⟲ Back to the 3D tour', play: 'PLAY', clickToPlay: '▶ CLICK TO PLAY', clickRead: 'click to read', clickOpen: 'click to open',
     phWelcome: 'Welcome to the portfolio of', phAfter: '', phRole: 'XR · AI · Human–Computer Interaction', phScroll: 'Feel free to scroll', phKeep: '— keep scrolling —',
     phItems: [['XR / VR projects', 'screens in the city'], ['Slides & papers', 'pages in the sky'], ['Games', 'on my desk'], ['Now building', 'the corkboard'], ['3D renders', 'the photo wall'], ['Last words', 'a paper plane']],
@@ -142,7 +142,7 @@ const T = {
     chStart: 'Début', chHello: 'Bonjour', chVr: 'XR / VR', chPapers: 'Présentations', chGames: 'Jeux', chNow: 'En chantier', chGallery: 'Mur de photos', chOutro: 'Derniers mots', chContact: 'Contact', goTo: 'Aller à',
     tipWatch: '▶ Regarder — ', tipOpen: '✦ Ouvrir — ', tipPlay: '▶ Jouer — ', tipView: '⤢ Voir — ', tipInside: "↓ Défilez pour entrer", tipTerm: '⌁ En chantier — terminal', tipAbout: '◎ À propos', tipVR: '⟲ Retour à mes projets XR / VR', tipBot: '♥ Dites bonjour à mon petit robot',
     videoSoon: 'VIDÉO À VENIR', watchOn: 'Regarder sur', ytFallback: "Ça ne charge pas\u00a0? Ouvrir sur YouTube ↗", fullscreen: '⛶ Plein écran', newTabBtn: "Nouvel onglet ↗", clickFirst: "Cliquez sur le jeu pour jouer · Échap pour quitter",
-    playNewTab: "▶ Jouer dans un nouvel onglet", tryDemo: '▶ Essayer la démo', demoNewTab: 'Ouvrir dans un nouvel onglet ↗', demoKicker: 'Démo hors ligne', demoNote: 'La voix est simulée : maintenez V, ou tapez dans la bulle. Plus confortable sur ordinateur.', gameSoon: 'JEU À VENIR', gifSoon: 'APERÇU À VENIR', openPdf: 'Ouvrir le PDF ↗', page: 'Page', pagePh: 'à venir', useArrows: 'touches ← →', close: 'Fermer (Échap)',
+    playNewTab: "▶ Jouer dans un nouvel onglet", tryDemo: '▶ Essayer la démo', demoNewTab: 'Ouvrir dans un nouvel onglet ↗', demoKicker: 'Démo d\'une minute', demoNote: 'Une visite guidée : fredonnez, puis parlez-lui. Plus confortable sur ordinateur.', gameSoon: 'JEU À VENIR', gifSoon: 'APERÇU À VENIR', openPdf: 'Ouvrir le PDF ↗', page: 'Page', pagePh: 'à venir', useArrows: 'touches ← →', close: 'Fermer (Échap)',
     paper: 'Article', slides: 'Présentation', render: 'Rendu', photo: 'Photo', playFriend: '▶ Y jouer avec un ami', about: 'À propos', backTour: '⟲ Revenir à la visite 3D', play: 'JOUER', clickToPlay: '▶ CLIQUEZ POUR JOUER', clickRead: 'cliquez pour lire', clickOpen: 'cliquez pour ouvrir',
     phWelcome: 'Bienvenue sur le portfolio de', phAfter: '', phRole: 'XR · IA · Interaction humain–machine', phScroll: "N'hésitez pas à défiler", phKeep: '— continuez —',
     phItems: [['Projets XR / VR', 'les écrans de la ville'], ['Présentations', 'des pages dans le ciel'], ['Jeux', 'sur mon bureau'], ['En chantier', 'le tableau en liège'], ['Rendus 3D', 'le mur de photos'], ['Derniers mots', 'un avion en papier']],
@@ -162,7 +162,7 @@ const T = {
     chStart: '开始', chHello: '你好', chVr: 'XR / VR', chPapers: '演示与论文', chGames: '游戏', chNow: '正在做', chGallery: '照片墙', chOutro: '最后的话', chContact: '联系', goTo: '前往',
     tipWatch: '▶ 观看 —— ', tipOpen: '✦ 打开 —— ', tipPlay: '▶ 游玩 —— ', tipView: '⤢ 查看 —— ', tipInside: '↓ 继续滚动，走进房间', tipTerm: '⌁ 正在做 —— 终端', tipAbout: '◎ 关于我', tipVR: '⟲ 回到我的 XR / VR 项目', tipBot: '♥ 跟我的桌面小机器人打个招呼',
     videoSoon: '视频即将上线', watchOn: '观看：', ytFallback: "加载不出来？在 YouTube 打开 ↗", fullscreen: '⛶ 全屏', newTabBtn: "新标签页 ↗", clickFirst: "点击游戏画面开始玩 · 按 Esc 退出",
-    playNewTab: "▶ 在新标签页玩", tryDemo: '▶ 试玩演示', demoNewTab: '在新标签页打开 ↗', demoKicker: '离线演示', demoNote: '语音是模拟的：按住 V，或在气泡里打字。电脑上体验最好。', gameSoon: '游戏即将上线', gifSoon: '预览即将上线', openPdf: '打开 PDF ↗', page: '页', pagePh: '即将上线', useArrows: '可用 ← → 键', close: '关闭（Esc）',
+    playNewTab: "▶ 在新标签页玩", tryDemo: '▶ 试玩演示', demoNewTab: '在新标签页打开 ↗', demoKicker: '一分钟演示', demoNote: '跟着导览走：先哼，再说话。电脑上体验最好。', gameSoon: '游戏即将上线', gifSoon: '预览即将上线', openPdf: '打开 PDF ↗', page: '页', pagePh: '即将上线', useArrows: '可用 ← → 键', close: '关闭（Esc）',
     paper: '论文', slides: '演示文稿', render: '渲染', photo: '照片', playFriend: '▶ 和朋友一起玩', about: '关于', backTour: '⟲ 返回 3D 漫游', play: '开始', clickToPlay: '▶ 点击开始游戏', clickRead: '点击阅读', clickOpen: '点击打开',
     phWelcome: '欢迎来到', phAfter: ' 的作品集', phRole: 'XR · AI · 人机交互', phScroll: '请随意向下滑动', phKeep: '—— 继续滑动 ——',
     phItems: [['XR / VR 项目', '城市里的屏幕'], ['演示与论文', '天空中的纸页'], ['游戏', '在我的书桌上'], ['正在做', '软木板'], ['3D 渲染', '照片墙'], ['最后的话', '一架纸飞机']],
@@ -3008,7 +3008,7 @@ function openVideo(i) {
 /* ── EarWeGo: the offline demo (earwego/ in the repo) in a big window, like the cockpit's Cabin Voice.
    On a phone, or inside the artifact (its sandbox blocks pages from elsewhere), it opens as its own page instead. ── */
 const DEMO_HOME = 'https://nicolasdamienshen.github.io/';
-function demoURL(v) { const q = LANG === 'zh' ? '' : '?lang=en'; return (IN_ARTIFACT ? DEMO_HOME : '') + v.demo + q; }
+function demoURL(v) { const q = '?tour=1' + (LANG === 'zh' ? '' : '&lang=en'); return (IN_ARTIFACT ? DEMO_HOME : '') + v.demo + q; }   // the one-minute guided tour
 function openDemo(i) {
   const v = CONTENT.videos[i]; if (!v || !v.demo) return;
   const url = demoURL(v), ttl = esc(L(v.title)), small = MOBILE || innerWidth < 900;
