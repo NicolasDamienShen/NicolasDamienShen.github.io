@@ -20,6 +20,7 @@
   const STYLE_EN = {natural: 'natural', flow: 'flowing', heavy: 'full', groove: 'groove', quiet: 'sustained'};
   const OP_EN = {beautify: 'make it nicer', lively: 'more lively', calm: 'calmer and simpler', higher: 'a bit higher', lower: 'a bit lower', vary: 'another take', text: 'as you said'};
   const GROW_EN = {intro: 'Add an intro', continue: 'Write the next section', chorus: 'Write a chorus', chorus2: 'Repeat the chorus', outro: 'Add an outro'};
+  const ORCH_EN = {'jazz night': '爵士夜晚', 'jazz': '爵士夜晚', 'jazzy': '爵士夜晚', 'pop ballad': '流行抒情', 'warm folk': '温暖民谣', 'folk': '温暖民谣', 'cinematic': '电影感', 'chamber': '室内乐', 'fairy tale': '梦幻童话', 'bright & quick': '明亮轻快', 'bright and quick': '明亮轻快', 'solemn chant': '庄严圣咏', 'fresh & light': '小清新', 'fresh and light': '小清新', 'warm strings': '弦乐温暖', 'piano & cello': '钢琴与大提琴', 'pastoral': '田园', 'playful pizzicato': '俏皮拨奏', 'festive brass': '节日号角', 'piano only': '纯钢琴'};
   const COLORS = ['红', '橙', '黄', '绿', '青', '蓝', '紫'], COLORS_EN = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple'], SOL = 'do re mi fa sol la si'.split(' ');
 
   /* ---------- 数字：中文数字 / 阿拉伯数字 → 值 */
@@ -163,6 +164,7 @@
       m => (/lower|down/.test(m[0]) ? '降低' : '升高') + '半音'],
     [/^undo(?: (?:that|this|it|the last (?:step|change|edit)))?$|^cancel (?:that|this|the last (?:step|action|edit))$|^take (?:that|it) back$/, () => '取消这个动作'],
     [/^redo$/, () => '重做'],
+    [/^(?:use|switch to|choose|pick|go with|try|apply) (?:the )?(.+?)(?: orchestration| set| one| sound)?$/, m => { const z = ORCH_EN[m[1]]; return z ? '配器换成' + z : null; }],
     [/^(?:use|pick|take|i'?ll take) (?:take |version )?(a|b)$/, m => '用' + m[1].toUpperCase()],
     [/^(?:play|listen to|let me hear) (?:take )?(a|b)$/, m => '听' + m[1].toUpperCase()], [/^(?:play|listen to) the original$/, () => '听原版'],
     [/^(?:keep|use) (?:the )?original$|^(?:neither|none of them|no,? keep the original)$/, () => '还是原来的'],
@@ -285,8 +287,8 @@
   const NOTE_EN = [[/^这首歌只有 (\d+) 小节$/, m => `Only ${m[1]} bars in this song`], [/^这首歌还没有(副歌|前奏|尾声)$/, m => `No ${{副歌: 'chorus', 前奏: 'intro', 尾声: 'outro'}[m[1]]} yet`], [/^版本线上只有 (\d+) 个版本，没有第 (\d+) 版，回到了第 (\d+) 版$/, m => `Only ${m[1]} version(s) — went to version ${m[3]}`]];
   const tr = (list, s) => { for (const [re, f] of list) { const m = re.exec(s || ''); if (m) return f(m); } return null; };
   const ZH2EN = {};   // 演示用到的中文说法 → 英文（追问的选项、也可以：）
-  P.EN_SCRIPT = ['loop bars 7 to 9', 'raise the last two notes of bar 3 by a semitone', 'higher', 'undo', 'change the melody to electric piano', 'switch back',
-    'change the second melody to vibraphone', 'make bars 9 to 12 quieter', 'use b', 'suggest an orchestration', 'slow down bars 5 to 8', 'dismiss'];
+  P.EN_SCRIPT = ['loop bars 7 to 9', 'suggest an orchestration', 'use the jazz night orchestration', 'raise the last two notes of bar 3 by a semitone', 'higher',
+    'make bars 9 to 12 quieter', 'use b', 'slow down bars 5 to 8', 'dismiss'];
   (B.script || []).forEach((z, i) => { if (P.EN_SCRIPT[i]) ZH2EN[z] = P.EN_SCRIPT[i]; });
   Object.assign(ZH2EN, {'一键写成整首歌': 'make the whole song', '整首慢一点': 'slow down the whole song', '不用了': 'no thanks', '整首循环播放': 'loop the whole song', '副歌更活泼一点': 'make the chorus more lively',
     '第三段的绿色音': 'the green notes in section 3', '写个副歌': 'write a chorus', '第3小节最后两个音升高半音': 'raise the last two notes of bar 3 by a semitone', '主旋律换成小提琴': 'change the melody to violin',
