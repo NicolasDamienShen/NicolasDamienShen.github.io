@@ -902,7 +902,7 @@ const uvL = (u, v, z) => new THREE.Vector3((u / 480 - .5) * .0676, (.5 - v / 104
 // the chat: Nicolas writes to you. You only read, then double-tap his photo.
 // the opening, all driven by scrolling: road → the phone rings and comes up → lock screen → tap the notification → the chat
 // tapping the notification opens the conversation straight away: it grows out of the notification card (no home screen, no swipe)
-const PHN = { ring: .008, up: [.008, .02], tap: .03, open: [.0302, .0345], lower: [.106, .114] };
+const PHN = { ring: .004, up: [.004, .02],   /* rings at the first scroll notch: no dead scrolling after the opening text */ tap: .03, open: [.0302, .0345], lower: [.106, .114] };
 const CHAT = { msgs: [PHN.ring, .046, .058], photo: .07, tap1: .08, tap2: .084, rest: .09 };
 const CH_IN_Y = 958, PHOTO_C = [150, 560];
 function thumbPose(p) {
@@ -1657,7 +1657,7 @@ function updatePapers(p, t, dt) {
 const fin = {};
 const PW = .42, PH = .594;                       // A-format sheet
 let introGone = false;
-function dismissIntro() { if (introGone) return; introGone = true; const io = $('#intro'); if (!io) return; io.classList.add('gone'); setTimeout(() => { io.style.display = 'none'; }, 1400); }
+function dismissIntro() { if (introGone) return; introGone = true; const io = $('#intro'); if (!io) return; io.classList.add('gone'); setTimeout(() => { io.style.visibility = 'hidden'; }, 950); }   // visibility, not display: no relayout at the end of the fade
 const ROOF = [];
 function setRoof(f) { for (const o of ROOF) { if (!/^BodyDoorRWindow/.test(o.name)) continue; o.visible = f > .01; for (const m of [].concat(o.material)) { m.transparent = f < .99; m.opacity = f; m.depthWrite = f > .99; } } }
 const PRESENT = [.85, .866], FOLDS = [.898, .94], FLIGHT = [.94, .978], AWAY = [.978, .991], BLING = [.987, .996];   // then: out into the stars → one sparkle   // letter held still & readable .866 → .898
@@ -2580,8 +2580,8 @@ const BBP = [.214, .244, .274, .304];          // where each screen is centred i
 const K_CITY = [
   // in the car: your eyes on the phone (rel = relative to the car, which keeps driving)
   { p: 0.000, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },               // looking straight out of the front of the car
-  { p: 0.004, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },
-  { p: 0.008, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },               // the phone rings here: only then does the gaze go down to it
+  { p: 0.002, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },
+  { p: 0.004, rel: 1, turn: 1, pos: AHEAD_EYE.clone(), look: AHEAD_LOOK },               // the phone rings here: only then does the gaze go down to it
   { p: 0.018, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },   // the phone rings, you take it out (gaze a hair left of it: the console stays in view)
   { p: 0.022, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },
   { p: 0.104, rel: 1, turn: 1, pos: EYE.clone(), look: PHONE_LOOK },
@@ -2872,7 +2872,7 @@ function buildUI() {
   $('#sound').onclick = () => SOUND.toggle();
   { const gd = $('#guide'); const gf = () => { gd.innerHTML = `<div class="gs"><span>${esc(t('scroll'))}</span><i></i></div>${MOBILE ? '' : `<div class="keys"><kbd>←</kbd><kbd>→</kbd><small>${esc(t('keysHint'))}</small></div>`}`; }; gf(); retext.push(gf); }
   { const io = $('#intro');
-    io.addEventListener('click', () => { dismissIntro(); if (scrollY < p2s(.009)) scrollTo({ top: p2s(.0095), behavior: 'smooth' }); });
+    io.addEventListener('click', () => { dismissIntro(); if (scrollY < p2s(.012)) scrollTo({ top: p2s(.014), behavior: 'smooth' }); });
     const kick = e => { if (e.type !== 'keydown' || [' ', 'ArrowDown', 'ArrowRight', 'PageDown', 'Enter'].includes(e.key)) dismissIntro(); };
     addEventListener('wheel', e => { if (e.deltaY > 0) kick(e); }, { passive: true }); addEventListener('touchmove', kick, { passive: true }); addEventListener('keydown', kick); }
   const introFill = () => { const io = $('#intro'); if (io) io.innerHTML = `<div class="ik">${esc(t('introKick'))}</div><div class="it">${esc(t('introTitle'))}</div><div class="mouse" aria-hidden="true"><i></i></div><div class="is">♪ ${esc(t('introSound'))}</div>`; }; introFill(); retext.push(introFill); SOUND.refresh();

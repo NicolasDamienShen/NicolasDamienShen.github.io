@@ -192,9 +192,9 @@ body.focused #tip{display:none}
 #sound[aria-pressed="true"]{border-color:var(--amb);color:var(--amb)}
 #quality{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:14px;background-image:none;color:var(--txt,#e9e4ff);font:inherit;font-size:12px}
 #quality option{background:#120e22;color:#e9e4ff}
-#intro{position:fixed;inset:0;z-index:18;pointer-events:auto;cursor:pointer;transition:opacity 1.2s cubic-bezier(.4,0,.2,1),transform 1.3s cubic-bezier(.2,.7,.2,1),filter 1.2s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
+#intro{position:fixed;inset:0;z-index:18;pointer-events:auto;cursor:pointer;transition:opacity .9s cubic-bezier(.4,0,.2,1);will-change:opacity;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
   background:radial-gradient(ellipse at center,rgba(8,6,18,.55) 0%,rgba(5,4,12,.82) 70%,rgba(3,2,8,.92) 100%);animation:introIn 1.4s ease both}
-#intro.gone{opacity:0;transform:scale(1.06);filter:blur(8px);pointer-events:none}
+#intro.gone{opacity:0;pointer-events:none}   /* opacity only: a full-screen blur/scale over the 3D view dropped frames */
 #sound.pending{animation:sndPulse 1.6s ease-in-out infinite;border-color:rgba(255,196,110,.7)}
 @keyframes sndPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,196,110,.0)}50%{box-shadow:0 0 0 6px rgba(255,196,110,.25)}}
 #intro .ik{font-family:var(--mono);font-size:11px;letter-spacing:.42em;color:rgba(233,228,255,.55)}
