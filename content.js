@@ -142,12 +142,21 @@ export const CONTENT = {
   // e.g. { src: "media/wall/cave.jpg" }, { src: "media/wall/demo.gif" }, { src: "media/wall/loop.mp4" }
   wall: [
     // 1 · Artistic pillars: the three stages
-    { src: "media/wall/1-pillars-a.jpg", note: { en: "pillars · first pass", fr: "piliers · 1re passe", zh: "立柱 · 初稿" }, title: { en: "Artistic pillars · first pass", fr: "Piliers artistiques · première passe", zh: "艺术立柱 · 初稿" },
+    { src: "media/wall/1-pillars-a.jpg", wall3d: false, note: { en: "pillars · first pass", fr: "piliers · 1re passe", zh: "立柱 · 初稿" }, title: { en: "Artistic pillars · first pass", fr: "Piliers artistiques · première passe", zh: "艺术立柱 · 初稿" },
       desc: { en: "Blender, first pass: three pillars and their chains, in plain grey.", fr: "Blender, première passe : trois piliers et leurs chaînes, en gris neutre.", zh: "Blender 初稿：三根立柱和缠绕的锁链，纯灰色。" } },
-    { src: "media/wall/1-pillars-b.jpg", note: { en: "pillars · chains", fr: "piliers · chaînes", zh: "立柱 · 锁链" }, title: { en: "Artistic pillars · chains", fr: "Piliers artistiques · les chaînes", zh: "艺术立柱 · 锁链" },
+    { src: "media/wall/1-pillars-b.jpg", wall3d: false, note: { en: "pillars · chains", fr: "piliers · chaînes", zh: "立柱 · 锁链" }, title: { en: "Artistic pillars · chains", fr: "Piliers artistiques · les chaînes", zh: "艺术立柱 · 锁链" },
       desc: { en: "More chains, hanging across the whole frame.", fr: "Davantage de chaînes, suspendues à travers tout le cadre.", zh: "加入更多锁链，横贯整个画面。" } },
     { src: "media/wall/1-pillars-final.jpg", note: { en: "pillars · final", fr: "piliers · final", zh: "立柱 · 完成" }, title: { en: "Artistic pillars · final", fr: "Piliers artistiques · version finale", zh: "艺术立柱 · 最终版" },
       desc: { en: "The final render, with colour and light.", fr: "Le rendu final, avec la couleur et la lumière.", zh: "最终渲染，加入色彩与光影。" } },
+    { src: "media/wall/1-ballet.mp4", poster: "media/wall/1-ballet.jpg", group: 0, note: { en: "immersive ballet", fr: "ballet immersif", zh: "沉浸式芭蕾" },
+      title: { en: "Immersive Ballet · winter scene", fr: "Ballet immersif · scène d'hiver", zh: "沉浸式芭蕾 · 冬季场景" },
+      desc: { en: "A CAVE scene driven by the dancer's body.\n• Heudiasyc CAVE · Unity · Jul 2024 – Feb 2025\n• Speed, hands, feet and position drive the visuals and the sound, live\n• Real-time feedback for choreographers, with therapeutic aims\n• My part: a new scene built from scratch, and the previous team's work merged in",
+        fr: "Une scène du CAVE pilotée par le corps du danseur.\n• CAVE d'Heudiasyc · Unity · juil. 2024 – févr. 2025\n• Vitesse, mains, pieds et position pilotent l'image et le son, en direct\n• Un retour en temps réel pour les chorégraphes, avec une visée thérapeutique\n• Ma part : une nouvelle scène créée de zéro, et le travail de l'équipe précédente intégré",
+        zh: "由舞者身体驱动的 CAVE 场景。\n• Heudiasyc CAVE · Unity · 2024 年 7 月 – 2025 年 2 月\n• 速度、手、脚与位置实时驱动画面和声音\n• 为编舞者提供实时反馈，并带有治疗目的\n• 我的部分：从零搭建新场景，并整合上一届团队的成果" } },
+    { src: "media/wall/6-utc-logo.mp4", group: 0, note: { en: "UTC logo", fr: "logo de l\'UTC", zh: "UTC 校徽" }, poster: "media/wall/6-utc-logo.jpg", title: { en: "UTC logo · integration 2023", fr: "Logo de l'UTC · intégration 2023", zh: "UTC 校徽 · 2023 迎新" },
+      desc: { en: "September 2023: a UTC integration week \"homework\".\n• The school logo, animated in Blender\n• In its base colours, silver and gold\n• The U got eyes, like a smile :)\n• Welcoming us to five years of new ideas and new encounters",
+              fr: "Septembre 2023 : un « devoir » de la semaine d'intégration de l'UTC.\n• Le logo de l'école, animé dans Blender\n• Dans ses couleurs de base, l'argent et l'or\n• Le U a reçu des yeux, comme un sourire :)\n• Pour nous accueillir : cinq ans de nouvelles idées et de nouvelles rencontres",
+              zh: "2023 年 9 月，UTC 迎新周的一份“作业”。\n• 用 Blender 做的校徽动画\n• 校徽的基础色：银与金\n• U 上加了一双眼睛，像一个笑脸 :)\n• 欢迎我们开启五年的新知识与新相遇" } },
     // 2 · The wolf spaceship: back, top, and the modular interior pieces
     { src: "media/wall/2-wolf-back.jpg", note: { en: "wolf ship · back", fr: "vaisseau loup · arrière", zh: "狼形飞船 · 后视" }, title: { en: "Wolf spaceship · back view", fr: "Vaisseau loup · vue arrière", zh: "狼形飞船 · 后视图" },
       desc: { en: "A spaceship shaped like a wolf, modelled in Blender: the view from behind.", fr: "Un vaisseau en forme de loup, modélisé dans Blender : vue de l'arrière.", zh: "在 Blender 中建模的狼形飞船：后视图。" } },
@@ -181,10 +190,11 @@ export const CONTENT = {
       desc: { en: "Prize ceremony at the Sorbonne.\n• Concours général: Chinese composition and translation\n• 2023 (ALCG)", fr: "Remise des prix à la Sorbonne.\n• Concours général : composition et version chinoises\n• 2023 (ALCG)", zh: "在索邦大学的颁奖典礼。\n• 法国全国中学优等生会考（Concours général）：中文写作与翻译\n• 2023 年（ALCG）" } },
     { src: "media/wall/6-utcrew-2024.jpg", note: { en: "on stage!", fr: "sur scène !", zh: "上台啦！" }, title: { en: "UTCrew · diploma ceremony 2024", fr: "UTCrew · remise des diplômes 2024", zh: "UTCrew · 2024 毕业典礼" },
       desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024.\n• 2025: secretary for six months of a 40-member crew\n• Admin, communication, finances, merch and gigs\n• And the stage is always fun and thrilling!\n• Photo: Eva Guignabodet", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024.\n• 2025 : secrétaire pendant six mois d'une troupe de 40 membres\n• Administration, communication, finances, merch et prestations\n• Et la scène, c'est toujours aussi amusant et grisant !\n• Photo : Eva Guignabodet", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。\n• 2025 年：在 40 人的舞团当了六个月秘书\n• 行政、沟通、财务、周边和演出对接\n• 站上舞台永远好玩又刺激！\n• 摄影：Eva Guignabodet" } },
-    { src: "media/wall/6-utc-logo.mp4", note: { en: "UTC logo", fr: "logo de l\'UTC", zh: "UTC 校徽" }, poster: "media/wall/6-utc-logo.jpg", title: { en: "UTC logo · integration 2023", fr: "Logo de l'UTC · intégration 2023", zh: "UTC 校徽 · 2023 迎新" },
-      desc: { en: "September 2023: a UTC integration week \"homework\".\n• The school logo, animated in Blender\n• In its base colours, silver and gold\n• The U got eyes, like a smile :)\n• Welcoming us to five years of new ideas and new encounters",
-              fr: "Septembre 2023 : un « devoir » de la semaine d'intégration de l'UTC.\n• Le logo de l'école, animé dans Blender\n• Dans ses couleurs de base, l'argent et l'or\n• Le U a reçu des yeux, comme un sourire :)\n• Pour nous accueillir : cinq ans de nouvelles idées et de nouvelles rencontres",
-              zh: "2023 年 9 月，UTC 迎新周的一份“作业”。\n• 用 Blender 做的校徽动画\n• 校徽的基础色：银与金\n• U 上加了一双眼睛，像一个笑脸 :)\n• 欢迎我们开启五年的新知识与新相遇" } },
+    { src: "media/wall/6-ai-carnival.jpg", group: 5, note: { en: "AI Carnival · 2026", fr: "AI Carnival · 2026", zh: "AI 嘉年华 · 2026" },
+      title: { en: "Desay SV AI Carnival · 2026", fr: "AI Carnival de Desay SV · 2026", zh: "德赛西威 AI 嘉年华 · 2026" },
+      desc: { en: "I helped organise Desay SV's internal AI Carnival.\n• From brainstorming and preparation to hosting the day\n• The goal: AI that makes daily work faster, cheaper and more accurate\n• Received a Desay SV Silver Badge",
+        fr: "J'ai aidé à organiser l'AI Carnival interne de Desay SV.\n• Du brainstorming et de la préparation jusqu'à l'animation de la journée\n• Le but : une IA qui rend le travail quotidien plus rapide, moins cher et plus précis\n• Récompensé par un Silver Badge de Desay SV",
+        zh: "我参与组织了德赛西威内部的 AI 嘉年华。\n• 从头脑风暴、筹备到当天主持\n• 目标：用 AI 让日常工作更快、更省、更准确\n• 获得德赛西威银质徽章" } },
   ],
 
   // The ending: the letter that folds into a plane, and the closing words

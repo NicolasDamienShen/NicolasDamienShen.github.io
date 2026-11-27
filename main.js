@@ -1948,8 +1948,11 @@ function buildPhotoWall(std) {
   for (let k = 0; k < 64; k++) memoryPhoto(ax, (k % 8) * 256, Math.floor(k / 8) * 256, 256, k);
   const atlas = tex(A);
   const frames = [], pics = [], WX = 4.975;
-  // the 18 big slots: 3 per group, slightly scattered
-  const slots = []; WALL_GROUPS.forEach(G => (G.top ? [[-.225, .18], [.225, .18], [0, -.18]] : [[0, .18], [-.225, -.18], [.225, -.18]]).forEach(([dz, dy]) => slots.push({ z: G.z + dz * WS + rr(-.015, .015), y: G.y + dy * WS + rr(-.012, .012), rot: rr(-.045, .045), w: .38 * WS, h: .26 * WS, side: Math.sign(dz) })));   // h: squarer shots stop at 1.46:1, so the two rows never touch
+  // the 18 big slots: 2, 3 or 4 per group (each wall item names its group; "wall3d: false" items stay in the index only), slightly scattered
+  const W3 = (CONTENT.wall || []).filter(w => w.wall3d !== false), grpOf = it => it.group ?? (parseInt((it.src || '').split('/').pop(), 10) - 1);
+  const PAT = { 1: [[0, 0]], 2: [[-.225, .06], [.225, -.06]], 4: [[-.225, .18], [.225, .18], [-.225, -.18], [.225, -.18]] };
+  const slots = []; WALL_GROUPS.forEach((G, gi) => { const mine = W3.filter(it => grpOf(it) === gi), pat = mine.length === 3 ? (G.top ? [[-.225, .18], [.225, .18], [0, -.18]] : [[0, .18], [-.225, -.18], [.225, -.18]]) : PAT[mine.length] || [];
+    mine.forEach((it, k) => { const [dz, dy] = pat[k]; slots.push({ it, z: G.z + dz * WS + rr(-.015, .015), y: G.y + dy * WS + rr(-.012, .012), rot: rr(-.045, .045), w: .38 * WS, h: .26 * WS, side: Math.sign(dz) }); }); });   // h: squarer shots stop at 1.46:1, so the two rows never touch
   const rows = 6, cols = 24, z0 = -3.55, z1 = 3.05, y0 = .98, y1 = 2.62;
   let k = 0;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
@@ -1965,9 +1968,8 @@ function buildPhotoWall(std) {
   room.add(new THREE.Mesh(mergeGeometries(frames), std({ color: 0xf1ebe0, roughness: .9 })));
   room.add(new THREE.Mesh(mergeGeometries(pics), std({ map: atlas, roughness: .7, emissive: 0xffffff, emissiveMap: atlas, emissiveIntensity: .08 })));
   // your photos, GIFs and loops — no clicking needed, the camera comes to them
-  const items = CONTENT.wall || [];
   slots.forEach((sl, i) => {
-    const it = items[i] || {}, src = it.src || '';
+    const it = sl.it || {}, src = it.src || '';
     const g = new THREE.Group(); g.position.set(WX - .008, sl.y, sl.z); g.rotation.set(0, -Math.PI / 2, sl.rot); room.add(g);
     // print border: thin on the sides and top, a deeper strip at the bottom (room for a marker note)
     const PS = .028, PT = .028, PB = .085, PY = (PB - PT) / 2;
@@ -1976,13 +1978,13 @@ function buildPhotoWall(std) {
     let map, cv = null, img = null, pic = null, tape = null, note = null;
     // each photo keeps its own shape: it fits inside the slot and the paper border follows it
     const fit = a => { if (!(a > 0) || !pic) return; const w = a > pw / ph ? pw : ph * a, h = a > pw / ph ? pw / a : ph; pic.scale.set(w / pw, h / ph, 1); back.scale.set((w + 2 * PS) / (pw + 2 * PS), (h + PT + PB) / (ph + PT + PB), 1); tape.position.y = PY + h / 2 + .024; if (note) note.position.y = PY - h / 2 - PB / 2; };
-    const drawPh = () => { const x = cv.getContext('2d'); if (img) x.drawImage(img, 0, 0, cw, ch); else { drawArt(x, cw, ch, '', '', hueOf(i + 2), ''); x.fillStyle = 'rgba(255,255,255,.75)'; x.font = F(600, 30, '"JetBrains Mono"'); x.textAlign = 'center'; x.fillText(it.label || (i % 3 === 1 ? 'GIF' : 'PHOTO'), cw / 2, ch / 2 + 10); x.textAlign = 'left'; } map.needsUpdate = true; };
+    const drawPh = () => { const x = cv.getContext('2d'); if (img) x.drawImage(img, 0, 0, cw, ch); else { drawArt(x, cw, ch, '', '', hueOf(i + 2), ''); x.fillStyle = 'rgba(255,255,255,.75)'; x.font = F(600, 30, '"JetBrains Mono"'); x.textAlign = 'center'; x.fillText(it.label ? L(it.label) : 'PHOTO', cw / 2, ch / 2 + 10); x.textAlign = 'left'; } map.needsUpdate = true; };
     if (/\.(mp4|webm|mov)$/i.test(src)) {
       const v = document.createElement('video'); Object.assign(v, { src, muted: true, loop: true, playsInline: true, crossOrigin: 'anonymous' }); v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
       map = new THREE.VideoTexture(v); map.colorSpace = THREE.SRGBColorSpace; wallMedia.push({ kind: 'video', v, z: sl.z });
       v.addEventListener('loadedmetadata', () => fit(v.videoWidth / v.videoHeight)); v.preload = 'auto';
     } else {
-      cv = makeCanvas(cw, ch); map = tex(cv); drawPh();
+      cv = makeCanvas(cw, ch); map = tex(cv); drawPh(); if (!src) retext.push(drawPh);   // a slot waiting for its picture: its label follows the language
       if (src && /\.gif$/i.test(src)) { img = new Image(); img.decoding = 'async'; img.onload = () => { fit(img.naturalWidth / img.naturalHeight); drawPh(); }; img.src = src; wallMedia.push({ kind: 'gif', draw: drawPh, z: sl.z, last: 0 }); }
       else if (src) {   // full-resolution photo straight onto the GPU (no small canvas in between): sharp when the camera comes close
         const im = new Image(); im.decoding = 'async';
