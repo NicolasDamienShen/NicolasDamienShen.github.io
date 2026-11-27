@@ -379,7 +379,8 @@ const BGM = (() => {
     if (!gain) { gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination); }
     if (ctx.state === 'suspended') ctx.resume();
     if (buf) return play();
-    fetch('a/bgm.mp3').then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+    const get = u => fetch(u).then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); });
+    get('a/bgm.mp3').catch(() => get('https://nicolasdamienshen.github.io/games/gravity-js/a/bgm.mp3'))   // the artifact copy has no music file: stream it from the GitHub site
       .then(b => new Promise((ok, no) => ctx.decodeAudioData(b, ok, no))).then(b => { buf = b; play(); }).catch(() => { btn.hidden = true; });   // no file: just no music
   }
   function toggle() {
