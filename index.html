@@ -175,7 +175,27 @@ h2{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:-.01
 @keyframes flp{50%{box-shadow:0 0 0 10px rgba(255,255,255,.18)}}
 @media (prefers-reduced-motion:reduce){.flylink .fl-play{animation:none}}
 #watchbar{position:fixed;z-index:30;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:10px;align-items:center;padding:8px 8px 8px 18px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-#watchbar[hidden]{display:none}#watch-yt[hidden]{display:none}
+#watchbar[hidden]{display:none}#watch-yt[hidden]{display:none}#watch-go[hidden]{display:none}
+/* billboard dock: rises while the tour holds in front of a screen */
+#bbdock{position:fixed;z-index:29;left:50%;bottom:26px;display:flex;align-items:center;gap:18px;padding:10px 12px 10px 20px;border-radius:22px;background:rgba(10,8,24,.78);border:1px solid rgba(201,184,255,.28);box-shadow:0 18px 50px rgba(0,0,0,.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  opacity:0;transform:translate(-50%,24px);pointer-events:none;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 24px)}
+#bbdock.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#bbdock > *{transition:opacity .16s}#bbdock.swap > *{opacity:0}
+body.focused #bbdock{opacity:0;pointer-events:none}
+#bbdock .dkt{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+#bbdock .dkn{font:600 10.5px var(--mono);letter-spacing:.14em;color:var(--amb)}
+#bbdock .dkt b{font-size:16px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+#bbdock .dkt small{font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+#bbdock .dkb{display:flex;gap:6px}
+#bbdock .dk{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:62px;padding:6px 8px;border-radius:14px;color:#e6e2fb;transition:background .2s,transform .2s}
+#bbdock .dk:hover{background:rgba(255,255,255,.07);transform:translateY(-2px)}
+#bbdock .dk:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+#bbdock .dki{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
+#bbdock .dk.pri .dki{background:#ffc46e;color:#1a1206;border-color:#ffc46e;box-shadow:0 0 0 0 rgba(255,196,110,.5);animation:dkp 2.4s ease-out infinite}
+#bbdock .dkl{font-size:11.5px;font-weight:600;white-space:nowrap}
+@keyframes dkp{0%{box-shadow:0 0 0 0 rgba(255,196,110,.55)}70%,100%{box-shadow:0 0 0 12px rgba(255,196,110,0)}}
+@media (prefers-reduced-motion:reduce){#bbdock .dk.pri .dki{animation:none}}
+@media (max-width:640px){#bbdock{bottom:calc(env(safe-area-inset-bottom) + 92px);gap:10px;padding:8px 8px 8px 14px;border-radius:18px}#bbdock .dkt b,#bbdock .dkt small{max-width:150px}#bbdock .dkt small{display:none}#bbdock .dk{min-width:52px;padding:4px}#bbdock .dki{width:36px;height:36px}}
 body.focused .panel,body.focused #chapters{opacity:0!important;pointer-events:none!important}
 body.focused #tip{display:none}
 #watch-title{font-weight:600;font-size:14px;margin-right:6px}
@@ -355,6 +375,17 @@ body.focused #tip{display:none}
 .box.read .mdesc.big{font-size:clamp(16px,.55vw + 11px,19px);line-height:1.6;color:#e6e2fb}
 .box.read .mdesc.big .mlead{font-size:1.06em;line-height:1.5}
 .box.read .mdesc.big .mlist li{margin-top:.38em}
+/* About: one colour per line */
+.mdesc.about .mlist li:nth-child(6n+1){--c:#7fdcff}.mdesc.about .mlist li:nth-child(6n+2){--c:#b9a4ff}.mdesc.about .mlist li:nth-child(6n+3){--c:#7debb0}
+.mdesc.about .mlist li:nth-child(6n+4){--c:#ff9fd2}.mdesc.about .mlist li:nth-child(6n+5){--c:#ffc46e}.mdesc.about .mlist li:nth-child(6n+6){--c:#9db8ff}
+.mdesc.about .mlist li::before{background:var(--c);box-shadow:0 0 8px var(--c)}
+.mdesc.about .ml{display:inline-block;margin-right:.45em;padding:.02em .5em .06em;border-radius:6px;font-size:.78em;letter-spacing:.03em;line-height:1.45;vertical-align:.08em;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent)}
+.mdesc.about .k{color:var(--c);font-weight:600}
+.mdesc.about .mlead{background:linear-gradient(90deg,#fff,#d9ccff 60%,#ffd9a8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mdesc.about .atags{display:flex;flex-wrap:wrap;gap:6px;margin-top:.9em}
+.mdesc.about .atag{font-size:.74em;padding:.18em .65em;border-radius:999px;color:#d9d4f2;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14)}
+.mdesc.about .atag.main{color:#fff;background:rgba(143,125,255,.22);border-color:rgba(143,125,255,.5)}
+.mdesc.about .atag.loc{color:#ffd59a;border-color:rgba(255,196,110,.4);background:rgba(255,196,110,.1)}
 .box.read .mdesc.big .mlead + .mlist{margin-top:.6em}
 .box.henry .mdesc.big .mp{margin-top:1em;color:var(--dim);font-size:.94em}
 .box.tight.read .mdesc.big{font-size:15.5px;line-height:1.5}
@@ -494,7 +525,8 @@ body.focused #tip{display:none}
 <div id="panels"></div>
 <div id="track" aria-hidden="true"></div>
 <div id="tip" role="tooltip"></div>
-<div id="watchbar" hidden><span id="watch-title"></span><button class="btn ghost sm" id="watch-more"></button><a class="btn ghost sm" id="watch-yt" target="_blank" rel="noopener" hidden>YouTube ↗</a><button class="btn primary sm" id="watch-close"></button></div>
+<div id="bbdock" inert></div>
+<div id="watchbar" hidden><span id="watch-title"></span><button class="btn primary sm" id="watch-go" hidden></button><button class="btn ghost sm" id="watch-more"></button><a class="btn ghost sm" id="watch-yt" target="_blank" rel="noopener" hidden>YouTube ↗</a><button class="btn primary sm" id="watch-close"></button></div>
 
 <div id="index" hidden role="dialog" aria-modal="true" aria-labelledby="idx-title"></div>
 <div id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="m-title"><div class="box card" id="mbox"></div></div>

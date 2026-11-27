@@ -112,7 +112,7 @@ let LANG = (() => { try { const s = localStorage.getItem('ns-lang'); if (s && /^
 const L = v => v == null ? '' : (typeof v === 'object' && !Array.isArray(v)) ? (v[LANG] ?? v.en ?? '') : v;
 const T = {
   en: {
-    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Comparison: LLMs, a diffusion model, a JEV-inspired decision architecture\n• Final system: Mapika Decider-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', cockClose: 'Done? Close ✕ to continue the story', keepScroll: 'The story continues · keep scrolling', keepScrollT: 'The story continues · swipe up', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details',
+    chatName: 'Nicolas SHEN', chatStatus: 'online', typing: 'typing…', chatMsg: "Hi, I'm Nicolas Shen 👋", chatMsg2: 'Welcome to my portfolio ✨', chatMsg3: "Scroll down for more 👇😄", chatRead: 'Read', photoPh: 'photo', chatLiked: 'You liked a photo', tipCockpit: "▶ Try the voice demo", cockpitKicker: 'Intelligent cockpit · internship project', cockpitTitle: "Cabin Voice — you speak, the car acts", cockpitDesc: "My internship project at Desay SV: a voice assistant for the car.\n• Comparison: LLMs, a diffusion model, a JEV-inspired decision architecture\n• Final system: Mapika Decider-2B decides what to do, Qwen3-1.7B fills in the values\n• Single and multi-intent: one sentence can hold one request or several\n• This demo: offline, text-only · press ▶ Play demo, or click the car", tapToTry: 'TAP TO TRY', cockClose: 'Done? Close ✕ to continue the story', keepScroll: 'The story continues · keep scrolling', keepScrollT: 'The story continues · swipe up', soundOn: 'Sound on', soundOff: 'Sound off', today: 'Today', chatPh: 'Message', autopilot: 'AUTOPILOT', watchBack: '↩ Back to the city', watchMore: 'Details', dockWatch: 'Watch', dockDemo: 'Try the demo', dockHint: 'or click the screen',
     scroll: 'SCROLL', keysHint: 'hold to move', cockLock: 'Click the screen to continue', cockLockT: 'Tap the screen to continue', skip: 'Prefer a simple page? Index view ↗', index: 'Index view', hello: 'Hello —', aboutMe: 'About me', open: 'open ↗', openBtn: 'Open ↗',
     vrKicker: 'Main projects', vrTitle: 'Screens in the city', vrText: "Each screen is a project. Click one, or pick from the list.",
     papersKicker: 'Slides & papers', prev: 'Previous', next: 'Next',
@@ -132,7 +132,7 @@ const T = {
     botSay: "Hi! I'm a future project of Nicolas. See you soon ♥", backXR: 'BACK TO XR', backXRsub: 'to the screens in the city',
   },
   fr: {
-    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, c\'est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparaison\u00a0: des LLM, un modèle de diffusion, une architecture de décision inspirée de JEV\n• Au final\u00a0: Mapika Decider-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono- et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture (démo en anglais)", tapToTry: 'TOUCHEZ POUR ESSAYER', cockClose: 'Terminé ? Fermez ✕ pour continuer l\'histoire', keepScroll: 'L\'histoire continue · continuez à défiler', keepScrollT: 'L\'histoire continue · glissez vers le haut', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails',
+    chatName: 'Nicolas SHEN', chatStatus: 'en ligne', typing: 'écrit…', chatMsg: 'Salut, c\'est Nicolas Shen 👋', chatMsg2: 'Bienvenue sur mon portfolio ✨', chatMsg3: "Défilez pour en voir plus 👇😄", chatRead: 'Lu', photoPh: 'photo', chatLiked: 'Vous avez aimé une photo', tipCockpit: "▶ Essayer la démo vocale", cockpitKicker: 'Cockpit intelligent · projet de stage', cockpitTitle: "Cabin Voice — vous parlez, la voiture agit", cockpitDesc: "Mon projet de stage chez Desay SV\u00a0: un assistant vocal pour la voiture.\n• Comparaison\u00a0: des LLM, un modèle de diffusion, une architecture de décision inspirée de JEV\n• Au final\u00a0: Mapika Decider-2B décide quoi faire, Qwen3-1.7B complète les valeurs\n• Mono- et multi-intention : une phrase, une ou plusieurs demandes\n• Cette démo\u00a0: hors ligne, texte seul · appuyez sur «\u00a0▶ Play demo\u00a0», ou cliquez sur la voiture (démo en anglais)", tapToTry: 'TOUCHEZ POUR ESSAYER', cockClose: 'Terminé ? Fermez ✕ pour continuer l\'histoire', keepScroll: 'L\'histoire continue · continuez à défiler', keepScrollT: 'L\'histoire continue · glissez vers le haut', soundOn: 'Son activé', soundOff: 'Son coupé', today: "Aujourd'hui", chatPh: 'Message', autopilot: 'PILOTE AUTO', watchBack: '↩ Retour à la ville', watchMore: 'Détails', dockWatch: 'Regarder', dockDemo: 'Essayer la démo', dockHint: 'ou cliquez sur l\'écran',
     scroll: 'DÉFILEZ', keysHint: 'maintenez pour avancer', cockLock: "Cliquez sur l'écran pour continuer", cockLockT: "Touchez l'écran pour continuer", skip: "Envie d'une page simple\u00a0? Vue index ↗", index: 'Vue index', hello: 'Bonjour —', aboutMe: 'À propos', open: 'ouvrir ↗', openBtn: 'Ouvrir ↗',
     vrKicker: 'Projets principaux', vrTitle: 'Écrans dans la ville', vrText: "Chaque écran est un projet. Cliquez sur l'un d'eux, ou choisissez dans la liste.",
     papersKicker: 'Présentations & articles', prev: 'Précédent', next: 'Suivant',
@@ -152,7 +152,7 @@ const T = {
     botSay: "Salut\u00a0! Je suis un futur projet de Nicolas. À bientôt ♥", backXR: 'RETOUR XR', backXRsub: 'vers les écrans de la ville',
   },
   zh: {
-    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的决策架构\n• 最终方案：Mapika Decider-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击「▶ 播放演示」，或直接点击车辆", tapToTry: '点击试玩', cockClose: '试完了？点 ✕ 关闭，故事继续', keepScroll: '故事还在继续 · 继续向下滚动', keepScrollT: '故事还在继续 · 向上滑动', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情',
+    chatName: 'Nicolas SHEN', chatStatus: '在线', typing: '正在输入…', chatMsg: '你好，我是 Nicolas Shen 👋', chatMsg2: '欢迎来到我的作品集 ✨', chatMsg3: "往下滑，还有更多 👇😄", chatRead: '已读', photoPh: '照片', chatLiked: '你赞了一张照片', tipCockpit: "▶ 试试语音演示", cockpitKicker: '智能座舱 · 实习项目', cockpitTitle: "Cabin Voice —— 你开口，车就动", cockpitDesc: "我在德赛西威的实习项目：一个车载语音助手。\n• 对比：多种大语言模型、扩散模型、受 JEV 启发的决策架构\n• 最终方案：Mapika Decider-2B 决定做什么，Qwen3-1.7B 填入参数\n• 单意图、多意图：一句话里可以有一个或多个请求\n• 本演示：离线纯文本版 · 点击「▶ 播放演示」，或直接点击车辆", tapToTry: '点击试玩', cockClose: '试完了？点 ✕ 关闭，故事继续', keepScroll: '故事还在继续 · 继续向下滚动', keepScrollT: '故事还在继续 · 向上滑动', soundOn: '声音开', soundOff: '声音关', today: '今天', chatPh: '发消息', autopilot: '自动驾驶', watchBack: '↩ 返回城市', watchMore: '详情', dockWatch: '观看', dockDemo: '试玩演示', dockHint: '也可以直接点击屏幕',
     scroll: '向下滚动', keysHint: '长按方向键前进', cockLock: '点击屏幕继续', cockLockT: '点击屏幕继续', skip: '想看简洁版？索引视图 ↗', index: '索引视图', hello: '你好 ——', aboutMe: '关于我', open: '打开 ↗', openBtn: '打开 ↗',
     vrKicker: '主要项目', vrTitle: '城市里的屏幕', vrText: '每块屏幕都是一个项目。点击屏幕，或从列表中选择。',
     papersKicker: '演示文稿与论文', prev: '上一个', next: '下一个',
@@ -2746,12 +2746,12 @@ function initCSS3D() {
 const linkOnly = v => !!extURL(v) && !v.video && (IN_ARTIFACT || (!ytId(v.youtube) && !!driveId(v.drive)));
 function focusBillboard(i) {
   const v = CONTENT.videos[i]; if (!v) return;
-  if (v.demo) { openDemo(i); return; }   // a playable demo (EarWeGo): straight into it, like the cockpit's Cabin Voice
   if (cssObj) { cssScene.remove(cssObj); cssObj = null; }
   const id = ytId(v.youtube), d = document.createElement('div');
   const fs = bbSize(v), dw = fs.W > fs.H ? 1280 : 720, dh = Math.round(dw * fs.H / fs.W);
   d.style.cssText = `width:${dw}px;height:${dh}px;` + 'background:#000;pointer-events:auto;border-radius:6px;overflow:hidden';
-  if (linkOnly(v)) d.innerHTML = `<a href="${esc(extURL(v))}" target="_blank" rel="noopener" aria-label="${esc(t('watchOn'))} ${esc(extName(v))}" style="display:block;width:100%;height:100%;background:url(${esc(v.poster || '')}) center/cover"></a>`;   // the call to action is the button that flies to the front
+  if (v.demo) d.innerHTML = `<button data-bbdemo style="all:unset;cursor:pointer;display:grid;place-items:center;width:100%;height:100%;background:url(${esc(v.poster || '')}) center/cover"><span style="font:700 40px 'Space Grotesk','Noto Sans SC',sans-serif;color:#1a1206;background:#ffc46e;padding:20px 36px;border-radius:999px;box-shadow:0 0 0 10px rgba(255,196,110,.25),0 20px 60px rgba(0,0,0,.5)">▶ ${esc(t('dockDemo'))}</span></button>`;   // a playable demo (EarWeGo): its screen is one big button into it
+  else if (linkOnly(v)) d.innerHTML = `<a href="${esc(extURL(v))}" target="_blank" rel="noopener" aria-label="${esc(t('watchOn'))} ${esc(extName(v))}" style="display:block;width:100%;height:100%;background:url(${esc(v.poster || '')}) center/cover"></a>`;   // the call to action is the button that flies to the front
   else if (id) d.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?autoplay=1&rel=0&modestbranding=1&hl=${LANG}" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${esc(L(v.title))}"></iframe>`;
   else if (v.video) d.innerHTML = `<video src="${esc(v.video)}" style="width:100%;height:100%;object-fit:cover" autoplay controls playsinline></video>`;
   else if (driveId(v.drive)) d.innerHTML = `<iframe src="${drivePreview(driveId(v.drive))}" style="width:100%;height:100%;border:0" allow="autoplay; fullscreen" title="${esc(L(v.title))}"></iframe>`;
@@ -2762,6 +2762,9 @@ function focusBillboard(i) {
   focus.i = i; focus.want = 1; document.body.classList.add('focused'); setHover(null);
   const bar = $('#watchbar'); bar.hidden = false; $('#watch-title').textContent = L(v.title);
   $('#watch-more').onclick = () => { unfocus(); openVideo(i); };
+  const go = $('#watch-go'); go.hidden = !v.demo; go.onclick = () => { unfocus(); openDemo(i); };
+  d.querySelector('[data-bbdemo]')?.addEventListener('click', () => { unfocus(); openDemo(i); });
+  updateDock(-1);
   if (linkOnly(v)) requestAnimationFrame(() => launchLink(v));
   else if (id || v.video) SOUND.setDuck(0);   // a video is playing: the music steps aside
   const yb = $('#watch-yt'); if (yb) { const yid = ytId(v.youtube), did = driveId(v.drive); yb.hidden = !yid && !did; if (yid) { yb.href = `https://www.youtube.com/watch?v=${yid}`; yb.textContent = 'YouTube ↗'; } else if (did) { yb.href = `https://drive.google.com/file/d/${encodeURIComponent(did)}/view`; yb.textContent = 'Google Drive ↗'; } }
@@ -2826,7 +2829,7 @@ function setPanelsOpen(v) { panelsOpen = v; try { localStorage.setItem('ns-panel
 function buildPanels() {
   const C = CONTENT, O = C.outro || {};
   $('#chapters').innerHTML = CH.map(c => `<button data-go="${c.id}" aria-label="${esc(t('goTo'))} ${esc(t(c.k))}"><span class="lbl">${esc(t(c.k))}</span><span class="dot"></span></button>`).join('');
-  $('#openIndex').innerHTML = `☰ ${esc(t('index'))} <kbd>I</kbd>`; $('#watch-close').textContent = t('watchBack'); $('#watch-more').textContent = t('watchMore');
+  $('#openIndex').innerHTML = `☰ ${esc(t('index'))} <kbd>I</kbd>`; $('#watch-close').textContent = t('watchBack'); $('#watch-more').textContent = t('watchMore'); $('#watch-go').textContent = t('tryDemo');
   $('#panels').innerHTML = `
   <section class="panel" id="p-hero" aria-label="Welcome">
     <h1 class="sr">${esc(t('phWelcome'))} ${esc(C.name)}${esc(t('phAfter'))}${LANG === 'zh' ? '。' : '. '}${esc(t('phScroll'))}${LANG === 'zh' ? '。' : '.'}</h1>
@@ -3158,8 +3161,21 @@ function openPaper(i) {
 }
 // unwritten template texts in content.js ("Placeholder…") are never shown: the about window falls back to the intro line, a project simply gets no text
 const realText = v => { const s = L(v); return /^\s*(placeholder|texte provisoire|bio provisoire|占位)/i.test(s) ? '' : s; };
+// About: each line gets its own colour (label chip + dot), and the key facts in it are lit in that colour, so it reads at a glance
+const ABOUT_KEYS = {
+  en: ['UTC, Compiègne', '2023–2028', 'CNRS Heudiasyc', 'Desay SV', 'Aug 2026 – Feb 2027', 'body and senses', 'research internship', 'February 2028', 'PhD', 'autumn 2028'],
+  fr: ["l'UTC, Compiègne", '2023–2028', 'CNRS Heudiasyc', 'Desay SV', 'août 2026 – févr. 2027', 'son corps et ses sens', 'stage de recherche', 'février 2028', 'thèse', "l'automne 2028"],
+  zh: ['贡比涅技术大学（UTC）', '2023–2028', 'CNRS Heudiasyc', '德赛西威', '2026 年 8 月 – 2027 年 2 月', '身体和感官', '研究实习', '2028 年 2 月', '攻读博士', '2028 年秋季'],
+};
+function aboutHTML(src) {
+  let h = richDesc(src).replace(/<b class="ml">([^<]*?)[\s\u00a0]*[:：]<\/b> ?/g, '<b class="ml">$1</b>');
+  const keys = (ABOUT_KEYS[LANG] || []).map(esc).sort((a, b) => b.length - a.length);
+  if (keys.length) { const re = new RegExp(keys.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g'); h = h.replace(/(<li>)([\s\S]*?)(<\/li>)/g, (m, a, b, c) => a + b.replace(/(<b class="ml">[^<]*<\/b>)?([\s\S]*)/, (q, lab, rest) => (lab || '') + rest.replace(re, '<span class="k">$&</span>')) + c); }
+  return h;
+}
 function openAbout() {
-  openModal(`◎ ${esc(t('about'))}`, CONTENT.name, `<div class="mdesc big">${richDesc(realText(CONTENT.about) || L(CONTENT.intro))}<ul class="mlist dim"><li>${esc(L(CONTENT.role))}</li><li>${esc(L(CONTENT.location))}</li></ul></div><div class="links" style="justify-content:flex-start;margin:18px 0 0">${contactLinks()}</div>`, null, { cls: 'text read' });
+  const tags = L(CONTENT.role).split(/\s*·\s*/).filter(Boolean);
+  openModal(`◎ ${esc(t('about'))}`, CONTENT.name, `<div class="mdesc big about">${aboutHTML(realText(CONTENT.about) || L(CONTENT.intro))}<div class="atags">${tags.map((x, i) => `<span class="atag${i ? '' : ' main'}">${esc(x)}</span>`).join('')}<span class="atag loc">⌖ ${esc(L(CONTENT.location))}</span></div></div><div class="links" style="justify-content:flex-start;margin:18px 0 0">${contactLinks()}</div>`, null, { cls: 'text read' });
 }
 
 /* ════════════════════════ index view (classic, accessible) ════════════════════════ */
@@ -3364,8 +3380,35 @@ function updateNudge(p) {
   if (!KEYNAV.hintGone && (p > CHAT.rest || (KEYNAV.used && now - KEYNAV.used > 1800))) KEYNAV.hintGone = true;
   const keys = !KEYNAV.hintGone && !MOBILE; if (g.classList.contains('keys-on') !== keys) g.classList.toggle('keys-on', keys);
 }
+/* the billboard dock: while the tour holds in front of a screen, a bar rises at the bottom with what you can do there */
+const DOCK_IC = {
+  play: '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>',
+  demo: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12h2M8 8v8M12 5v14M16 9v6M20 11v2"/></svg>',
+  info: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg>',
+  ext: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>',
+};
+let dockI = -2, dockLang = '';
+function dockHTML(i) {
+  const v = CONTENT.videos[i], n = CONTENT.videos.length, url = extURL(v);
+  const btn = (k, ic, lab, cls = '') => `<button class="dk ${cls}" data-dk="${k}"><span class="dki">${DOCK_IC[ic]}</span><span class="dkl">${esc(lab)}</span></button>`;
+  const main = v.demo ? btn('demo', 'demo', t('dockDemo'), 'pri') : btn('watch', 'play', t('dockWatch'), 'pri');
+  const ext = !v.demo && url ? `<a class="dk" href="${esc(url)}" rel="noopener"${IN_ARTIFACT ? '' : ' target="_blank"'}><span class="dki">${DOCK_IC.ext}</span><span class="dkl">${esc(extName(v))}</span></a>` : '';
+  return `<div class="dkt"><span class="dkn">${String(i + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}</span><b>${esc(L(v.title))}</b><small>${esc(L(v.subtitle))} · ${esc(t('dockHint'))}</small></div><div class="dkb">${main}${btn('info', 'info', t('watchMore'))}${ext}</div>`;
+}
+function updateDock(p) {
+  const el = $('#bbdock'); if (!el) return;
+  let i = -1;
+  if (p >= 0 && !focus.want && modal.hidden) BBP.forEach((q, k) => { if (p > q - .006 && p < q + .013) i = k; });
+  if (i === dockI && LANG === dockLang) return;
+  if (i >= 0) {
+    const fill = () => { el.innerHTML = dockHTML(i); el.querySelectorAll('[data-dk]').forEach(b => b.onclick = () => { const k = b.dataset.dk; if (k === 'demo') openDemo(i); else if (k === 'info') openVideo(i); else focusBillboard(i); updateDock(-1); }); };
+    if (dockI >= 0 && LANG === dockLang) { el.classList.add('swap'); setTimeout(() => { fill(); el.classList.remove('swap'); }, 160); } else fill();
+    el.inert = false; el.classList.add('show');
+  } else { el.classList.remove('show'); el.inert = true; }
+  dockI = i; dockLang = LANG;
+}
 function updateUI(p) {
-  updateNudge(p); updateCockTip(p);
+  updateNudge(p); updateCockTip(p); updateDock(p);
   if (p > .0015) dismissIntro();
   { const sb = $('#sound'); if (sb) sb.classList.toggle('pending', introGone && !SOUND.on && SOUND.wanted); }
   { const fo = p > .136 && p < .168, el = document.getElementById('p-about'); if (el && el.classList.contains('force-open') !== fo) el.classList.toggle('force-open', fo); }
