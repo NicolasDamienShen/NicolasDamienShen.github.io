@@ -565,7 +565,7 @@ function buildBillboards() {
     const bb = { i, grp, screen, ctx, c, t: bt, poster, hover: 0, z, side };
     billboards.push(bb);
     if (v.poster) loadImg(v.poster).then(img => { const s = Math.max(cw / img.width, ch / img.height); poster.getContext('2d').drawImage(img, (cw - img.width * s) / 2, (ch - img.height * s) / 2, img.width * s, img.height * s); }).catch(() => { });
-    hot('city', screen, () => t('tipWatch') + L(v.title), () => focusBillboard(i));
+    hot('city', screen, () => t('tipWatch') + L(v.title), () => focusBillboard(i)); screen.userData.bbi = i;
   });
 }
 function drawBillboard(b, t) {
@@ -3117,7 +3117,9 @@ function openNow(i) {
   const n = CONTENT.now[i]; if (!n) return; const N = CONTENT.now.length;
   const media = n.media ? (isClip(n.media) ? `<div class="media"><video src="${esc(n.media)}" autoplay loop muted playsinline></video></div>` : `<div class="media"><img alt="" src="${esc(n.media)}"></div>`)
     : mediaPlaceholder(L(n.title), L(n.status), hueOf(i + 5), t('gifSoon'));
-  openModal(`04 · ${esc(t('nowTitle'))} · ${esc(L(n.status))}`, L(n.title), { stage: media, info: `${descP(richDesc(realText(n.desc)))}${navRow(i, N)}` }, d => openNow((i + d + N) % N));
+  const act = n.demo ? `<div class="mrow"><button class="btn primary" data-demo>${esc(t('tryDemo'))}</button></div>` : '';
+  openModal(`04 · ${esc(t('nowTitle'))} · ${esc(L(n.status))}`, L(n.title), { stage: media, info: `${descP(richDesc(realText(n.desc)))}${act}${navRow(i, N)}` }, d => openNow((i + d + N) % N));
+  const db = $('[data-demo]', mbox); if (db) db.onclick = () => openDemo(CONTENT.videos.findIndex(v => v.demo === n.demo));
   wireNav();
 }
 /* ── document reader: click the left half of the page = previous, the right half = next (also ← → keys, swipe, fullscreen) ── */
@@ -3315,15 +3317,19 @@ canvas.addEventListener('pointermove', e => {
 canvas.addEventListener('pointerleave', () => mouse.set(-9, -9));
 canvas.addEventListener('click', e => {
   mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); pick3D();
-  if (hovered) hovered.userData.hot.action();
+  if (hovered && (hovered.userData.bbi == null || bbNear(hovered.userData.bbi))) hovered.userData.hot.action();
 });
 function pick3D() {
   if (mouse.x < -2) { setHover(null); return; }
   ray.setFromCamera(mouse, camera);
   const inCar = active === 'city' && cur < .145;   // inside the car: only the console screen reacts (billboards and slides are out there, not here)
   const hits = ray.intersectObjects(inCar ? (rig.cockMesh && rig.cockAwake ? [rig.cockMesh] : []) : hotspots[active], false);   // …and only once it has started up (it sleeps during the phone chat)
-  setHover(hits[0]?.distance < (active === 'city' ? 140 : 9) ? hits[0].object : null);
+  let h = hits[0]?.distance < (active === 'city' ? 140 : 9) ? hits[0].object : null;
+  if (h && h.userData.bbi != null && !bbNear(h.userData.bbi)) h = null;   // a billboard only reacts once you have arrived in front of it
+  setHover(h);
 }
+// the camera stops ~11.5 screen-heights in front of each billboard (K_CITY); far away (passing by, or another screen) it isn't clickable
+function bbNear(i) { const b = BB[i]; if (!b) return false; const stop = 11.5 * Math.max(1, b.H / 7.9 * .92); return camera.position.distanceTo(b.c) < stop * 1.6; }
 function setHover(o) {
   if (o === hovered) return; hovered = o;
   canvas.style.cursor = o ? 'pointer' : '';

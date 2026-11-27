@@ -30,7 +30,7 @@ export const CONTENT = {
 
   // 01 · Screens in the city (YouTube links/IDs or video files), oldest first
   videos: [
-    { title: { en: "Drones in the City Animation", fr: "Drones in the City Animation", zh: "Drones in the City Animation（城市无人机动画）" },
+    { title: { en: "Drones in the City Animation", fr: "Drones in the City Animation", zh: "城市无人机动画" },
       subtitle: { en: "Blender · 2022", fr: "Blender · 2022", zh: "Blender · 2022" },
       youtube: "", drive: "https://drive.google.com/file/d/1592xPGiZ7LJzdpEYvS-xrRU4Rhx-dZ5x/view", video: "", poster: "media/dronecity.jpg", soon: { en: "VIDEO COMING SOON", fr: "VIDÉO À VENIR", zh: "视频即将上线" },
       desc: {
@@ -118,12 +118,12 @@ export const CONTENT = {
 
   // 04 · Corkboard — current work (GIF / MP4 loops)
   now: [
-    { title: { en: "Cabin Assistant", fr: "Cabin Assistant", zh: "Cabin Assistant（座舱助手）" }, status: { en: "In progress", fr: "En cours", zh: "进行中" }, media: "media/now/voice.jpg",
-      desc: { en: "Natural language to car control.\n• Your request becomes commands for the car, across 21 tools\n• My part: comparing LLM architectures, organising the training data, building the fine-tuning and evaluation pipeline\n• Result: a real-time 2B system that matches a 4B model's accuracy at half the latency (91% accuracy, 63 vs 131 ms)\n• One sentence can hold one request or several (e.g. “seat heating on and open the window”)\n• Try it: the offline, text-only demo on the car's centre screen", fr: "Du langage naturel au contrôle de la voiture.\n• Votre demande devient des commandes pour la voiture, parmi 21 outils\n• Ma part : comparer des architectures de LLM, organiser les données d'entraînement, construire la chaîne de fine-tuning et d'évaluation\n• Résultat : un système 2B temps réel aussi précis qu'un modèle 4B, deux fois plus rapide (91 % de précision, 63 contre 131 ms)\n• Une phrase peut contenir une demande ou plusieurs (ex. « chauffe mon siège et ouvre la fenêtre »)\n• À essayer : la démo hors ligne, texte seul, sur l'écran central de la voiture", zh: "从自然语言到控制汽车。\n• 你的请求变成控制汽车的指令，覆盖 21 个工具\n• 我的部分：对比不同的大模型架构，整理训练数据，搭建微调与评测流程\n• 结果：实时运行的 2B 系统达到 4B 模型的准确率，延迟只有一半（准确率 91%，63 ms 对 131 ms）\n• 一句话里可以有一个或多个请求（如“打开座椅加热并打开车窗”）\n• 试一试：车内中控屏上的离线纯文本演示"} },
+    { title: { en: "EarWeGo", fr: "EarWeGo", zh: "EarWeGo" }, status: { en: "Playable demo", fr: "Démo jouable", zh: "可试玩" }, media: "media/now/earwego.jpg", demo: "earwego/",
+      desc: { en: "Hum in the car, get real music back.\n• My role: I lead it at Desay SV (Advanced Research)\n• Your humming becomes editable live-coded music (Strudel)\n• Then you shape it by hand or by voice\n• Designed for non-musicians: low cognitive load\n• Model: Qwen2.5-Omni-7B + LoRA, fully local", fr: "Fredonnez en voiture, la musique vous répond.\n• Mon rôle : je le dirige chez Desay SV (Recherche avancée)\n• Le fredonnement devient de la musique en live coding, modifiable (Strudel)\n• Ensuite, on la façonne à la main ou à la voix\n• Pensé pour les non-musiciens : faible charge cognitive\n• Modèle : Qwen2.5-Omni-7B + LoRA, 100 % local", zh: "在车里哼一段，就能变成真正的音乐。\n• 我的角色：在德赛西威前瞻研究部主导\n• 哼唱变成可编辑的实时编码音乐（Strudel）\n• 之后可以手动或用语音来改\n• 为非音乐人设计：认知负担低\n• 模型：Qwen2.5-Omni-7B + LoRA，完全本地运行" } },
     { title: { en: "What's next", fr: "La suite", zh: "下一步" }, status: { en: "From 2028", fr: "Dès 2028", zh: "2028 年起" }, media: "media/now/next.jpg",
       desc: { en: "XR and AI, together.\n• A six-month research internship from February 2028\n• Then a PhD from autumn 2028\n• At the meeting point of XR, HCI and AI: body, senses and AI agents in immersive worlds", fr: "La XR et l'IA, ensemble.\n• Un stage de recherche de six mois dès février 2028\n• Puis une thèse dès l'automne 2028\n• À la croisée de la XR, de l'IHM et de l'IA : le corps, les sens et les agents IA dans les mondes immersifs", zh: "XR 与 AI，合二为一。\n• 2028 年 2 月起：为期六个月的研究实习\n• 2028 年秋季起：攻读博士\n• 方向：XR、人机交互与 AI 的交叉，身体、感官与沉浸式世界中的 AI 智能体" } },
-    { title: { en: "This portfolio", fr: "Ce portfolio", zh: "这个作品集" }, status: { en: "You're inside it", fr: "Vous êtes dedans", zh: "你正身处其中" }, media: "media/now/portfolio.jpg",
-      desc: { en: "Designed as an HCI piece in itself.\n• A scroll-driven 3D site\n• Built with Three.js", fr: "Pensé comme un projet d'IHM à part entière.\n• Un site 3D piloté par le défilement\n• Construit avec Three.js", zh: "它本身就是一件人机交互作品。\n• 由滚动驱动的 3D 网站\n• 用 Three.js 打造" } },
+    { title: { en: "Research papers", fr: "Articles de recherche", zh: "研究论文" }, status: { en: "Ongoing", fr: "En continu", zh: "持续进行" }, media: "media/now/research.jpg",
+      desc: { en: "Read, reproduce, report.\n• At Desay SV: reproducing multi-view 3D-generation and world-model papers\n• Weekly literature reports for the team", fr: "Lire, reproduire, présenter.\n• Chez Desay SV : reproduction d'articles sur la génération 3D multi-vues et les world models\n• Une revue de littérature chaque semaine pour l'équipe", zh: "读论文、复现、写报告。\n• 在德赛西威：复现多视角 3D 生成和世界模型的论文\n• 每周为团队写文献报告" } },
   ],
 
   // 05 · Photo wall (Blender renders, photos)
@@ -133,7 +133,7 @@ export const CONTENT = {
     { title: { en: "Tiny room", fr: "Petite chambre", zh: "小房间" }, src: "media/wall/3-tinyroom-final.jpg", desc: "" },
     { title: { en: "Robotic spider", fr: "Araignée robotique", zh: "机械蜘蛛" }, src: "media/wall/4-spider.jpg", desc: "" },
     { title: { en: "VR church", fr: "Église pour la VR", zh: "VR 教堂" }, src: "media/wall/4-church.jpg", desc: "" },
-    { title: { en: "Drones in the City Animation (work in progress)", fr: "Drones in the City Animation (en cours)", zh: "Drones in the City Animation（城市无人机动画 · 制作中）" }, src: "media/wall/4-dronecity.jpg", desc: "" },
+    { title: { en: "Drones in the City Animation (work in progress)", fr: "Drones in the City Animation (en cours)", zh: "城市无人机动画 · 制作中" }, src: "media/wall/4-dronecity.jpg", desc: "" },
   ],
 
   // The photo wall in the room: real photos, GIFs or short MP4/WebM loops (muted).
@@ -170,7 +170,7 @@ export const CONTENT = {
     { src: "media/wall/2-spaceship-interior.mp4", note: { en: "look at the end of the tunnel!", fr: "regarde au bout du tunnel !", zh: "看看隧道尽头！" }, poster: "media/wall/2-spaceship-interior.jpg", title: { en: "Wolf spaceship · interior", fr: "Vaisseau loup · intérieur", zh: "狼形飞船 · 内部" },
       desc: { en: "Inside the ship: a corridor assembled from modular pieces I designed myself.", fr: "À l'intérieur : un couloir assemblé à partir de modules que j'ai conçus moi-même.", zh: "飞船内部：用我自己设计的模块化组件拼成的走廊。" } },
     // 3 · Tiny room, and Tigrou
-    { src: "media/wall/3-tinyroom-a.jpg", note: { en: "tiny room · blockout", fr: "petite chambre · maquette", zh: "小房间 · 白模" }, title: { en: "Tiny room · blockout", fr: "Petite chambre · maquette", zh: "小房间 · 白模" },
+    { src: "media/wall/3-tinyroom-a.jpg", note: { en: "tiny room · blockout", fr: "petite chambre · maquette", zh: "小房间 · demo" }, title: { en: "Tiny room · blockout", fr: "Petite chambre · maquette", zh: "小房间 · demo" },
       desc: { en: "A small bedroom in Blender, every part in a flat colour before texturing.", fr: "Une petite chambre dans Blender, chaque élément en couleur unie avant les textures.", zh: "Blender 中的小卧室，贴图前每个部件都是纯色。" } },
     { src: "media/wall/3-tinyroom-final.jpg", note: { en: "tiny room · final", fr: "petite chambre · finale", zh: "小房间 · 完成" }, title: { en: "Tiny room · final", fr: "Petite chambre · version finale", zh: "小房间 · 最终版" },
       desc: { en: "The same room, textured and lit.", fr: "La même chambre, texturée et éclairée.", zh: "同一个房间，加上贴图和灯光。" } },
@@ -181,8 +181,8 @@ export const CONTENT = {
       desc: { en: "A robotic spider, textured with glow in Blender, and fully animated.", fr: "Une araignée robotique texturée avec des parties lumineuses dans Blender, et entièrement animée.", zh: "在 Blender 中完成发光贴图的机械蜘蛛，并且做了完整的动画。" } },
     { src: "media/wall/4-church.jpg", note: { en: "VR church", fr: "église VR", zh: "VR 教堂" }, title: { en: "VR church", fr: "Église pour la VR", zh: "VR 教堂" },
       desc: { en: "A church environment built in Blender for VR.", fr: "Un environnement d'église construit dans Blender pour la VR.", zh: "为 VR 在 Blender 中搭建的教堂场景。" } },
-    { src: "media/wall/4-dronecity.jpg", note: { en: "city blockout", fr: "ville · maquette", zh: "城市白模" }, title: { en: "Drones in the City Animation · in progress", fr: "Drones in the City Animation · en cours", zh: "Drones in the City Animation（城市无人机动画） · 制作中" },
-      desc: { en: "Drones in the City Animation (2022) before materials: colour-coded towers on a circular base.", fr: "Drones in the City Animation (2022) avant les matériaux : des tours colorées par groupe sur une base circulaire.", zh: "Drones in the City Animation（2022）加材质前：按颜色区分的高塔立在圆形底座上。" } },
+    { src: "media/wall/4-dronecity.jpg", note: { en: "city blockout", fr: "ville · maquette", zh: "城市 demo" }, title: { en: "Drones in the City Animation · in progress", fr: "Drones in the City Animation · en cours", zh: "城市无人机动画 · 制作中" },
+      desc: { en: "Drones in the City Animation (2022) before materials: colour-coded towers on a circular base.", fr: "Drones in the City Animation (2022) avant les matériaux : des tours colorées par groupe sur une base circulaire.", zh: "城市无人机动画（2022）加材质前：按颜色区分的高塔立在圆形底座上。" } },
     // 5 · Gravity Boy & Magic Gal: the hand-drawn draft, the final game, and the domino heart
     { src: "media/wall/5-gravity-draft.jpg", note: { en: "first sketch", fr: "premier croquis", zh: "手绘草图" }, game: 0, title: { en: "Gravity Boy & Magic Gal · first sketch", fr: "Gravity Boy & Magic Gal · premier croquis", zh: "Gravity Boy & Magic Gal · 手绘草图" },
       desc: { en: "The level, drawn by hand on squared paper before any code.\n• Go play it again with a friend!\n• I know, the lava is a bit touchy… next fix, I promise.", fr: "Le niveau, dessiné à la main sur papier quadrillé avant la moindre ligne de code.\n• Allez y rejouer avec un ami !\n• Je sais, la lave est un peu susceptible… prochain correctif, promis.", zh: "写代码之前，在方格纸上手绘的关卡。\n• 叫上朋友再玩一局吧！\n• 我知道，熔岩有点太敏感了……下次一定修，我保证。" } },
@@ -197,9 +197,9 @@ export const CONTENT = {
       desc: { en: "Dancing with UTCrew at the UTC diploma ceremony, 2024.\n• 2025: secretary for six months of a 40-member crew\n• Admin, communication, finances, merch and gigs\n• And the stage is always fun and thrilling!\n• Photo: Eva Guignabodet", fr: "Sur scène avec UTCrew à la remise des diplômes de l'UTC, 2024.\n• 2025 : secrétaire pendant six mois d'une troupe de 40 membres\n• Administration, communication, finances, merch et prestations\n• Et la scène, c'est toujours aussi amusant et grisant !\n• Photo : Eva Guignabodet", zh: "2024 年 UTC 毕业典礼上和 UTCrew 一起跳舞。\n• 2025 年：在 40 人的舞团当了六个月秘书\n• 行政、沟通、财务、周边和演出对接\n• 站上舞台永远好玩又刺激！\n• 摄影：Eva Guignabodet" } },
     { src: "media/wall/6-ai-carnival.jpg", group: 5, note: { en: "AI Carnival · 2026", fr: "AI Carnival · 2026", zh: "AI 嘉年华 · 2026" },
       title: { en: "Desay SV AI Carnival · 2026", fr: "AI Carnival de Desay SV · 2026", zh: "德赛西威 AI 嘉年华 · 2026" },
-      desc: { en: "I helped organise Desay SV's internal AI Carnival.\n• From brainstorming and preparation to hosting the day\n• The goal: AI that makes daily work faster, cheaper and more accurate\n• Received a Desay SV Silver Badge",
-        fr: "J'ai aidé à organiser l'AI Carnival interne de Desay SV.\n• Du brainstorming et de la préparation jusqu'à l'animation de la journée\n• Le but : une IA qui rend le travail quotidien plus rapide, moins cher et plus précis\n• Récompensé par un Silver Badge de Desay SV",
-        zh: "我参与组织了德赛西威内部的 AI 嘉年华。\n• 从头脑风暴、筹备到当天主持\n• 目标：用 AI 让日常工作更快、更省、更准确\n• 获得德赛西威银质徽章" } },
+      desc: { en: "I helped organise Desay SV's internal AI Carnival.\n• From brainstorming and preparation to making sure everything ran smoothly on the day\n• The goal: AI that makes daily work faster, cheaper and more accurate\n• Received a Desay SV Silver Badge",
+        fr: "J'ai aidé à organiser l'AI Carnival interne de Desay SV.\n• Du brainstorming et de la préparation jusqu'au bon déroulement de la journée\n• Le but : une IA qui rend le travail quotidien plus rapide, moins cher et plus précis\n• Récompensé par un Silver Badge de Desay SV",
+        zh: "我参与组织了德赛西威内部的 AI 嘉年华。\n• 从头脑风暴、筹备，到确保当天一切顺利进行\n• 目标：用 AI 让日常工作更快、更省、更准确\n• 获得德赛西威白银徽章" } },
   ],
 
   // The ending: the letter that folds into a plane, and the closing words

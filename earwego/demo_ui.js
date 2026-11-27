@@ -250,6 +250,28 @@
     }, 250);
   });
 
+  /* ---------------------------------------------------------------- 改了几个音：马上去听改的那一小节（NS 11-27：说“第三小节最后两个音升高半音”时，不要还在循环第 7–9 小节）
+     等这一句的步骤都做完，把选区换成改过的小节，从前一小节进来循环播放；选中的音不动，“再高一点”还能接着改 */
+  addEventListener('ewg-plan', e => {
+    const acts = (e.detail.res.actions || []), op = acts.find(a => a.do === 'note_op' && a.op !== 'rewrite');
+    if (!op) return;
+    const sn = acts.find(a => a.do === 'select_notes' && Array.isArray(a.bars) && a.bars[0]);
+    const t0 = performance.now();
+    const wait = setInterval(() => {
+      const st = V.steps || [], busy = V.busy || !st.length || st.some(x => !x.st || x.st === 'doing');
+      if (busy && performance.now() - t0 < 8000) return;
+      clearInterval(wait);
+      if (!st.length || st.some(x => x.st === 'fail')) return;
+      try {
+        const n = window.S && S.notes, a = sn ? sn.bars[0] - 1 : n ? n.a : null, b = sn ? sn.bars[1] : n ? n.b : null;
+        if (a == null || S.ab || S.gen) return;
+        if (P.playing) pause();
+        S.sel = {a, b}; S.loopSel = true; render();
+        play(Math.max(0, a - 1) * 4);                       // 从前一小节进来，听得出前后接不接得上
+      } catch (er) { console.warn('[demo] 去听改过的小节', er); }
+    }, 150);
+  });
+
   /* ---------------------------------------------------------------- 第一次：麦克风旁边的小卡片 */
   const coach = document.createElement('div'); coach.id = 'ewgCoach'; coach.className = 'ewg-raw'; coach.setAttribute('role', 'note');
   document.body.appendChild(coach);

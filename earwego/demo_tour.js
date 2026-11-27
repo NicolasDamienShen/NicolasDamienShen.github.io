@@ -11,18 +11,18 @@
   const RM = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
   const TX = {
-    zh: {humT: '哼一段旋律', humS: '点一下，我们替你哼', listening: '在听…', notes: '变成音符…', yours: '这是你的旋律',
-      vT: '现在说出来', vS: '按住 V（或者按住麦克风）', v2T: '再说一句', end: '这就是你的歌。', endS: '按住 V 再试几句，或者打开完整版。',
+    zh: {humT: '哼一段旋律', humS: '点一下，我们替你哼', listening: '在听…', notes: '变成音符…', yours: '这是你哼的 4 小节',
+      vT: '把它写成整首歌', vS: '按住 V 说出来，或者直接点“继续”', go: '继续', end: '这就是你的歌。', endS: '按住 V 再试几句，或者打开完整版。',
       play: '听一听', replay: '再来一遍', full: '完整版', skip: '跳过导览', step: n => `${n} / 4`,
-      lines: [{say: '配上伴奏', rw: '按你的和弦，给旋律配伴奏', steps: ['读懂旋律和和弦', '写伴奏']},
-              {say: '再加一条第二旋律', rw: '加一条第二旋律，在你停下来的地方接一句', steps: ['找到旋律停下来的地方', '写第二旋律']}],
-      heard: '我听到', rwP: '我理解为：', sim: '演示模式：模拟语音', release: '松开就发送'},
-    en: {humT: 'Hum a tune', humS: "Click — we'll hum for you", listening: 'Listening…', notes: 'Turning it into notes…', yours: 'Your tune, as notes',
-      vT: 'Now just say it', vS: 'Hold V (or press and hold the mic)', v2T: 'One more', end: "That's your song.", endS: 'Hold V to try more lines, or open the full app.',
+      say: '写成整首歌', writing: '在写整首歌', rw: '接着你的 4 小节，写成一首完整的歌',
+      steps: ['把旋律写完', '在下面配上和弦', '再加一个声音来回应'],
+      heard: '我听到', rwP: '我理解为：'},
+    en: {humT: 'Hum a tune', humS: "Click — we'll hum for you", listening: 'Listening…', notes: 'Turning it into notes…', yours: 'The 4 bars you hummed',
+      vT: 'Make it a whole song', vS: 'Hold V and say it — or just click Continue', go: 'Continue', end: "That's your song.", endS: 'Hold V to try more lines, or open the full app.',
       play: 'Listen', replay: 'Replay', full: 'Full app', skip: 'Skip the tour', step: n => `${n} / 4`,
-      lines: [{say: 'add an accompaniment', rw: 'An accompaniment under your tune, following its chords', steps: ['Read the tune and its chords', 'Write the accompaniment']},
-              {say: 'add a second melody', rw: 'A second melody that answers where yours pauses', steps: ['Find where your tune pauses', 'Write the second melody']}],
-      heard: 'I heard', rwP: 'Understood as: ', sim: 'Demo mode: simulated voice', release: 'Release to send'}
+      say: 'make it a whole song', writing: 'Writing the whole song', rw: 'Carry on from your 4 bars and write a complete song',
+      steps: ['Finish the melody', 'Add chords underneath', 'Add a second voice that answers'],
+      heard: 'I heard', rwP: 'Understood as: '}
   };
   const T = k => TX[L()][k];
 
@@ -60,7 +60,7 @@
   #ewgTourTip{position:fixed;z-index:61;max-width:300px;padding:14px 16px 13px;border-radius:16px;background:#F2F2F5;color:#17181C;box-shadow:0 14px 40px rgba(0,0,0,.45);
     opacity:0;transform:translateY(8px) scale(.98);transition:opacity 280ms cubic-bezier(.2,0,0,1),transform 420ms cubic-bezier(.2,.9,.25,1);pointer-events:none}
   #ewgTourTip.on{opacity:1;transform:none;pointer-events:auto}
-  #ewgTourTip b{display:block;font-size:17px;line-height:22px;font-weight:700}
+  #ewgTourTip b{display:block;font-size:17px;line-height:22px;font-weight:700;padding-right:34px}
   #ewgTourTip span{display:block;margin-top:3px;font-size:13px;line-height:18px;color:#4A4A52}
   #ewgTourTip .k{display:inline-grid;place-items:center;width:34px;height:34px;margin:10px 0 0;border-radius:8px;background:#fff;font:700 16px/1 var(--font);color:#17181C;
     box-shadow:0 3px 0 #B9B9C1,0 0 0 1px rgba(0,0,0,.12);animation:ewgKey 1.6s ease-in-out infinite}
@@ -114,25 +114,25 @@
   addEventListener('resize', () => { placeVeil(); if (tip.classList.contains('on')) placeTip(); });
 
   /* ---------------------------------------------------------------- 歌：先拿到整首（song24），再一层一层放出来 */
-  let FULL = null;
+  let FULL = null; const HUM_BEATS = 16;   // 哼 4 小节
   const clone = o => JSON.parse(JSON.stringify(o));
   function song() { try { return curSong(); } catch (e) { return null; } }
   function strip() {
     const s = song(); if (!s) return false;
-    FULL = FULL || {lh: clone(s.lh || []), sec: s.sec ? clone(s.sec) : null};
-    s.lh = []; s.sec = null; try { P.loop = false; } catch (e) { /* */ }
+    FULL = FULL || {mel: clone(s.mel || []), lh: clone(s.lh || []), sec: s.sec ? clone(s.sec) : null, bars: s.bars, sections: clone(s.sections || [])};
+    s.mel = clone(FULL.mel).filter(n => n.s < HUM_BEATS - 1e-6); s.lh = []; s.sec = null;
+    // 只有哼的 4 小节时，谱面就只放这 4 小节（铺满，不是一大片黑里几个小音符）
+    const hb = HUM_BEATS / 4; s.bars = hb; s.sections = (FULL.sections.length ? [clone(FULL.sections[0])] : [{k: 'verse'}]).map(x => ({...x, a: 0, b: hb})); try { P.loop = false; } catch (e) { /* */ }
     render(); return true;
   }
-  function popIn(part) {           // 这一条声部的音符：从左到右一个个冒出来
+  function popIn(part, from = 0) {           // 这一条声部的音符（data-i ≥ from 的那些）：从左到右一个个冒出来
     if (RM()) return;
     requestAnimationFrame(() => {
       const svg = document.querySelector(`.lane[data-lane="${part}"] svg.roll`); if (!svg) return;
       const W = +svg.getAttribute('width') || 1000;
-      svg.querySelectorAll('g.n').forEach(g => {
-        const r = g.querySelector('rect'); const x = r ? +r.getAttribute('x') : 0;
-        g.style.transformBox = 'fill-box'; g.style.transformOrigin = 'center';
-        g.style.animationDelay = Math.round(x / W * 1500) + 'ms'; g.classList.add('ewg-pop');
-      });
+      const gs = [...svg.querySelectorAll('g.n')].filter(g => +g.dataset.i >= from);
+      const xs = gs.map(g => { const r = g.querySelector('rect'); return r ? +r.getAttribute('x') : 0; }), x0 = Math.min(...xs, W), span = Math.max(1, W - x0);
+      gs.forEach((g, k) => { g.style.transformBox = 'fill-box'; g.style.transformOrigin = 'center'; g.style.animationDelay = Math.round((xs[k] - x0) / span * 1300) + 'ms'; g.classList.add('ewg-pop'); });
     });
   }
 
@@ -160,7 +160,7 @@
     hideTip();
   }
   function startHum() {
-    const D = 6.2, ev = hum(D), t0 = performance.now();
+    const s0 = song(), D = HUM_BEATS * 60 / ((s0 && s0.bpm) || 96) + .3, ev = hum(D), t0 = performance.now();
     veil.innerHTML = `<div class="in"><p style="color:#F2F2F5;font-size:17px;font-weight:600">${esc(T('listening'))}</p><canvas></canvas><div class="tm">0:00</div></div>`;
     const cv = veil.querySelector('canvas'), tm = veil.querySelector('.tm'), dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
     cv.width = W * dpr; cv.height = H * dpr; const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -174,7 +174,7 @@
       }
       c.clearRect(0, 0, W, H);
       hist.forEach((v, i) => { const h = Math.max(3, Math.min(1, v) * (H - 4)), x = W - (hist.length - i) * (bw + gap); c.globalAlpha = .3 + .7 * (i / Math.max(1, hist.length - 1)); c.fillStyle = '#F2F2F5'; c.beginPath(); if (c.roundRect) c.roundRect(x, (H - h) / 2, bw, h, 2); else c.rect(x, (H - h) / 2, bw, h); c.fill(); });
-      tm.textContent = '0:0' + Math.min(9, Math.floor(t));
+      const sec = Math.floor(t); tm.textContent = '0:' + String(sec).padStart(2, '0');
       if (t < D) requestAnimationFrame(frame); else toNotes();
     };
     requestAnimationFrame(frame);
@@ -185,33 +185,51 @@
       const s = song(); if (s) { render(); }
       document.documentElement.classList.remove('ewg-tb'); veil.classList.add('out'); popIn('mel');
       const lane = document.querySelector('.lane[data-lane="mel"]');
-      setTimeout(() => { showTip(`<span class="n">${esc(T('step')(1))}</span><b>${esc(T('yours'))}</b>`, () => { const r = lane && lane.getBoundingClientRect(); return r && {left: r.left + r.width * .45, top: r.top + 6, width: 1, height: 1, right: r.left + r.width * .45, bottom: r.top + 7}; }, 'top'); }, 900);
-      setTimeout(() => stepVoice(0), 3200);
+      setTimeout(() => { showTip(`<span class="n">${esc(T('step')(1))}</span><b>${esc(T('yours'))}</b>`, () => { const r = lane && lane.getBoundingClientRect(); if (!r) return null; const x = r.left + r.width * .16, y = r.top + r.height * .86; return {left: x, top: y, width: 1, height: 1, right: x + 1, bottom: y + 1}; }, 'bottom'); }, 900);   // 在这 4 小节下面，不挡播放键
+      setTimeout(stepWhole, 3600);
     }, 1300);
   }
 
-  /* ---------------------------------------------------------------- ②③ 按住 V：说预先写好的一句 */
-  let lineI = -1;
-  function stepVoice(i) {
-    lineI = i;
-    showTip(`<span class="n">${esc(T('step')(i + 2))}</span><b>${esc(i ? T('v2T') : T('vT'))}</b><span>${esc(T('vS'))}</span><div class="k" aria-hidden="true">V</div>`, UI.mic, 'left', true);
+  /* ---------------------------------------------------------------- ② 写成整首歌：按住 V 说，或者点“继续”（等一会儿也会自己继续） */
+  let lineI = -1, autoT = 0, building = false;
+  function stepWhole() {
+    lineI = 0;
+    showTip(`<span class="n">${esc(T('step')(2))}</span><b>${esc(T('vT'))}</b><span>${esc(T('vS'))}</span><div class="btns" style="align-items:center"><div class="k" aria-hidden="true" style="margin:0">V</div><button type="button" class="pri" data-a="go">${esc(T('go'))}</button></div>`, UI.mic, 'left', true);
+    const b = tip.querySelector('[data-a="go"]'); if (b) b.onclick = () => build(null);
+    clearTimeout(autoT); autoT = setTimeout(() => { if (lineI === 0 && !SIM.active()) build(null); }, 12000);
   }
-  SIM.tourLine = () => { if (lineI < 0) return null; hideTip(); return TX[L()].lines[lineI].say; };     // demo_ui 的模拟语音先问这里（开始说话：提示卡让开）
-  SIM.tourSend = text => {           // 说完：气泡照常“我听到 / 我理解为 / 步骤”，然后这一条声部出来
-    const i = lineI; if (i < 0) return false;
-    const ln = TX[L()].lines[i]; lineI = -1; hideTip();
-    UI.clearBody(); UI.head('res', 'heard', T('heard')); UI.heard('「' + text + '」', 'stream'); UI.setText(el.rw, T('rwP') + ln.rw);
-    const st = ln.steps.map(t => ({txt: t, st: ''})); UI.steps(st); UI.open();
-    const part = i === 0 ? 'lh' : 'sec';
-    setTimeout(() => { st[0].st = 'doing'; UI.steps(st); }, 500);
-    setTimeout(() => { st[0].st = 'done'; st[1].st = 'doing'; UI.steps(st); }, 1300);
-    setTimeout(() => {
-      const s = song(); if (s && FULL) { s[part] = clone(FULL[part] || []); render(); popIn(part); }
-      st[1].st = 'done'; UI.steps(st); UI.autoClose(2600);
-      setTimeout(() => (i === 0 ? stepVoice(1) : stepPlay()), 2400);
-    }, 2200);
-    return true;
-  };
+  SIM.tourLine = () => { if (lineI < 0) return null; hideTip(); clearTimeout(autoT); return T('say'); };     // demo_ui 的模拟语音先问这里（开始说话：提示卡让开）
+  SIM.tourSend = text => { if (lineI < 0) return false; build(text); return true; };
+  // ③ 一步一步写：旋律写完 → 和弦 → 第二个声音；每一步都停一下，看得清楚
+  function build(text) {
+    if (building) return; building = true; lineI = -1; clearTimeout(autoT); hideTip();
+    UI.clearBody();
+    if (text) { UI.head('res', 'heard', T('heard')); UI.heard('「' + text + '」', 'stream'); UI.setText(el.rw, T('rwP') + T('rw')); }
+    else UI.head('res', 'heard', T('writing'));
+    const st = T('steps').map(t => ({txt: t, st: ''})); UI.steps(st); UI.open();
+    const s = song(), parts = ['mel', 'lh', 'sec']; let k = 0;
+    const next = () => {
+      if (k >= parts.length) { UI.autoClose(3000); building = false; setTimeout(stepPlay, 2200); return; }
+      st[k].st = 'doing'; UI.steps(st);
+      setTimeout(() => {
+        const part = parts[k], from = part === 'mel' ? (s.mel || []).length : 0;
+        const show = () => { if (s && FULL) { s[part] = clone(FULL[part] || []); render(); popIn(part, from); } st[k].st = 'done'; UI.steps(st); k++; setTimeout(next, 2600); };   // 让人看清这一层出来了，再下一层
+        if (part === 'mel' && s && FULL && s.bars < FULL.bars) zoomOut(s, show); else show();
+      }, 1300);
+    };
+    setTimeout(next, text ? 900 : 400);
+  }
+  function stepVoice() { stepWhole(); }
+  // 从 4 小节慢慢拉到整首（每一帧多几小节），再把后面的旋律放出来
+  function zoomOut(s, done) {
+    const to = FULL.bars, from = s.bars, n = RM() ? 1 : 12; let i = 0;
+    const tick = () => {
+      i++; const t = i / n, e = 1 - Math.pow(1 - t, 3), b = Math.round(from + (to - from) * e);
+      s.bars = b; s.sections = s.sections.map((x, j) => j === 0 ? {...x, b: Math.min(b, (FULL.sections[0] || {}).b || b)} : x); render();
+      if (i < n) setTimeout(tick, 55); else { s.bars = to; s.sections = clone(FULL.sections); render(); setTimeout(done, 250); }
+    };
+    tick();
+  }
 
   /* ---------------------------------------------------------------- ④ 听整首，然后结束 */
   function stepPlay() {
@@ -237,7 +255,8 @@
   }
   const sendHook = SIM.tourSend, tourLineHook = SIM.tourLine;
   function endTour(full) {        // 完整版：按钮都回来，歌是整首 song24
-    const s = song(); if (s && FULL) { if (!s.lh || !s.lh.length) s.lh = clone(FULL.lh); if (!s.sec && FULL.sec) s.sec = clone(FULL.sec); }
+    const s = song(); if (s && FULL) { s.mel = clone(FULL.mel); s.lh = clone(FULL.lh); s.sec = FULL.sec ? clone(FULL.sec) : null; s.bars = FULL.bars; s.sections = clone(FULL.sections); }
+    clearTimeout(autoT); building = false;
     SIM.tourSend = null; SIM.tourLine = () => null; lineI = -1;
     document.documentElement.classList.remove('ewg-tb'); veil.classList.add('out'); hideTip(); skip.remove();
     if (full) { document.body.classList.remove('ewg-tour'); try { const u = new URL(location.href); u.searchParams.delete('tour'); history.replaceState(history.state, '', u.toString()); } catch (e) { /* */ } }
@@ -247,7 +266,7 @@
 
   /* ---------------------------------------------------------------- 语言切换：当前这一步重画 */
   function drawSkip() { skip.textContent = T('skip'); }
-  if (I18) I18.onChange(() => { drawSkip(); if (tip.classList.contains('on') && lineI >= 0) stepVoice(lineI); else if (!veil.classList.contains('out') && veil.querySelector('.rec')) stepHum(); });
+  if (I18) I18.onChange(() => { drawSkip(); if (tip.classList.contains('on') && lineI >= 0) stepWhole(); else if (!veil.classList.contains('out') && veil.querySelector('.rec')) stepHum(); });
   drawSkip();
 
   // 开始：默认歌载入以后，先收起伴奏和第二旋律，盖上“哼一段”
@@ -255,5 +274,5 @@
   veil.innerHTML = '';
   let tries = 0;
   (function boot() { if (strip()) stepHum(); else if (++tries < 60) setTimeout(boot, 100); })();
-  window.EWG_TOUR = {stepHum, stepVoice, stepPlay, endCard, endTour, replay};
+  window.EWG_TOUR = {stepHum, stepWhole, build, stepVoice, stepPlay, endCard, endTour, replay};
 })();
